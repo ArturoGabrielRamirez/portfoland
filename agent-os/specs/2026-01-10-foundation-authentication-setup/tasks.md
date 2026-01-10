@@ -61,7 +61,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
 **Complexity:** Medium
 
 - [ ] 2.0 Complete Better Auth core configuration
-  - [ ] 2.1 Install Better Auth
+  - [x] 2.1 Install Better Auth
     - Run: `bun add better-auth`
   - [ ] 2.2 Generate Better Auth schema models
     - Run: `npx @better-auth/cli@latest generate`

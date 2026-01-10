@@ -104,7 +104,10 @@ N/A - No visual files were added to the planning/visuals folder.
 **UI Foundation:**
 - shadcn/ui component library
 - Base/default shadcn theme
-- Retro/pixel custom themes DEFERRED to Phase 2
+- Custom theme direction: **Brutalismo + Pixel detalles**
+  - Layouts brutalistas: bordes duros, tipografía bold, colores raw, asimetría controlada
+  - Elementos pixel art: iconos, ilustraciones, detalles decorativos
+  - Full custom theme implementation DEFERRED to Phase 2
 - Initial components: Button, Card, Avatar, Toast, Form inputs
 - Additional components installed as needed per feature
 

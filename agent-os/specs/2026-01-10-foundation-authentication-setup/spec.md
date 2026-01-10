@@ -89,7 +89,7 @@ Establish the foundational infrastructure for Portfoland including MongoDB datab
 - Configure `components.json` with correct aliases
 - Initial components to install: Button, Card, Avatar, Input, Label, Form, Toast, Dropdown Menu
 - Use CSS variables for theming (automatic dark mode support)
-- Defer retro/pixel custom themes to Phase 2
+- Defer brutalista-pixel custom theme to Phase 2 (layouts brutalistas + iconos/detalles pixel art)
 
 **Internationalization (next-intl)**
 - Configure next-intl with App Router in `i18n/` directory
@@ -110,7 +110,11 @@ Establish the foundational infrastructure for Portfoland including MongoDB datab
 
 ## Visual Design
 
-No visual assets provided. Use shadcn/ui default theme and standard layout patterns.
+**Style Direction: Brutalismo + Pixel detalles**
+- Layouts brutalistas: bordes duros, tipografía bold, colores raw, asimetría controlada
+- Elementos pixel art: iconos, ilustraciones, detalles decorativos
+- Phase 1: shadcn/ui default theme (base funcional)
+- Phase 2: implementación completa del custom theme brutalista-pixel
 
 ## Existing Code to Leverage
 

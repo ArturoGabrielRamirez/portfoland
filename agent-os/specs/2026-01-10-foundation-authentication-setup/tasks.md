@@ -37,7 +37,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - `emailVerified` - Boolean @default(false)
     - `createdAt` - DateTime @default(now())
     - `updatedAt` - DateTime @updatedAt
-  - [ ] 1.4 Create Prisma singleton client
+  - [x] 1.4 Create Prisma singleton client
     - Create `lib/prisma.ts` with singleton pattern
     - Handle development hot-reload without creating multiple instances
     - Export typed Prisma client instance

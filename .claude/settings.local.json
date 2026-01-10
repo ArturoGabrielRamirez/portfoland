@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(for file in mission.md roadmap.md tech-stack.md)",
+      "Bash(do if [ ! -f \"C:/Users/Colo/Cmder/Code/NextJS/portfoland/agent-os/product/$file\" ])",
+      "Bash(then echo \"Error: Missing $file\")",
+      "Bash(else echo \"Created agent-os/product/$file\")",
+      "Bash(fi)",
+      "Bash(done)",
+      "WebFetch(domain:www.prisma.io)",
+      "WebFetch(domain:www.better-auth.com)"
+    ]
+  }
+}

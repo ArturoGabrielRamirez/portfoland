@@ -27,7 +27,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - Run: `bun add -d prisma@6.19 && bun add @prisma/client@6.19`
     - Initialize: `npx prisma init --datasource-provider mongodb`
     - Configure `prisma/schema.prisma` with MongoDB provider
-  - [ ] 1.3 Create User model in Prisma schema
+  - [x] 1.3 Create User model in Prisma schema
     - `id` - String with @id @default(auto()) @map("_id") @db.ObjectId
     - `email` - String @unique
     - `name` - String

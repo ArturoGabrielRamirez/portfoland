@@ -41,7 +41,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - Create `lib/prisma.ts` with singleton pattern
     - Handle development hot-reload without creating multiple instances
     - Export typed Prisma client instance
-  - [ ] 1.5 Verify database connection
+  - [x] 1.5 Verify database connection
     - Run: `npx prisma db push`
     - Verify models are created in MongoDB Atlas
     - Test connection with a simple query

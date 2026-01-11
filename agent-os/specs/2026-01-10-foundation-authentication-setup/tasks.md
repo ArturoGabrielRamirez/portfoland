@@ -74,7 +74,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - Enable email/password: `emailAndPassword: { enabled: true }`
     - Configure Google OAuth in `socialProviders.google`
     - Set up user field mapping for `locale` and `username`
-  - [ ] 2.4 Create Better Auth API route handler
+  - [x] 2.4 Create Better Auth API route handler
     - Create `app/api/auth/[...all]/route.ts`
     - Export GET and POST handlers using `toNextJsHandler(auth)`
     - This handles: /api/auth/sign-in, /api/auth/sign-up, /api/auth/callback/google, etc.

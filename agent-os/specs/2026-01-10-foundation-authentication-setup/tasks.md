@@ -100,7 +100,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
   - [x] 3.1 Create proxy.ts at project root
     - Create `proxy.ts` (Next.js 16 replacement for middleware.ts)
     - Export named `proxy` function or default export
-  - [ ] 3.2 Configure route matchers
+  - [x] 3.2 Configure route matchers
     - Define protected paths: `/dashboard`, `/settings/*`
     - Define public paths: `/`, `/login`, `/register`, `/api/auth/*`
     - Use `config.matcher` for path matching

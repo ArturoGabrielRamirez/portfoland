@@ -61,14 +61,14 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
 **Complexity:** Medium
 
 - [ ] 2.0 Complete Better Auth core configuration
-  - [ ] 2.1 Install Better Auth
+  - [x] 2.1 Install Better Auth
     - Run: `bun add better-auth`
-  - [ ] 2.2 Generate Better Auth schema models
+  - [x] 2.2 Generate Better Auth schema models
     - Run: `npx @better-auth/cli@latest generate`
     - This generates Session, Account, Verification models
     - Review and merge generated schema into existing Prisma schema
     - Run: `npx prisma db push` to sync models
-  - [ ] 2.3 Create auth instance configuration
+  - [x] 2.3 Create auth instance configuration
     - Create `lib/auth.ts`
     - Configure `betterAuth()` with Prisma adapter: `prismaAdapter(prisma, { provider: "mongodb" })`
     - Enable email/password: `emailAndPassword: { enabled: true }`

@@ -60,7 +60,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
 **Dependencies:** Task Group 1
 **Complexity:** Medium
 
-- [ ] 2.0 Complete Better Auth core configuration
+- [x] 2.0 Complete Better Auth core configuration
   - [x] 2.1 Install Better Auth
     - Run: `bun add better-auth`
   - [x] 2.2 Generate Better Auth schema models
@@ -78,7 +78,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - Create `app/api/auth/[...all]/route.ts`
     - Export GET and POST handlers using `toNextJsHandler(auth)`
     - This handles: /api/auth/sign-in, /api/auth/sign-up, /api/auth/callback/google, etc.
-  - [ ] 2.5 Create Better Auth client
+  - [x] 2.5 Create Better Auth client
     - Create `lib/auth-client.ts`
     - Use `createAuthClient()` from `better-auth/react`
     - Configure `baseURL` to match `BETTER_AUTH_URL`

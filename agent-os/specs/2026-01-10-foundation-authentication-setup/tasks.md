@@ -60,25 +60,25 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
 **Dependencies:** Task Group 1
 **Complexity:** Medium
 
-- [ ] 2.0 Complete Better Auth core configuration
+- [x] 2.0 Complete Better Auth core configuration
   - [x] 2.1 Install Better Auth
     - Run: `bun add better-auth`
-  - [ ] 2.2 Generate Better Auth schema models
+  - [x] 2.2 Generate Better Auth schema models
     - Run: `npx @better-auth/cli@latest generate`
     - This generates Session, Account, Verification models
     - Review and merge generated schema into existing Prisma schema
     - Run: `npx prisma db push` to sync models
-  - [ ] 2.3 Create auth instance configuration
+  - [x] 2.3 Create auth instance configuration
     - Create `lib/auth.ts`
     - Configure `betterAuth()` with Prisma adapter: `prismaAdapter(prisma, { provider: "mongodb" })`
     - Enable email/password: `emailAndPassword: { enabled: true }`
     - Configure Google OAuth in `socialProviders.google`
     - Set up user field mapping for `locale` and `username`
-  - [ ] 2.4 Create Better Auth API route handler
+  - [x] 2.4 Create Better Auth API route handler
     - Create `app/api/auth/[...all]/route.ts`
     - Export GET and POST handlers using `toNextJsHandler(auth)`
     - This handles: /api/auth/sign-in, /api/auth/sign-up, /api/auth/callback/google, etc.
-  - [ ] 2.5 Create Better Auth client
+  - [x] 2.5 Create Better Auth client
     - Create `lib/auth-client.ts`
     - Use `createAuthClient()` from `better-auth/react`
     - Configure `baseURL` to match `BETTER_AUTH_URL`

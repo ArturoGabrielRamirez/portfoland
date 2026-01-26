@@ -96,7 +96,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
 **Dependencies:** Task Group 2
 **Complexity:** Medium
 
-- [ ] 3.0 Complete route protection with proxy.ts
+- [x] 3.0 Complete route protection with proxy.ts
   - [x] 3.1 Create proxy.ts at project root
     - Create `proxy.ts` (Next.js 16 replacement for middleware.ts)
     - Export named `proxy` function or default export
@@ -104,11 +104,11 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - Define protected paths: `/dashboard`, `/settings/*`
     - Define public paths: `/`, `/login`, `/register`, `/api/auth/*`
     - Use `config.matcher` for path matching
-  - [ ] 3.3 Implement authentication check
+  - [x] 3.3 Implement authentication check
     - Check session via Better Auth
     - Redirect unauthenticated users from protected routes to `/[locale]/login`
     - Redirect authenticated users from auth pages to `/[locale]/dashboard`
-  - [ ] 3.4 Integrate next-intl locale routing
+  - [x] 3.4 Integrate next-intl locale routing
     - Extract locale from URL or cookies
     - Redirect with correct locale prefix
 

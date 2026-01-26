@@ -125,25 +125,25 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
 **Dependencies:** Task Group 1
 **Complexity:** Medium
 
-- [ ] 4.0 Complete internationalization infrastructure
+- [x] 4.0 Complete internationalization infrastructure
   - [x] 4.1 Install and configure next-intl
     - Run: `bun add next-intl`
     - Create `i18n/` directory structure
     - Create `i18n/config.ts` with supported locales: ['en', 'es']
     - Configure default locale and locale detection
-  - [ ] 4.2 Create message files
+  - [x] 4.2 Create message files
     - Create `messages/en.json` with translation keys
     - Create `messages/es.json` with Spanish translations
     - Translation keys for: navigation, auth forms, dashboard, common UI
-  - [ ] 4.3 Set up locale-based routing
+  - [x] 4.3 Set up locale-based routing
     - Restructure app directory with `[locale]` dynamic segment
     - Move pages under `app/[locale]/`
     - Configure next-intl request handling
-  - [ ] 4.4 Implement browser language detection
+  - [x] 4.4 Implement browser language detection
     - Detect user's preferred language from browser
     - Fall back to 'en' if unsupported language
     - Read from Accept-Language header
-  - [ ] 4.5 Create useLocale hook integration
+  - [x] 4.5 Create useLocale hook integration
     - Ensure translations available in Server Components
     - Configure Client Component providers
 

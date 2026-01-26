@@ -1,0 +1,174 @@
+{
+  "common": {
+    "appName": "Portfoland",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "or": "or",
+    "and": "and",
+    "languages": {
+      "en": "English",
+      "es": "Spanish"
+    },
+    "errors": {
+      "unexpected": "An unexpected error occurred. Please try again.",
+      "networkError": "Network error. Please check your connection.",
+      "sessionExpired": "Your session has expired. Please sign in again."
+    }
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "timeline": "Timeline",
+    "portfolio": "Portfolio",
+    "settings": "Settings",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "profile": "Profile",
+    "language": "Language"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to your account to continue",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Enter your email",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "submitButton": "Sign In",
+      "googleButton": "Sign in with Google",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create an account",
+      "forgotPassword": "Forgot your password?",
+      "errors": {
+        "invalidCredentials": "Invalid email or password",
+        "accountNotFound": "No account found with this email",
+        "accountLocked": "Your account has been locked. Please contact support.",
+        "emailRequired": "Email is required",
+        "passwordRequired": "Password is required",
+        "invalidEmail": "Please enter a valid email address"
+      }
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Sign up to get started with Portfoland",
+      "nameLabel": "Full Name",
+      "namePlaceholder": "Enter your full name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Enter your email",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Create a password",
+      "confirmPasswordLabel": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "submitButton": "Sign Up",
+      "googleButton": "Sign up with Google",
+      "hasAccount": "Already have an account?",
+      "signInLink": "Sign in",
+      "termsText": "By signing up, you agree to our",
+      "termsLink": "Terms of Service",
+      "privacyLink": "Privacy Policy",
+      "errors": {
+        "nameRequired": "Name is required",
+        "nameTooShort": "Name must be at least 2 characters",
+        "emailRequired": "Email is required",
+        "invalidEmail": "Please enter a valid email address",
+        "emailInUse": "This email is already registered",
+        "passwordRequired": "Password is required",
+        "passwordTooShort": "Password must be at least 8 characters",
+        "passwordTooWeak": "Password must include uppercase, lowercase, and numbers",
+        "confirmPasswordRequired": "Please confirm your password",
+        "passwordsMismatch": "Passwords do not match"
+      }
+    },
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "nameRequired": "Name is required",
+      "nameMinLength": "Name must be at least 2 characters",
+      "confirmPasswordRequired": "Please confirm your password",
+      "passwordsMustMatch": "Passwords must match"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome back, {name}!",
+    "welcomeSubtitle": "Here's an overview of your career journey",
+    "progress": {
+      "title": "Profile Completion",
+      "percentage": "{percent}% Complete",
+      "completeProfile": "Complete your profile to unlock all features"
+    },
+    "stats": {
+      "title": "Quick Stats",
+      "experiences": "Experiences",
+      "skills": "Skills",
+      "projects": "Projects",
+      "achievements": "Achievements"
+    },
+    "features": {
+      "title": "Your Tools",
+      "timeline": {
+        "title": "Timeline",
+        "description": "Track your professional journey with an interactive timeline of your experiences, achievements, and milestones.",
+        "comingSoon": "Coming in v0.2.0"
+      },
+      "portfolio": {
+        "title": "Portfolio",
+        "description": "Showcase your work with a beautiful, personalized portfolio. Share your projects and achievements with the world.",
+        "comingSoon": "Coming in v0.3.0"
+      },
+      "aiAssistant": {
+        "title": "AI Assistant",
+        "description": "Get AI-powered suggestions for your CV, cover letters, and career development. Let our assistant help you stand out.",
+        "comingSoon": "Coming in v0.4.0"
+      }
+    },
+    "recentActivity": {
+      "title": "Recent Activity",
+      "noActivity": "No recent activity to show",
+      "viewAll": "View all activity"
+    }
+  },
+  "landing": {
+    "hero": {
+      "title": "Tell Your Career Story",
+      "subtitle": "Transform your professional journey into an engaging, gamified experience. Build your portfolio, track achievements, and let AI help you shine.",
+      "ctaSignUp": "Get Started Free",
+      "ctaSignIn": "Sign In"
+    },
+    "features": {
+      "title": "Everything You Need",
+      "timeline": {
+        "title": "Interactive Timeline",
+        "description": "Visualize your career journey with a beautiful, interactive timeline that brings your experiences to life."
+      },
+      "portfolio": {
+        "title": "Smart Portfolio",
+        "description": "Create stunning portfolios that adapt to your story. Share your achievements with a unique subdomain."
+      },
+      "aiAssistant": {
+        "title": "AI-Powered Assistant",
+        "description": "Get intelligent suggestions for your CV, optimize your career narrative, and stand out from the crowd."
+      }
+    },
+    "cta": {
+      "title": "Ready to Start Your Journey?",
+      "subtitle": "Join thousands of professionals who are telling their story with Portfoland.",
+      "button": "Create Your Account"
+    }
+  },
+  "languageSwitcher": {
+    "label": "Select language",
+    "current": "Current language: {language}"
+  }
+}

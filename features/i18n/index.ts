@@ -1,28 +1,17 @@
 // =============================================================================
-// Next.js Configuration
+// Internationalization Feature Exports
 // =============================================================================
-// Configures Next.js with internationalization support via next-intl.
-// =============================================================================
-
-import type { NextConfig } from 'next'
-import createNextIntlPlugin from 'next-intl/plugin'
-
-// =============================================================================
-// next-intl Plugin
+// Central export point for i18n-related components, hooks, and utilities.
 // =============================================================================
 
-/**
- * Create the next-intl plugin with default request configuration path.
- * The plugin automatically looks for i18n/request.ts.
- */
-const withNextIntl = createNextIntlPlugin()
-
 // =============================================================================
-// Next.js Config
+// Components
 // =============================================================================
 
-const nextConfig: NextConfig = {
-  /* config options here */
-}
+export { LocaleDisplay } from './components/LocaleDisplay'
 
-export default withNextIntl(nextConfig)
+// =============================================================================
+// Types
+// =============================================================================
+
+export type { LocaleDisplayProps, WithLocaleProps } from './types/locale'

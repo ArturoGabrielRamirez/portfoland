@@ -162,7 +162,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
 **Complexity:** Simple
 
 - [ ] 5.0 Complete shadcn/ui component library setup
-  - [ ] 5.1 Initialize shadcn/ui
+  - [x] 5.1 Initialize shadcn/ui
     - Run: `bunx shadcn@latest init`
     - Select default theme
     - Configure `components.json` with correct aliases

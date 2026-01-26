@@ -126,7 +126,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
 **Complexity:** Medium
 
 - [ ] 4.0 Complete internationalization infrastructure
-  - [ ] 4.1 Install and configure next-intl
+  - [x] 4.1 Install and configure next-intl
     - Run: `bun add next-intl`
     - Create `i18n/` directory structure
     - Create `i18n/config.ts` with supported locales: ['en', 'es']

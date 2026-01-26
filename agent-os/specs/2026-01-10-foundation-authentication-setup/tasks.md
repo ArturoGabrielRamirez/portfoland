@@ -167,7 +167,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - Select default theme
     - Configure `components.json` with correct aliases
     - Set components path to `features/shadcn/ui/`
-  - [ ] 5.2 Install initial components
+  - [x] 5.2 Install initial components
     - Button: `bunx shadcn@latest add button`
     - Card: `bunx shadcn@latest add card`
     - Avatar: `bunx shadcn@latest add avatar`

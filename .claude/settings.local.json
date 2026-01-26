@@ -10,7 +10,8 @@
       "Bash(done)",
       "WebFetch(domain:www.prisma.io)",
       "WebFetch(domain:www.better-auth.com)",
-      "Bash(bunx prisma db push:*)"
+      "Bash(bunx prisma db push:*)",
+      "WebFetch(domain:next-intl.dev)"
     ]
   }
 }

@@ -1,0 +1,174 @@
+{
+  "common": {
+    "appName": "Portfoland",
+    "loading": "Cargando...",
+    "error": "Ocurrio un error",
+    "success": "Exito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "submit": "Enviar",
+    "or": "o",
+    "and": "y",
+    "languages": {
+      "en": "Ingles",
+      "es": "Espanol"
+    },
+    "errors": {
+      "unexpected": "Ocurrio un error inesperado. Por favor, intenta de nuevo.",
+      "networkError": "Error de conexion. Por favor, verifica tu internet.",
+      "sessionExpired": "Tu sesion ha expirado. Por favor, inicia sesion de nuevo."
+    }
+  },
+  "navigation": {
+    "home": "Inicio",
+    "dashboard": "Panel",
+    "timeline": "Linea de Tiempo",
+    "portfolio": "Portafolio",
+    "settings": "Configuracion",
+    "signIn": "Iniciar Sesion",
+    "signUp": "Registrarse",
+    "signOut": "Cerrar Sesion",
+    "profile": "Perfil",
+    "language": "Idioma"
+  },
+  "auth": {
+    "login": {
+      "title": "Bienvenido de Nuevo",
+      "subtitle": "Inicia sesion en tu cuenta para continuar",
+      "emailLabel": "Correo Electronico",
+      "emailPlaceholder": "Ingresa tu correo electronico",
+      "passwordLabel": "Contrasena",
+      "passwordPlaceholder": "Ingresa tu contrasena",
+      "submitButton": "Iniciar Sesion",
+      "googleButton": "Iniciar sesion con Google",
+      "noAccount": "No tienes una cuenta?",
+      "createAccount": "Crear una cuenta",
+      "forgotPassword": "Olvidaste tu contrasena?",
+      "errors": {
+        "invalidCredentials": "Correo electronico o contrasena invalidos",
+        "accountNotFound": "No se encontro una cuenta con este correo electronico",
+        "accountLocked": "Tu cuenta ha sido bloqueada. Por favor, contacta a soporte.",
+        "emailRequired": "El correo electronico es requerido",
+        "passwordRequired": "La contrasena es requerida",
+        "invalidEmail": "Por favor, ingresa un correo electronico valido"
+      }
+    },
+    "register": {
+      "title": "Crear Cuenta",
+      "subtitle": "Registrate para comenzar con Portfoland",
+      "nameLabel": "Nombre Completo",
+      "namePlaceholder": "Ingresa tu nombre completo",
+      "emailLabel": "Correo Electronico",
+      "emailPlaceholder": "Ingresa tu correo electronico",
+      "passwordLabel": "Contrasena",
+      "passwordPlaceholder": "Crea una contrasena",
+      "confirmPasswordLabel": "Confirmar Contrasena",
+      "confirmPasswordPlaceholder": "Confirma tu contrasena",
+      "submitButton": "Registrarse",
+      "googleButton": "Registrarse con Google",
+      "hasAccount": "Ya tienes una cuenta?",
+      "signInLink": "Iniciar sesion",
+      "termsText": "Al registrarte, aceptas nuestros",
+      "termsLink": "Terminos de Servicio",
+      "privacyLink": "Politica de Privacidad",
+      "errors": {
+        "nameRequired": "El nombre es requerido",
+        "nameTooShort": "El nombre debe tener al menos 2 caracteres",
+        "emailRequired": "El correo electronico es requerido",
+        "invalidEmail": "Por favor, ingresa un correo electronico valido",
+        "emailInUse": "Este correo electronico ya esta registrado",
+        "passwordRequired": "La contrasena es requerida",
+        "passwordTooShort": "La contrasena debe tener al menos 8 caracteres",
+        "passwordTooWeak": "La contrasena debe incluir mayusculas, minusculas y numeros",
+        "confirmPasswordRequired": "Por favor, confirma tu contrasena",
+        "passwordsMismatch": "Las contrasenas no coinciden"
+      }
+    },
+    "validation": {
+      "emailRequired": "El correo electronico es requerido",
+      "emailInvalid": "Por favor, ingresa un correo electronico valido",
+      "passwordRequired": "La contrasena es requerida",
+      "passwordMinLength": "La contrasena debe tener al menos 8 caracteres",
+      "nameRequired": "El nombre es requerido",
+      "nameMinLength": "El nombre debe tener al menos 2 caracteres",
+      "confirmPasswordRequired": "Por favor, confirma tu contrasena",
+      "passwordsMustMatch": "Las contrasenas deben coincidir"
+    }
+  },
+  "dashboard": {
+    "welcome": "Bienvenido de nuevo, {name}!",
+    "welcomeSubtitle": "Aqui tienes un resumen de tu trayectoria profesional",
+    "progress": {
+      "title": "Completar Perfil",
+      "percentage": "{percent}% Completado",
+      "completeProfile": "Completa tu perfil para desbloquear todas las funciones"
+    },
+    "stats": {
+      "title": "Estadisticas Rapidas",
+      "experiences": "Experiencias",
+      "skills": "Habilidades",
+      "projects": "Proyectos",
+      "achievements": "Logros"
+    },
+    "features": {
+      "title": "Tus Herramientas",
+      "timeline": {
+        "title": "Linea de Tiempo",
+        "description": "Rastrea tu trayectoria profesional con una linea de tiempo interactiva de tus experiencias, logros e hitos.",
+        "comingSoon": "Proximamente en v0.2.0"
+      },
+      "portfolio": {
+        "title": "Portafolio",
+        "description": "Muestra tu trabajo con un portafolio hermoso y personalizado. Comparte tus proyectos y logros con el mundo.",
+        "comingSoon": "Proximamente en v0.3.0"
+      },
+      "aiAssistant": {
+        "title": "Asistente IA",
+        "description": "Obtene sugerencias impulsadas por IA para tu CV, cartas de presentacion y desarrollo profesional. Deja que nuestro asistente te ayude a destacar.",
+        "comingSoon": "Proximamente en v0.4.0"
+      }
+    },
+    "recentActivity": {
+      "title": "Actividad Reciente",
+      "noActivity": "No hay actividad reciente para mostrar",
+      "viewAll": "Ver toda la actividad"
+    }
+  },
+  "landing": {
+    "hero": {
+      "title": "Cuenta Tu Historia Profesional",
+      "subtitle": "Transforma tu trayectoria profesional en una experiencia atractiva y gamificada. Construi tu portafolio, rastrea logros y deja que la IA te ayude a brillar.",
+      "ctaSignUp": "Comenzar Gratis",
+      "ctaSignIn": "Iniciar Sesion"
+    },
+    "features": {
+      "title": "Todo Lo Que Necesitas",
+      "timeline": {
+        "title": "Linea de Tiempo Interactiva",
+        "description": "Visualiza tu trayectoria profesional con una hermosa linea de tiempo interactiva que da vida a tus experiencias."
+      },
+      "portfolio": {
+        "title": "Portafolio Inteligente",
+        "description": "Crea portafolios impresionantes que se adaptan a tu historia. Comparte tus logros con un subdominio unico."
+      },
+      "aiAssistant": {
+        "title": "Asistente con IA",
+        "description": "Obtene sugerencias inteligentes para tu CV, optimiza tu narrativa profesional y destacate entre la multitud."
+      }
+    },
+    "cta": {
+      "title": "Listo para Comenzar tu Viaje?",
+      "subtitle": "Unite a miles de profesionales que estan contando su historia con Portfoland.",
+      "button": "Crear Tu Cuenta"
+    }
+  },
+  "languageSwitcher": {
+    "label": "Seleccionar idioma",
+    "current": "Idioma actual: {language}"
+  }
+}

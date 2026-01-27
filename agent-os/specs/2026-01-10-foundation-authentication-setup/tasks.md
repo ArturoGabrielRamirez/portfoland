@@ -209,7 +209,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - Create `features/auth/schemas/` directory
     - `loginSchema`: email (required, valid email), password (required, min 8)
     - `registerSchema`: name (required), email (required, valid), password (min 8), confirmPassword (matches password)
-  - [ ] 6.3 Create Login page component
+  - [x] 6.3 Create Login page component
     - Create `app/[locale]/login/page.tsx`
     - Google OAuth button using `authClient.signIn.social({ provider: "google" })`
     - Email/password form using `authClient.signIn.email({ email, password })`

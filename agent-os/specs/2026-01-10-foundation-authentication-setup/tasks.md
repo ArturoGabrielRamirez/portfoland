@@ -205,7 +205,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - Test Google OAuth button renders
     - Test form validation error display
     - Skip edge cases and error state tests
-  - [ ] 6.2 Create Yup validation schemas for auth forms
+  - [x] 6.2 Create Yup validation schemas for auth forms
     - Create `features/auth/schemas/` directory
     - `loginSchema`: email (required, valid email), password (required, min 8)
     - `registerSchema`: name (required), email (required, valid), password (min 8), confirmPassword (matches password)

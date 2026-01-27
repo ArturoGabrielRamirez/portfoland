@@ -217,7 +217,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - Error toast for invalid credentials
     - Link to /register for new users
     - Use shadcn/ui components (Button, Input, Label, Card)
-  - [ ] 6.4 Create Registration page component
+  - [x] 6.4 Create Registration page component
     - Create `app/[locale]/register/page.tsx`
     - Form fields: name, email, password, confirm password
     - Use `authClient.signUp.email({ name, email, password })`

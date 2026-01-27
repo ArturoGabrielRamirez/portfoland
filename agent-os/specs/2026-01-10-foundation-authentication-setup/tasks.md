@@ -199,7 +199,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
 **Complexity:** Medium
 
 - [ ] 6.0 Complete authentication pages
-  - [ ] 6.1 Write 2-6 focused tests for auth pages
+  - [x] 6.1 Write 2-6 focused tests for auth pages
     - Test login form renders with email/password fields
     - Test registration form renders with name/email/password/confirm fields
     - Test Google OAuth button renders

@@ -161,7 +161,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
 **Dependencies:** Task Group 1
 **Complexity:** Simple
 
-- [ ] 5.0 Complete shadcn/ui component library setup
+- [x] 5.0 Complete shadcn/ui component library setup
   - [x] 5.1 Initialize shadcn/ui
     - Run: `bunx shadcn@latest init`
     - Select default theme
@@ -176,11 +176,11 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - Form: `bunx shadcn@latest add form`
     - Toast: `bunx shadcn@latest add toast`
     - Dropdown Menu: `bunx shadcn@latest add dropdown-menu`
-  - [ ] 5.3 Configure CSS variables
+  - [x] 5.3 Configure CSS variables
     - Update `app/globals.css` with shadcn CSS variables
     - Ensure Tailwind CSS 4 compatibility
     - Set up dark mode support via CSS variables
-  - [ ] 5.4 Create cn() utility
+  - [x] 5.4 Create cn() utility
     - Create `lib/utils.ts` with cn() function
     - Use clsx and tailwind-merge for conditional classes
 

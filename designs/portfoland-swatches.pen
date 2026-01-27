@@ -330,7 +330,8 @@
                       "content": "Create compelling portfolios and CVs with an interactive pixelated timeline experience.",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
-                      "fontSize": 18
+                      "fontSize": 18,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -349,7 +350,8 @@
                       "content": "Create compelling portfolios and CVs with an interactive pixelated timeline experience.",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
-                      "fontSize": 18
+                      "fontSize": 18,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -388,7 +390,8 @@
                       "content": "AI-powered content generation helps you articulate your professional journey.",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -407,7 +410,8 @@
                       "content": "AI-powered content generation helps you articulate your professional journey.",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -446,7 +450,8 @@
                       "content": "Personalized subdomain hosting at username.portfoland.com",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -465,7 +470,8 @@
                       "content": "Personalized subdomain hosting at username.portfoland.com",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -504,7 +510,8 @@
                       "content": "Terms of Service • Privacy Policy • © 2024 Portfoland",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
-                      "fontSize": 10
+                      "fontSize": 10,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -523,7 +530,8 @@
                       "content": "Terms of Service • Privacy Policy • © 2024 Portfoland",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
-                      "fontSize": 10
+                      "fontSize": 10,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -3253,6 +3261,16 @@
             },
             {
               "type": "text",
+              "id": "lM6Jh",
+              "name": "lightSubtitle",
+              "fill": "$--foreground-muted",
+              "content": "Same system, different lighting conditions",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "text",
               "id": "9gnx6",
               "name": "lightTypoTitle",
               "fill": "$--foreground",
@@ -3465,7 +3483,8 @@
                   "content": "Create compelling portfolios with an interactive experience.",
                   "lineHeight": 1.5,
                   "fontFamily": "Inter",
-                  "fontSize": 18
+                  "fontSize": 18,
+                  "fontWeight": "normal"
                 },
                 {
                   "type": "text",
@@ -3475,7 +3494,8 @@
                   "content": "Create compelling portfolios with an interactive experience.",
                   "lineHeight": 1.5,
                   "fontFamily": "Inter",
-                  "fontSize": 18
+                  "fontSize": 18,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -5975,6 +5995,8 @@
                       "id": "AeUF7",
                       "name": "feat1Desc",
                       "fill": "#94A3B8",
+                      "textGrowth": "fixed-width",
+                      "width": 303,
                       "content": "Map your career journey on an interactive pixelated timeline. Visualize your growth across cities and milestones.",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
@@ -6059,6 +6081,8 @@
                       "id": "ZwAgX",
                       "name": "feat2Desc",
                       "fill": "#94A3B8",
+                      "textGrowth": "fixed-width",
+                      "width": 303,
                       "content": "Unlock and showcase your skills in a video game-style skill tree. Level up as you gain experience.",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
@@ -6143,6 +6167,8 @@
                       "id": "foxxM",
                       "name": "feat3Desc",
                       "fill": "#94A3B8",
+                      "textGrowth": "fixed-width",
+                      "width": 301,
                       "content": "Collect and display your projects like achievements. Each project adds to your XP and unlocks new possibilities.",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
@@ -6386,6 +6412,8 @@
                       "id": "G2Cp0",
                       "name": "test1Quote",
                       "fill": "#E2E8F0",
+                      "textGrowth": "fixed-width",
+                      "width": 328,
                       "content": "&quot;Finally, a portfolio that actually shows my journey, not just a boring list of jobs. Recruiters love it!&quot;",
                       "lineHeight": 1.6,
                       "fontFamily": "Inter",
@@ -6457,6 +6485,8 @@
                       "id": "YrDYV",
                       "name": "test2Quote",
                       "fill": "#E2E8F0",
+                      "textGrowth": "fixed-width",
+                      "width": 329,
                       "content": "&quot;The skill tree is genius. It helped me visualize gaps in my knowledge and plan my learning path.&quot;",
                       "lineHeight": 1.6,
                       "fontFamily": "Inter",
@@ -6528,6 +6558,8 @@
                       "id": "28PpK",
                       "name": "test3Quote",
                       "fill": "#E2E8F0",
+                      "textGrowth": "fixed-width",
+                      "width": 333,
                       "content": "&quot;Got 3 interview calls within a week of sharing my Portfoland link. The gamified approach really stands out.&quot;",
                       "lineHeight": 1.6,
                       "fontFamily": "Inter",
@@ -7263,6 +7295,8 @@
                   "id": "l87MI",
                   "name": "mobileSubheadline",
                   "fill": "#94A3B8",
+                  "textGrowth": "fixed-width",
+                  "width": 362,
                   "content": "Build a gamified portfolio that showcases your skills and helps you stand out.",
                   "lineHeight": 1.5,
                   "textAlign": "center",
@@ -7429,82 +7463,6 @@
               "children": [
                 {
                   "type": "frame",
-                  "id": "VWNPP",
-                  "name": "mobileCard1",
-                  "width": 150,
-                  "fill": "#1E293B",
-                  "cornerRadius": 12,
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1,
-                    "fill": "#334155"
-                  },
-                  "layout": "vertical",
-                  "gap": 12,
-                  "padding": 16,
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "tMPjC",
-                      "name": "mobileCard1Avatar",
-                      "width": 56,
-                      "height": 56,
-                      "fill": "#00D4FF",
-                      "cornerRadius": 28
-                    },
-                    {
-                      "type": "text",
-                      "id": "DHf2M",
-                      "name": "mobileCard1Name",
-                      "fill": "#FFFFFF",
-                      "content": "Developer",
-                      "fontFamily": "Space Grotesk",
-                      "fontSize": 14,
-                      "fontWeight": "600"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "mMXFW",
-                  "name": "mobileCard2",
-                  "width": 150,
-                  "fill": "#1E293B",
-                  "cornerRadius": 12,
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 1,
-                    "fill": "#334155"
-                  },
-                  "layout": "vertical",
-                  "gap": 12,
-                  "padding": 16,
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "FYcQ4",
-                      "name": "mobileCard2Avatar",
-                      "width": 56,
-                      "height": 56,
-                      "fill": "#D946EF",
-                      "cornerRadius": 28
-                    },
-                    {
-                      "type": "text",
-                      "id": "nLBWc",
-                      "name": "mobileCard2Name",
-                      "fill": "#FFFFFF",
-                      "content": "Designer",
-                      "fontFamily": "Space Grotesk",
-                      "fontSize": 14,
-                      "fontWeight": "600"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
                   "id": "rZOND",
                   "name": "mobileCard3",
                   "width": 150,
@@ -7573,6 +7531,92 @@
                       "name": "mobileCard4Name",
                       "fill": "#FFFFFF",
                       "content": "Entrepreneur",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "P9iAR",
+              "name": "mobileClassGrid",
+              "width": "fill_container",
+              "gap": 12,
+              "justifyContent": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "VWNPP",
+                  "name": "mobileCard1",
+                  "width": 150,
+                  "fill": "#1E293B",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#334155"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "tMPjC",
+                      "name": "mobileCard1Avatar",
+                      "width": 56,
+                      "height": 56,
+                      "fill": "#00D4FF",
+                      "cornerRadius": 28
+                    },
+                    {
+                      "type": "text",
+                      "id": "DHf2M",
+                      "name": "mobileCard1Name",
+                      "fill": "#FFFFFF",
+                      "content": "Developer",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "mMXFW",
+                  "name": "mobileCard2",
+                  "width": 150,
+                  "fill": "#1E293B",
+                  "cornerRadius": 12,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#334155"
+                  },
+                  "layout": "vertical",
+                  "gap": 12,
+                  "padding": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "FYcQ4",
+                      "name": "mobileCard2Avatar",
+                      "width": 56,
+                      "height": 56,
+                      "fill": "#D946EF",
+                      "cornerRadius": 28
+                    },
+                    {
+                      "type": "text",
+                      "id": "nLBWc",
+                      "name": "mobileCard2Name",
+                      "fill": "#FFFFFF",
+                      "content": "Designer",
                       "fontFamily": "Space Grotesk",
                       "fontSize": 14,
                       "fontWeight": "600"
@@ -7706,6 +7750,8 @@
                       "id": "bF7xo",
                       "name": "mobileFeat1Desc",
                       "fill": "#94A3B8",
+                      "textGrowth": "fixed-width",
+                      "width": 282,
                       "content": "Map your career journey on an interactive pixelated timeline.",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
@@ -7771,6 +7817,8 @@
                       "id": "3eRcv",
                       "name": "mobileFeat2Desc",
                       "fill": "#94A3B8",
+                      "textGrowth": "fixed-width",
+                      "width": 283,
                       "content": "Showcase your skills in a video game-style skill tree.",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
@@ -7836,6 +7884,8 @@
                       "id": "ssuqx",
                       "name": "mobileFeat3Desc",
                       "fill": "#94A3B8",
+                      "textGrowth": "fixed-width",
+                      "width": 290,
                       "content": "Collect and display projects like achievements.",
                       "lineHeight": 1.5,
                       "fontFamily": "Inter",
@@ -7897,12 +7947,46 @@
             },
             {
               "type": "frame",
-              "id": "Q7cSV",
+              "id": "CCuj7",
               "name": "mobileStatsGrid",
               "width": "fill_container",
               "gap": 16,
               "justifyContent": "center",
               "children": [
+                {
+                  "type": "frame",
+                  "id": "z0TXU",
+                  "name": "mobileStat3",
+                  "width": 140,
+                  "fill": "#1E293B",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "gap": 4,
+                  "padding": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Z6Gd3",
+                      "name": "mobileStat3Num",
+                      "fill": "#FBBF24",
+                      "content": "50K+",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 28,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "NKl1O",
+                      "name": "mobileStat3Label",
+                      "fill": "#64748B",
+                      "content": "Portfolios",
+                      "fontFamily": "Inter",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
                 {
                   "type": "frame",
                   "id": "Yymk1",
@@ -7936,7 +8020,17 @@
                       "fontWeight": "normal"
                     }
                   ]
-                },
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Q7cSV",
+              "name": "mobileStatsGrid",
+              "width": "fill_container",
+              "gap": 16,
+              "justifyContent": "center",
+              "children": [
                 {
                   "type": "frame",
                   "id": "oGEK5",
@@ -7965,40 +8059,6 @@
                       "name": "mobileStat2Label",
                       "fill": "#64748B",
                       "content": "Satisfaction",
-                      "fontFamily": "Inter",
-                      "fontSize": 11,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "z0TXU",
-                  "name": "mobileStat3",
-                  "width": 140,
-                  "fill": "#1E293B",
-                  "cornerRadius": 12,
-                  "layout": "vertical",
-                  "gap": 4,
-                  "padding": 16,
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "text",
-                      "id": "Z6Gd3",
-                      "name": "mobileStat3Num",
-                      "fill": "#FBBF24",
-                      "content": "50K+",
-                      "fontFamily": "Space Grotesk",
-                      "fontSize": 28,
-                      "fontWeight": "700"
-                    },
-                    {
-                      "type": "text",
-                      "id": "NKl1O",
-                      "name": "mobileStat3Label",
-                      "fill": "#64748B",
-                      "content": "Portfolios",
                       "fontFamily": "Inter",
                       "fontSize": 11,
                       "fontWeight": "normal"
@@ -8057,6 +8117,8 @@
                   "id": "4LqgE",
                   "name": "mobileTestQuote",
                   "fill": "#E2E8F0",
+                  "textGrowth": "fixed-width",
+                  "width": 284,
                   "content": "&quot;Finally, a portfolio that shows my journey. Recruiters love it!&quot;",
                   "lineHeight": 1.5,
                   "fontFamily": "Inter",
@@ -8417,6 +8479,7 @@
               "type": "frame",
               "id": "oKfTN",
               "name": "mobileFooterBottom",
+              "width": 323,
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
@@ -8437,7 +8500,7 @@
                   "id": "bWWaF",
                   "name": "mobileFooterCopyright",
                   "fill": "#475569",
-                  "content": "© 2024 Portfoland",
+                  "content": "© 2026 Portfoland",
                   "fontFamily": "Inter",
                   "fontSize": 12,
                   "fontWeight": "normal"
@@ -8462,9 +8525,9 @@
       "type": "frame",
       "id": "aQR8B",
       "x": 0,
-      "y": 7836,
+      "y": 7856,
       "name": "Auth Pages",
-      "width": 1700,
+      "width": 2780,
       "fill": "#0A0F1A",
       "cornerRadius": 16,
       "layout": "vertical",
@@ -12472,6 +12535,126 @@
                                   ]
                                 }
                               ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "cD4Ef",
+                              "name": "Usage Guidelines",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "gap": 24,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "dE5Fg",
+                                  "name": "guidelinesTitle",
+                                  "fill": "$--foreground",
+                                  "content": "📋 Usage Guidelines",
+                                  "fontFamily": "Space Grotesk",
+                                  "fontSize": 24,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "eF6Gh",
+                                  "name": "Variable Guide",
+                                  "width": "fill_container",
+                                  "layout": "vertical",
+                                  "gap": 16,
+                                  "children": [
+                                    {
+                                      "type": "frame",
+                                      "id": "fG7Hi",
+                                      "name": "Primary Colors",
+                                      "width": "fill_container",
+                                      "layout": "vertical",
+                                      "gap": 8,
+                                      "children": [
+                                        {
+                                          "type": "text",
+                                          "id": "gH8Ij",
+                                          "name": "primaryGuide",
+                                          "fill": "$--foreground",
+                                          "content": "Primary Colors",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 14,
+                                          "fontWeight": "600"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "id": "hI9Jk",
+                                          "name": "primaryDesc",
+                                          "fill": "$--muted-foreground",
+                                          "content": "Use $--primary for main CTAs, $--secondary for secondary actions",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 12,
+                                          "fontWeight": "normal"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "frame",
+                                      "id": "iJ0Kl",
+                                      "name": "Typography Guide",
+                                      "width": "fill_container",
+                                      "layout": "vertical",
+                                      "gap": 8,
+                                      "children": [
+                                        {
+                                          "type": "text",
+                                          "id": "jK1Lm",
+                                          "name": "typoGuide",
+                                          "fill": "$--foreground",
+                                          "content": "Typography",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 14,
+                                          "fontWeight": "600"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "id": "kL2Mn",
+                                          "name": "typoDesc",
+                                          "fill": "$--muted-foreground",
+                                          "content": "Space Grotesk for headings (Hero, 2XL, XL), Inter for body text (MD, SM, XS)",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 12,
+                                          "fontWeight": "normal"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "type": "frame",
+                                      "id": "lM3No",
+                                      "name": "Component Rules",
+                                      "width": "fill_container",
+                                      "layout": "vertical",
+                                      "gap": 8,
+                                      "children": [
+                                        {
+                                          "type": "text",
+                                          "id": "mN4Op",
+                                          "name": "componentGuide",
+                                          "fill": "$--foreground",
+                                          "content": "Components",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 14,
+                                          "fontWeight": "600"
+                                        },
+                                        {
+                                          "type": "text",
+                                          "id": "nO5Pq",
+                                          "name": "componentDesc",
+                                          "fill": "$--muted-foreground",
+                                          "content": "Use $--card for backgrounds, $--border for strokes, $--muted for disabled states",
+                                          "fontFamily": "Inter",
+                                          "fontSize": 12,
+                                          "fontWeight": "normal"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
                             }
                           ]
                         }
@@ -13087,6 +13270,575 @@
                           "fontWeight": "normal"
                         }
                       ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "bH4Jk",
+      "x": 1656,
+      "y": 3234,
+      "name": "UI Components",
+      "width": "fill_container(1304)",
+      "layout": "vertical",
+      "gap": 24,
+      "children": [
+        {
+          "type": "frame",
+          "id": "rT6Kl",
+          "name": "Buttons Section",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 16,
+          "children": [
+            {
+              "type": "text",
+              "id": "yU8Mn",
+              "name": "buttonsTitle",
+              "fill": "$--foreground",
+              "content": "Interactive Elements",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 24,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "fG2Hj",
+              "name": "Button Row",
+              "width": "fill_container",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "nB5Vc",
+                  "name": "Button/Primary",
+                  "reusable": true,
+                  "fill": "$--primary",
+                  "cornerRadius": 8,
+                  "gap": 8,
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "xZ9Lp",
+                      "name": "buttonText",
+                      "fill": "$--primary-foreground",
+                      "content": "Get Started",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "mK3Qw",
+                  "name": "Button/Secondary",
+                  "reusable": true,
+                  "fill": "$--secondary",
+                  "cornerRadius": 8,
+                  "gap": 8,
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "cV7Rt",
+                      "name": "buttonText",
+                      "fill": "$--secondary-foreground",
+                      "content": "Learn More",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "dF8Gs",
+                  "name": "Button/Outline",
+                  "reusable": true,
+                  "fill": "$--background",
+                  "cornerRadius": 8,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "$--border"
+                  },
+                  "gap": 8,
+                  "padding": [
+                    12,
+                    20
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "vB6Nm",
+                      "name": "buttonText",
+                      "fill": "$--foreground",
+                      "content": "View Demo",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "hJ9Kl",
+          "name": "Cards Section",
+          "width": "fill_container",
+          "gap": 16,
+          "children": [
+            {
+              "type": "frame",
+              "id": "pL4Mn",
+              "name": "Card/Feature",
+              "reusable": true,
+              "width": 200,
+              "fill": "$--card",
+              "cornerRadius": 12,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "$--border"
+              },
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "qW5Op",
+                  "name": "Icon Container",
+                  "width": 48,
+                  "height": 48,
+                  "fill": "$--primary",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "rX6Yq",
+                      "name": "icon",
+                      "fill": "$--primary-foreground",
+                      "content": "🎮",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "sZ7Ab",
+                  "name": "cardTitle",
+                  "fill": "$--foreground",
+                  "content": "Gamified Timeline",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "tA8Cd",
+                  "name": "cardDescription",
+                  "fill": "$--muted-foreground",
+                  "content": "Map your career journey interactively",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "uB9Ef",
+              "name": "Card/Success",
+              "reusable": true,
+              "width": 200,
+              "fill": "$--card",
+              "cornerRadius": 12,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "$--success"
+              },
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "vC0Gh",
+                  "name": "Success Icon",
+                  "width": 48,
+                  "height": 48,
+                  "fill": "$--success",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "wD1Ij",
+                      "name": "icon",
+                      "fill": "#000000",
+                      "content": "✨",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "xE2Kl",
+                  "name": "cardTitle",
+                  "fill": "$--foreground",
+                  "content": "AI-Powered Content",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "yF3Mn",
+                  "name": "cardDescription",
+                  "fill": "$--muted-foreground",
+                  "content": "Smart assistance for your story",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "aB9Cd",
+          "name": "Gamified Elements",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "children": [
+            {
+              "type": "text",
+              "id": "bC0De",
+              "name": "gamifiedTitle",
+              "fill": "$--foreground",
+              "content": "🎮 Gamified Elements",
+              "fontFamily": "Space Grotesk",
+              "fontSize": 24,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "dE1Fg",
+              "name": "Skill Tree Preview",
+              "width": "fill_container",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "eF2Gh",
+                  "name": "Skill Node/Locked",
+                  "reusable": true,
+                  "width": 80,
+                  "height": 80,
+                  "fill": "$--muted",
+                  "cornerRadius": 16,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 2,
+                    "fill": "$--border"
+                  },
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "fG3Hi",
+                      "name": "skillIcon",
+                      "fill": "$--muted-foreground",
+                      "content": "🔒",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "gH4Ij",
+                      "name": "skillName",
+                      "fill": "$--muted-foreground",
+                      "content": "React",
+                      "fontFamily": "Inter",
+                      "fontSize": 10,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "hI5Jk",
+                  "name": "Skill Node/Unlocked",
+                  "reusable": true,
+                  "width": 80,
+                  "height": 80,
+                  "fill": "$--primary",
+                  "cornerRadius": 16,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 2,
+                    "fill": "$--primary"
+                  },
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "iJ6Kl",
+                      "name": "skillIcon",
+                      "fill": "$--primary-foreground",
+                      "content": "⚛️",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "jK7Lm",
+                      "name": "skillName",
+                      "fill": "$--primary-foreground",
+                      "content": "JavaScript",
+                      "fontFamily": "Inter",
+                      "fontSize": 10,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "kL8Mn",
+                  "name": "Skill Node/Mastered",
+                  "reusable": true,
+                  "width": 80,
+                  "height": 80,
+                  "fill": "$--success",
+                  "cornerRadius": 16,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 2,
+                    "fill": "$--success"
+                  },
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "lM9No",
+                      "name": "skillIcon",
+                      "fill": "#000000",
+                      "content": "⭐",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "mN0Op",
+                      "name": "skillName",
+                      "fill": "#000000",
+                      "content": "TypeScript",
+                      "fontFamily": "Inter",
+                      "fontSize": 10,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "nO1Pq",
+              "name": "Achievement Badge",
+              "reusable": true,
+              "width": "fill_container",
+              "height": 120,
+              "fill": "$--card",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "$--warning"
+              },
+              "gap": 20,
+              "padding": 24,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "oP2Qr",
+                  "name": "Badge Icon",
+                  "width": 72,
+                  "height": 72,
+                  "fill": "$--warning",
+                  "cornerRadius": 24,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "pQ3Rs",
+                      "name": "trophyIcon",
+                      "fill": "#000000",
+                      "content": "🏆",
+                      "fontFamily": "Inter",
+                      "fontSize": 36,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "qR4St",
+                  "name": "Achievement Info",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "rS5Tu",
+                      "name": "achievementTitle",
+                      "fill": "$--foreground",
+                      "content": "First Timeline Created!",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 18,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "sT6Uv",
+                      "name": "achievementDescription",
+                      "fill": "$--muted-foreground",
+                      "content": "You've started your career journey! +50 XP",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "tU7Vw",
+              "name": "Pixel Character Preview",
+              "width": "fill_container",
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "uV8Wx",
+                  "name": "Character/Wizard",
+                  "reusable": true,
+                  "width": 64,
+                  "height": 64,
+                  "fill": "$--accent",
+                  "cornerRadius": 8,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "vW9Xy",
+                      "name": "wizardIcon",
+                      "fill": "#000000",
+                      "content": "🧙",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "xY0Za",
+                  "name": "Character/Developer",
+                  "reusable": true,
+                  "width": 64,
+                  "height": 64,
+                  "fill": "$--secondary",
+                  "cornerRadius": 8,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "yZ1Ab",
+                      "name": "devIcon",
+                      "fill": "$--secondary-foreground",
+                      "content": "👨‍💻",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "aB2Cd",
+                  "name": "Character/Designer",
+                  "reusable": true,
+                  "width": 64,
+                  "height": 64,
+                  "fill": "$--primary",
+                  "cornerRadius": 8,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "bC3De",
+                      "name": "designerIcon",
+                      "fill": "$--primary-foreground",
+                      "content": "👩‍🎨",
+                      "fontFamily": "Inter",
+                      "fontSize": 32,
+                      "fontWeight": "normal"
                     }
                   ]
                 }

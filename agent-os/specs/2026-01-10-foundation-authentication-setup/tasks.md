@@ -210,7 +210,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - `loginSchema`: email (required, valid email), password (required, min 8)
     - `registerSchema`: name (required), email (required, valid), password (min 8), confirmPassword (matches password)
   - [x] 6.3 Create Login page component
-    - Create `app/[locale]/login/page.tsx`
+    - Create `app/[locale]/(auth)/login/page.tsx`
     - Google OAuth button using `authClient.signIn.social({ provider: "google" })`
     - Email/password form using `authClient.signIn.email({ email, password })`
     - Client-side validation with react-hook-form and Yup
@@ -218,13 +218,13 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - Link to /register for new users
     - Use shadcn/ui components (Button, Input, Label, Card)
   - [x] 6.4 Create Registration page component
-    - Create `app/[locale]/register/page.tsx`
+    - Create `app/[locale]/(auth)/register/page.tsx`
     - Form fields: name, email, password, confirm password
     - Use `authClient.signUp.email({ name, email, password })`
     - Client-side validation with react-hook-form and Yup
     - Redirect to /dashboard after successful registration
     - Link to /login for existing users
-  - [ ] 6.5 Create auth layout with translations
+  - [x] 6.5 Create auth layout with translations
     - Create `app/[locale]/(auth)/layout.tsx`
     - Centered card layout for auth forms
     - Apply translations using next-intl
@@ -410,11 +410,14 @@ portfoland/
 │   │           └── route.ts
 │   ├── globals.css
 │   └── [locale]/
+│       ├── layout.tsx
 │       ├── page.tsx (landing)
-│       ├── login/
-│       │   └── page.tsx
-│       ├── register/
-│       │   └── page.tsx
+│       ├── (auth)/
+│       │   ├── layout.tsx
+│       │   ├── login/
+│       │   │   └── page.tsx
+│       │   └── register/
+│       │       └── page.tsx
 │       └── (protected)/
 │           ├── layout.tsx
 │           └── dashboard/

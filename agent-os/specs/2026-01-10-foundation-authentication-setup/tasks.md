@@ -161,13 +161,13 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
 **Dependencies:** Task Group 1
 **Complexity:** Simple
 
-- [ ] 5.0 Complete shadcn/ui component library setup
-  - [ ] 5.1 Initialize shadcn/ui
+- [x] 5.0 Complete shadcn/ui component library setup
+  - [x] 5.1 Initialize shadcn/ui
     - Run: `bunx shadcn@latest init`
     - Select default theme
     - Configure `components.json` with correct aliases
     - Set components path to `features/shadcn/ui/`
-  - [ ] 5.2 Install initial components
+  - [x] 5.2 Install initial components
     - Button: `bunx shadcn@latest add button`
     - Card: `bunx shadcn@latest add card`
     - Avatar: `bunx shadcn@latest add avatar`
@@ -176,11 +176,11 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - Form: `bunx shadcn@latest add form`
     - Toast: `bunx shadcn@latest add toast`
     - Dropdown Menu: `bunx shadcn@latest add dropdown-menu`
-  - [ ] 5.3 Configure CSS variables
+  - [x] 5.3 Configure CSS variables
     - Update `app/globals.css` with shadcn CSS variables
     - Ensure Tailwind CSS 4 compatibility
     - Set up dark mode support via CSS variables
-  - [ ] 5.4 Create cn() utility
+  - [x] 5.4 Create cn() utility
     - Create `lib/utils.ts` with cn() function
     - Use clsx and tailwind-merge for conditional classes
 
@@ -199,36 +199,36 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
 **Complexity:** Medium
 
 - [ ] 6.0 Complete authentication pages
-  - [ ] 6.1 Write 2-6 focused tests for auth pages
+  - [x] 6.1 Write 2-6 focused tests for auth pages
     - Test login form renders with email/password fields
     - Test registration form renders with name/email/password/confirm fields
     - Test Google OAuth button renders
     - Test form validation error display
     - Skip edge cases and error state tests
-  - [ ] 6.2 Create Yup validation schemas for auth forms
+  - [x] 6.2 Create Yup validation schemas for auth forms
     - Create `features/auth/schemas/` directory
     - `loginSchema`: email (required, valid email), password (required, min 8)
     - `registerSchema`: name (required), email (required, valid), password (min 8), confirmPassword (matches password)
-  - [ ] 6.3 Create Login page component
-    - Create `app/[locale]/login/page.tsx`
+  - [x] 6.3 Create Login page component
+    - Create `app/[locale]/(auth)/login/page.tsx`
     - Google OAuth button using `authClient.signIn.social({ provider: "google" })`
     - Email/password form using `authClient.signIn.email({ email, password })`
     - Client-side validation with react-hook-form and Yup
     - Error toast for invalid credentials
     - Link to /register for new users
     - Use shadcn/ui components (Button, Input, Label, Card)
-  - [ ] 6.4 Create Registration page component
-    - Create `app/[locale]/register/page.tsx`
+  - [x] 6.4 Create Registration page component
+    - Create `app/[locale]/(auth)/register/page.tsx`
     - Form fields: name, email, password, confirm password
     - Use `authClient.signUp.email({ name, email, password })`
     - Client-side validation with react-hook-form and Yup
     - Redirect to /dashboard after successful registration
     - Link to /login for existing users
-  - [ ] 6.5 Create auth layout with translations
+  - [x] 6.5 Create auth layout with translations
     - Create `app/[locale]/(auth)/layout.tsx`
     - Centered card layout for auth forms
     - Apply translations using next-intl
-  - [ ] 6.6 Ensure auth page tests pass
+  - [x] 6.6 Ensure auth page tests pass
     - Run ONLY the 2-6 tests written in 6.1
     - Verify forms render correctly
     - Do NOT run entire test suite
@@ -410,11 +410,14 @@ portfoland/
 │   │           └── route.ts
 │   ├── globals.css
 │   └── [locale]/
+│       ├── layout.tsx
 │       ├── page.tsx (landing)
-│       ├── login/
-│       │   └── page.tsx
-│       ├── register/
-│       │   └── page.tsx
+│       ├── (auth)/
+│       │   ├── layout.tsx
+│       │   ├── login/
+│       │   │   └── page.tsx
+│       │   └── register/
+│       │       └── page.tsx
 │       └── (protected)/
 │           ├── layout.tsx
 │           └── dashboard/

@@ -11,7 +11,9 @@
       "WebFetch(domain:www.prisma.io)",
       "WebFetch(domain:www.better-auth.com)",
       "Bash(bunx prisma db push:*)",
-      "WebFetch(domain:next-intl.dev)"
+      "WebFetch(domain:next-intl.dev)",
+      "Bash(bunx shadcn@latest add:*)",
+      "Bash(bun add:*)"
     ]
   }
 }

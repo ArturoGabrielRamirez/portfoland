@@ -1,0 +1,1622 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "PKDX1",
+      "x": 0,
+      "y": 0,
+      "name": "Portfoland - Gamer Edition",
+      "clip": true,
+      "width": 3200,
+      "height": 1800,
+      "fill": "#0A0E1A",
+      "layout": "none",
+      "children": [
+        {
+          "type": "frame",
+          "id": "POKDX2",
+          "x": 50,
+          "y": 50,
+          "name": "Main Console Frame",
+          "width": 1500,
+          "height": 1700,
+          "fill": "#1A1F2E",
+          "cornerRadius": 24,
+          "stroke": {
+            "align": "inside",
+            "thickness": 4,
+            "fill": "#00D4FF"
+          },
+          "layout": "vertical",
+          "gap": 32,
+          "padding": 40,
+          "children": [
+            {
+              "type": "frame",
+              "id": "HUD1",
+              "name": "Top HUD Bar",
+              "width": "fill_container",
+              "height": 80,
+              "fill": "#0D1421",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#00D4FF"
+              },
+              "layout": "horizontal",
+              "gap": 20,
+              "padding": 16,
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "LVL1",
+                  "name": "Player Level",
+                  "layout": "horizontal",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "LVLICON",
+                      "name": "Level Icon",
+                      "width": 48,
+                      "height": 48,
+                      "fill": "#00D4FF",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "LVLTEXT",
+                          "name": "LV",
+                          "fill": "#0A0E1A",
+                          "content": "LV",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "LVLNUM",
+                      "name": "Level Number",
+                      "fill": "#00D4FF",
+                      "content": "42",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 28,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "HPBAR",
+                  "name": "HP Bar Container",
+                  "width": 300,
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "HPLABEL",
+                      "name": "HP Label",
+                      "fill": "#22C55E",
+                      "content": "HP",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "HPBARBG",
+                      "name": "HP Bar Background",
+                      "width": "fill_container",
+                      "height": 20,
+                      "fill": "#1E293B",
+                      "cornerRadius": 10,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#22C55E"
+                      },
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "HPBARFILL",
+                          "name": "HP Bar Fill",
+                          "x": 4,
+                          "y": 4,
+                          "width": 200,
+                          "height": 12,
+                          "fill": "#22C55E",
+                          "cornerRadius": 6
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "XPBAR",
+                  "name": "XP Bar Container",
+                  "width": 300,
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "XPLABEL",
+                      "name": "XP Label",
+                      "fill": "#8B5CF6",
+                      "content": "XP",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "XPBARBG",
+                      "name": "XP Bar Background",
+                      "width": "fill_container",
+                      "height": 20,
+                      "fill": "#1E293B",
+                      "cornerRadius": 10,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#8B5CF6"
+                      },
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "XPBARFILL",
+                          "name": "XP Bar Fill",
+                          "x": 4,
+                          "y": 4,
+                          "width": 150,
+                          "height": 12,
+                          "fill": "#8B5CF6",
+                          "cornerRadius": 6
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "COINS",
+                  "name": "Currency Display",
+                  "layout": "horizontal",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "COINICON",
+                      "name": "Coin Icon",
+                      "fill": "#F59E0B",
+                      "content": "🪙",
+                      "fontFamily": "Inter",
+                      "fontSize": 24
+                    },
+                    {
+                      "type": "text",
+                      "id": "COINAMOUNT",
+                      "name": "Coin Amount",
+                      "fill": "#F59E0B",
+                      "content": "2,847",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 20,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "CHARSEL",
+              "name": "Character Selection Screen",
+              "width": "fill_container",
+              "height": 400,
+              "fill": "#0D1421",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#D946EF"
+              },
+              "layout": "vertical",
+              "gap": 24,
+              "padding": 32,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "CHARTITLE",
+                  "name": "Character Selection Title",
+                  "fill": "#D946EF",
+                  "content": "SELECT YOUR AVATAR",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 24,
+                  "fontWeight": "700",
+                  "textAlign": "center"
+                },
+                {
+                  "type": "frame",
+                  "id": "CHARGRID",
+                  "name": "Character Grid",
+                  "width": "fill_container",
+                  "layout": "grid",
+                  "gridColumns": 4,
+                  "gap": 20,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "CHAR1",
+                      "name": "Character/Wizard",
+                      "reusable": true,
+                      "width": 120,
+                      "height": 120,
+                      "fill": "#1A2332",
+                      "cornerRadius": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 3,
+                        "fill": "#8B5CF6"
+                      },
+                      "layout": "vertical",
+                      "gap": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "WIZICON",
+                          "name": "Wizard Icon",
+                          "fill": "#8B5CF6",
+                          "content": "🧙‍♂️",
+                          "fontFamily": "Inter",
+                          "fontSize": 48
+                        },
+                        {
+                          "type": "text",
+                          "id": "WIZNAME",
+                          "name": "Wizard Name",
+                          "fill": "#8B5CF6",
+                          "content": "WIZARD",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 10,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "CHAR2",
+                      "name": "Character/Developer",
+                      "reusable": true,
+                      "width": 120,
+                      "height": 120,
+                      "fill": "#1A2332",
+                      "cornerRadius": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#1E293B"
+                      },
+                      "layout": "vertical",
+                      "gap": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "DEVICON",
+                          "name": "Developer Icon",
+                          "fill": "#00D4FF",
+                          "content": "👨‍💻",
+                          "fontFamily": "Inter",
+                          "fontSize": 48
+                        },
+                        {
+                          "type": "text",
+                          "id": "DEVNAME",
+                          "name": "Developer Name",
+                          "fill": "#00D4FF",
+                          "content": "DEVELOPER",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 10,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "CHAR3",
+                      "name": "Character/Designer",
+                      "reusable": true,
+                      "width": 120,
+                      "height": 120,
+                      "fill": "#1A2332",
+                      "cornerRadius": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#1E293B"
+                      },
+                      "layout": "vertical",
+                      "gap": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "DESICON",
+                          "name": "Designer Icon",
+                          "fill": "#D946EF",
+                          "content": "👩‍🎨",
+                          "fontFamily": "Inter",
+                          "fontSize": 48
+                        },
+                        {
+                          "type": "text",
+                          "id": "DESNAME",
+                          "name": "Designer Name",
+                          "fill": "#D946EF",
+                          "content": "DESIGNER",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 10,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "CHAR4",
+                      "name": "Character/Warrior",
+                      "reusable": true,
+                      "width": 120,
+                      "height": 120,
+                      "fill": "#1A2332",
+                      "cornerRadius": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#1E293B"
+                      },
+                      "layout": "vertical",
+                      "gap": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "WARICON",
+                          "name": "Warrior Icon",
+                          "fill": "#EF4444",
+                          "content": "⚔️",
+                          "fontFamily": "Inter",
+                          "fontSize": 48
+                        },
+                        {
+                          "type": "text",
+                          "id": "WARNAME",
+                          "name": "Warrior Name",
+                          "fill": "#EF4444",
+                          "content": "WARRIOR",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 10,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "SKILLTREE",
+              "name": "Skill Tree Display",
+              "width": "fill_container",
+              "height": 500,
+              "fill": "#0D1421",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#22C55E"
+              },
+              "layout": "vertical",
+              "gap": 24,
+              "padding": 32,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "SKILLTITLE",
+                  "name": "Skill Tree Title",
+                  "fill": "#22C55E",
+                  "content": "SKILL TREE - TECH PATH",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 24,
+                  "fontWeight": "700",
+                  "textAlign": "center"
+                },
+                {
+                  "type": "frame",
+                  "id": "SKILLNODES",
+                  "name": "Skill Nodes Container",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 40,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "SKILLL1",
+                      "name": "Skill Level 1",
+                      "width": "fill_container",
+                      "layout": "horizontal",
+                      "gap": 24,
+                      "justifyContent": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "NODE1",
+                          "name": "Skill Node/HTML",
+                          "reusable": true,
+                          "width": 100,
+                          "height": 100,
+                          "fill": "#22C55E",
+                          "cornerRadius": 20,
+                          "stroke": {
+                            "align": "inside",
+                            "thickness": 4,
+                            "fill": "#22C55E"
+                          },
+                          "layout": "vertical",
+                          "gap": 8,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "HTMLICON",
+                              "name": "HTML Icon",
+                              "fill": "#FFFFFF",
+                              "content": "🌐",
+                              "fontFamily": "Inter",
+                              "fontSize": 32
+                            },
+                            {
+                              "type": "text",
+                              "id": "HTMLNAME",
+                              "name": "HTML Name",
+                              "fill": "#FFFFFF",
+                              "content": "HTML",
+                              "fontFamily": "Space Grotesk",
+                              "fontSize": 12,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "HTMLLVL",
+                              "name": "HTML Level",
+                              "fill": "#FFFFFF",
+                              "content": "MAX",
+                              "fontFamily": "Space Grotesk",
+                              "fontSize": 10,
+                              "fontWeight": "700"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "NODE2",
+                          "name": "Skill Node/CSS",
+                          "reusable": true,
+                          "width": 100,
+                          "height": 100,
+                          "fill": "#00D4FF",
+                          "cornerRadius": 20,
+                          "stroke": {
+                            "align": "inside",
+                            "thickness": 4,
+                            "fill": "#00D4FF"
+                          },
+                          "layout": "vertical",
+                          "gap": 8,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "CSSICON",
+                              "name": "CSS Icon",
+                              "fill": "#FFFFFF",
+                              "content": "🎨",
+                              "fontFamily": "Inter",
+                              "fontSize": 32
+                            },
+                            {
+                              "type": "text",
+                              "id": "CSSNAME",
+                              "name": "CSS Name",
+                              "fill": "#FFFFFF",
+                              "content": "CSS",
+                              "fontFamily": "Space Grotesk",
+                              "fontSize": 12,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "CSSLVL",
+                              "name": "CSS Level",
+                              "fill": "#FFFFFF",
+                              "content": "MAX",
+                              "fontFamily": "Space Grotesk",
+                              "fontSize": 10,
+                              "fontWeight": "700"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "NODE3",
+                          "name": "Skill Node/JS",
+                          "reusable": true,
+                          "width": 100,
+                              "height": 100,
+                              "fill": "#F59E0B",
+                              "cornerRadius": 20,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": 4,
+                                "fill": "#F59E0B"
+                              },
+                              "layout": "vertical",
+                              "gap": 8,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "JSICON",
+                                  "name": "JS Icon",
+                                  "fill": "#FFFFFF",
+                                  "content": "⚡",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 32
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "JSNAME",
+                                  "name": "JS Name",
+                                  "fill": "#FFFFFF",
+                                  "content": "JS",
+                                  "fontFamily": "Space Grotesk",
+                                  "fontSize": 12,
+                                  "fontWeight": "700"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "JSLVL",
+                                  "name": "JS Level",
+                                  "fill": "#FFFFFF",
+                                  "content": "MAX",
+                                  "fontFamily": "Space Grotesk",
+                                  "fontSize": 10,
+                                  "fontWeight": "700"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "SKILLL2",
+                          "name": "Skill Level 2",
+                          "width": "fill_container",
+                          "layout": "horizontal",
+                          "gap": 24,
+                          "justifyContent": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "NODE4",
+                              "name": "Skill Node/React",
+                              "reusable": true,
+                              "width": 100,
+                              "height": 100,
+                              "fill": "#61DAFB",
+                              "cornerRadius": 20,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": 4,
+                                "fill": "#61DAFB"
+                              },
+                              "layout": "vertical",
+                              "gap": 8,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "REACTICON",
+                                  "name": "React Icon",
+                                  "fill": "#FFFFFF",
+                                  "content": "⚛️",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 32
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "REACTNAME",
+                                  "name": "React Name",
+                                  "fill": "#FFFFFF",
+                                  "content": "REACT",
+                                  "fontFamily": "Space Grotesk",
+                                  "fontSize": 12,
+                                  "fontWeight": "700"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "REACTLVL",
+                                  "name": "React Level",
+                                  "fill": "#FFFFFF",
+                                  "content": "LVL 8",
+                                  "fontFamily": "Space Grotesk",
+                                  "fontSize": 10,
+                                  "fontWeight": "700"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "NODE5",
+                              "name": "Skill Node/Node",
+                              "reusable": true,
+                              "width": 100,
+                              "height": 100,
+                              "fill": "#339933",
+                              "cornerRadius": 20,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": 4,
+                                "fill": "#339933"
+                              },
+                              "layout": "vertical",
+                              "gap": 8,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "NODEICON",
+                                  "name": "Node Icon",
+                                  "fill": "#FFFFFF",
+                                  "content": "🟢",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 32
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "NODENAME",
+                                  "name": "Node Name",
+                                  "fill": "#FFFFFF",
+                                  "content": "NODE",
+                                  "fontFamily": "Space Grotesk",
+                                  "fontSize": 12,
+                                  "fontWeight": "700"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "NODELVL",
+                                  "name": "Node Level",
+                                  "fill": "#FFFFFF",
+                                  "content": "LVL 6",
+                                  "fontFamily": "Space Grotesk",
+                                  "fontSize": 10,
+                                  "fontWeight": "700"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "NODE6",
+                              "name": "Skill Node/Locked",
+                              "reusable": true,
+                              "width": 100,
+                              "height": 100,
+                              "fill": "#1E293B",
+                              "cornerRadius": 20,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": 4,
+                                "fill": "#475569"
+                              },
+                              "layout": "vertical",
+                              "gap": 8,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "LOCKEDICON",
+                                  "name": "Locked Icon",
+                                  "fill": "#475569",
+                                  "content": "🔒",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 32
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "LOCKEDNAME",
+                                  "name": "Locked Name",
+                                  "fill": "#475569",
+                                  "content": "???",
+                                  "fontFamily": "Space Grotesk",
+                                  "fontSize": 12,
+                                  "fontWeight": "700"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "LOCKEDLVL",
+                                  "name": "Locked Level",
+                                  "fill": "#475569",
+                                  "content": "LOCKED",
+                                  "fontFamily": "Space Grotesk",
+                                  "fontSize": 10,
+                                  "fontWeight": "700"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "ACHIEVE",
+                  "name": "Achievement Showcase",
+                  "width": "fill_container",
+                  "height": 300,
+                  "fill": "#0D1421",
+                  "cornerRadius": 16,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 2,
+                    "fill": "#F59E0B"
+                  },
+                  "layout": "vertical",
+                  "gap": 20,
+                  "padding": 24,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ACHIEVETITLE",
+                      "name": "Achievement Title",
+                      "fill": "#F59E0B",
+                      "content": "🏆 ACHIEVEMENTS UNLOCKED",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 20,
+                      "fontWeight": "700",
+                      "textAlign": "center"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ACHIEVEGRID",
+                      "name": "Achievement Grid",
+                      "width": "fill_container",
+                      "layout": "grid",
+                      "gridColumns": 4,
+                      "gap": 16,
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "BADGE1",
+                          "name": "Achievement/First Timeline",
+                          "reusable": true,
+                          "width": 80,
+                          "height": 80,
+                          "fill": "#F59E0B",
+                          "cornerRadius": 16,
+                          "stroke": {
+                            "align": "inside",
+                            "thickness": 3,
+                            "fill": "#F59E0B"
+                          },
+                          "layout": "vertical",
+                          "gap": 4,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "BADGE1ICON",
+                              "name": "Badge Icon",
+                              "fill": "#FFFFFF",
+                              "content": "🎯",
+                              "fontFamily": "Inter",
+                              "fontSize": 24
+                            },
+                            {
+                              "type": "text",
+                              "id": "BADGE1NAME",
+                              "name": "Badge Name",
+                              "fill": "#FFFFFF",
+                              "content": "FIRST",
+                              "fontFamily": "Space Grotesk",
+                              "fontSize": 8,
+                              "fontWeight": "700"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "BADGE2",
+                          "name": "Achievement/Skill Master",
+                          "reusable": true,
+                          "width": 80,
+                          "height": 80,
+                          "fill": "#22C55E",
+                          "cornerRadius": 16,
+                          "stroke": {
+                            "align": "inside",
+                            "thickness": 3,
+                            "fill": "#22C55E"
+                          },
+                          "layout": "vertical",
+                          "gap": 4,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "BADGE2ICON",
+                              "name": "Badge Icon",
+                              "fill": "#FFFFFF",
+                              "content": "⭐",
+                              "fontFamily": "Inter",
+                              "fontSize": 24
+                            },
+                            {
+                              "type": "text",
+                              "id": "BADGE2NAME",
+                              "name": "Badge Name",
+                              "fill": "#FFFFFF",
+                              "content": "MASTER",
+                              "fontFamily": "Space Grotesk",
+                              "fontSize": 8,
+                              "fontWeight": "700"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "BADGE3",
+                          "name": "Achievement/Connector",
+                          "reusable": true,
+                          "width": 80,
+                          "height": 80,
+                          "fill": "#8B5CF6",
+                          "cornerRadius": 16,
+                          "stroke": {
+                            "align": "inside",
+                            "thickness": 3,
+                            "fill": "#8B5CF6"
+                          },
+                          "layout": "vertical",
+                          "gap": 4,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "BADGE3ICON",
+                              "name": "Badge Icon",
+                              "fill": "#FFFFFF",
+                              "content": "🤝",
+                              "fontFamily": "Inter",
+                              "fontSize": 24
+                            },
+                            {
+                              "type": "text",
+                              "id": "BADGE3NAME",
+                              "name": "Badge Name",
+                              "fill": "#FFFFFF",
+                              "content": "CONNECT",
+                              "fontFamily": "Space Grotesk",
+                              "fontSize": 8,
+                              "fontWeight": "700"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "BADGE4",
+                          "name": "Achievement/Locked",
+                          "reusable": true,
+                          "width": 80,
+                              "height": 80,
+                              "fill": "#1E293B",
+                              "cornerRadius": 16,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": 3,
+                                "fill": "#475569"
+                              },
+                              "layout": "vertical",
+                              "gap": 4,
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "BADGE4ICON",
+                                  "name": "Badge Icon",
+                                  "fill": "#475569",
+                                  "content": "❓",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 24
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "BADGE4NAME",
+                                  "name": "Badge Name",
+                                  "fill": "#475569",
+                                  "content": "???",
+                                  "fontFamily": "Space Grotesk",
+                                  "fontSize": 8,
+                                  "fontWeight": "700"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "ACTIONBAR",
+                  "name": "Action Bar",
+                  "width": "fill_container",
+                  "height": 100,
+                  "fill": "#0D1421",
+                  "cornerRadius": 16,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 2,
+                    "fill": "#EF4444"
+                  },
+                  "layout": "horizontal",
+                  "gap": 16,
+                  "padding": 20,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "ACTION1",
+                      "name": "Action Button/Start",
+                      "reusable": true,
+                      "width": 120,
+                      "height": 60,
+                      "fill": "#22C55E",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 3,
+                        "fill": "#22C55E"
+                      },
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "STARTTEXT",
+                          "name": "Start Text",
+                          "fill": "#FFFFFF",
+                          "content": "▶ START",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ACTION2",
+                      "name": "Action Button/Continue",
+                      "reusable": true,
+                      "width": 120,
+                      "height": 60,
+                      "fill": "#00D4FF",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 3,
+                        "fill": "#00D4FF"
+                      },
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "CONTINUETEXT",
+                          "name": "Continue Text",
+                          "fill": "#FFFFFF",
+                          "content": "⏸ CONTINUE",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 14,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "ACTION3",
+                      "name": "Action Button/Settings",
+                      "reusable": true,
+                      "width": 120,
+                      "height": 60,
+                      "fill": "#8B5CF6",
+                      "cornerRadius": 12,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": 3,
+                                "fill": "#8B5CF6"
+                              },
+                              "layout": "vertical",
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "SETTINGSTEXT",
+                                  "name": "Settings Text",
+                                  "fill": "#FFFFFF",
+                                  "content": "⚙ SETTINGS",
+                                  "fontFamily": "Space Grotesk",
+                                  "fontSize": 14,
+                                  "fontWeight": "700"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "SIDECONSOLE",
+                  "x": 1600,
+                  "y": 50,
+                  "name": "Side Console Panel",
+                  "width": 400,
+                  "height": 1700,
+                  "fill": "#1A1F2E",
+                  "cornerRadius": 24,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 4,
+                    "fill": "#D946EF"
+                  },
+                  "layout": "vertical",
+                  "gap": 32,
+                  "padding": 32,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "MINIMAP",
+                      "name": "Mini Map",
+                      "width": "fill_container",
+                      "height": 300,
+                      "fill": "#0D1421",
+                      "cornerRadius": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#00D4FF"
+                      },
+                      "layout": "vertical",
+                      "gap": 16,
+                      "padding": 20,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "MAPTITLE",
+                          "name": "Map Title",
+                          "fill": "#00D4FF",
+                          "content": "📍 CAREER MAP",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 16,
+                          "fontWeight": "700",
+                          "textAlign": "center"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "MAPAREA",
+                          "name": "Map Display Area",
+                          "width": "fill_container",
+                          "height": 200,
+                          "fill": "#1A2332",
+                          "cornerRadius": 8,
+                          "layout": "vertical",
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "MAPICON",
+                              "name": "Map Icon",
+                              "fill": "#00D4FF",
+                              "content": "🗺️",
+                              "fontFamily": "Inter",
+                              "fontSize": 48
+                            },
+                            {
+                              "type": "text",
+                              "id": "MAPTEXT",
+                              "name": "Map Text",
+                              "fill": "#00D4FF",
+                              "content": "ARGENTINA",
+                              "fontFamily": "Space Grotesk",
+                              "fontSize": 12,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "INVENTORY",
+                      "name": "Inventory Panel",
+                      "width": "fill_container",
+                      "height": 400,
+                      "fill": "#0D1421",
+                      "cornerRadius": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#F59E0B"
+                      },
+                      "layout": "vertical",
+                      "gap": 16,
+                      "padding": 20,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "INVTITLE",
+                          "name": "Inventory Title",
+                          "fill": "#F59E0B",
+                          "content": "🎒 INVENTORY",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 16,
+                          "fontWeight": "700",
+                          "textAlign": "center"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "INVGRID",
+                          "name": "Inventory Grid",
+                          "width": "fill_container",
+                          "layout": "grid",
+                          "gridColumns": 3,
+                          "gap": 12,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "INV1",
+                              "name": "Item/Portfolio",
+                              "reusable": true,
+                              "width": 60,
+                              "height": 60,
+                              "fill": "#1A2332",
+                              "cornerRadius": 8,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": 2,
+                                "fill": "#00D4FF"
+                              },
+                              "layout": "vertical",
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "INV1ICON",
+                                  "name": "Item Icon",
+                                  "fill": "#00D4FF",
+                                  "content": "📄",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 24
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "INV2",
+                              "name": "Item/CV",
+                              "reusable": true,
+                              "width": 60,
+                              "height": 60,
+                              "fill": "#1A2332",
+                              "cornerRadius": 8,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": 2,
+                                "fill": "#22C55E"
+                              },
+                              "layout": "vertical",
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "INV2ICON",
+                                  "name": "Item Icon",
+                                  "fill": "#22C55E",
+                                  "content": "📋",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 24
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "INV3",
+                              "name": "Item/Certificate",
+                              "reusable": true,
+                              "width": 60,
+                              "height": 60,
+                              "fill": "#1A2332",
+                              "cornerRadius": 8,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": 2,
+                                "fill": "#8B5CF6"
+                              },
+                              "layout": "vertical",
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "INV3ICON",
+                                  "name": "Item Icon",
+                                  "fill": "#8B5CF6",
+                                  "content": "🏅",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 24
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "INV4",
+                              "name": "Item/Project",
+                              "reusable": true,
+                              "width": 60,
+                              "height": 60,
+                              "fill": "#1A2332",
+                              "cornerRadius": 8,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": 2,
+                                "fill": "#D946EF"
+                              },
+                              "layout": "vertical",
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "INV4ICON",
+                                  "name": "Item Icon",
+                                  "fill": "#D946EF",
+                                  "content": "🚀",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 24
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "INV5",
+                              "name": "Item/Skill",
+                              "reusable": true,
+                              "width": 60,
+                              "height": 60,
+                              "fill": "#1A2332",
+                              "cornerRadius": 8,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": 2,
+                                "fill": "#EF4444"
+                              },
+                              "layout": "vertical",
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "INV5ICON",
+                                  "name": "Item Icon",
+                                  "fill": "#EF4444",
+                                  "content": "⚔️",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 24
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "INV6",
+                              "name": "Item/Locked",
+                              "reusable": true,
+                              "width": 60,
+                              "height": 60,
+                              "fill": "#1E293B",
+                              "cornerRadius": 8,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": 2,
+                                "fill": "#475569"
+                              },
+                              "layout": "vertical",
+                              "justifyContent": "center",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "INV6ICON",
+                                  "name": "Item Icon",
+                                  "fill": "#475569",
+                                  "content": "🔒",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 24
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "QUESTLOG",
+                      "name": "Quest Log",
+                      "width": "fill_container",
+                      "height": 600,
+                      "fill": "#0D1421",
+                      "cornerRadius": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#22C55E"
+                      },
+                      "layout": "vertical",
+                      "gap": 16,
+                      "padding": 20,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "QUESTTITLE",
+                          "name": "Quest Title",
+                          "fill": "#22C55E",
+                          "content": "📜 QUEST LOG",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 16,
+                          "fontWeight": "700",
+                          "textAlign": "center"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "QUESTLIST",
+                          "name": "Quest List",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 12,
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "QUEST1",
+                              "name": "Quest/Complete",
+                              "reusable": true,
+                              "width": "fill_container",
+                              "height": 80,
+                              "fill": "#1A2332",
+                              "cornerRadius": 8,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": 2,
+                                "fill": "#22C55E"
+                              },
+                              "layout": "horizontal",
+                              "gap": 12,
+                              "padding": 12,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "QUEST1ICON",
+                                  "name": "Quest Icon",
+                                  "fill": "#22C55E",
+                                  "content": "✅",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 20
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "QUEST1INFO",
+                                  "name": "Quest Info",
+                                  "layout": "vertical",
+                                  "gap": 4,
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "QUEST1NAME",
+                                      "name": "Quest Name",
+                                      "fill": "#22C55E",
+                                      "content": "First Steps",
+                                      "fontFamily": "Space Grotesk",
+                                      "fontSize": 12,
+                                      "fontWeight": "600"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "QUEST1DESC",
+                                      "name": "Quest Description",
+                                      "fill": "#94A3B8",
+                                      "content": "Create your profile",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 10
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "QUEST2",
+                              "name": "Quest/Active",
+                              "reusable": true,
+                              "width": "fill_container",
+                              "height": 80,
+                              "fill": "#1A2332",
+                              "cornerRadius": 8,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": 2,
+                                "fill": "#F59E0B"
+                              },
+                              "layout": "horizontal",
+                              "gap": 12,
+                              "padding": 12,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "QUEST2ICON",
+                                  "name": "Quest Icon",
+                                  "fill": "#F59E0B",
+                                  "content": "🔄",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 20
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "QUEST2INFO",
+                                  "name": "Quest Info",
+                                  "layout": "vertical",
+                                  "gap": 4,
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "QUEST2NAME",
+                                      "name": "Quest Name",
+                                      "fill": "#F59E0B",
+                                      "content": "Skill Master",
+                                      "fontFamily": "Space Grotesk",
+                                      "fontSize": 12,
+                                      "fontWeight": "600"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "QUEST2DESC",
+                                      "name": "Quest Description",
+                                      "fill": "#94A3B8",
+                                      "content": "Level up 3 skills",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 10
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "QUEST3",
+                              "name": "Quest/Locked",
+                              "reusable": true,
+                              "width": "fill_container",
+                              "height": 80,
+                              "fill": "#1E293B",
+                              "cornerRadius": 8,
+                              "stroke": {
+                                "align": "inside",
+                                "thickness": 2,
+                                "fill": "#475569"
+                              },
+                              "layout": "horizontal",
+                              "gap": 12,
+                              "padding": 12,
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "QUEST3ICON",
+                                  "name": "Quest Icon",
+                                  "fill": "#475569",
+                                  "content": "🔒",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 20
+                                },
+                                {
+                                  "type": "frame",
+                                  "id": "QUEST3INFO",
+                                  "name": "Quest Info",
+                                  "layout": "vertical",
+                                  "gap": 4,
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "id": "QUEST3NAME",
+                                      "name": "Quest Name",
+                                      "fill": "#475569",
+                                      "content": "???",
+                                      "fontFamily": "Space Grotesk",
+                                      "fontSize": 12,
+                                      "fontWeight": "600"
+                                    },
+                                    {
+                                      "type": "text",
+                                      "id": "QUEST3DESC",
+                                      "name": "Quest Description",
+                                      "fill": "#475569",
+                                      "content": "Complete previous quests",
+                                      "fontFamily": "Inter",
+                                      "fontSize": 10
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }

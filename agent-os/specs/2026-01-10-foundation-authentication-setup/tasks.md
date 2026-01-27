@@ -228,7 +228,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - Create `app/[locale]/(auth)/layout.tsx`
     - Centered card layout for auth forms
     - Apply translations using next-intl
-  - [ ] 6.6 Ensure auth page tests pass
+  - [x] 6.6 Ensure auth page tests pass
     - Run ONLY the 2-6 tests written in 6.1
     - Verify forms render correctly
     - Do NOT run entire test suite

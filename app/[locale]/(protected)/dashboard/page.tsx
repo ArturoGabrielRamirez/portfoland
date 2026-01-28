@@ -18,6 +18,7 @@ import {
   GamingAvatar,
   LevelBadge,
   GamingCard,
+  GamingBadge,
 } from '@/features/gaming'
 import type { DashboardPageProps } from '@/features/dashboard/types/dashboard'
 
@@ -173,6 +174,82 @@ function ShareIcon({ className }: { className?: string }) {
   )
 }
 
+function ClockIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+      aria-hidden="true"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+  )
+}
+
+function BriefcaseIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+      aria-hidden="true"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+      />
+    </svg>
+  )
+}
+
+function SparklesIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+      aria-hidden="true"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+      />
+    </svg>
+  )
+}
+
+function CheckCircleIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+      aria-hidden="true"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+  )
+}
+
 // =============================================================================
 // Helper Functions
 // =============================================================================
@@ -203,6 +280,190 @@ function getDisplayName(name: string | null, email: string): string {
   return email.split('@')[0]
 }
 
+/**
+ * Calculates account completion percentage based on profile data.
+ */
+function calculateProfileCompletion(user: {
+  name?: string | null
+  image?: string | null
+  email: string
+}): number {
+  let completed = 0
+  const total = 5 // Total checkpoints
+
+  // Basic account created = 20%
+  completed += 1
+
+  // Has name = 20%
+  if (user.name && user.name.trim().length > 0) {
+    completed += 1
+  }
+
+  // Has profile image = 20%
+  if (user.image) {
+    completed += 1
+  }
+
+  // Placeholder for skills = 20% (not implemented yet)
+  // Placeholder for timeline = 20% (not implemented yet)
+
+  return Math.round((completed / total) * 100)
+}
+
+// =============================================================================
+// Profile Completion Component
+// =============================================================================
+
+interface ProfileCompletionProps {
+  percentage: number
+  title: string
+  subtitle: string
+}
+
+function ProfileCompletion({
+  percentage,
+  title,
+  subtitle,
+}: ProfileCompletionProps) {
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="text-sm font-semibold text-white">{title}</h3>
+          <p className="text-xs text-[#64748B]">{subtitle}</p>
+        </div>
+        <span className="text-lg font-bold text-[#00D4FF]">{percentage}%</span>
+      </div>
+      <div className="h-2 bg-[#1E293B] rounded-full overflow-hidden">
+        <div
+          className="h-full bg-gradient-to-r from-[#00D4FF] to-[#22C55E] rounded-full transition-all duration-500 ease-out"
+          style={{
+            width: `${percentage}%`,
+            boxShadow: '0 0 10px rgba(0, 212, 255, 0.5)',
+          }}
+        />
+      </div>
+      <div className="flex items-center gap-4 text-xs text-[#64748B]">
+        <div className="flex items-center gap-1">
+          <CheckCircleIcon className="h-3 w-3 text-[#22C55E]" />
+          <span>Account</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <CheckCircleIcon
+            className={`h-3 w-3 ${percentage >= 40 ? 'text-[#22C55E]' : 'text-[#334155]'}`}
+          />
+          <span>Profile</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <CheckCircleIcon
+            className={`h-3 w-3 ${percentage >= 60 ? 'text-[#22C55E]' : 'text-[#334155]'}`}
+          />
+          <span>Avatar</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <CheckCircleIcon className="h-3 w-3 text-[#334155]" />
+          <span>Skills</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <CheckCircleIcon className="h-3 w-3 text-[#334155]" />
+          <span>Timeline</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// =============================================================================
+// Feature Card Component
+// =============================================================================
+
+interface FeatureCardProps {
+  title: string
+  description: string
+  version: string
+  icon: React.ReactNode
+  color: 'cyan' | 'magenta' | 'green'
+}
+
+function FeatureCard({
+  title,
+  description,
+  version,
+  icon,
+  color,
+}: FeatureCardProps) {
+  const colorStyles = {
+    cyan: {
+      border: 'border-[#00D4FF]/30',
+      iconBg: 'bg-[#00D4FF]/20',
+      iconColor: 'text-[#00D4FF]',
+      glow: 'hover:shadow-[0_0_20px_rgba(0,212,255,0.15)]',
+      badge: 'cyan' as const,
+    },
+    magenta: {
+      border: 'border-[#D946EF]/30',
+      iconBg: 'bg-[#D946EF]/20',
+      iconColor: 'text-[#D946EF]',
+      glow: 'hover:shadow-[0_0_20px_rgba(217,70,239,0.15)]',
+      badge: 'magenta' as const,
+    },
+    green: {
+      border: 'border-[#22C55E]/30',
+      iconBg: 'bg-[#22C55E]/20',
+      iconColor: 'text-[#22C55E]',
+      glow: 'hover:shadow-[0_0_20px_rgba(34,197,94,0.15)]',
+      badge: 'green' as const,
+    },
+  }
+
+  const styles = colorStyles[color]
+
+  return (
+    <GamingCard
+      variant="default"
+      className={`relative p-5 transition-all ${styles.border} ${styles.glow}`}
+    >
+      {/* Coming Soon Badge */}
+      <div className="absolute top-3 right-3">
+        <GamingBadge color={styles.badge}>{version}</GamingBadge>
+      </div>
+
+      {/* Icon */}
+      <div
+        className={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl ${styles.iconBg}`}
+      >
+        <div className={styles.iconColor}>{icon}</div>
+      </div>
+
+      {/* Content */}
+      <h3 className="mb-2 text-lg font-semibold text-white">{title}</h3>
+      <p className="text-sm text-[#94A3B8] leading-relaxed">{description}</p>
+
+      {/* Locked Overlay */}
+      <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-[#0A0E1A]/60 opacity-0 hover:opacity-100 transition-opacity">
+        <div className="text-center">
+          <svg
+            className="mx-auto h-8 w-8 text-[#64748B] mb-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+            />
+          </svg>
+          <span className="text-sm font-medium text-[#94A3B8]">
+            Coming Soon
+          </span>
+        </div>
+      </div>
+    </GamingCard>
+  )
+}
+
 // =============================================================================
 // Page Component
 // =============================================================================
@@ -214,6 +475,8 @@ function getDisplayName(name: string | null, email: string): string {
  * - Welcome message with user avatar
  * - Stats row (XP, achievements, skills, views)
  * - Level progress bar
+ * - Profile completion indicator
+ * - Feature cards (Coming Soon)
  * - Quick action cards
  *
  * Uses Server Component for data fetching.
@@ -242,6 +505,11 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   // User display data
   const displayName = getDisplayName(user.name ?? null, user.email)
   const initials = getInitials(user.name ?? null, user.email)
+  const profileCompletion = calculateProfileCompletion({
+    name: user.name,
+    image: user.image,
+    email: user.email,
+  })
 
   // Mock user stats (will be replaced with real data later)
   const userStats = {
@@ -337,6 +605,42 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
         <p className="mt-3 text-sm text-[#94A3B8]">
           {t('gaming.xpRemaining', { xp: xpRemaining, percent: xpPercent })}
         </p>
+      </HUDPanel>
+
+      {/* Profile Completion */}
+      <HUDPanel title={t('progress.title')} className="relative overflow-hidden">
+        <ProfileCompletion
+          percentage={profileCompletion}
+          title={t('progress.percentage', { percent: profileCompletion })}
+          subtitle={t('progress.completeProfile')}
+        />
+      </HUDPanel>
+
+      {/* Feature Cards - Coming Soon */}
+      <HUDPanel title={t('features.title')} className="relative overflow-hidden">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <FeatureCard
+            title={t('features.timeline.title')}
+            description={t('features.timeline.description')}
+            version={t('features.timeline.comingSoon')}
+            icon={<ClockIcon className="h-6 w-6" />}
+            color="cyan"
+          />
+          <FeatureCard
+            title={t('features.portfolio.title')}
+            description={t('features.portfolio.description')}
+            version={t('features.portfolio.comingSoon')}
+            icon={<BriefcaseIcon className="h-6 w-6" />}
+            color="magenta"
+          />
+          <FeatureCard
+            title={t('features.aiAssistant.title')}
+            description={t('features.aiAssistant.description')}
+            version={t('features.aiAssistant.comingSoon')}
+            icon={<SparklesIcon className="h-6 w-6" />}
+            color="green"
+          />
+        </div>
       </HUDPanel>
 
       {/* Quick Actions */}

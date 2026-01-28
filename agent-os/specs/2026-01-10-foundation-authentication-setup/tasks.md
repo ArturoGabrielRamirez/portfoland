@@ -273,7 +273,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - User avatar with fallback to initials if no image
     - **Design refs:** `backups/design-idea/app/dashboard/page.tsx`, .pen `0XX4I` (desktop) / `YzlQW` (mobile)
     - **Components:** Use `HUDPanel`, `StatCard`, `XPBar` from gaming library
-  - [ ] 7.5 Create Dashboard feature cards
+  - [x] 7.5 Create Dashboard feature cards
     - Progress indicator showing account completion percentage
     - Quick stats section with placeholder metrics
     - Placeholder cards with "Coming Soon" badges:

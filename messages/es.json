@@ -49,6 +49,17 @@
       "noAccount": "No tienes una cuenta?",
       "createAccount": "Crear una cuenta",
       "forgotPassword": "Olvidaste tu contrasena?",
+      "gaming": {
+        "heroTitle": "INICIA TU AVENTURA",
+        "heroSubtitle": "Crea tu portfolio gamificado y destaca entre la multitud de candidatos.",
+        "feature1": "Timeline Interactivo",
+        "feature2": "Sistema de Logros",
+        "feature3": "CV con IA",
+        "tabLogin": "INICIAR SESION",
+        "tabRegister": "REGISTRARSE",
+        "submitButton": "INICIAR PARTIDA",
+        "orContinueWith": "O CONTINUAR CON"
+      },
       "errors": {
         "invalidCredentials": "Correo electronico o contrasena invalidos",
         "accountNotFound": "No se encontro una cuenta con este correo electronico",
@@ -76,6 +87,17 @@
       "termsText": "Al registrarte, aceptas nuestros",
       "termsLink": "Terminos de Servicio",
       "privacyLink": "Politica de Privacidad",
+      "gaming": {
+        "heroTitle": "COMIENZA TU MISION",
+        "heroSubtitle": "Unite a miles de profesionales que cuentan su historia con un portfolio gamificado.",
+        "feature1": "Timeline Interactivo",
+        "feature2": "Sistema de Logros",
+        "feature3": "CV con IA",
+        "tabLogin": "INICIAR SESION",
+        "tabRegister": "REGISTRARSE",
+        "submitButton": "CREAR PERSONAJE",
+        "orContinueWith": "O CONTINUAR CON"
+      },
       "errors": {
         "nameRequired": "El nombre es requerido",
         "nameTooShort": "El nombre debe tener al menos 2 caracteres",
@@ -141,30 +163,79 @@
   },
   "landing": {
     "hero": {
+      "badge": "Tu carrera, tu aventura",
+      "titlePrefix": "Transforma tu CV en una",
+      "titleHighlight": "Aventura Epica",
       "title": "Cuenta Tu Historia Profesional",
-      "subtitle": "Transforma tu trayectoria profesional en una experiencia atractiva y gamificada. Construi tu portafolio, rastrea logros y deja que la IA te ayude a brillar.",
-      "ctaSignUp": "Comenzar Gratis",
-      "ctaSignIn": "Iniciar Sesion"
+      "subtitle": "Crea portfolios interactivos con timelines gamificados, arboles de habilidades y tu propio subdominio. Destaca ante recruiters con una experiencia unica.",
+      "ctaSignUp": "Comenzar Aventura",
+      "ctaSignIn": "Ver Demo"
+    },
+    "stats": {
+      "users": "Usuarios activos",
+      "portfolios": "Portfolios creados",
+      "satisfaction": "Satisfaccion"
     },
     "features": {
-      "title": "Todo Lo Que Necesitas",
+      "title": "Caracteristicas",
+      "headline": "Todo lo que necesitas para brillar",
+      "subheadline": "Herramientas disenadas para contar tu historia profesional de manera unica",
       "timeline": {
-        "title": "Linea de Tiempo Interactiva",
-        "description": "Visualiza tu trayectoria profesional con una hermosa linea de tiempo interactiva que da vida a tus experiencias."
+        "title": "Timeline Interactivo",
+        "description": "Mapea tu journey profesional como una aventura. Cada trabajo, proyecto y logro es un punto en tu camino hacia el exito."
       },
       "portfolio": {
-        "title": "Portafolio Inteligente",
-        "description": "Crea portafolios impresionantes que se adaptan a tu historia. Comparte tus logros con un subdominio unico."
+        "title": "Arbol de Habilidades",
+        "description": "Visualiza tus skills como un RPG. Desbloquea habilidades, sube de nivel y muestra tu progresion de manera visual."
       },
       "aiAssistant": {
-        "title": "Asistente con IA",
-        "description": "Obtene sugerencias inteligentes para tu CV, optimiza tu narrativa profesional y destacate entre la multitud."
+        "title": "Portfolio con Subdominio",
+        "description": "Tu propio espacio en internet: usuario.portfoland.com. Comparte tu portfolio con un link profesional y memorable."
+      }
+    },
+    "howItWorks": {
+      "title": "Como funciona",
+      "headline": "3 pasos para comenzar tu aventura",
+      "step1": {
+        "title": "Crea tu cuenta",
+        "description": "Registrate gratis y elige tu personaje. Podes ser un wizard, un developer, o cualquier avatar que te represente."
+      },
+      "step2": {
+        "title": "Construye tu timeline",
+        "description": "Agrega tus experiencias, educacion y proyectos. Nuestro asistente AI te ayuda a escribir descripciones profesionales."
+      },
+      "step3": {
+        "title": "Comparte y destaca",
+        "description": "Obtene tu subdominio personalizado y comparte tu portfolio con recruiters. Tu historia profesional, lista para brillar."
+      }
+    },
+    "modes": {
+      "title": "Dos Modos",
+      "headline": "Tu portfolio, tu estilo",
+      "subheadline": "Elige como queres presentarte al mundo",
+      "professional": {
+        "title": "Modo Profesional",
+        "subtitle": "Para recruiters y empresas",
+        "feature1": "CV tradicional con IA asistida",
+        "feature2": "Timeline cronologico limpio",
+        "feature3": "Exportar a PDF profesional",
+        "feature4": "Integracion con LinkedIn",
+        "cta": "Elegir Profesional"
+      },
+      "gaming": {
+        "title": "Modo Gaming",
+        "subtitle": "Para creativos y gamers",
+        "feature1": "Timeline como aventura RPG",
+        "feature2": "Arbol de habilidades visual",
+        "feature3": "Sistema de logros y XP",
+        "feature4": "Avatar personalizable",
+        "cta": "Elegir Gaming"
       }
     },
     "cta": {
-      "title": "Listo para Comenzar tu Viaje?",
-      "subtitle": "Unite a miles de profesionales que estan contando su historia con Portfoland.",
-      "button": "Crear Tu Cuenta"
+      "title": "Listo para tu aventura?",
+      "subtitle": "Unite a miles de profesionales que ya estan destacando con Portfoland",
+      "button": "Crear cuenta gratis"
     }
   },
   "languageSwitcher": {

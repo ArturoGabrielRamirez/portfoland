@@ -49,6 +49,17 @@
       "noAccount": "Don't have an account?",
       "createAccount": "Create an account",
       "forgotPassword": "Forgot your password?",
+      "gaming": {
+        "heroTitle": "START YOUR ADVENTURE",
+        "heroSubtitle": "Create your gamified portfolio and stand out from the crowd of candidates.",
+        "feature1": "Interactive Timeline",
+        "feature2": "Achievement System",
+        "feature3": "AI-Powered CV",
+        "tabLogin": "SIGN IN",
+        "tabRegister": "SIGN UP",
+        "submitButton": "START GAME",
+        "orContinueWith": "OR CONTINUE WITH"
+      },
       "errors": {
         "invalidCredentials": "Invalid email or password",
         "accountNotFound": "No account found with this email",
@@ -76,6 +87,17 @@
       "termsText": "By signing up, you agree to our",
       "termsLink": "Terms of Service",
       "privacyLink": "Privacy Policy",
+      "gaming": {
+        "heroTitle": "BEGIN YOUR QUEST",
+        "heroSubtitle": "Join thousands of professionals telling their story with a gamified portfolio.",
+        "feature1": "Interactive Timeline",
+        "feature2": "Achievement System",
+        "feature3": "AI-Powered CV",
+        "tabLogin": "SIGN IN",
+        "tabRegister": "SIGN UP",
+        "submitButton": "CREATE CHARACTER",
+        "orContinueWith": "OR CONTINUE WITH"
+      },
       "errors": {
         "nameRequired": "Name is required",
         "nameTooShort": "Name must be at least 2 characters",
@@ -141,30 +163,79 @@
   },
   "landing": {
     "hero": {
+      "badge": "Your career, your adventure",
+      "titlePrefix": "Transform your CV into an",
+      "titleHighlight": "Epic Adventure",
       "title": "Tell Your Career Story",
-      "subtitle": "Transform your professional journey into an engaging, gamified experience. Build your portfolio, track achievements, and let AI help you shine.",
-      "ctaSignUp": "Get Started Free",
-      "ctaSignIn": "Sign In"
+      "subtitle": "Create interactive portfolios with gamified timelines, skill trees, and your own subdomain. Stand out to recruiters with a unique experience.",
+      "ctaSignUp": "Start Adventure",
+      "ctaSignIn": "View Demo"
+    },
+    "stats": {
+      "users": "Active users",
+      "portfolios": "Portfolios created",
+      "satisfaction": "Satisfaction"
     },
     "features": {
-      "title": "Everything You Need",
+      "title": "Features",
+      "headline": "Everything you need to shine",
+      "subheadline": "Tools designed to tell your professional story in a unique way",
       "timeline": {
         "title": "Interactive Timeline",
-        "description": "Visualize your career journey with a beautiful, interactive timeline that brings your experiences to life."
+        "description": "Map your professional journey as an adventure. Each job, project, and achievement is a point on your path to success."
       },
       "portfolio": {
-        "title": "Smart Portfolio",
-        "description": "Create stunning portfolios that adapt to your story. Share your achievements with a unique subdomain."
+        "title": "Skill Tree",
+        "description": "Visualize your skills like an RPG. Unlock abilities, level up, and showcase your progression visually."
       },
       "aiAssistant": {
-        "title": "AI-Powered Assistant",
-        "description": "Get intelligent suggestions for your CV, optimize your career narrative, and stand out from the crowd."
+        "title": "Portfolio with Subdomain",
+        "description": "Your own space on the internet: username.portfoland.com. Share your portfolio with a professional and memorable link."
+      }
+    },
+    "howItWorks": {
+      "title": "How it works",
+      "headline": "3 steps to start your adventure",
+      "step1": {
+        "title": "Create your account",
+        "description": "Sign up for free and choose your character. You can be a wizard, a developer, or any avatar that represents you."
+      },
+      "step2": {
+        "title": "Build your timeline",
+        "description": "Add your experiences, education, and projects. Our AI assistant helps you write professional descriptions."
+      },
+      "step3": {
+        "title": "Share and stand out",
+        "description": "Get your personalized subdomain and share your portfolio with recruiters. Your professional story, ready to shine."
+      }
+    },
+    "modes": {
+      "title": "Two Modes",
+      "headline": "Your portfolio, your style",
+      "subheadline": "Choose how you want to present yourself to the world",
+      "professional": {
+        "title": "Professional Mode",
+        "subtitle": "For recruiters and companies",
+        "feature1": "AI-assisted traditional CV",
+        "feature2": "Clean chronological timeline",
+        "feature3": "Export to professional PDF",
+        "feature4": "LinkedIn integration",
+        "cta": "Choose Professional"
+      },
+      "gaming": {
+        "title": "Gaming Mode",
+        "subtitle": "For creatives and gamers",
+        "feature1": "Timeline as RPG adventure",
+        "feature2": "Visual skill tree",
+        "feature3": "Achievements and XP system",
+        "feature4": "Customizable avatar",
+        "cta": "Choose Gaming"
       }
     },
     "cta": {
-      "title": "Ready to Start Your Journey?",
-      "subtitle": "Join thousands of professionals who are telling their story with Portfoland.",
-      "button": "Create Your Account"
+      "title": "Ready for your adventure?",
+      "subtitle": "Join thousands of professionals already standing out with Portfoland",
+      "button": "Create free account"
     }
   },
   "languageSwitcher": {

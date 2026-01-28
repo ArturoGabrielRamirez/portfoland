@@ -1,0 +1,64 @@
+// =============================================================================
+// Dashboard Header Component
+// =============================================================================
+// Server component for the dashboard header. Contains logo, navigation,
+// and user menu. Uses dark gamer aesthetic with cyan/magenta/purple accents.
+// =============================================================================
+
+import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
+
+import type { DashboardHeaderProps } from '../types/dashboard'
+import { UserMenu } from './UserMenu'
+
+// =============================================================================
+// Component
+// =============================================================================
+
+/**
+ * Dashboard header with navigation and user controls.
+ *
+ * Displays:
+ * - Application logo linking to dashboard
+ * - User menu with avatar and actions
+ */
+export async function DashboardHeader({ user, locale }: DashboardHeaderProps) {
+  const tCommon = await getTranslations('common')
+
+  return (
+    <header className="sticky top-0 z-50 border-b border-[#334155]/50 bg-[#0A0F1A]/95 backdrop-blur-lg">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Logo */}
+        <Link
+          href={`/${locale}/dashboard`}
+          className="flex items-center gap-3 text-xl font-bold tracking-tight text-white transition-opacity hover:opacity-80"
+        >
+          {/* Logo icon with gradient */}
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#00D4FF] to-[#8B5CF6]">
+            <svg
+              className="h-5 w-5 text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 17l10 5 10-5" />
+              <path d="M2 12l10 5 10-5" />
+            </svg>
+          </div>
+          <span className="hidden sm:inline">{tCommon('appName')}</span>
+        </Link>
+
+        {/* Right side - User controls */}
+        <div className="flex items-center gap-4">
+          {/* User menu */}
+          <UserMenu user={user} locale={locale} />
+        </div>
+      </div>
+    </header>
+  )
+}

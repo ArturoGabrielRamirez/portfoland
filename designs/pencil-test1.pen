@@ -3,6 +3,233 @@
   "children": [
     {
       "type": "frame",
+      "id": "ucwNF",
+      "x": 1600,
+      "y": -1369,
+      "name": "Timeline Section",
+      "width": "fill_container(3760)",
+      "height": 600,
+      "fill": "#1A2332",
+      "cornerRadius": 24,
+      "stroke": {
+        "align": "inside",
+        "thickness": 4,
+        "fill": "#00D4FF"
+      },
+      "layout": "vertical",
+      "gap": 24,
+      "padding": 40,
+      "children": [
+        {
+          "type": "text",
+          "id": "PCQuN",
+          "name": "Timeline Title",
+          "fill": "#00D4FF",
+          "content": "CAREER TIMELINE",
+          "textAlign": "center",
+          "fontFamily": "Space Grotesk",
+          "fontSize": 32,
+          "fontWeight": "700"
+        },
+        {
+          "type": "frame",
+          "id": "wwFcb",
+          "name": "Timeline Map",
+          "width": "fill_container",
+          "height": 400,
+          "fill": "#0D1421",
+          "cornerRadius": 16,
+          "stroke": {
+            "align": "inside",
+            "thickness": 2,
+            "fill": "#1E293B"
+          },
+          "gap": 32,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "qdErK",
+              "name": "Timeline Node 1",
+              "layout": "vertical",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "AMVSW",
+                  "name": "Timeline Marker",
+                  "width": 100,
+                  "height": 100,
+                  "fill": "#22C55E",
+                  "cornerRadius": 50,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 4,
+                    "fill": "#F1F5F9"
+                  },
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "emZIt",
+                      "name": "Start",
+                      "fill": "#0D1421",
+                      "content": "START",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "2SQT8",
+                  "name": "Timeline Date",
+                  "fill": "#22C55E",
+                  "content": "2020",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "mJ16z",
+                  "name": "Timeline Description",
+                  "fill": "#F1F5F9",
+                  "content": "University",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "H28jx",
+              "name": "Timeline Node 2",
+              "layout": "vertical",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "NVHgT",
+                  "name": "Timeline Marker",
+                  "width": 100,
+                  "height": 100,
+                  "fill": "#8B5CF6",
+                  "cornerRadius": 50,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 4,
+                    "fill": "#F1F5F9"
+                  },
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "88rOm",
+                      "name": "Skill",
+                      "fill": "#0D1421",
+                      "content": "SKILL",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "r8CmD",
+                  "name": "Timeline Date",
+                  "fill": "#8B5CF6",
+                  "content": "2022",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "zKtyD",
+                  "name": "Timeline Description",
+                  "fill": "#F1F5F9",
+                  "content": "First Job",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "eVljG",
+              "name": "Timeline Node 3",
+              "layout": "vertical",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "6gX2I",
+                  "name": "Timeline Marker",
+                  "width": 100,
+                  "height": 100,
+                  "fill": "#D946EF",
+                  "cornerRadius": 50,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 4,
+                    "fill": "#F1F5F9"
+                  },
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "H91Fo",
+                      "name": "Current",
+                      "fill": "#0D1421",
+                      "content": "NOW",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "K4zbl",
+                  "name": "Timeline Date",
+                  "fill": "#D946EF",
+                  "content": "2024",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "Ib2u5",
+                  "name": "Timeline Description",
+                  "fill": "#F1F5F9",
+                  "content": "Senior Dev",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
       "id": "PKDX1",
       "x": 0,
       "y": 0,
@@ -16,10 +243,10 @@
         {
           "type": "frame",
           "id": "POKDX2",
-          "x": 50,
+          "x": 591,
           "y": 50,
           "name": "Main Console Frame",
-          "width": 1500,
+          "width": 1582,
           "height": 1700,
           "fill": "#1A1F2E",
           "cornerRadius": 24,
@@ -424,7 +651,7 @@
     {
       "type": "frame",
       "id": "pOdHZ",
-      "x": 0,
+      "x": 3296,
       "y": 0,
       "name": "Portfoland Console UI",
       "clip": true,
@@ -924,565 +1151,13 @@
       "width": 3760,
       "height": 1200,
       "layout": "vertical",
-      "gap": 32,
-      "children": [
-        {
-          "type": "frame",
-          "id": "XNH0R",
-          "name": "Quest Board",
-          "width": "fill_container",
-          "height": 400,
-          "fill": "#1A2332",
-          "cornerRadius": 24,
-          "stroke": {
-            "align": "inside",
-            "thickness": 4,
-            "fill": "#D946EF"
-          },
-          "layout": "vertical",
-          "gap": 24,
-          "padding": 40,
-          "children": [
-            {
-              "type": "text",
-              "id": "xx12M",
-              "name": "Quest Board Title",
-              "fill": "#D946EF",
-              "content": "CAREER QUESTS",
-              "textAlign": "center",
-              "fontFamily": "Space Grotesk",
-              "fontSize": 32,
-              "fontWeight": "700"
-            },
-            {
-              "type": "frame",
-              "id": "aobMx",
-              "name": "Quest Grid",
-              "width": "fill_container",
-              "gap": 24,
-              "justifyContent": "space_around",
-              "children": [
-                {
-                  "type": "frame",
-                  "id": "q8zXR",
-                  "name": "Quest - Build Portfolio",
-                  "width": 320,
-                  "height": 280,
-                  "fill": "#0D1421",
-                  "cornerRadius": 16,
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 2,
-                    "fill": "#00D4FF"
-                  },
-                  "layout": "vertical",
-                  "gap": 16,
-                  "padding": 20,
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "hkEGa",
-                      "name": "Quest Icon",
-                      "width": 80,
-                      "height": 80,
-                      "fill": "#00D4FF",
-                      "cornerRadius": 16,
-                      "layout": "vertical",
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "rzakR",
-                          "name": "Portfolio Icon",
-                          "fill": "#0D1421",
-                          "content": "🚀",
-                          "fontFamily": "Inter",
-                          "fontSize": 40,
-                          "fontWeight": "normal"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "id": "iTktK",
-                      "name": "Quest Title",
-                      "fill": "#00D4FF",
-                      "content": "BUILD PORTFOLIO",
-                      "textAlign": "center",
-                      "fontFamily": "Space Grotesk",
-                      "fontSize": 18,
-                      "fontWeight": "700"
-                    },
-                    {
-                      "type": "text",
-                      "id": "83wdX",
-                      "name": "Quest Description",
-                      "fill": "#94A3B8",
-                      "content": "Create your professional portfolio with AI assistance",
-                      "lineHeight": 1.4,
-                      "textAlign": "center",
-                      "fontFamily": "Inter",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "frame",
-                      "id": "Yaanq",
-                      "name": "Quest Reward",
-                      "gap": 8,
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "SHpWw",
-                          "name": "Reward Icon",
-                          "content": "🏆",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "nqsBh",
-                          "name": "Reward Text",
-                          "fill": "#F59E0B",
-                          "content": "+500 XP",
-                          "fontFamily": "Space Grotesk",
-                          "fontSize": 14,
-                          "fontWeight": "600"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "XT0tu",
-                  "name": "Quest - AI Assistant",
-                  "width": 320,
-                  "height": 280,
-                  "fill": "#0D1421",
-                  "cornerRadius": 16,
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 2,
-                    "fill": "#8B5CF6"
-                  },
-                  "layout": "vertical",
-                  "gap": 16,
-                  "padding": 20,
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "SOwEb",
-                      "name": "Quest Icon",
-                      "width": 80,
-                      "height": 80,
-                      "fill": "#8B5CF6",
-                      "cornerRadius": 16,
-                      "layout": "vertical",
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "jxumw",
-                          "name": "AI Icon",
-                          "fill": "#0D1421",
-                          "content": "🤖",
-                          "fontFamily": "Inter",
-                          "fontSize": 40,
-                          "fontWeight": "normal"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "id": "XxJru",
-                      "name": "Quest Title",
-                      "fill": "#8B5CF6",
-                      "content": "AI ASSISTANT",
-                      "textAlign": "center",
-                      "fontFamily": "Space Grotesk",
-                      "fontSize": 18,
-                      "fontWeight": "700"
-                    },
-                    {
-                      "type": "text",
-                      "id": "Gfmhy",
-                      "name": "Quest Description",
-                      "fill": "#94A3B8",
-                      "content": "Get AI help with your career story",
-                      "lineHeight": 1.4,
-                      "textAlign": "center",
-                      "fontFamily": "Inter",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "frame",
-                      "id": "ylVH6",
-                      "name": "Quest Reward",
-                      "gap": 8,
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "4eJPc",
-                          "name": "Reward Icon",
-                          "content": "🏆",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "7mWRI",
-                          "name": "Reward Text",
-                          "fill": "#F59E0B",
-                          "content": "+300 XP",
-                          "fontFamily": "Space Grotesk",
-                          "fontSize": 14,
-                          "fontWeight": "600"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "5TvdR",
-                  "name": "Quest - Subdomain Setup",
-                  "width": 320,
-                  "height": 280,
-                  "fill": "#0D1421",
-                  "cornerRadius": 16,
-                  "stroke": {
-                    "align": "inside",
-                    "thickness": 2,
-                    "fill": "#22C55E"
-                  },
-                  "layout": "vertical",
-                  "gap": 16,
-                  "padding": 20,
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "q1B6L",
-                      "name": "Quest Icon",
-                      "width": 80,
-                      "height": 80,
-                      "fill": "#22C55E",
-                      "cornerRadius": 16,
-                      "layout": "vertical",
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "nZ3jB",
-                          "name": "Subdomain Icon",
-                          "fill": "#0D1421",
-                          "content": "🌐",
-                          "fontFamily": "Inter",
-                          "fontSize": 40,
-                          "fontWeight": "normal"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "id": "N8nGD",
-                      "name": "Quest Title",
-                      "fill": "#22C55E",
-                      "content": "SUBDOMAIN SETUP",
-                      "textAlign": "center",
-                      "fontFamily": "Space Grotesk",
-                      "fontSize": 18,
-                      "fontWeight": "700"
-                    },
-                    {
-                      "type": "text",
-                      "id": "kTluI",
-                      "name": "Quest Description",
-                      "fill": "#94A3B8",
-                      "content": "Configure your custom portfolio URL",
-                      "lineHeight": 1.4,
-                      "textAlign": "center",
-                      "fontFamily": "Inter",
-                      "fontSize": 12,
-                      "fontWeight": "normal"
-                    },
-                    {
-                      "type": "frame",
-                      "id": "8N8bB",
-                      "name": "Quest Reward",
-                      "gap": 8,
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "tS7Zr",
-                          "name": "Reward Icon",
-                          "content": "🏆",
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "normal"
-                        },
-                        {
-                          "type": "text",
-                          "id": "o2aWr",
-                          "name": "Reward Text",
-                          "fill": "#F59E0B",
-                          "content": "+200 XP",
-                          "fontFamily": "Space Grotesk",
-                          "fontSize": 14,
-                          "fontWeight": "600"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "frame",
-          "id": "ucwNF",
-          "name": "Timeline Section",
-          "width": "fill_container",
-          "height": 600,
-          "fill": "#1A2332",
-          "cornerRadius": 24,
-          "stroke": {
-            "align": "inside",
-            "thickness": 4,
-            "fill": "#00D4FF"
-          },
-          "layout": "vertical",
-          "gap": 24,
-          "padding": 40,
-          "children": [
-            {
-              "type": "text",
-              "id": "PCQuN",
-              "name": "Timeline Title",
-              "fill": "#00D4FF",
-              "content": "CAREER TIMELINE",
-              "textAlign": "center",
-              "fontFamily": "Space Grotesk",
-              "fontSize": 32,
-              "fontWeight": "700"
-            },
-            {
-              "type": "frame",
-              "id": "wwFcb",
-              "name": "Timeline Map",
-              "width": "fill_container",
-              "height": 400,
-              "fill": "#0D1421",
-              "cornerRadius": 16,
-              "stroke": {
-                "align": "inside",
-                "thickness": 2,
-                "fill": "#1E293B"
-              },
-              "gap": 32,
-              "alignItems": "center",
-              "children": [
-                {
-                  "type": "frame",
-                  "id": "qdErK",
-                  "name": "Timeline Node 1",
-                  "layout": "vertical",
-                  "gap": 12,
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "AMVSW",
-                      "name": "Timeline Marker",
-                      "width": 100,
-                      "height": 100,
-                      "fill": "#22C55E",
-                      "cornerRadius": 50,
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 4,
-                        "fill": "#F1F5F9"
-                      },
-                      "layout": "vertical",
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "emZIt",
-                          "name": "Start",
-                          "fill": "#0D1421",
-                          "content": "START",
-                          "fontFamily": "Space Grotesk",
-                          "fontSize": 12,
-                          "fontWeight": "700"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "id": "2SQT8",
-                      "name": "Timeline Date",
-                      "fill": "#22C55E",
-                      "content": "2020",
-                      "fontFamily": "Space Grotesk",
-                      "fontSize": 16,
-                      "fontWeight": "600"
-                    },
-                    {
-                      "type": "text",
-                      "id": "mJ16z",
-                      "name": "Timeline Description",
-                      "fill": "#F1F5F9",
-                      "content": "University",
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "H28jx",
-                  "name": "Timeline Node 2",
-                  "layout": "vertical",
-                  "gap": 12,
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "NVHgT",
-                      "name": "Timeline Marker",
-                      "width": 100,
-                      "height": 100,
-                      "fill": "#8B5CF6",
-                      "cornerRadius": 50,
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 4,
-                        "fill": "#F1F5F9"
-                      },
-                      "layout": "vertical",
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "88rOm",
-                          "name": "Skill",
-                          "fill": "#0D1421",
-                          "content": "SKILL",
-                          "fontFamily": "Space Grotesk",
-                          "fontSize": 12,
-                          "fontWeight": "700"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "id": "r8CmD",
-                      "name": "Timeline Date",
-                      "fill": "#8B5CF6",
-                      "content": "2022",
-                      "fontFamily": "Space Grotesk",
-                      "fontSize": 16,
-                      "fontWeight": "600"
-                    },
-                    {
-                      "type": "text",
-                      "id": "zKtyD",
-                      "name": "Timeline Description",
-                      "fill": "#F1F5F9",
-                      "content": "First Job",
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                },
-                {
-                  "type": "frame",
-                  "id": "eVljG",
-                  "name": "Timeline Node 3",
-                  "layout": "vertical",
-                  "gap": 12,
-                  "alignItems": "center",
-                  "children": [
-                    {
-                      "type": "frame",
-                      "id": "6gX2I",
-                      "name": "Timeline Marker",
-                      "width": 100,
-                      "height": 100,
-                      "fill": "#D946EF",
-                      "cornerRadius": 50,
-                      "stroke": {
-                        "align": "inside",
-                        "thickness": 4,
-                        "fill": "#F1F5F9"
-                      },
-                      "layout": "vertical",
-                      "justifyContent": "center",
-                      "alignItems": "center",
-                      "children": [
-                        {
-                          "type": "text",
-                          "id": "H91Fo",
-                          "name": "Current",
-                          "fill": "#0D1421",
-                          "content": "NOW",
-                          "fontFamily": "Space Grotesk",
-                          "fontSize": 12,
-                          "fontWeight": "700"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "text",
-                      "id": "K4zbl",
-                      "name": "Timeline Date",
-                      "fill": "#D946EF",
-                      "content": "2024",
-                      "fontFamily": "Space Grotesk",
-                      "fontSize": 16,
-                      "fontWeight": "600"
-                    },
-                    {
-                      "type": "text",
-                      "id": "Ib2u5",
-                      "name": "Timeline Description",
-                      "fill": "#F1F5F9",
-                      "content": "Senior Dev",
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontWeight": "normal"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      "gap": 32
     },
     {
       "type": "frame",
       "id": "eRkQg",
       "x": 0,
-      "y": 0,
+      "y": 2410,
       "name": "Portfoland OAuth Console",
       "clip": true,
       "width": 3840,
@@ -1501,7 +1176,7 @@
           "type": "frame",
           "id": "hWcb2",
           "name": "Left Info Panel",
-          "width": 1600,
+          "width": 1594,
           "height": "fill_container",
           "fill": "linear-gradient(135deg, #1A2332 0%, #0D1421 100%)",
           "layout": "vertical",
@@ -2175,6 +1850,333 @@
                       "fill": "#00D4FF",
                       "content": "Create account",
                       "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "XNH0R",
+      "x": 1713,
+      "y": -625,
+      "name": "Quest Board",
+      "width": "fill_container(3760)",
+      "height": 400,
+      "fill": "#1A2332",
+      "cornerRadius": 24,
+      "stroke": {
+        "align": "inside",
+        "thickness": 4,
+        "fill": "#D946EF"
+      },
+      "layout": "vertical",
+      "gap": 24,
+      "padding": 40,
+      "children": [
+        {
+          "type": "text",
+          "id": "xx12M",
+          "name": "Quest Board Title",
+          "fill": "#D946EF",
+          "content": "CAREER QUESTS",
+          "textAlign": "center",
+          "fontFamily": "Space Grotesk",
+          "fontSize": 32,
+          "fontWeight": "700"
+        },
+        {
+          "type": "frame",
+          "id": "aobMx",
+          "name": "Quest Grid",
+          "width": "fill_container",
+          "gap": 24,
+          "justifyContent": "space_around",
+          "children": [
+            {
+              "type": "frame",
+              "id": "q8zXR",
+              "name": "Quest - Build Portfolio",
+              "width": 320,
+              "height": 280,
+              "fill": "#0D1421",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#00D4FF"
+              },
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "hkEGa",
+                  "name": "Quest Icon",
+                  "width": 80,
+                  "height": 80,
+                  "fill": "#00D4FF",
+                  "cornerRadius": 16,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "rzakR",
+                      "name": "Portfolio Icon",
+                      "fill": "#0D1421",
+                      "content": "🚀",
+                      "fontFamily": "Inter",
+                      "fontSize": 40,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "iTktK",
+                  "name": "Quest Title",
+                  "fill": "#00D4FF",
+                  "content": "BUILD PORTFOLIO",
+                  "textAlign": "center",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 18,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "83wdX",
+                  "name": "Quest Description",
+                  "fill": "#94A3B8",
+                  "content": "Create your professional portfolio with AI assistance",
+                  "lineHeight": 1.4,
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "Yaanq",
+                  "name": "Quest Reward",
+                  "gap": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "SHpWw",
+                      "name": "Reward Icon",
+                      "content": "🏆",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "nqsBh",
+                      "name": "Reward Text",
+                      "fill": "#F59E0B",
+                      "content": "+500 XP",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "XT0tu",
+              "name": "Quest - AI Assistant",
+              "width": 320,
+              "height": 280,
+              "fill": "#0D1421",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#8B5CF6"
+              },
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "SOwEb",
+                  "name": "Quest Icon",
+                  "width": 80,
+                  "height": 80,
+                  "fill": "#8B5CF6",
+                  "cornerRadius": 16,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "jxumw",
+                      "name": "AI Icon",
+                      "fill": "#0D1421",
+                      "content": "🤖",
+                      "fontFamily": "Inter",
+                      "fontSize": 40,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "XxJru",
+                  "name": "Quest Title",
+                  "fill": "#8B5CF6",
+                  "content": "AI ASSISTANT",
+                  "textAlign": "center",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 18,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "Gfmhy",
+                  "name": "Quest Description",
+                  "fill": "#94A3B8",
+                  "content": "Get AI help with your career story",
+                  "lineHeight": 1.4,
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "ylVH6",
+                  "name": "Quest Reward",
+                  "gap": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "4eJPc",
+                      "name": "Reward Icon",
+                      "content": "🏆",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "7mWRI",
+                      "name": "Reward Text",
+                      "fill": "#F59E0B",
+                      "content": "+300 XP",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "5TvdR",
+              "name": "Quest - Subdomain Setup",
+              "width": 320,
+              "height": 280,
+              "fill": "#0D1421",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#22C55E"
+              },
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "q1B6L",
+                  "name": "Quest Icon",
+                  "width": 80,
+                  "height": 80,
+                  "fill": "#22C55E",
+                  "cornerRadius": 16,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "nZ3jB",
+                      "name": "Subdomain Icon",
+                      "fill": "#0D1421",
+                      "content": "🌐",
+                      "fontFamily": "Inter",
+                      "fontSize": 40,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "N8nGD",
+                  "name": "Quest Title",
+                  "fill": "#22C55E",
+                  "content": "SUBDOMAIN SETUP",
+                  "textAlign": "center",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 18,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "kTluI",
+                  "name": "Quest Description",
+                  "fill": "#94A3B8",
+                  "content": "Configure your custom portfolio URL",
+                  "lineHeight": 1.4,
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "8N8bB",
+                  "name": "Quest Reward",
+                  "gap": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "tS7Zr",
+                      "name": "Reward Icon",
+                      "content": "🏆",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "o2aWr",
+                      "name": "Reward Text",
+                      "fill": "#F59E0B",
+                      "content": "+200 XP",
+                      "fontFamily": "Space Grotesk",
                       "fontSize": 14,
                       "fontWeight": "600"
                     }

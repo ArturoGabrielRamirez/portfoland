@@ -247,28 +247,32 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
 **Complexity:** Medium
 
 - [ ] 7.0 Complete public and protected pages
-  - [ ] 7.1 Write 2-6 focused tests for pages
+  - [x] 7.1 Write 2-6 focused tests for pages
     - Test landing page renders hero section and CTAs
     - Test dashboard renders welcome message with user name
     - Test dashboard shows placeholder feature cards
     - Test language switcher toggles locale
     - Skip edge cases and exhaustive UI tests
-  - [ ] 7.2 Create Public Landing page
+  - [x] 7.2 Create Public Landing page
     - Create `app/[locale]/page.tsx`
     - Hero section with product tagline and value proposition
     - Call-to-action buttons: Sign Up and Log In
     - Brief feature highlights (Timeline, Portfolio, AI Assistant)
     - Mobile-responsive layout using Tailwind CSS grid/flexbox
     - Redirect logged-in users to /dashboard
-  - [ ] 7.3 Create Dashboard layout
+    - **Design refs:** `backups/design-idea/app/page.tsx`, .pen `MEhaW` (desktop) / `mBl8R` (mobile)
+  - [x] 7.3 Create Dashboard layout
     - Create `app/[locale]/(protected)/layout.tsx`
     - Header/navigation with user avatar and language switcher
     - Sidebar or top navigation structure
     - Protected route wrapper
+    - **Design refs:** `backups/design-idea/app/dashboard/layout.tsx` - Sidebar con NavItem gaming
   - [ ] 7.4 Create Dashboard page
     - Create `app/[locale]/(protected)/dashboard/page.tsx`
     - Welcome message displaying user's name
     - User avatar with fallback to initials if no image
+    - **Design refs:** `backups/design-idea/app/dashboard/page.tsx`, .pen `0XX4I` (desktop) / `YzlQW` (mobile)
+    - **Components:** Use `HUDPanel`, `StatCard`, `XPBar` from gaming library
   - [ ] 7.5 Create Dashboard feature cards
     - Progress indicator showing account completion percentage
     - Quick stats section with placeholder metrics
@@ -276,6 +280,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
       - Timeline (v0.2.0)
       - Portfolio (v0.3.0)
       - AI Assistant (v0.4.0)
+    - **Components:** Use `GamingCard`, `StatCard`, `AchievementBadge` from `backups/design-idea/components/gaming/`
   - [ ] 7.6 Create Language Switcher component
     - Create `features/i18n/components/LanguageSwitcher.tsx`
     - Dropdown menu with English/Spanish options
@@ -362,6 +367,45 @@ Recommended implementation sequence:
 
 ---
 
+## Design Resources
+
+### Gaming Design System Sources
+
+When implementing UI components and pages, reference these sources:
+
+**Code Components (ready to use):**
+- `backups/design-idea/components/gaming/index.tsx` - Gaming component library:
+  - `GamingButton`, `GamingCard`, `GamingInput`
+  - `StatCard`, `XPBar`, `LevelBadge`
+  - `HUDPanel` - Panel con líneas de acento cyan
+  - `AchievementBadge` - Con raridades (common, rare, epic, legendary)
+  - `TimelineEvent`, `SkillTreeNode`, `SkillProgress`
+  - `GamingAvatar`, `NavItem`, `CategoryPill`, `GamingBadge`
+
+**Visual Designs (.pen file):**
+- `designs/portfoland-swatches.pen` - Diseños completos con IDs:
+
+| Página | Desktop ID | Mobile ID |
+|--------|------------|-----------|
+| Login | `ZsqTO` | `7iEZO` |
+| Dashboard | `0XX4I` | `YzlQW` |
+| Skill Tree | `yW9es` | `gtO3d` |
+| Timeline | `RYJ6f` | `4FwBR` |
+| Landing | `MEhaW` | `mBl8R` |
+| Portfolio | `IJ9Qr` | `SBLij` |
+| Achievements | `DIBze` | `Vhne8` |
+| Settings | `XUFkQ` | `3D6Rg` |
+
+**Design Tokens:**
+- Background: `#0A0E1A` (base), `#0D1421` (cards)
+- Cyan: `#00D4FF` (primary)
+- Magenta: `#D946EF` (secondary)
+- Green: `#22C55E` (success)
+- Yellow: `#EAB308` (XP/warning)
+- Fonts: Space Grotesk (headings), Inter (body)
+
+---
+
 ## Technical Notes
 
 ### File Structure (Expected)
@@ -442,3 +486,73 @@ portfoland/
 - Yup schemas for all form validation
 - cn() utility for conditional Tailwind classes
 - actionWrapper for consistent error handling (when server actions are added)
+
+---
+
+## MongoDB + Prisma + Better Auth Configuration
+
+### Critical Schema Requirements
+
+**Better Auth is NOT compatible with MongoDB ObjectId as primary key.**
+
+Even though Prisma supports `@db.ObjectId`, Better Auth generates its own string IDs (cuid/nanoid-like format). Attempting to use ObjectId will cause "Malformed ObjectID" errors on user creation.
+
+### Correct Schema Pattern
+
+```prisma
+model User {
+  id            String    @id @default(cuid()) @map("_id")
+  email         String    @unique
+  name          String?
+  // ... other fields
+}
+
+model Session {
+  id        String   @id @default(cuid()) @map("_id")
+  userId    String   // NOT @db.ObjectId
+  // ... other fields
+}
+
+model Account {
+  id         String  @id @default(cuid()) @map("_id")
+  userId     String  // NOT @db.ObjectId
+  // ... other fields
+}
+```
+
+### Key Rules
+
+1. **`@map("_id")` is REQUIRED** - MongoDB + Prisma requires the `@id` field to map to `_id`
+2. **DO NOT use `@db.ObjectId`** - Better Auth generates string IDs, not ObjectIds
+3. **Use `String` for all relation IDs** - Foreign keys like `userId` must be plain String
+4. **Use lowercase database name** - MongoDB is case-insensitive, Prisma is not. Always use `portfoland` (not `Portfoland`)
+
+### DATABASE_URL Format
+
+```
+mongodb+srv://USERNAME:PASSWORD@cluster.mongodb.net/portfoland
+```
+
+Note: The database name (`portfoland`) MUST be included in the URL.
+
+### Commands
+
+```bash
+# Generate Prisma client
+bun x prisma generate
+
+# Push schema to MongoDB (use --force-reset only in dev when changing ID types)
+bun x prisma db push
+
+# NEVER use with MongoDB:
+# prisma migrate - Not supported for MongoDB
+```
+
+### Troubleshooting
+
+| Error | Cause | Solution |
+|-------|-------|----------|
+| SCRAM authentication failed | Missing DB name in URL | Add `/portfoland` to DATABASE_URL |
+| Malformed ObjectID | Using @db.ObjectId with Better Auth | Remove @db.ObjectId, use String @id |
+| P1012: must have @map("_id") | Missing _id mapping | Add @map("_id") to @id field |
+| DatabaseDifferCase | Case mismatch in DB name | Use lowercase everywhere |

@@ -124,7 +124,37 @@
   },
   "dashboard": {
     "welcome": "Bienvenido de nuevo, {name}!",
-    "welcomeSubtitle": "Aqui tienes un resumen de tu trayectoria profesional",
+    "welcomeSubtitle": "Continua construyendo tu aventura profesional",
+    "gaming": {
+      "levelProgress": "PROGRESO AL NIVEL {level}",
+      "currentLevel": "Nivel actual",
+      "xpRemaining": "{xp} XP restantes - {percent}% completado - Sigue asi!",
+      "stats": {
+        "experience": "Experiencia",
+        "achievements": "Logros",
+        "skills": "Habilidades",
+        "views": "Visitas"
+      },
+      "quickActions": {
+        "title": "ACCIONES RAPIDAS",
+        "addExperience": "Agregar Experiencia",
+        "addExperienceDesc": "Nuevo item en timeline",
+        "editSkills": "Editar Skills",
+        "editSkillsDesc": "Actualiza tu skill tree",
+        "generateCV": "Generar CV",
+        "generateCVDesc": "Crea tu CV con IA",
+        "sharePortfolio": "Compartir Portfolio",
+        "sharePortfolioDesc": "Comparte tu perfil"
+      },
+      "recentAchievements": {
+        "title": "LOGROS RECIENTES",
+        "viewAll": "Ver todos"
+      },
+      "recentActivity": {
+        "title": "ACTIVIDAD RECIENTE",
+        "new": "nuevas"
+      }
+    },
     "progress": {
       "title": "Completar Perfil",
       "percentage": "{percent}% Completado",

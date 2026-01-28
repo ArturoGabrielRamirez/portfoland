@@ -37,3 +37,47 @@ export interface ProtectedLayoutProps {
   children: React.ReactNode
   params: Promise<{ locale: string }>
 }
+
+/**
+ * Props for the dashboard page.
+ */
+export interface DashboardPageProps {
+  params: Promise<{ locale: string }>
+}
+
+/**
+ * User stats data for the dashboard.
+ */
+export interface UserStats {
+  xp: number
+  level: number
+  achievements: {
+    unlocked: number
+    total: number
+  }
+  skills: number
+  views: number
+}
+
+/**
+ * Achievement data for display.
+ */
+export interface Achievement {
+  id: string
+  title: string
+  description: string
+  xp: number
+  unlocked: boolean
+  rarity: 'common' | 'rare' | 'epic' | 'legendary'
+}
+
+/**
+ * Activity item data for display.
+ */
+export interface ActivityItem {
+  id: string
+  action: string
+  detail: string
+  time: string
+  color: 'primary' | 'secondary' | 'success' | 'warning'
+}

@@ -267,7 +267,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - Sidebar or top navigation structure
     - Protected route wrapper
     - **Design refs:** `backups/design-idea/app/dashboard/layout.tsx` - Sidebar con NavItem gaming
-  - [ ] 7.4 Create Dashboard page
+  - [x] 7.4 Create Dashboard page
     - Create `app/[locale]/(protected)/dashboard/page.tsx`
     - Welcome message displaying user's name
     - User avatar with fallback to initials if no image

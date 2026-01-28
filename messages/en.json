@@ -124,7 +124,37 @@
   },
   "dashboard": {
     "welcome": "Welcome back, {name}!",
-    "welcomeSubtitle": "Here's an overview of your career journey",
+    "welcomeSubtitle": "Continue building your professional adventure",
+    "gaming": {
+      "levelProgress": "PROGRESS TO LEVEL {level}",
+      "currentLevel": "Current level",
+      "xpRemaining": "{xp} XP remaining - {percent}% completed - Keep it up!",
+      "stats": {
+        "experience": "Experience",
+        "achievements": "Achievements",
+        "skills": "Skills",
+        "views": "Views"
+      },
+      "quickActions": {
+        "title": "QUICK ACTIONS",
+        "addExperience": "Add Experience",
+        "addExperienceDesc": "New timeline item",
+        "editSkills": "Edit Skills",
+        "editSkillsDesc": "Update your skill tree",
+        "generateCV": "Generate CV",
+        "generateCVDesc": "Create your AI CV",
+        "sharePortfolio": "Share Portfolio",
+        "sharePortfolioDesc": "Share your profile"
+      },
+      "recentAchievements": {
+        "title": "RECENT ACHIEVEMENTS",
+        "viewAll": "View all"
+      },
+      "recentActivity": {
+        "title": "RECENT ACTIVITY",
+        "new": "new"
+      }
+    },
     "progress": {
       "title": "Profile Completion",
       "percentage": "{percent}% Complete",

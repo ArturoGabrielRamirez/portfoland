@@ -10,6 +10,7 @@ import { getTranslations } from 'next-intl/server'
 
 import type { DashboardHeaderProps } from '../types/dashboard'
 import { UserMenu } from './UserMenu'
+import { LanguageSwitcher } from '@/features/i18n'
 
 // =============================================================================
 // Component
@@ -20,6 +21,7 @@ import { UserMenu } from './UserMenu'
  *
  * Displays:
  * - Application logo linking to dashboard
+ * - Language switcher for locale selection
  * - User menu with avatar and actions
  */
 export async function DashboardHeader({ user, locale }: DashboardHeaderProps) {
@@ -54,7 +56,10 @@ export async function DashboardHeader({ user, locale }: DashboardHeaderProps) {
         </Link>
 
         {/* Right side - User controls */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          {/* Language switcher */}
+          <LanguageSwitcher isAuthenticated={true} />
+
           {/* User menu */}
           <UserMenu user={user} locale={locale} />
         </div>

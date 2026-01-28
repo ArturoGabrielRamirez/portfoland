@@ -281,7 +281,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
       - Portfolio (v0.3.0)
       - AI Assistant (v0.4.0)
     - **Components:** Use `GamingCard`, `StatCard`, `AchievementBadge` from `backups/design-idea/components/gaming/`
-  - [ ] 7.6 Create Language Switcher component
+  - [x] 7.6 Create Language Switcher component
     - Create `features/i18n/components/LanguageSwitcher.tsx`
     - Dropdown menu with English/Spanish options
     - Update URL with new locale
@@ -377,15 +377,15 @@ When implementing UI components and pages, reference these sources:
 - `backups/design-idea/components/gaming/index.tsx` - Gaming component library:
   - `GamingButton`, `GamingCard`, `GamingInput`
   - `StatCard`, `XPBar`, `LevelBadge`
-  - `HUDPanel` - Panel con líneas de acento cyan
+  - `HUDPanel` - Panel con lineas de acento cyan
   - `AchievementBadge` - Con raridades (common, rare, epic, legendary)
   - `TimelineEvent`, `SkillTreeNode`, `SkillProgress`
   - `GamingAvatar`, `NavItem`, `CategoryPill`, `GamingBadge`
 
 **Visual Designs (.pen file):**
-- `designs/portfoland-swatches.pen` - Diseños completos con IDs:
+- `designs/portfoland-swatches.pen` - Disenos completos con IDs:
 
-| Página | Desktop ID | Mobile ID |
+| Pagina | Desktop ID | Mobile ID |
 |--------|------------|-----------|
 | Login | `ZsqTO` | `7iEZO` |
 | Dashboard | `0XX4I` | `YzlQW` |

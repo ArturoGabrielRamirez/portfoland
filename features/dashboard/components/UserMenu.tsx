@@ -11,7 +11,7 @@ import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
-import { LogOut, User, Globe } from 'lucide-react'
+import { LogOut, User } from 'lucide-react'
 
 import { signOut } from '@/lib/auth-client'
 import { cn } from '@/lib/utils'
@@ -61,8 +61,11 @@ function getInitials(name: string | null): string {
  * Displays:
  * - User avatar (with image or initials fallback)
  * - User name and email
+ * - Profile link (placeholder for future implementation)
  * - Sign out action
- * - Placeholder for language switcher (to be implemented in 7.6)
+ *
+ * Note: Language switcher has been moved to a dedicated component
+ * in the header for better visibility and accessibility.
  */
 export function UserMenu({ user, locale }: UserMenuProps) {
   const t = useTranslations('navigation')
@@ -131,16 +134,6 @@ export function UserMenu({ user, locale }: UserMenuProps) {
         >
           <User className="mr-2 h-4 w-4" />
           <span>{t('profile')}</span>
-          <span className="ml-auto text-xs text-[#64748B]">Soon</span>
-        </DropdownMenuItem>
-
-        {/* Language switcher placeholder - will be implemented in 7.6 */}
-        <DropdownMenuItem
-          className="cursor-pointer text-[#94A3B8] focus:bg-[#1A2332] focus:text-white"
-          disabled
-        >
-          <Globe className="mr-2 h-4 w-4" />
-          <span>{t('language')}</span>
           <span className="ml-auto text-xs text-[#64748B]">Soon</span>
         </DropdownMenuItem>
 

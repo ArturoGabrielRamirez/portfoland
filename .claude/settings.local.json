@@ -13,7 +13,10 @@
       "Bash(bunx prisma db push:*)",
       "WebFetch(domain:next-intl.dev)",
       "Bash(bunx shadcn@latest add:*)",
-      "Bash(bun add:*)"
+      "Bash(bun add:*)",
+      "Bash(npm run test:run -- --testPathPattern=\"features/pages/__tests__/pages.test.tsx\")",
+      "Bash(npx vitest run \"features/pages/__tests__/pages.test.tsx\")",
+      "Bash(bun run test:run:*)"
     ]
   }
 }

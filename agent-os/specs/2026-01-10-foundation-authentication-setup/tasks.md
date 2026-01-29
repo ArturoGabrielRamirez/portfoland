@@ -198,7 +198,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
 **Dependencies:** Task Groups 2, 4, 5
 **Complexity:** Medium
 
-- [ ] 6.0 Complete authentication pages
+- [x] 6.0 Complete authentication pages
   - [x] 6.1 Write 2-6 focused tests for auth pages
     - Test login form renders with email/password fields
     - Test registration form renders with name/email/password/confirm fields
@@ -246,7 +246,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
 **Dependencies:** Task Groups 2, 4, 5, 6
 **Complexity:** Medium
 
-- [ ] 7.0 Complete public and protected pages
+- [x] 7.0 Complete public and protected pages
   - [x] 7.1 Write 2-6 focused tests for pages
     - Test landing page renders hero section and CTAs
     - Test dashboard renders welcome message with user name
@@ -286,7 +286,7 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - Dropdown menu with English/Spanish options
     - Update URL with new locale
     - Save preference to user's `locale` field in database
-  - [ ] 7.7 Ensure page tests pass
+  - [x] 7.7 Ensure page tests pass
     - Run ONLY the 2-6 tests written in 7.1
     - Verify pages render correctly
     - Do NOT run entire test suite
@@ -305,16 +305,16 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
 **Dependencies:** Task Groups 1-7
 **Complexity:** Simple
 
-- [ ] 8.0 Review tests and verify integration
-  - [ ] 8.1 Review all existing tests
+- [x] 8.0 Review tests and verify integration
+  - [x] 8.1 Review all existing tests
     - Review tests from Task Group 6 (auth pages)
     - Review tests from Task Group 7 (landing/dashboard)
     - Total existing tests: approximately 4-12 tests
-  - [ ] 8.2 Identify critical integration gaps
+  - [x] 8.2 Identify critical integration gaps
     - Focus on end-to-end auth flow gaps
     - Identify missing user workflow coverage
     - Do NOT assess entire application coverage
-  - [ ] 8.3 Write up to 8 additional integration tests
+  - [x] 8.3 Write up to 8 additional integration tests
     - Test complete registration flow (form -> redirect to dashboard)
     - Test complete login flow with email/password
     - Test Google OAuth callback handling
@@ -322,12 +322,12 @@ Estimated Total Effort: Medium-High (foundational infrastructure)
     - Test authenticated user redirect from login to dashboard
     - Test locale persistence across navigation
     - Skip edge cases and error scenarios
-  - [ ] 8.4 Run feature-specific tests
+  - [x] 8.4 Run feature-specific tests
     - Run ONLY tests related to this feature
     - Expected total: approximately 12-20 tests
     - Do NOT run entire application test suite
     - Verify all critical user workflows pass
-  - [ ] 8.5 Manual integration verification
+  - [x] 8.5 Manual integration verification
     - Test full registration flow manually
     - Test full login flow with both methods
     - Verify dashboard displays correctly

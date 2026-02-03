@@ -33,33 +33,33 @@ From `C:/Users/user/code/nextjs/portfoland/backups/design-idea/components/gaming
 **Dependencies:** None
 **Complexity:** Medium
 
-- [ ] 1.0 Complete database layer for experiences
-  - [ ] 1.1 Write 4-6 focused tests for Experience model functionality
+- [x] 1.0 Complete database layer for experiences
+  - [x] 1.1 Write 4-6 focused tests for Experience model functionality
     - Test experience creation with valid data
     - Test experience type enum validation (WORK, EDUCATION, PROJECT, CERTIFICATION)
     - Test user-experience relationship (userId foreign key)
     - Test XP calculation by type
     - Test coordinate validation (latitude, longitude)
-  - [ ] 1.2 Add Experience model to Prisma schema
+  - [x] 1.2 Add Experience model to Prisma schema
     - **File:** `C:/Users/user/code/nextjs/portfoland/prisma/schema.prisma`
     - Fields: id (cuid), userId, type (enum), title, company, latitude (Float), longitude (Float), address, startDate, endDate (nullable), description, skills (String[]), xp (Int), createdAt, updatedAt
     - Add ExperienceType enum: WORK, EDUCATION, PROJECT, CERTIFICATION
     - Add relation to User model with Cascade delete
     - Add @@index([userId])
     - Add @@map("experiences")
-  - [ ] 1.3 Create and run migration
+  - [x] 1.3 Create and run migration
     - Run `npx prisma generate` to update client
     - Run `npx prisma db push` for MongoDB
-  - [ ] 1.4 Create Experience types file
+  - [x] 1.4 Create Experience types file
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/types/experience.ts`
     - Re-export Prisma types: Experience, ExperienceType
     - Create derived types: ExperienceWithUser, CreateExperienceInput, UpdateExperienceInput
     - Create component props: ExperienceCardProps, TimelineMapProps, HexagonNodeProps
-  - [ ] 1.5 Create XP calculation constants
+  - [x] 1.5 Create XP calculation constants
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/constants/xp.ts`
     - XP_VALUES: { WORK: 500, PROJECT: 350, CERTIFICATION: 400, EDUCATION: 200 }
     - Type color mappings: { WORK: cyan, EDUCATION: purple, PROJECT: green, CERTIFICATION: yellow }
-  - [ ] 1.6 Ensure database layer tests pass
+  - [x] 1.6 Ensure database layer tests pass
     - Run only the 4-6 tests written in 1.1
     - Verify schema generates correctly
 
@@ -81,36 +81,36 @@ From `C:/Users/user/code/nextjs/portfoland/backups/design-idea/components/gaming
 **Dependencies:** Task Group 1
 **Complexity:** Medium
 
-- [ ] 2.0 Complete data access layer for experiences
-  - [ ] 2.1 Write 4-6 focused tests for data layer functions
+- [x] 2.0 Complete data access layer for experiences
+  - [x] 2.1 Write 4-6 focused tests for data layer functions
     - Test getExperiencesByUserId returns sorted by date
     - Test getExperienceById with valid/invalid ID
     - Test createExperience creates with correct XP
     - Test updateExperience updates fields correctly
     - Test deleteExperience removes record
-  - [ ] 2.2 Create getExperiencesByUserId data function
+  - [x] 2.2 Create getExperiencesByUserId data function
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/data/getExperiences.data.ts`
     - Query experiences by userId, ordered by startDate DESC
     - Include calculated stats (total XP, counts by type)
-  - [ ] 2.3 Create getExperienceById data function
+  - [x] 2.3 Create getExperienceById data function
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/data/getExperienceById.data.ts`
     - Query single experience by id with user validation
-  - [ ] 2.4 Create createExperience data function
+  - [x] 2.4 Create createExperience data function
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/data/createExperience.data.ts`
     - Auto-calculate XP based on type from constants
     - Set createdAt/updatedAt timestamps
-  - [ ] 2.5 Create updateExperience data function
+  - [x] 2.5 Create updateExperience data function
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/data/updateExperience.data.ts`
     - Recalculate XP if type changes
     - Validate userId ownership
-  - [ ] 2.6 Create deleteExperience data function
+  - [x] 2.6 Create deleteExperience data function
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/data/deleteExperience.data.ts`
     - Verify userId ownership before delete
-  - [ ] 2.7 Create getPublicTimelineByUsername data function
+  - [x] 2.7 Create getPublicTimelineByUsername data function
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/data/getPublicTimeline.data.ts`
     - Query user by username, return experiences with calculated stats
     - Return null if user not found or has no public timeline
-  - [ ] 2.8 Ensure data layer tests pass
+  - [x] 2.8 Ensure data layer tests pass
     - Run only the 4-6 tests written in 2.1
 
 **Acceptance Criteria:**
@@ -133,37 +133,37 @@ From `C:/Users/user/code/nextjs/portfoland/backups/design-idea/components/gaming
 **Dependencies:** Task Group 2
 **Complexity:** Medium
 
-- [ ] 3.0 Complete API layer with server actions
-  - [ ] 3.1 Write 4-6 focused tests for server actions
+- [x] 3.0 Complete API layer with server actions
+  - [x] 3.1 Write 4-6 focused tests for server actions
     - Test createExperience action validates required fields
     - Test updateExperience action revalidates paths
     - Test deleteExperience action requires authentication
     - Test actions return ActionResponse format
-  - [ ] 3.2 Create Yup validation schemas
+  - [x] 3.2 Create Yup validation schemas
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/schemas/experience.schema.ts`
     - createExperienceSchema: title (required), company (required), type (enum), latitude (number), longitude (number), startDate (date), endDate (date nullable), description (string), skills (array)
     - updateExperienceSchema: Same as create but all fields optional
-  - [ ] 3.3 Create experience service layer
+  - [x] 3.3 Create experience service layer
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/services/experience.service.ts`
     - createExperienceService: Validate business rules, call data layer
     - updateExperienceService: Check ownership, validate updates
     - deleteExperienceService: Verify ownership, handle cascade
-  - [ ] 3.4 Create createExperience server action
+  - [x] 3.4 Create createExperience server action
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/actions/createExperience.ts`
     - Use 'use server' directive
     - Wrap with actionWrapper
     - Validate with Yup schema
     - Call service layer
     - revalidatePath('/dashboard/timeline') and '/timeline/[username]'
-  - [ ] 3.5 Create updateExperience server action
+  - [x] 3.5 Create updateExperience server action
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/actions/updateExperience.ts`
     - Implement debounced auto-save support (500ms on client)
     - Return updated experience data
-  - [ ] 3.6 Create deleteExperience server action
+  - [x] 3.6 Create deleteExperience server action
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/actions/deleteExperience.ts`
     - Require confirmation (handled on client)
     - Revalidate paths after deletion
-  - [ ] 3.7 Ensure API layer tests pass
+  - [x] 3.7 Ensure API layer tests pass
     - Run only the 4-6 tests written in 3.1
 
 **Acceptance Criteria:**

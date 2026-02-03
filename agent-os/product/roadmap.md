@@ -29,12 +29,12 @@
 > **Concepto aprobado:** Google Maps + Hexágonos Gaming
 > Ver detalles en `agent-os/product/design-ideas.md`
 
-8. [ ] Timeline Map Component — Google Maps como fondo con blur/fade + overlay gaming `L`
-9. [ ] Hexagon Node System — Nodos hexagonales conectados representando experiencias `M`
-10. [ ] Experience Cards — Cards gaming para mostrar detalles de cada experiencia `M`
-11. [ ] Timeline Entry Creator — Forms para agregar experiencias con ubicación, fechas, descripción `M`
-12. [ ] Career Field Configuration — Selección de campo con naming gamificado (Freelance → Freelancero) `S`
-13. [ ] Zoom Interactions — Animaciones zoom in/out al seleccionar experiencias en el mapa `M`
+8. [x] Timeline Map Component — Google Maps como fondo con blur/fade + overlay gaming `L`
+9. [x] Hexagon Node System — Nodos hexagonales conectados representando experiencias `M`
+10. [x] Experience Cards — Cards gaming para mostrar detalles de cada experiencia `M`
+11. [x] Timeline Entry Creator — Forms para agregar experiencias con ubicación, fechas, descripción `M`
+12. [x] Career Field Configuration — Selección de campo con naming gamificado (Freelance → Freelancero) `S`
+13. [x] Zoom Interactions — Animaciones zoom in/out al seleccionar experiencias en el mapa `M`
 
 ---
 

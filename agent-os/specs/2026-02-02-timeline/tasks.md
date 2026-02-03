@@ -251,18 +251,18 @@ From `C:/Users/user/code/nextjs/portfoland/backups/design-idea/components/gaming
 **Dependencies:** Task Group 4
 **Complexity:** Large
 
-- [ ] 5.0 Complete map integration and form components
-  - [ ] 5.1 Write 4-6 focused tests for map and form components
+- [x] 5.0 Complete map integration and form components
+  - [x] 5.1 Write 4-6 focused tests for map and form components
     - Test TimelineMap renders Google Maps with dark styling
     - Test LocationPicker returns coordinates on selection
     - Test ExperienceForm validates required fields
     - Test auto-save triggers after debounce period
-  - [ ] 5.2 Install and configure @react-google-maps/api
+  - [x] 5.2 Install and configure @react-google-maps/api
     - Add to package.json dependencies
     - Create Google Maps API key environment variable
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/config/maps.ts`
     - Configure dark/night mode map styling
-  - [ ] 5.3 Create TimelineMap component
+  - [x] 5.3 Create TimelineMap component
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/components/TimelineMap.tsx`
     - Client component with 'use client'
     - Embed Google Maps with dark styling
@@ -273,14 +273,14 @@ From `C:/Users/user/code/nextjs/portfoland/backups/design-idea/components/gaming
     - Initial view: Fit bounds to encompass all experience locations
     - Animated zoom on hexagon selection
     - Display ExperienceCard on node click
-  - [ ] 5.4 Create LocationPicker component
+  - [x] 5.4 Create LocationPicker component
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/components/LocationPicker.tsx`
     - Client component with 'use client'
     - Integrate Google Places API for address autocomplete
     - Map click to select coordinates manually
     - Display selected address and coordinates
     - onLocationSelect callback with { latitude, longitude, address }
-  - [ ] 5.5 Create ExperienceForm component
+  - [x] 5.5 Create ExperienceForm component
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/components/ExperienceForm.tsx`
     - Client component with 'use client'
     - Use GamingInput for form fields
@@ -288,23 +288,23 @@ From `C:/Users/user/code/nextjs/portfoland/backups/design-idea/components/gaming
     - Auto-save with 500ms debounce using useTransition
     - Visual feedback indicator for save status
     - Yup validation with error display
-  - [ ] 5.6 Create ExperienceFormModal component
+  - [x] 5.6 Create ExperienceFormModal component
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/components/ExperienceFormModal.tsx`
     - Modal wrapper for ExperienceForm
     - Gaming-styled modal with HUDPanel
     - Controlled open/close state
     - Support for create and edit modes
-  - [ ] 5.7 Create DeleteConfirmModal component
+  - [x] 5.7 Create DeleteConfirmModal component
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/components/DeleteConfirmModal.tsx`
     - Confirmation dialog before deleting experience
     - Display experience title in message
     - Destructive action styling
-  - [ ] 5.8 Create SkillTagInput component
+  - [x] 5.8 Create SkillTagInput component
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/components/SkillTagInput.tsx`
     - Tag input with autocomplete from existing user skills
     - Add/remove tags with keyboard support
     - Display as CategoryPill components
-  - [ ] 5.9 Ensure map and form component tests pass
+  - [x] 5.9 Ensure map and form component tests pass
     - Run only the 4-6 tests written in 5.1
 
 **Acceptance Criteria:**
@@ -329,13 +329,13 @@ From `C:/Users/user/code/nextjs/portfoland/backups/design-idea/components/gaming
 **Dependencies:** Task Groups 3, 4, 5
 **Complexity:** Large
 
-- [ ] 6.0 Complete pages and full integration
-  - [ ] 6.1 Write 4-6 focused tests for page integration
+- [x] 6.0 Complete pages and full integration
+  - [x] 6.1 Write 4-6 focused tests for page integration
     - Test public timeline page renders experiences
     - Test edit page requires authentication
     - Test filter changes update displayed experiences
     - Test responsive layout switches to mobile view
-  - [ ] 6.2 Create public timeline page
+  - [x] 6.2 Create public timeline page
     - **File:** `C:/Users/user/code/nextjs/portfoland/app/[locale]/timeline/[username]/page.tsx`
     - Server Component for initial data fetch
     - Call getPublicTimelineByUsername data function
@@ -343,36 +343,36 @@ From `C:/Users/user/code/nextjs/portfoland/backups/design-idea/components/gaming
     - Render TimelineStats, TimelineFilter, TimelineMap
     - Read-only interaction (no edit capabilities)
     - Mobile: Render MobileTimelineEvent list instead of map
-  - [ ] 6.3 Create public timeline layout
+  - [x] 6.3 Create public timeline layout
     - **File:** `C:/Users/user/code/nextjs/portfoland/app/[locale]/timeline/[username]/layout.tsx`
     - Minimal layout without dashboard sidebar
     - Include user profile header
-  - [ ] 6.4 Create dashboard timeline page
+  - [x] 6.4 Create dashboard timeline page
     - **File:** `C:/Users/user/code/nextjs/portfoland/app/[locale]/(protected)/dashboard/timeline/page.tsx`
     - Protected route (layout handles auth)
     - Server Component with initial data fetch
     - Render TimelineStats, TimelineFilter, TimelineMap
     - "Add Experience" GamingButton opens ExperienceFormModal
     - Edit/delete actions on ExperienceCard
-  - [ ] 6.5 Create DashboardTimelineClient component
+  - [x] 6.5 Create DashboardTimelineClient component
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/components/DashboardTimelineClient.tsx`
     - Client component for interactive dashboard features
     - Manage modal state (add/edit/delete)
     - Handle filter state
     - Coordinate map selection and card display
-  - [ ] 6.6 Add timeline navigation to dashboard sidebar
+  - [x] 6.6 Add timeline navigation to dashboard sidebar
     - **File:** `C:/Users/user/code/nextjs/portfoland/app/[locale]/(protected)/layout.tsx` (modify)
     - Add "Timeline" NavItem with icon
     - Active state when on /dashboard/timeline
-  - [ ] 6.7 Create timeline feature barrel export
+  - [x] 6.7 Create timeline feature barrel export
     - **File:** `C:/Users/user/code/nextjs/portfoland/features/timeline/index.ts`
     - Export all public components, types, actions, constants
-  - [ ] 6.8 Add i18n translations
+  - [x] 6.8 Add i18n translations
     - **File:** `C:/Users/user/code/nextjs/portfoland/messages/en.json` (modify)
     - **File:** `C:/Users/user/code/nextjs/portfoland/messages/es.json` (modify)
     - Add timeline namespace with all user-facing strings
     - Labels: "Mi Timeline", "Agregar nueva experiencia", filter names, etc.
-  - [ ] 6.9 Ensure page integration tests pass
+  - [x] 6.9 Ensure page integration tests pass
     - Run only the 4-6 tests written in 6.1
 
 **Acceptance Criteria:**

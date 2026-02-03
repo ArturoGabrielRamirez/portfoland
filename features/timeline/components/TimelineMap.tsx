@@ -54,27 +54,28 @@ function TimelineMapComponent({
   });
 
   // Calculate initial bounds to fit all experiences
-  const bounds = useMemo(() => {
-    if (experiences.length === 0) return null;
-
-    const bounds = new google.maps.LatLngBounds();
-    experiences.forEach((exp) => {
-      bounds.extend({ lat: exp.latitude, lng: exp.longitude });
-    });
-    return bounds;
-  }, [experiences]);
+  // Note: bounds is calculated in onMapLoad since google API must be loaded first
+  const boundsRef = useRef<google.maps.LatLngBounds | null>(null);
 
   // Handle map load
   const onMapLoad = useCallback(
     (map: google.maps.Map) => {
       mapRef.current = map;
 
-      // Fit bounds if we have experiences
-      if (bounds && experiences.length > 1) {
-        map.fitBounds(bounds, { top: 50, right: 50, bottom: 50, left: 50 });
+      // Calculate bounds and fit if we have experiences
+      if (experiences.length > 0) {
+        const bounds = new google.maps.LatLngBounds();
+        experiences.forEach((exp) => {
+          bounds.extend({ lat: exp.latitude, lng: exp.longitude });
+        });
+        boundsRef.current = bounds;
+
+        if (experiences.length > 1) {
+          map.fitBounds(bounds, { top: 50, right: 50, bottom: 50, left: 50 });
+        }
       }
     },
-    [bounds, experiences.length]
+    [experiences]
   );
 
   // Handle experience selection
@@ -96,10 +97,10 @@ function TimelineMapComponent({
     onExperienceSelect?.(null as unknown as Experience);
 
     // Reset to fit all bounds
-    if (mapRef.current && bounds) {
-      mapRef.current.fitBounds(bounds);
+    if (mapRef.current && boundsRef.current) {
+      mapRef.current.fitBounds(boundsRef.current);
     }
-  }, [onExperienceSelect, bounds]);
+  }, [onExperienceSelect]);
 
   // Update node positions for connections
   const updateNodePosition = useCallback((id: string, x: number, y: number) => {

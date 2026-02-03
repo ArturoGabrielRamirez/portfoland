@@ -140,7 +140,9 @@ export const MAP_OPTIONS: google.maps.MapOptions = {
 };
 
 /**
- * CSS filter for map blur effect
+ * CSS filter for map when an experience is selected
+ * Normal state has no filter - map is clear and visible
+ * Focused state dims the map to highlight the selected card
  */
-export const MAP_FILTER_NORMAL = 'blur(2px) saturate(0.5) brightness(0.7) opacity(0.5)';
-export const MAP_FILTER_FOCUSED = 'blur(4px) saturate(0.3) brightness(0.5) opacity(0.4)';
+export const MAP_FILTER_NORMAL = 'none';
+export const MAP_FILTER_FOCUSED = 'brightness(0.6)';

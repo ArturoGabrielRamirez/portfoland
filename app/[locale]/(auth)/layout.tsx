@@ -1,9 +1,8 @@
 // =============================================================================
-// Auth Layout
+// Auth Layout - Gaming Style
 // =============================================================================
-// Layout component for authentication routes (login, register). Provides a
-// minimal wrapper since auth pages have their own two-panel layout built-in.
-// Uses next-intl for any shared translations and sets appropriate metadata.
+// Layout component for authentication routes (login, register). Provides the
+// gaming-themed dark background for auth pages with cyberpunk aesthetic.
 // =============================================================================
 
 import { setRequestLocale } from 'next-intl/server'
@@ -24,9 +23,8 @@ interface AuthLayoutProps {
 /**
  * Auth layout for login and registration pages.
  *
- * Provides a minimal wrapper since auth pages implement their own
- * two-panel layout. This layout ensures consistent styling and
- * can be extended with shared auth context if needed in the future.
+ * Provides the gaming-themed dark background (#0A0E1A) for a consistent
+ * cyberpunk aesthetic across all auth pages.
  */
 export default async function AuthLayout({
   children,
@@ -38,7 +36,7 @@ export default async function AuthLayout({
   setRequestLocale(locale)
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#0A0E1A]">
       {children}
     </div>
   )

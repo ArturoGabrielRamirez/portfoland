@@ -26,3 +26,28 @@ export interface WithLocaleProps {
   /** The current locale */
   locale: Locale
 }
+
+/**
+ * Props for the LanguageSwitcher component.
+ * Provides a dropdown to switch between supported locales.
+ */
+export interface LanguageSwitcherProps {
+  /** Optional CSS class name for styling the trigger button */
+  className?: string
+  /** Optional: Whether the user is authenticated (enables saving preference) */
+  isAuthenticated?: boolean
+  /** Optional: Variant for display style */
+  variant?: 'dropdown' | 'inline'
+}
+
+/**
+ * Language option displayed in the switcher.
+ */
+export interface LanguageOption {
+  /** Locale code (e.g., 'en', 'es') */
+  code: Locale
+  /** Display label (e.g., 'English', 'Espanol') */
+  label: string
+  /** Flag emoji or icon identifier */
+  flag: string
+}

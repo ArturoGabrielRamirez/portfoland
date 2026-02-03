@@ -1,61 +1,92 @@
 # Product Roadmap
 
-## Phase 1: Foundation (v0.1.0)
+> **Design Reference:** Ver `agent-os/product/design-ideas.md` para conceptos visuales detallados.
 
-1. [ ] Database Schema & Prisma Setup — Configure MongoDB Atlas connection with Prisma ORM, define core models for users, profiles, timelines, skills, and portfolios `M`
-2. [ ] Authentication System — Implement user registration, login, and session management with NextAuth.js including Google OAuth (primary) and GitHub `M`
-3. [ ] UI Component Library — Set up shadcn/ui with custom retro/pixel/comic theme variants that align with the gamified aesthetic `S`
-4. [ ] Internationalization — Configure next-intl for English and Spanish support with language switcher and locale-based routing `S`
-5. [ ] User Dashboard — Create authenticated user dashboard displaying profile overview, timeline progress, and portfolio status `M`
+---
 
-## Phase 2: Interactive Timeline (v0.2.0)
+## Phase 1: Foundation (v0.1.0) ✅ COMPLETED
 
-6. [ ] Pixelated Map Component — Build interactive SVG-based pixelated map of Argentina with clickable regions and hover states `L`
-7. [ ] Character Selection System — Create character customization interface with ethnicity options and fun characters (wizard, troll, etc.) with pixel art sprites `M`
-8. [ ] Timeline Entry Creator — Build forms for adding timeline entries (education, work, projects) with location, date range, and description fields `M`
-9. [ ] Career Field Configuration — Implement career field selection that dynamically adjusts available skill categories and terminology `S`
-10. [ ] Skill Tree Visualization — Create video game-style skill tree component showing skill progression, dependencies, and mastery levels `L`
-11. [ ] Timeline Playback View — Build animated timeline view that shows the user's journey chronologically with character movement across the map `L`
-12. [ ] Achievement Image Generator — Implement server-side image generation (using Satori or similar) to create shareable achievement summary images `M`
+1. [x] Database Schema & Prisma Setup — MongoDB Atlas + Prisma 6.19, modelos User/Session/Account
+2. [x] Authentication System — Better Auth con Google OAuth y email/password
+3. [x] UI Component Library — shadcn/ui + Gaming components library (GamingCard, HUDPanel, XPBar, etc.)
+4. [x] Internationalization — next-intl para EN/ES con LanguageSwitcher
+5. [x] User Dashboard — Dashboard con stats, progress indicator, feature cards "Coming Soon"
+6. [x] Landing Page — Hero section gaming, dos modos (Professional/Gaming), features preview
+7. [x] Protected Routes — proxy.ts con redirecciones auth/unauth
 
-## Phase 3: Portfolio Generator (v0.3.0)
+**Tech Stack implementado:**
+- Next.js 16.1.1 + App Router
+- Better Auth (NO NextAuth.js)
+- MongoDB + Prisma 6.19
+- Tailwind CSS 4 + shadcn/ui
+- next-intl (EN/ES)
+- Vitest + Testing Library
 
-13. [ ] Portfolio Template System — Create flexible portfolio template architecture supporting multiple themes (retro, comic, pixel, professional) `L`
-14. [ ] Portfolio Content Editor — Build WYSIWYG-style editor for portfolio sections (about, projects, skills, contact) with real-time preview `L`
-15. [ ] Subdomain Routing — Implement subdomain-based routing (username.portfoland.com) with Next.js middleware and DNS configuration `M`
-16. [ ] Project Showcase Component — Create project display cards with images, descriptions, tech stack tags, and links `M`
-17. [ ] Portfolio Analytics — Add basic analytics tracking for portfolio views, visitor sources, and popular sections `M`
-18. [ ] Portfolio SEO & Meta Tags — Implement dynamic meta tags, Open Graph images, and structured data for portfolio pages `S`
+---
+
+## Phase 2: Interactive Timeline (v0.2.0) 🎯 NEXT
+
+> **Concepto aprobado:** Google Maps + Hexágonos Gaming
+> Ver detalles en `agent-os/product/design-ideas.md`
+
+8. [ ] Timeline Map Component — Google Maps como fondo con blur/fade + overlay gaming `L`
+9. [ ] Hexagon Node System — Nodos hexagonales conectados representando experiencias `M`
+10. [ ] Experience Cards — Cards gaming para mostrar detalles de cada experiencia `M`
+11. [ ] Timeline Entry Creator — Forms para agregar experiencias con ubicación, fechas, descripción `M`
+12. [ ] Career Field Configuration — Selección de campo con naming gamificado (Freelance → Freelancero) `S`
+13. [ ] Zoom Interactions — Animaciones zoom in/out al seleccionar experiencias en el mapa `M`
+
+---
+
+## Phase 3: Skill Tree & Portfolio (v0.3.0)
+
+14. [ ] Skill Tree Visualization — Árbol de habilidades estilo videojuego con progresión y dependencias `L`
+15. [ ] Portfolio Template System — Templates con modos Professional y Gaming `L`
+16. [ ] Subdomain Routing — username.portfoland.com con Next.js middleware `M`
+17. [ ] Project Showcase — Cards de proyectos con imágenes, tech stack, links `M`
+18. [ ] Portfolio SEO & Meta Tags — Open Graph, structured data dinámico `S`
+
+---
 
 ## Phase 4: AI Assistant (v0.4.0)
 
-19. [ ] Vercel AI SDK Integration — Set up Vercel AI SDK with streaming responses and conversation state management `M`
-20. [ ] Guided CV Interview — Build conversational AI flow that asks users questions about their experience, skills, and goals to gather CV content `L`
-21. [ ] AI Content Suggestions — Implement AI-powered suggestions for improving timeline entries, skill descriptions, and portfolio content `M`
-22. [ ] CV Document Generator — Create PDF/document export for AI-generated CVs with professional formatting and templates `M`
-23. [ ] Field-Specific AI Prompts — Develop specialized AI prompting for different career fields (tech, law, design, etc.) with industry-appropriate language `M`
+19. [ ] Vercel AI SDK Integration — Streaming responses, conversation state `M`
+20. [ ] Guided CV Interview — AI conversacional para recopilar info de CV `L`
+21. [ ] AI Content Suggestions — Sugerencias para mejorar descripciones `M`
+22. [ ] CV Document Generator — Export PDF con templates profesionales `M`
 
-## Phase 5: Social & Sharing (v0.5.0)
+---
 
-24. [ ] Social Authentication Providers — Add additional OAuth providers (LinkedIn, Twitter) for easier onboarding `S`
-25. [ ] Public Profile Pages — Create public-facing profile pages showing timeline, skills, and portfolio preview `M`
-26. [ ] Social Share Cards — Generate dynamic social share images for timelines and portfolios optimized for each platform `M`
-27. [ ] Recruiter View Mode — Build optimized viewing experience for recruiters with quick navigation and candidate comparison features `M`
-28. [ ] Export & Download Options — Allow users to export timeline data, CV documents, and portfolio content in various formats `S`
+## Phase 5: Styles & Polish (v0.5.0+)
 
-## Phase 6: Polish & Scale (v1.0.0)
+23. [ ] Pixelated Style Mode — Tercer modo visual con estética pixel art (evaluar complejidad) `L`
+24. [ ] Geographic Map Expansion — Mapa de Argentina/mundo con regiones clickeables `L`
+25. [ ] Character Customization — Avatares personalizables con pixel art `M`
+26. [ ] Achievement System — Badges y logros desbloqueables `M`
+27. [ ] Social Share Cards — Imágenes dinámicas para compartir `M`
 
-29. [ ] Performance Optimization — Optimize bundle size, implement lazy loading, and add caching strategies for production readiness `M`
-30. [ ] Mobile Responsive Refinement — Ensure all interactive components (map, skill tree, editor) work seamlessly on mobile devices `M`
-31. [ ] Onboarding Flow — Create guided onboarding experience for new users explaining features and getting them started quickly `S`
-32. [ ] Error Handling & Recovery — Implement comprehensive error boundaries, retry logic, and user-friendly error messages `S`
-33. [ ] Accessibility Audit — Ensure WCAG compliance across all interactive components and keyboard navigation support `M`
+---
 
-> Notes
-> - Order items by technical dependencies and product architecture
-> - Each item represents an end-to-end functional and testable feature
-> - Phase 1 establishes all foundational infrastructure before building features
-> - Timeline (Phase 2) comes before Portfolio (Phase 3) as it generates content used in portfolios
-> - AI features (Phase 4) enhance existing content creation flows
-> - Social features (Phase 5) add distribution after core product is complete
-> - v1.0.0 marks the first production-ready release
+## Phase 6: Scale & Launch (v1.0.0)
+
+28. [ ] Performance Optimization — Bundle size, lazy loading, caching `M`
+29. [ ] Mobile Refinement — Timeline y skill tree responsive `M`
+30. [ ] Onboarding Flow — Guía para nuevos usuarios `S`
+31. [ ] Accessibility Audit — WCAG compliance, keyboard navigation `M`
+32. [ ] Analytics Dashboard — Métricas de portfolio views `S`
+
+---
+
+## Size Legend
+
+- `S` = Small (1-2 días)
+- `M` = Medium (3-5 días)
+- `L` = Large (1-2 semanas)
+
+## Notes
+
+- Phase 1 ✅ completada establece la infraestructura base
+- Phase 2 🎯 es el próximo objetivo - Timeline con Google Maps + Hexágonos
+- Dos modos visuales: **Professional** (limpio, ATS-friendly) y **Gaming** (cyberpunk)
+- Pixelated style postponed a v0.5.0+ para evaluar implementación
+- AI features vienen después de tener contenido para mejorar

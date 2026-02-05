@@ -16,6 +16,13 @@ import {
 import { EXPERIENCE_MESSAGES } from '../constants/messages';
 import { isValidCoordinates } from '../constants/xp';
 
+// Import skill sync functions
+import {
+  syncSkillsFromExperienceService,
+  type SyncSkillsFromExperienceServiceInput,
+} from '@/features/skills/services/skill.service';
+import { removeSourcesByExperienceData } from '@/features/skills/data';
+
 /**
  * Input for creating an experience via service
  */
@@ -86,6 +93,17 @@ export async function createExperienceService(
     skills: input.skills?.map((s) => s.trim()) ?? [],
   });
 
+  // Sync skills from the experience to the skill tree
+  if (input.skills && input.skills.length > 0) {
+    await syncExperienceSkills({
+      userId: input.userId,
+      experienceId: experience.id,
+      skills: input.skills,
+      startDate: input.startDate,
+      endDate: input.endDate ?? null,
+    });
+  }
+
   return experience;
 }
 
@@ -141,7 +159,19 @@ export async function updateExperienceService(
   if (updateFields.skills !== undefined)
     updateData.skills = updateFields.skills.map((s) => s.trim());
 
-  const experience = await updateExperienceData(updateData as any);
+  const experience = await updateExperienceData(updateData as unknown as Parameters<typeof updateExperienceData>[0]);
+
+  // Sync skills if skills were updated
+  if (updateFields.skills !== undefined) {
+    await syncExperienceSkills({
+      userId,
+      experienceId: id,
+      skills: updateFields.skills,
+      startDate,
+      endDate,
+    });
+  }
+
   return experience;
 }
 
@@ -166,6 +196,30 @@ export async function deleteExperienceService(
     throw new Error(EXPERIENCE_MESSAGES.UNAUTHORIZED);
   }
 
+  // Remove skill sources linked to this experience before deleting
+  await removeSourcesByExperienceData(id);
+
   const experience = await deleteExperienceData(id);
   return experience;
+}
+
+/**
+ * Sync skills from an experience to the skill tree
+ *
+ * This is called after experience create/update to keep skills in sync.
+ * Handles both adding new skill sources and removing sources for
+ * skills that were removed from the experience.
+ *
+ * @param input - The sync input
+ */
+async function syncExperienceSkills(
+  input: SyncSkillsFromExperienceServiceInput
+): Promise<void> {
+  try {
+    await syncSkillsFromExperienceService(input);
+  } catch (error) {
+    // Log the error but don't fail the experience operation
+    // Skills sync is secondary to the main experience operation
+    console.error('Failed to sync skills from experience:', error);
+  }
 }

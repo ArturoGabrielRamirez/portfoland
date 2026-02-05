@@ -30,7 +30,7 @@ export default async function DashboardTimelinePage() {
       user={{
         id: session.user.id,
         name: session.user.name,
-        username: (session.user as any).username || null,
+        username: (session.user as { username?: string }).username || null,
       }}
     />
   );

@@ -81,6 +81,7 @@ export async function createExperience(
 
     // Revalidate cache
     revalidatePath('/dashboard/timeline');
+    revalidatePath('/dashboard/skills');
 
     return {
       payload: experience,

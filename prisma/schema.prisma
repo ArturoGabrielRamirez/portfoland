@@ -31,9 +31,11 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  sessions    Session[]
-  accounts    Account[]
-  experiences Experience[]
+  sessions        Session[]
+  accounts        Account[]
+  experiences     Experience[]
+  userSkills      UserSkill[]
+  skillCategories SkillCategory[]
 
   @@map("users")
 }
@@ -101,23 +103,100 @@ enum ExperienceType {
 }
 
 model Experience {
-  id          String         @id @default(cuid()) @map("_id")
-  userId      String
-  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  type        ExperienceType
-  title       String
-  company     String
-  latitude    Float
-  longitude   Float
-  address     String
-  startDate   DateTime
-  endDate     DateTime?
-  description String
-  skills      String[]
-  xp          Int
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  id           String         @id @default(cuid()) @map("_id")
+  userId       String
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type         ExperienceType
+  title        String
+  company      String
+  latitude     Float
+  longitude    Float
+  address      String
+  startDate    DateTime
+  endDate      DateTime?
+  description  String
+  skills       String[]
+  xp           Int
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  skillSources SkillSource[]
 
   @@index([userId])
   @@map("experiences")
+}
+
+// =============================================================================
+// Skill Tree Feature Models
+// =============================================================================
+
+enum SourceType {
+  EXPERIENCE
+  MANUAL
+}
+
+model Skill {
+  id         String   @id @default(cuid()) @map("_id")
+  name       String
+  slug       String   @unique
+  categoryId String
+  category   SkillCategory @relation(fields: [categoryId], references: [id])
+  iconName   String?
+  isCore     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userSkills UserSkill[]
+
+  @@index([categoryId])
+  @@map("skills")
+}
+
+model SkillCategory {
+  id        String   @id @default(cuid()) @map("_id")
+  name      String
+  slug      String
+  color     String
+  isDefault Boolean  @default(false)
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  skills    Skill[]
+
+  @@unique([slug, userId])
+  @@index([userId])
+  @@map("skill_categories")
+}
+
+model UserSkill {
+  id        String   @id @default(cuid()) @map("_id")
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillId   String
+  skill     Skill    @relation(fields: [skillId], references: [id])
+  totalXP   Int      @default(0)
+  level     Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sources   SkillSource[]
+
+  @@unique([userId, skillId])
+  @@index([userId])
+  @@index([skillId])
+  @@map("user_skills")
+}
+
+model SkillSource {
+  id           String      @id @default(cuid()) @map("_id")
+  userSkillId  String
+  userSkill    UserSkill   @relation(fields: [userSkillId], references: [id], onDelete: Cascade)
+  sourceType   SourceType
+  experienceId String?
+  experience   Experience? @relation(fields: [experienceId], references: [id], onDelete: SetNull)
+  xpAmount     Int
+  metadata     Json?
+  createdAt    DateTime    @default(now())
+
+  @@index([userSkillId])
+  @@index([experienceId])
+  @@map("skill_sources")
 }

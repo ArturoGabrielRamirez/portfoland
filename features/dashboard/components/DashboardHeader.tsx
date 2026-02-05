@@ -21,12 +21,13 @@ import { LanguageSwitcher } from '@/features/i18n'
  *
  * Displays:
  * - Application logo linking to dashboard
- * - Navigation links (Dashboard, Timeline)
+ * - Navigation links (Dashboard, Timeline, Skill Tree)
  * - Language switcher for locale selection
  * - User menu with avatar and actions
  */
 export async function DashboardHeader({ user, locale }: DashboardHeaderProps) {
   const tCommon = await getTranslations('common')
+  const tNav = await getTranslations('navigation')
 
   // Navigation items
   const navItems = [
@@ -49,6 +50,20 @@ export async function DashboardHeader({ user, locale }: DashboardHeaderProps) {
         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 8v4l3 3" />
           <circle cx="12" cy="12" r="10" />
+        </svg>
+      ),
+    },
+    {
+      href: `/${locale}/dashboard/skills`,
+      label: tNav('skillTree'),
+      icon: (
+        // Sparkles icon for skill tree
+        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+          <path d="M20 3v4" />
+          <path d="M22 5h-4" />
+          <path d="M4 17v2" />
+          <path d="M5 18H3" />
         </svg>
       ),
     },

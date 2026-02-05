@@ -14,6 +14,8 @@
     "submit": "Submit",
     "or": "or",
     "and": "and",
+    "dashboard": "Dashboard",
+    "timeline": "Timeline",
     "languages": {
       "en": "English",
       "es": "Spanish"
@@ -28,6 +30,7 @@
     "home": "Home",
     "dashboard": "Dashboard",
     "timeline": "Timeline",
+    "skillTree": "Skill Tree",
     "portfolio": "Portfolio",
     "settings": "Settings",
     "signIn": "Sign In",
@@ -189,6 +192,86 @@
       "title": "Recent Activity",
       "noActivity": "No recent activity to show",
       "viewAll": "View all activity"
+    }
+  },
+  "skills": {
+    "pageTitle": "My Skill Tree",
+    "pageSubtitle": "Track your professional skills and level up",
+    "viewPublic": "View Public",
+    "stats": {
+      "totalSkills": "Total Skills",
+      "totalXP": "Total XP",
+      "masterSkills": "Master Skills",
+      "categories": "Categories"
+    },
+    "emptyState": {
+      "title": "Start Building Your Skill Tree",
+      "description": "Add skills manually or they will be automatically extracted from your timeline experiences.",
+      "hint": "Tip: Add experiences to your timeline and skills will be extracted automatically!"
+    },
+    "levels": {
+      "novice": "Novice",
+      "apprentice": "Apprentice",
+      "journeyman": "Journeyman",
+      "expert": "Expert",
+      "master": "Master"
+    },
+    "selfAssessment": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "form": {
+      "skillName": "Skill Name",
+      "skillNamePlaceholder": "e.g., React, Python, Leadership",
+      "category": "Category",
+      "selectCategory": "Select a category",
+      "selfAssessment": "Self-Assessment Level",
+      "learningSources": "Learning Sources (optional)",
+      "learningSourcesPlaceholder": "e.g., Online courses, books, tutorials, self-study...",
+      "dateStarted": "Date Started Learning",
+      "createCategory": "Create new category",
+      "addSkill": "Add Skill",
+      "updateSkill": "Update Skill"
+    },
+    "category": {
+      "createTitle": "Create Category",
+      "name": "Category Name",
+      "namePlaceholder": "e.g., Cloud Services, Mobile Development",
+      "color": "Category Color",
+      "create": "Create Category"
+    },
+    "detail": {
+      "level": "Level",
+      "totalXP": "Total XP",
+      "xpToNextLevel": "XP to next level",
+      "sources": "XP Sources",
+      "experienceSource": "From Experience",
+      "manualSource": "Self-taught",
+      "learningSources": "Learning Sources",
+      "dateStarted": "Started Learning",
+      "linkedExperiences": "Linked Experiences"
+    },
+    "suggestions": {
+      "title": "Suggested Skills",
+      "addSuggested": "Add this skill"
+    },
+    "messages": {
+      "skillCreated": "Skill added successfully!",
+      "skillUpdated": "Skill updated successfully!",
+      "skillDeleted": "Skill removed successfully!",
+      "categoryCreated": "Category created successfully!",
+      "cannotDeleteExperienceSkill": "Cannot delete skills linked to experiences. Remove the skill from your experiences first.",
+      "errorCreating": "Failed to add skill. Please try again.",
+      "errorUpdating": "Failed to update skill. Please try again.",
+      "errorDeleting": "Failed to remove skill. Please try again."
+    },
+    "validation": {
+      "nameRequired": "Skill name is required",
+      "nameTooShort": "Skill name must be at least 2 characters",
+      "assessmentRequired": "Please select your skill level",
+      "categoryNameRequired": "Category name is required",
+      "categoryColorRequired": "Please select a color"
     }
   },
   "landing": {

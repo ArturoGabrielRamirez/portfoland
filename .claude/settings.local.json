@@ -16,7 +16,9 @@
       "Bash(bun add:*)",
       "Bash(npm run test:run -- --testPathPattern=\"features/pages/__tests__/pages.test.tsx\")",
       "Bash(npx vitest run \"features/pages/__tests__/pages.test.tsx\")",
-      "Bash(bun run test:run:*)"
+      "Bash(bun run test:run:*)",
+      "Bash(dir:*)",
+      "Bash(ls:*)"
     ]
   }
 }

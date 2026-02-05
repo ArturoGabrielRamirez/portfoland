@@ -49,6 +49,7 @@ export async function deleteExperience(
 
     // Revalidate cache
     revalidatePath('/dashboard/timeline');
+    revalidatePath('/dashboard/skills');
 
     return {
       payload: experience,

@@ -44,6 +44,11 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+
+  /* Custom animations for skill tree */
+  --animate-twinkle: twinkle 3s ease-in-out infinite;
+  --animate-pulse-slow: pulse-slow 3s ease-in-out infinite;
+  --animate-glow-golden: glow-golden 2s ease-in-out infinite;
 }
 
 :root {
@@ -122,4 +127,49 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Skill Tree Animations */
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 20px currentColor;
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 40px currentColor;
+  }
+}
+
+@keyframes glow-golden {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(234, 179, 8, 0.6), 0 0 40px rgba(234, 179, 8, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(234, 179, 8, 0.8), 0 0 60px rgba(234, 179, 8, 0.4);
+  }
+}
+
+/* Animation utility classes */
+.animate-twinkle {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+.animate-glow-golden {
+  animation: glow-golden 2s ease-in-out infinite;
 }

@@ -14,6 +14,8 @@
     "submit": "Enviar",
     "or": "o",
     "and": "y",
+    "dashboard": "Panel",
+    "timeline": "Linea de Tiempo",
     "languages": {
       "en": "Ingles",
       "es": "Espanol"
@@ -28,6 +30,7 @@
     "home": "Inicio",
     "dashboard": "Panel",
     "timeline": "Linea de Tiempo",
+    "skillTree": "Arbol de Skills",
     "portfolio": "Portafolio",
     "settings": "Configuracion",
     "signIn": "Iniciar Sesion",
@@ -189,6 +192,86 @@
       "title": "Actividad Reciente",
       "noActivity": "No hay actividad reciente para mostrar",
       "viewAll": "Ver toda la actividad"
+    }
+  },
+  "skills": {
+    "pageTitle": "Mi Arbol de Skills",
+    "pageSubtitle": "Rastrea tus habilidades profesionales y sube de nivel",
+    "viewPublic": "Ver Publico",
+    "stats": {
+      "totalSkills": "Total de Skills",
+      "totalXP": "XP Total",
+      "masterSkills": "Skills Maestras",
+      "categories": "Categorias"
+    },
+    "emptyState": {
+      "title": "Comienza a Construir tu Arbol de Skills",
+      "description": "Agrega skills manualmente o seran extraidas automaticamente de tus experiencias en el timeline.",
+      "hint": "Tip: Agrega experiencias a tu timeline y las skills seran extraidas automaticamente!"
+    },
+    "levels": {
+      "novice": "Novato",
+      "apprentice": "Aprendiz",
+      "journeyman": "Oficial",
+      "expert": "Experto",
+      "master": "Maestro"
+    },
+    "selfAssessment": {
+      "beginner": "Principiante",
+      "intermediate": "Intermedio",
+      "advanced": "Avanzado"
+    },
+    "form": {
+      "skillName": "Nombre del Skill",
+      "skillNamePlaceholder": "ej., React, Python, Liderazgo",
+      "category": "Categoria",
+      "selectCategory": "Selecciona una categoria",
+      "selfAssessment": "Nivel de Autoevaluacion",
+      "learningSources": "Fuentes de Aprendizaje (opcional)",
+      "learningSourcesPlaceholder": "ej., Cursos online, libros, tutoriales, autodidacta...",
+      "dateStarted": "Fecha de Inicio de Aprendizaje",
+      "createCategory": "Crear nueva categoria",
+      "addSkill": "Agregar Skill",
+      "updateSkill": "Actualizar Skill"
+    },
+    "category": {
+      "createTitle": "Crear Categoria",
+      "name": "Nombre de Categoria",
+      "namePlaceholder": "ej., Servicios Cloud, Desarrollo Movil",
+      "color": "Color de Categoria",
+      "create": "Crear Categoria"
+    },
+    "detail": {
+      "level": "Nivel",
+      "totalXP": "XP Total",
+      "xpToNextLevel": "XP para siguiente nivel",
+      "sources": "Fuentes de XP",
+      "experienceSource": "De Experiencia",
+      "manualSource": "Autodidacta",
+      "learningSources": "Fuentes de Aprendizaje",
+      "dateStarted": "Inicio de Aprendizaje",
+      "linkedExperiences": "Experiencias Vinculadas"
+    },
+    "suggestions": {
+      "title": "Skills Sugeridas",
+      "addSuggested": "Agregar esta skill"
+    },
+    "messages": {
+      "skillCreated": "Skill agregada exitosamente!",
+      "skillUpdated": "Skill actualizada exitosamente!",
+      "skillDeleted": "Skill eliminada exitosamente!",
+      "categoryCreated": "Categoria creada exitosamente!",
+      "cannotDeleteExperienceSkill": "No se pueden eliminar skills vinculadas a experiencias. Elimina la skill de tus experiencias primero.",
+      "errorCreating": "Error al agregar skill. Por favor, intenta de nuevo.",
+      "errorUpdating": "Error al actualizar skill. Por favor, intenta de nuevo.",
+      "errorDeleting": "Error al eliminar skill. Por favor, intenta de nuevo."
+    },
+    "validation": {
+      "nameRequired": "El nombre del skill es requerido",
+      "nameTooShort": "El nombre del skill debe tener al menos 2 caracteres",
+      "assessmentRequired": "Por favor, selecciona tu nivel de skill",
+      "categoryNameRequired": "El nombre de la categoria es requerido",
+      "categoryColorRequired": "Por favor, selecciona un color"
     }
   },
   "landing": {

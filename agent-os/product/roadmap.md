@@ -4,7 +4,7 @@
 
 ---
 
-## Phase 1: Foundation (v0.1.0) ✅ COMPLETED
+## Phase 1: Foundation (v0.1.0) COMPLETED
 
 1. [x] Database Schema & Prisma Setup — MongoDB Atlas + Prisma 6.19, modelos User/Session/Account
 2. [x] Authentication System — Better Auth con Google OAuth y email/password
@@ -24,27 +24,27 @@
 
 ---
 
-## Phase 2: Interactive Timeline (v0.2.0) 🎯 NEXT
+## Phase 2: Interactive Timeline (v0.2.0) COMPLETED
 
-> **Concepto aprobado:** Google Maps + Hexágonos Gaming
+> **Concepto aprobado:** Google Maps + Hexagons Gaming
 > Ver detalles en `agent-os/product/design-ideas.md`
 
 8. [x] Timeline Map Component — Google Maps como fondo con blur/fade + overlay gaming `L`
 9. [x] Hexagon Node System — Nodos hexagonales conectados representando experiencias `M`
 10. [x] Experience Cards — Cards gaming para mostrar detalles de cada experiencia `M`
-11. [x] Timeline Entry Creator — Forms para agregar experiencias con ubicación, fechas, descripción `M`
-12. [x] Career Field Configuration — Selección de campo con naming gamificado (Freelance → Freelancero) `S`
+11. [x] Timeline Entry Creator — Forms para agregar experiencias con ubicacion, fechas, descripcion `M`
+12. [x] Career Field Configuration — Seleccion de campo con naming gamificado (Freelance -> Freelancero) `S`
 13. [x] Zoom Interactions — Animaciones zoom in/out al seleccionar experiencias en el mapa `M`
 
 ---
 
-## Phase 3: Skill Tree & Portfolio (v0.3.0)
+## Phase 3: Skill Tree & Portfolio (v0.3.0) IN PROGRESS
 
-14. [ ] Skill Tree Visualization — Árbol de habilidades estilo videojuego con progresión y dependencias `L`
+14. [x] Skill Tree Visualization — Arbol de habilidades estilo videojuego con progresion y dependencias `L`
 15. [ ] Portfolio Template System — Templates con modos Professional y Gaming `L`
 16. [ ] Subdomain Routing — username.portfoland.com con Next.js middleware `M`
-17. [ ] Project Showcase — Cards de proyectos con imágenes, tech stack, links `M`
-18. [ ] Portfolio SEO & Meta Tags — Open Graph, structured data dinámico `S`
+17. [ ] Project Showcase — Cards de proyectos con imagenes, tech stack, links `M`
+18. [ ] Portfolio SEO & Meta Tags — Open Graph, structured data dinamico `S`
 
 ---
 
@@ -59,11 +59,11 @@
 
 ## Phase 5: Styles & Polish (v0.5.0+)
 
-23. [ ] Pixelated Style Mode — Tercer modo visual con estética pixel art (evaluar complejidad) `L`
+23. [ ] Pixelated Style Mode — Tercer modo visual con estetica pixel art (evaluar complejidad) `L`
 24. [ ] Geographic Map Expansion — Mapa de Argentina/mundo con regiones clickeables `L`
 25. [ ] Character Customization — Avatares personalizables con pixel art `M`
 26. [ ] Achievement System — Badges y logros desbloqueables `M`
-27. [ ] Social Share Cards — Imágenes dinámicas para compartir `M`
+27. [ ] Social Share Cards — Imagenes dinamicas para compartir `M`
 
 ---
 
@@ -71,22 +71,23 @@
 
 28. [ ] Performance Optimization — Bundle size, lazy loading, caching `M`
 29. [ ] Mobile Refinement — Timeline y skill tree responsive `M`
-30. [ ] Onboarding Flow — Guía para nuevos usuarios `S`
+30. [ ] Onboarding Flow — Guia para nuevos usuarios `S`
 31. [ ] Accessibility Audit — WCAG compliance, keyboard navigation `M`
-32. [ ] Analytics Dashboard — Métricas de portfolio views `S`
+32. [ ] Analytics Dashboard — Metricas de portfolio views `S`
 
 ---
 
 ## Size Legend
 
-- `S` = Small (1-2 días)
-- `M` = Medium (3-5 días)
+- `S` = Small (1-2 dias)
+- `M` = Medium (3-5 dias)
 - `L` = Large (1-2 semanas)
 
 ## Notes
 
-- Phase 1 ✅ completada establece la infraestructura base
-- Phase 2 🎯 es el próximo objetivo - Timeline con Google Maps + Hexágonos
+- Phase 1 completada establece la infraestructura base
+- Phase 2 completada - Timeline con Google Maps + Hexagonos
+- Phase 3 en progreso - Skill Tree completado, Portfolio Template System pendiente
 - Dos modos visuales: **Professional** (limpio, ATS-friendly) y **Gaming** (cyberpunk)
-- Pixelated style postponed a v0.5.0+ para evaluar implementación
-- AI features vienen después de tener contenido para mejorar
+- Pixelated style postponed a v0.5.0+ para evaluar implementacion
+- AI features vienen despues de tener contenido para mejorar

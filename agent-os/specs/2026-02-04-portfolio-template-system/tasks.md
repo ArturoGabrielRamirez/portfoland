@@ -11,49 +11,49 @@ Feature: Public portfolio page at `/[locale]/[username]` with two visual modes (
 #### Task Group 1: Prisma Schema Updates and Data Functions
 **Dependencies:** None
 
-- [ ] 1.0 Complete data layer for portfolio system
-  - [ ] 1.1 Write 4 focused tests for data layer
+- [x] 1.0 Complete data layer for portfolio system
+  - [x] 1.1 Write 4 focused tests for data layer
     - Test `getPortfolioByUsername` returns aggregated data for a valid username
     - Test `getPortfolioByUsername` returns `null` for a non-existent username
     - Test `getPublicProjectsByUsername` returns only experiences with `type: 'PROJECT'`
     - Test `updatePortfolioMode` correctly updates the `portfolioMode` field on the User model
-  - [ ] 1.2 Add `portfolioMode` and `bio` fields to User model in `prisma/schema.prisma`
+  - [x] 1.2 Add `portfolioMode` and `bio` fields to User model in `prisma/schema.prisma`
     - Add `portfolioMode String @default("professional")` to the User model
     - Add `bio String?` to the User model
     - Run `bunx prisma generate` after schema change (ask user before running `prisma migrate dev`)
-  - [ ] 1.3 Add `portfolioMode` to the `DashboardUser` type in `features/dashboard/types/dashboard.ts`
+  - [x] 1.3 Add `portfolioMode` to the `DashboardUser` type in `features/dashboard/types/dashboard.ts`
     - Add `portfolioMode: string` field to the `DashboardUser` interface
     - Ensure the dashboard layout query includes `portfolioMode` when fetching user data
-  - [ ] 1.4 Create `features/portfolio/` feature folder with standard structure
+  - [x] 1.4 Create `features/portfolio/` feature folder with standard structure
     - Create directories: `components/`, `types/`, `data/`, `constants/`
     - Create `features/portfolio/index.ts` barrel export
-  - [ ] 1.5 Define portfolio types in `features/portfolio/types/portfolio.ts`
+  - [x] 1.5 Define portfolio types in `features/portfolio/types/portfolio.ts`
     - Create `PortfolioMode` type (`'professional' | 'gaming'`)
     - Create `PortfolioData` type aggregating user profile, `portfolioMode`, experiences, skills, projects
     - Create `PortfolioUser` type (id, name, username, email, image, bio, portfolioMode)
     - Define component prop interfaces: `PortfolioLayoutProps`, `PortfolioSectionProps`, `PanelNavigationProps`
     - Use Prisma types as foundation; extend with `Pick`/`Omit` utilities per standards
-  - [ ] 1.6 Create `features/portfolio/data/getPortfolio.data.ts`
+  - [x] 1.6 Create `features/portfolio/data/getPortfolio.data.ts`
     - Implement `getPortfolioByUsername(username: string): Promise<PortfolioData | null>`
     - Fetch user profile (with `portfolioMode` and `bio`), experiences, skills, and projects in parallel using `Promise.all`
     - Reuse `getPublicTimelineByUsername` for experiences data
     - Reuse `getPublicSkillsByUsername` for skills data
     - Return `null` if user not found or has no `username` set
     - Import `prisma` from `@/features/core` (or `@/lib/prisma` matching existing pattern)
-  - [ ] 1.7 Create `features/portfolio/data/getPublicProjects.data.ts`
+  - [x] 1.7 Create `features/portfolio/data/getPublicProjects.data.ts`
     - Implement `getPublicProjectsByUsername(username: string): Promise<ProjectData[] | null>`
     - Query experiences with `type: 'PROJECT'` for the given username, ordered by `startDate desc`
     - Pure data function with no business logic per standards
-  - [ ] 1.8 Create `features/portfolio/data/updatePortfolioMode.data.ts`
+  - [x] 1.8 Create `features/portfolio/data/updatePortfolioMode.data.ts`
     - Implement `updatePortfolioModeData(userId: string, mode: string): Promise<User>`
     - Pure Prisma update on the User model's `portfolioMode` field
-  - [ ] 1.9 Create Yup validation schema in `features/portfolio/schemas/portfolio.schema.ts`
+  - [x] 1.9 Create Yup validation schema in `features/portfolio/schemas/portfolio.schema.ts`
     - Define `updatePortfolioModeSchema` validating mode is one of `'professional'` or `'gaming'`
     - Export inferred type `UpdatePortfolioModeInput`
-  - [ ] 1.10 Create portfolio constants in `features/portfolio/constants/messages.ts`
+  - [x] 1.10 Create portfolio constants in `features/portfolio/constants/messages.ts`
     - Define `PORTFOLIO_MESSAGES` with success/error messages for mode toggle
     - Define `PORTFOLIO_MODES` constant object with `PROFESSIONAL` and `GAMING` values
-  - [ ] 1.11 Ensure data layer tests pass
+  - [x] 1.11 Ensure data layer tests pass
     - Run ONLY the 4 tests written in 1.1
     - Verify schema generates correctly
     - Do NOT run the entire test suite at this stage

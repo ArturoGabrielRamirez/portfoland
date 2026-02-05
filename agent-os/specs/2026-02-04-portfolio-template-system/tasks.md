@@ -74,17 +74,17 @@ Feature: Public portfolio page at `/[locale]/[username]` with two visual modes (
 #### Task Group 2: Portfolio Mode Toggle Server Action
 **Dependencies:** Task Group 1
 
-- [ ] 2.0 Complete server action for portfolio mode toggling
-  - [ ] 2.1 Write 3 focused tests for the mode toggle action
+- [x] 2.0 Complete server action for portfolio mode toggling
+  - [x] 2.1 Write 3 focused tests for the mode toggle action
     - Test `togglePortfolioMode` server action successfully updates mode from `professional` to `gaming`
     - Test `togglePortfolioMode` rejects invalid mode values
     - Test `togglePortfolioMode` requires authentication (returns error for unauthenticated request)
-  - [ ] 2.2 Create `features/portfolio/services/portfolio.service.ts`
+  - [x] 2.2 Create `features/portfolio/services/portfolio.service.ts`
     - Implement `updatePortfolioModeService(userId: string, mode: string)` with business logic
     - Validate that the mode value is valid (`professional` or `gaming`)
     - Call `updatePortfolioModeData` from the data layer
     - Follow three-layer architecture: action -> service -> data
-  - [ ] 2.3 Create `features/portfolio/actions/togglePortfolioMode.ts`
+  - [x] 2.3 Create `features/portfolio/actions/togglePortfolioMode.ts`
     - Implement `togglePortfolioMode` server action with `'use server'` directive
     - Validate input with Yup schema from 1.9
     - Wrap with `actionWrapper` for consistent error handling per standards
@@ -92,7 +92,7 @@ Feature: Public portfolio page at `/[locale]/[username]` with two visual modes (
     - Call `updatePortfolioModeService`
     - Revalidate the public portfolio path (`/[locale]/[username]`) after toggling
     - Return `ActionResponse` with success/error message from constants
-  - [ ] 2.4 Ensure server action tests pass
+  - [x] 2.4 Ensure server action tests pass
     - Run ONLY the 3 tests written in 2.1
     - Do NOT run the entire test suite at this stage
 

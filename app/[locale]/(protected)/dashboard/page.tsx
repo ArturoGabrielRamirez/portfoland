@@ -663,7 +663,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
             </GamingCard>
           </Link>
 
-          <Link href={`/${locale}/dashboard/skill-tree`}>
+          <Link href={`/${locale}/dashboard/skills`}>
             <GamingCard
               variant="default"
               className="group cursor-pointer p-4 text-center transition-all hover:border-[#D946EF]/50"

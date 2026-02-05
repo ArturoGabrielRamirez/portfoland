@@ -151,7 +151,7 @@ export default function DashboardPage() {
               <p className="text-xs text-muted-foreground mt-1">Nuevo item en timeline</p>
             </GamingCard>
           </Link>
-          <Link href="/dashboard/skill-tree">
+          <Link href="/dashboard/skills">
             <GamingCard variant="default" className="p-4 text-center hover:border-secondary/50 transition-all cursor-pointer group">
               <div className="w-10 h-10 rounded-xl bg-secondary/20 flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
                 <EditIcon className="w-5 h-5 text-secondary" />

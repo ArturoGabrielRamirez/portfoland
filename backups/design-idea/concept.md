@@ -7,7 +7,7 @@ Completed all tasksHe creado todo el sistema de diseno de **Portfoland** con las
 - `/login` - Login/Registro con selector de avatar/clase gaming
 - `/dashboard` - Dashboard principal con XP, logros, acciones rapidas
 - `/dashboard/timeline` - Timeline interactivo tipo RPG con experiencias
-- `/dashboard/skill-tree` - Arbol de habilidades visual con nodos y conexiones
+- `/dashboard/skills` - Arbol de habilidades visual con nodos y conexiones
 - `/dashboard/logros` - Galeria de achievements con filtros
 - `/dashboard/mi-cv` - Generador de CV con asistente IA
 - `/dashboard/settings` - Configuracion de perfil

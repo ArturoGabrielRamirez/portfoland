@@ -109,20 +109,20 @@ Feature: Public portfolio page at `/[locale]/[username]` with two visual modes (
 #### Task Group 3: i18n Translations
 **Dependencies:** None (can run in parallel with Task Groups 1-2)
 
-- [ ] 3.0 Complete i18n support for portfolio feature
-  - [ ] 3.1 Add `portfolio` namespace to `messages/en.json`
+- [x] 3.0 Complete i18n support for portfolio feature
+  - [x] 3.1 Add `portfolio` namespace to `messages/en.json`
     - Navigation labels: `hero`, `about`, `timeline`, `skills`, `projects`, `contact`, `ai`
     - Section titles for both modes
     - Empty states: professional ("No summary provided", "No projects yet", etc.) and gaming ("BIOGRAPHY DATA NOT FOUND", "NO MISSIONS LOGGED", etc.)
     - Mode names: `professional`, `gaming`
     - Placeholder text for AI section: "AI-Powered Insights", "Coming Soon", "SYSTEM INITIALIZING..."
     - Common UI labels: "Download CV", "Coming Soon", "Contact", social link labels
-  - [ ] 3.2 Add `portfolio` namespace to `messages/es.json`
+  - [x] 3.2 Add `portfolio` namespace to `messages/es.json`
     - Spanish translations for all keys added in 3.1
     - Maintain same key structure as English
-  - [ ] 3.3 Add mode toggle labels to the `dashboard` namespace in both `en.json` and `es.json`
+  - [x] 3.3 Add mode toggle labels to the `dashboard` namespace in both `en.json` and `es.json`
     - Keys: `modeToggle.professional`, `modeToggle.gaming`, `modeToggle.label`, `modeToggle.success`
-  - [ ] 3.4 Verify i18n keys load without errors
+  - [x] 3.4 Verify i18n keys load without errors
     - Manually verify keys are valid JSON and accessible
 
 **Acceptance Criteria:**

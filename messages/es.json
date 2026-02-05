@@ -128,6 +128,12 @@
   "dashboard": {
     "welcome": "Bienvenido de nuevo, {name}!",
     "welcomeSubtitle": "Continua construyendo tu aventura profesional",
+    "modeToggle": {
+      "professional": "Profesional",
+      "gaming": "Gaming",
+      "label": "Modo de Portafolio",
+      "success": "Modo de portafolio actualizado exitosamente"
+    },
     "gaming": {
       "levelProgress": "PROGRESO AL NIVEL {level}",
       "currentLevel": "Nivel actual",
@@ -192,6 +198,105 @@
       "title": "Actividad Reciente",
       "noActivity": "No hay actividad reciente para mostrar",
       "viewAll": "Ver toda la actividad"
+    }
+  },
+  "portfolio": {
+    "nav": {
+      "hero": "Inicio",
+      "about": "Acerca de",
+      "timeline": "Experiencia",
+      "skills": "Habilidades",
+      "projects": "Proyectos",
+      "contact": "Contacto",
+      "ai": "IA"
+    },
+    "modes": {
+      "professional": "Profesional",
+      "gaming": "Gaming"
+    },
+    "sections": {
+      "hero": {
+        "professional": {
+          "title": "Perfil"
+        },
+        "gaming": {
+          "title": "PERFIL DE JUGADOR"
+        }
+      },
+      "about": {
+        "professional": {
+          "title": "Acerca de",
+          "emptyState": "No se ha proporcionado un resumen"
+        },
+        "gaming": {
+          "title": "BIOGRAFIA",
+          "emptyState": "DATOS DE BIOGRAFIA NO ENCONTRADOS"
+        }
+      },
+      "timeline": {
+        "professional": {
+          "title": "Experiencia",
+          "emptyState": "No se ha agregado experiencia aun"
+        },
+        "gaming": {
+          "title": "REGISTRO DE MISIONES",
+          "emptyState": "NO HAY MISIONES REGISTRADAS"
+        }
+      },
+      "skills": {
+        "professional": {
+          "title": "Habilidades",
+          "emptyState": "No hay habilidades listadas aun"
+        },
+        "gaming": {
+          "title": "ARBOL DE SKILLS",
+          "emptyState": "NO HAY SKILLS DESBLOQUEADAS"
+        }
+      },
+      "projects": {
+        "professional": {
+          "title": "Proyectos",
+          "emptyState": "No hay proyectos aun"
+        },
+        "gaming": {
+          "title": "MISIONES",
+          "emptyState": "NO HAY MISIONES DESPLEGADAS"
+        }
+      },
+      "contact": {
+        "professional": {
+          "title": "Contacto"
+        },
+        "gaming": {
+          "title": "ENLACE DE COMUNICACION"
+        }
+      },
+      "ai": {
+        "professional": {
+          "title": "Analisis Impulsado por IA",
+          "description": "Analisis inteligente y recomendaciones impulsadas por IA para mejorar tu presencia profesional.",
+          "comingSoon": "Proximamente"
+        },
+        "gaming": {
+          "title": "NUCLEO DE IA",
+          "description": "Interfaz neuronal avanzada para inteligencia profesional y analisis tactico.",
+          "status": "SISTEMA INICIALIZANDO..."
+        }
+      }
+    },
+    "ui": {
+      "downloadCv": "Descargar CV",
+      "comingSoon": "Proximamente",
+      "contact": "Contacto",
+      "email": "Correo",
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "website": "Sitio Web",
+      "viewProject": "Ver Proyecto",
+      "totalProjects": "Total de Proyectos",
+      "category": "Categoria",
+      "level": "Nivel",
+      "present": "Presente"
     }
   },
   "skills": {

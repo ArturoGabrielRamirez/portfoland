@@ -13,13 +13,11 @@ import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { auth } from '@/lib/auth'
 import {
   HUDPanel,
-  StatCard,
   XPBar,
-  GamingAvatar,
   LevelBadge,
   GamingCard,
-  GamingBadge,
 } from '@/features/gaming'
+import { ConsolePanelCard, HexagonAvatar, HexagonStatCard, AnimatedSection, CyberpunkScreen } from '@/features/dashboard/components'
 import type { DashboardPageProps } from '@/features/dashboard/types/dashboard'
 
 // =============================================================================
@@ -250,6 +248,25 @@ function CheckCircleIcon({ className }: { className?: string }) {
   )
 }
 
+function LevelIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+      aria-hidden="true"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M13 10V3L4 14h7v7l9-11h-7z"
+      />
+    </svg>
+  )
+}
+
 // =============================================================================
 // Helper Functions
 // =============================================================================
@@ -373,96 +390,7 @@ function ProfileCompletion({
   )
 }
 
-// =============================================================================
-// Feature Card Component
-// =============================================================================
 
-interface FeatureCardProps {
-  title: string
-  description: string
-  version: string
-  icon: React.ReactNode
-  color: 'cyan' | 'magenta' | 'green'
-}
-
-function FeatureCard({
-  title,
-  description,
-  version,
-  icon,
-  color,
-}: FeatureCardProps) {
-  const colorStyles = {
-    cyan: {
-      border: 'border-[#00D4FF]/30',
-      iconBg: 'bg-[#00D4FF]/20',
-      iconColor: 'text-[#00D4FF]',
-      glow: 'hover:shadow-[0_0_20px_rgba(0,212,255,0.15)]',
-      badge: 'cyan' as const,
-    },
-    magenta: {
-      border: 'border-[#D946EF]/30',
-      iconBg: 'bg-[#D946EF]/20',
-      iconColor: 'text-[#D946EF]',
-      glow: 'hover:shadow-[0_0_20px_rgba(217,70,239,0.15)]',
-      badge: 'magenta' as const,
-    },
-    green: {
-      border: 'border-[#22C55E]/30',
-      iconBg: 'bg-[#22C55E]/20',
-      iconColor: 'text-[#22C55E]',
-      glow: 'hover:shadow-[0_0_20px_rgba(34,197,94,0.15)]',
-      badge: 'green' as const,
-    },
-  }
-
-  const styles = colorStyles[color]
-
-  return (
-    <GamingCard
-      variant="default"
-      className={`relative p-5 transition-all ${styles.border} ${styles.glow}`}
-    >
-      {/* Coming Soon Badge */}
-      <div className="absolute top-3 right-3">
-        <GamingBadge color={styles.badge}>{version}</GamingBadge>
-      </div>
-
-      {/* Icon */}
-      <div
-        className={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl ${styles.iconBg}`}
-      >
-        <div className={styles.iconColor}>{icon}</div>
-      </div>
-
-      {/* Content */}
-      <h3 className="mb-2 text-lg font-semibold text-white">{title}</h3>
-      <p className="text-sm text-[#94A3B8] leading-relaxed">{description}</p>
-
-      {/* Locked Overlay */}
-      <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-[#0A0E1A]/60 opacity-0 hover:opacity-100 transition-opacity">
-        <div className="text-center">
-          <svg
-            className="mx-auto h-8 w-8 text-[#64748B] mb-2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-            />
-          </svg>
-          <span className="text-sm font-medium text-[#94A3B8]">
-            Coming Soon
-          </span>
-        </div>
-      </div>
-    </GamingCard>
-  )
-}
 
 // =============================================================================
 // Page Component
@@ -525,196 +453,280 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   const xpPercent = Math.round((userStats.xp / userStats.maxXp) * 100)
 
   return (
-    <div className="space-y-6">
-      {/* Welcome Header with Avatar */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-4">
-          {/* User Avatar with Level Badge */}
-          <div className="relative">
-            <GamingAvatar
-              src={user.image ?? undefined}
-              alt={user.name ?? user.email}
-              fallback={initials}
-              size="lg"
-              frame="cyan"
-            />
-            {/* Level badge overlay */}
-            <div className="absolute -bottom-1 -right-1">
-              <LevelBadge level={userStats.level} size="sm" />
+    <div 
+      className="min-h-screen w-full overflow-hidden bg-black"
+      style={{
+        background: 'radial-gradient(ellipse at center, #0A0F1A 0%, #000000 100%)',
+      }}
+    >
+      {/* Main Dashboard Frame */}
+      <div className="min-h-screen p-6 space-y-6 max-w-7xl mx-auto">
+        
+        {/* ROW 1: Welcome + Cyberpunk Screen - Flex Row */}
+        <div className="flex flex-row gap-6 h-32">
+          
+          {/* Welcome Section - Left Side */}
+          <div className="flex-1 max-w-md">
+            <div className="flex items-center gap-4 h-full">
+              {/* Avatar */}
+              <div className="flex-shrink-0">
+                <HexagonAvatar
+                  src={user.image ?? undefined}
+                  alt={user.name ?? user.email}
+                  fallback={initials}
+                  size="lg"
+                  level={userStats.level}
+                  color="#00D4FF"
+                />
+              </div>
+              
+              {/* Welcome Text + Quick Access */}
+              <div className="flex-1 min-w-0">
+                <h1 className="font-display text-lg font-bold text-white bg-gradient-to-r from-[#00D4FF] to-[#D946EF] bg-clip-text text-transparent mb-1">
+                  {t('welcome', { name: displayName })}
+                </h1>
+                <p className="text-sm text-[#94A3B8] mb-2 truncate">{t('welcomeSubtitle')}</p>
+                
+                {/* Quick Access Hexagons - Inline */}
+                <div className="flex gap-2">
+                  <Link href={`/${locale}/dashboard/timeline`}>
+                    <div className="group cursor-pointer transform transition-all hover:scale-110">
+                      <HexagonStatCard
+                        value="ADD"
+                        label="XP"
+                        color="cyan"
+                        icon={<PlusIcon className="h-3 w-3" />}
+                        size="xs"
+                      />
+                    </div>
+                  </Link>
+                  
+                  <Link href={`/${locale}/dashboard/skills`}>
+                    <div className="group cursor-pointer transform transition-all hover:scale-110">
+                      <HexagonStatCard
+                        value="EDIT"
+                        label="Skills"
+                        color="magenta"
+                        icon={<EditIcon className="h-3 w-3" />}
+                        size="xs"
+                      />
+                    </div>
+                  </Link>
+                  
+                  <Link href={`/${locale}/dashboard/my-cv`}>
+                    <div className="group cursor-pointer transform transition-all hover:scale-110">
+                      <HexagonStatCard
+                        value="GET"
+                        label="CV"
+                        color="green"
+                        icon={<DownloadIcon className="h-3 w-3" />}
+                        size="xs"
+                      />
+                    </div>
+                  </Link>
+                  
+                  <Link href={`/${locale}/portfolio/${user.id}`}>
+                    <div className="group cursor-pointer transform transition-all hover:scale-110">
+                      <HexagonStatCard
+                        value="VIEW"
+                        label="Portfolio"
+                        color="yellow"
+                        icon={<ShareIcon className="h-3 w-3" />}
+                        size="xs"
+                      />
+                    </div>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
-
-          {/* Welcome Text */}
-          <div>
-            <h1 className="font-display text-2xl font-bold text-white sm:text-3xl">
-              {t('welcome', { name: displayName })}
-            </h1>
-            <p className="mt-1 text-[#94A3B8]">{t('welcomeSubtitle')}</p>
+          
+          {/* Cyberpunk Screen - Right Side */}
+          <div className="flex-1">
+            <HUDPanel className="h-full p-0">
+              <CyberpunkScreen 
+                stats={userStats}
+                className="h-full"
+              />
+            </HUDPanel>
           </div>
         </div>
-      </div>
 
-      {/* Stats Row */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <StatCard
-          value={userStats.xp.toLocaleString()}
-          label={t('gaming.stats.experience')}
-          color="yellow"
-          icon={<BoltIcon className="h-5 w-5" />}
-        />
-        <StatCard
-          value={`${userStats.achievements.unlocked}/${userStats.achievements.total}`}
-          label={t('gaming.stats.achievements')}
-          color="magenta"
-          icon={<TrophyIcon className="h-5 w-5" />}
-        />
-        <StatCard
-          value={userStats.skills.toString()}
-          label={t('gaming.stats.skills')}
-          color="cyan"
-          icon={<LightbulbIcon className="h-5 w-5" />}
-        />
-        <StatCard
-          value={userStats.views.toLocaleString()}
-          label={t('gaming.stats.views')}
-          color="green"
-          icon={<ChartIcon className="h-5 w-5" />}
-        />
-      </div>
-
-      {/* Level Progress */}
-      <HUDPanel
-        title={t('gaming.levelProgress', { level: userStats.level + 1 })}
-        className="relative overflow-hidden"
-      >
-        <div className="flex items-center gap-6">
-          <div className="hidden items-center gap-3 sm:flex">
-            <span className="text-sm text-[#94A3B8]">
-              {t('gaming.currentLevel')}
-            </span>
-            <LevelBadge level={userStats.level} size="md" />
+        {/* ROW 2: 3 Giant Flip Cards */}
+        <div className="grid grid-cols-12 gap-6 h-64">
+          {/* Giant Card 1 - Progress */}
+          <div className="col-span-12 lg:col-span-4">
+            <ConsolePanelCard
+              title="Level Progress"
+              description={`Level ${userStats.level} • ${xpPercent}% Complete`}
+              version={`${xpRemaining} XP to go`}
+              icon={<BoltIcon className="h-6 w-6" />}
+              color="yellow"
+              backContent={
+                <div className="space-y-3">
+                  <div className="p-3 rounded bg-[#1E293B]/50">
+                    <div className="text-xs text-[#64748B] mb-1">Current Level</div>
+                    <div className="text-lg font-bold text-[#EAB308]">{userStats.level}</div>
+                  </div>
+                  <div className="p-3 rounded bg-[#1E293B]/50">
+                    <div className="text-xs text-[#64748B] mb-1">Experience</div>
+                    <div className="text-lg font-bold text-white">{userStats.xp.toLocaleString()}/{userStats.maxXp.toLocaleString()}</div>
+                  </div>
+                  <div className="p-3 rounded bg-[#1E293B]/50">
+                    <div className="text-xs text-[#64748B] mb-1">Progress</div>
+                    <div className="w-full h-2 bg-[#1E293B] rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-gradient-to-r from-[#EAB308] to-[#F59E0B] rounded-full transition-all duration-500"
+                        style={{ width: `${xpPercent}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              }
+            />
           </div>
-          <div className="flex-1">
-            <XPBar
-              current={userStats.xp}
-              max={userStats.maxXp}
-              level={userStats.level}
+
+          {/* Giant Card 2 - Achievements */}
+          <div className="col-span-12 lg:col-span-4">
+            <ConsolePanelCard
+              title="Achievements"
+              description={`${userStats.achievements.unlocked} of ${userStats.achievements.total} unlocked`}
+              version={`${Math.round((userStats.achievements.unlocked / userStats.achievements.total) * 100)}% Complete`}
+              icon={<TrophyIcon className="h-6 w-6" />}
+              color="magenta"
+              backContent={
+                <div className="space-y-3">
+                  <div className="p-3 rounded bg-[#1E293B]/50">
+                    <div className="text-xs text-[#64748B] mb-1">Total Unlocked</div>
+                    <div className="text-lg font-bold text-[#D946EF]">{userStats.achievements.unlocked}</div>
+                  </div>
+                  <div className="p-3 rounded bg-[#1E293B]/50">
+                    <div className="text-xs text-[#64748B] mb-1">Remaining</div>
+                    <div className="text-lg font-bold text-white">{userStats.achievements.total - userStats.achievements.unlocked}</div>
+                  </div>
+                  <div className="p-3 rounded bg-[#1E293B]/50">
+                    <div className="text-xs text-[#64748B] mb-1">Rank</div>
+                    <div className="text-lg font-bold text-[#D946EF]">RISING STAR</div>
+                  </div>
+                </div>
+              }
+            />
+          </div>
+
+          {/* Giant Card 3 - Profile */}
+          <div className="col-span-12 lg:col-span-4">
+            <ConsolePanelCard
+              title="Profile Status"
+              description={`${profileCompletion}% Complete`}
+              version="Keep Building"
+              icon={<CheckCircleIcon className="h-6 w-6" />}
+              color="cyan"
+              backContent={
+                <div className="space-y-3">
+                  <div className="p-3 rounded bg-[#1E293B]/50">
+                    <div className="text-xs text-[#64748B] mb-1">Profile Completion</div>
+                    <div className="w-full h-2 bg-[#1E293B] rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-gradient-to-r from-[#00D4FF] to-[#22D3EE] rounded-full transition-all duration-500"
+                        style={{ width: `${profileCompletion}%` }}
+                      />
+                    </div>
+                  </div>
+                  <div className="p-3 rounded bg-[#1E293B]/50">
+                    <div className="text-xs text-[#64748B] mb-1">Skills Count</div>
+                    <div className="text-lg font-bold text-[#00D4FF]">{userStats.skills}</div>
+                  </div>
+                  <div className="p-3 rounded bg-[#1E293B]/50">
+                    <div className="text-xs text-[#64748B] mb-1">Portfolio Views</div>
+                    <div className="text-lg font-bold text-white">{userStats.views.toLocaleString()}</div>
+                  </div>
+                </div>
+              }
             />
           </div>
         </div>
-        <p className="mt-3 text-sm text-[#94A3B8]">
-          {t('gaming.xpRemaining', { xp: xpRemaining, percent: xpPercent })}
-        </p>
-      </HUDPanel>
 
-      {/* Profile Completion */}
-      <HUDPanel title={t('progress.title')} className="relative overflow-hidden">
-        <ProfileCompletion
-          percentage={profileCompletion}
-          title={t('progress.percentage', { percent: profileCompletion })}
-          subtitle={t('progress.completeProfile')}
-        />
-      </HUDPanel>
+        {/* ROW 3: 3 Feature Cards (Timeline, Skills, Portfolio) */}
+        <div className="grid grid-cols-12 gap-6 h-64">
+          {/* Timeline Feature */}
+          <div className="col-span-12 lg:col-span-4">
+            <Link href={`/${locale}/dashboard/timeline`}>
+              <HUDPanel className="relative overflow-hidden h-full cursor-pointer transition-all hover:scale-[1.02] group">
+                {/* Glow Effect on Hover */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity"
+                  style={{
+                    background: 'radial-gradient(circle at center, #00D4FF 0%, transparent 70%)',
+                  }}
+                />
+                
+                <div className="p-6 h-full flex flex-col items-center justify-center text-center">
+                  <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-[#00D4FF]/20 group-hover:bg-[#00D4FF]/30 transition-colors">
+                    <ClockIcon className="h-8 w-8 text-[#00D4FF]" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">Timeline</h3>
+                  <p className="text-sm text-[#94A3B8] mb-4">Build your professional journey</p>
+                  <div className="inline-block px-3 py-1 rounded-full bg-[#00D4FF]/20 text-[#00D4FF] text-xs font-medium">
+                    ACTIVE NOW
+                  </div>
+                </div>
+              </HUDPanel>
+            </Link>
+          </div>
 
-      {/* Feature Cards - Coming Soon */}
-      <HUDPanel title={t('features.title')} className="relative overflow-hidden">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <FeatureCard
-            title={t('features.timeline.title')}
-            description={t('features.timeline.description')}
-            version={t('features.timeline.comingSoon')}
-            icon={<ClockIcon className="h-6 w-6" />}
-            color="cyan"
-          />
-          <FeatureCard
-            title={t('features.portfolio.title')}
-            description={t('features.portfolio.description')}
-            version={t('features.portfolio.comingSoon')}
-            icon={<BriefcaseIcon className="h-6 w-6" />}
-            color="magenta"
-          />
-          <FeatureCard
-            title={t('features.aiAssistant.title')}
-            description={t('features.aiAssistant.description')}
-            version={t('features.aiAssistant.comingSoon')}
-            icon={<SparklesIcon className="h-6 w-6" />}
-            color="green"
-          />
+          {/* Skills Feature */}
+          <div className="col-span-12 lg:col-span-4">
+            <Link href={`/${locale}/dashboard/skills`}>
+              <HUDPanel className="relative overflow-hidden h-full cursor-pointer transition-all hover:scale-[1.02] group">
+                {/* Glow Effect on Hover */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity"
+                  style={{
+                    background: 'radial-gradient(circle at center, #D946EF 0%, transparent 70%)',
+                  }}
+                />
+                
+                <div className="p-6 h-full flex flex-col items-center justify-center text-center">
+                  <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-[#D946EF]/20 group-hover:bg-[#D946EF]/30 transition-colors">
+                    <LightbulbIcon className="h-8 w-8 text-[#D946EF]" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">Skills</h3>
+                  <p className="text-sm text-[#94A3B8] mb-4">Showcase your expertise</p>
+                  <div className="inline-block px-3 py-1 rounded-full bg-[#D946EF]/20 text-[#D946EF] text-xs font-medium">
+                    EXPLORE NOW
+                  </div>
+                </div>
+              </HUDPanel>
+            </Link>
+          </div>
+
+          {/* Portfolio Feature */}
+          <div className="col-span-12 lg:col-span-4">
+            <Link href={`/${locale}/portfolio/${user.id}`}>
+              <HUDPanel className="relative overflow-hidden h-full cursor-pointer transition-all hover:scale-[1.02] group">
+                {/* Glow Effect on Hover */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity"
+                  style={{
+                    background: 'radial-gradient(circle at center, #22C55E 0%, transparent 70%)',
+                  }}
+                />
+                
+                <div className="p-6 h-full flex flex-col items-center justify-center text-center">
+                  <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-[#22C55E]/20 group-hover:bg-[#22C55E]/30 transition-colors">
+                    <BriefcaseIcon className="h-8 w-8 text-[#22C55E]" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">Portfolio</h3>
+                  <p className="text-sm text-[#94A3B8] mb-4">Share your work with world</p>
+                  <div className="inline-block px-3 py-1 rounded-full bg-[#22C55E]/20 text-[#22C55E] text-xs font-medium">
+                    VIEW NOW
+                  </div>
+                </div>
+              </HUDPanel>
+            </Link>
+          </div>
         </div>
-      </HUDPanel>
-
-      {/* Quick Actions */}
-      <HUDPanel title={t('gaming.quickActions.title')}>
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <Link href={`/${locale}/dashboard/timeline`}>
-            <GamingCard
-              variant="default"
-              className="group cursor-pointer p-4 text-center transition-all hover:border-[#00D4FF]/50"
-            >
-              <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#00D4FF]/20 transition-transform group-hover:scale-110">
-                <PlusIcon className="h-5 w-5 text-[#00D4FF]" />
-              </div>
-              <span className="text-sm font-medium text-white">
-                {t('gaming.quickActions.addExperience')}
-              </span>
-              <p className="mt-1 text-xs text-[#64748B]">
-                {t('gaming.quickActions.addExperienceDesc')}
-              </p>
-            </GamingCard>
-          </Link>
-
-          <Link href={`/${locale}/dashboard/skills`}>
-            <GamingCard
-              variant="default"
-              className="group cursor-pointer p-4 text-center transition-all hover:border-[#D946EF]/50"
-            >
-              <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#D946EF]/20 transition-transform group-hover:scale-110">
-                <EditIcon className="h-5 w-5 text-[#D946EF]" />
-              </div>
-              <span className="text-sm font-medium text-white">
-                {t('gaming.quickActions.editSkills')}
-              </span>
-              <p className="mt-1 text-xs text-[#64748B]">
-                {t('gaming.quickActions.editSkillsDesc')}
-              </p>
-            </GamingCard>
-          </Link>
-
-          <Link href={`/${locale}/dashboard/my-cv`}>
-            <GamingCard
-              variant="default"
-              className="group cursor-pointer p-4 text-center transition-all hover:border-[#22C55E]/50"
-            >
-              <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#22C55E]/20 transition-transform group-hover:scale-110">
-                <DownloadIcon className="h-5 w-5 text-[#22C55E]" />
-              </div>
-              <span className="text-sm font-medium text-white">
-                {t('gaming.quickActions.generateCV')}
-              </span>
-              <p className="mt-1 text-xs text-[#64748B]">
-                {t('gaming.quickActions.generateCVDesc')}
-              </p>
-            </GamingCard>
-          </Link>
-
-          <Link href={`/${locale}/portfolio/${user.id}`}>
-            <GamingCard
-              variant="default"
-              className="group cursor-pointer p-4 text-center transition-all hover:border-[#EAB308]/50"
-            >
-              <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#EAB308]/20 transition-transform group-hover:scale-110">
-                <ShareIcon className="h-5 w-5 text-[#EAB308]" />
-              </div>
-              <span className="text-sm font-medium text-white">
-                {t('gaming.quickActions.sharePortfolio')}
-              </span>
-              <p className="mt-1 text-xs text-[#64748B]">
-                {t('gaming.quickActions.sharePortfolioDesc')}
-              </p>
-            </GamingCard>
-          </Link>
-        </div>
-      </HUDPanel>
+      </div>
     </div>
   )
 }

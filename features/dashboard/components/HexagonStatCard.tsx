@@ -9,14 +9,13 @@
 
 import { memo } from 'react'
 import { motion } from 'framer-motion'
-import { cn } from '@/lib/utils'
 
 interface HexagonStatCardProps {
   value: string
   label: string
   color: 'yellow' | 'magenta' | 'cyan' | 'green'
   icon: React.ReactNode
-  className?: string
+  size?: 'xs' | 'sm' | 'md' | 'lg'
 }
 
 function HexagonStatCardComponent({
@@ -24,7 +23,7 @@ function HexagonStatCardComponent({
   label,
   color,
   icon,
-  className,
+  size = 'md',
 }: HexagonStatCardProps) {
   // Color configurations
   const colorConfig = {
@@ -56,52 +55,106 @@ function HexagonStatCardComponent({
 
   const currentColor = colorConfig[color]
 
-return (
-    <div className="relative flex flex-col items-center justify-center">
+  // Size configurations
+  const sizeConfig = {
+    xs: { 
+      svgSize: 'w-10 h-12', 
+      valueSize: 'text-xs font-bold', 
+      labelSize: 'text-[9px]', 
+      iconSize: 'h-2.5 w-2.5',
+      padding: 'p-0.5'
+    },
+    sm: { 
+      svgSize: 'w-12 h-14', 
+      valueSize: 'text-xs font-bold', 
+      labelSize: 'text-[10px]', 
+      iconSize: 'h-3 w-3',
+      padding: 'p-1'
+    },
+    md: { 
+      svgSize: 'w-16 h-20', 
+      valueSize: 'text-sm font-bold', 
+      labelSize: 'text-xs', 
+      iconSize: 'h-4 w-4',
+      padding: 'p-1.5'
+    },
+    lg: { 
+      svgSize: 'w-20 h-24', 
+      valueSize: 'text-base font-bold', 
+      labelSize: 'text-sm', 
+      iconSize: 'h-5 w-5',
+      padding: 'p-2'
+    },
+  }
+
+  const currentSize = sizeConfig[size]
+
+  return (
+    <motion.div 
+      className="relative flex flex-col items-center justify-center group"
+      whileHover={{ scale: 1.05 }}
+      transition={{ duration: 0.2 }}
+    >
       {/* Hexagon SVG Background */}
       <svg
         viewBox="0 0 48 56"
-        className="w-full h-full max-w-22 max-h-26 relative z-10"
+        className={`${currentSize.svgSize} relative z-10 transition-all duration-300`}
         style={{
           filter: `drop-shadow(0 0 12px ${currentColor.glow})`,
         }}
       >
         <defs>
           {/* Gradient background */}
-          <linearGradient id={`stat-grad-${color}`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id={`stat-grad-${color}-${size}`} x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor={currentColor.stroke} stopOpacity={0.3} />
             <stop offset="100%" stopColor={currentColor.stroke} stopOpacity={0.1} />
           </linearGradient>
+          
+          {/* Animated glow gradient */}
+          <radialGradient id={`stat-glow-${color}-${size}`}>
+            <stop offset="0%" stopColor={currentColor.stroke} stopOpacity={0.6} />
+            <stop offset="100%" stopColor={currentColor.stroke} stopOpacity={0} />
+          </radialGradient>
         </defs>
 
         {/* Hexagon path */}
         <path
           d="M24 2 L46 15 L46 41 L24 54 L2 41 L2 15 Z"
-          fill={`url(#stat-grad-${color})`}
+          fill={`url(#stat-grad-${color}-${size})`}
           stroke={currentColor.stroke}
           strokeWidth={2}
-          className="transition-all duration-200"
+          className="transition-all duration-200 group-hover:stroke-opacity-100"
+          style={{ strokeOpacity: 0.8 }}
+        />
+        
+        {/* Inner glow effect on hover */}
+        <path
+          d="M24 8 L40 18 L40 38 L24 48 L8 38 L8 18 Z"
+          fill={`url(#stat-glow-${color}-${size})`}
+          className="opacity-0 group-hover:opacity-30 transition-opacity duration-300"
         />
       </svg>
 
       {/* Content */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center p-1.5 z-20">
+      <div className={`absolute inset-0 flex flex-col items-center justify-center ${currentSize.padding} z-20`}>
         {/* Icon */}
-        <div className="mb-0.5" style={{ color: currentColor.text }}>
+        <div className="mb-1 opacity-80 group-hover:opacity-100 transition-opacity" style={{ color: currentColor.text }}>
           {icon}
         </div>
         
         {/* Value */}
-        <div className="text-base font-bold text-white" style={{ textShadow: `0 0 8px ${currentColor.glow}` }}>
+        <div className={`${currentSize.valueSize} text-white transition-all duration-300`} style={{ 
+          textShadow: `0 0 8px ${currentColor.glow}` 
+        }}>
           {value}
         </div>
         
         {/* Label */}
-        <div className="text-xs text-[#94A3B8] text-center leading-tight">
+        <div className={`${currentSize.labelSize} text-[#94A3B8] text-center leading-tight mt-0.5`}>
           {label}
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

@@ -4,3 +4,8 @@
 
 export { DashboardHeader } from './DashboardHeader'
 export { UserMenu } from './UserMenu'
+export { ConsolePanelCard } from './ConsolePanelCard'
+export { HexagonAvatar } from './HexagonAvatar'
+export { HexagonStatCard } from './HexagonStatCard'
+export { AnimatedSection } from './AnimatedSection'
+export { CyberpunkScreen } from './CyberpunkScreen'

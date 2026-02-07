@@ -22,7 +22,7 @@ const VALID_MODES = [PORTFOLIO_MODES.PROFESSIONAL, PORTFOLIO_MODES.GAMING];
  */
 export async function updatePortfolioModeService(
   userId: string,
-  mode: string
+  mode: "gaming" | "professional"
 ) {
   if (!VALID_MODES.includes(mode)) {
     throw new Error(PORTFOLIO_MESSAGES.INVALID_MODE);

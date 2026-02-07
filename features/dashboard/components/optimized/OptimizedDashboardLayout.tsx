@@ -217,4 +217,8 @@ export default async function OptimizedDashboardPage({ params }: DashboardPagePr
   const xpPercent = Math.round((userStats.xp / userStats.maxXp) * 100)
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8"
+    <div className="max-w-7xl mx-auto space-y-8">
+      {/* Dashboard content would go here */}
+    </div>
+  )
+}

@@ -17,7 +17,7 @@ import {
   LevelBadge,
   GamingCard,
 } from '@/features/gaming'
-import { ConsolePanelCard, HexagonAvatar, HexagonStatCard, AnimatedSection, CyberpunkScreen } from '@/features/dashboard/components'
+import { ConsolePanelCard, HexagonAvatar, HexagonStatCard, AnimatedSection, CyberpunkScreen, GiantFlipCard } from '@/features/dashboard/components'
 import type { DashboardPageProps } from '@/features/dashboard/types/dashboard'
 
 // =============================================================================
@@ -553,95 +553,37 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
         </div>
 
         {/* ROW 2: 3 Giant Flip Cards */}
-        <div className="grid grid-cols-12 gap-6 h-64">
-          {/* Giant Card 1 - Progress */}
+        <div className="grid grid-cols-12 gap-8 h-96">
+          {/* Giant Card 1 - Level Progress */}
           <div className="col-span-12 lg:col-span-4">
-            <ConsolePanelCard
+            <GiantFlipCard
               title="Level Progress"
               description={`Level ${userStats.level} • ${xpPercent}% Complete`}
               version={`${xpRemaining} XP to go`}
-              icon={<BoltIcon className="h-6 w-6" />}
+              icon={<BoltIcon className="h-8 w-8" />}
               color="yellow"
-              backContent={
-                <div className="space-y-3">
-                  <div className="p-3 rounded bg-[#1E293B]/50">
-                    <div className="text-xs text-[#64748B] mb-1">Current Level</div>
-                    <div className="text-lg font-bold text-[#EAB308]">{userStats.level}</div>
-                  </div>
-                  <div className="p-3 rounded bg-[#1E293B]/50">
-                    <div className="text-xs text-[#64748B] mb-1">Experience</div>
-                    <div className="text-lg font-bold text-white">{userStats.xp.toLocaleString()}/{userStats.maxXp.toLocaleString()}</div>
-                  </div>
-                  <div className="p-3 rounded bg-[#1E293B]/50">
-                    <div className="text-xs text-[#64748B] mb-1">Progress</div>
-                    <div className="w-full h-2 bg-[#1E293B] rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-gradient-to-r from-[#EAB308] to-[#F59E0B] rounded-full transition-all duration-500"
-                        style={{ width: `${xpPercent}%` }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              }
             />
           </div>
 
           {/* Giant Card 2 - Achievements */}
           <div className="col-span-12 lg:col-span-4">
-            <ConsolePanelCard
+            <GiantFlipCard
               title="Achievements"
               description={`${userStats.achievements.unlocked} of ${userStats.achievements.total} unlocked`}
               version={`${Math.round((userStats.achievements.unlocked / userStats.achievements.total) * 100)}% Complete`}
-              icon={<TrophyIcon className="h-6 w-6" />}
+              icon={<TrophyIcon className="h-8 w-8" />}
               color="magenta"
-              backContent={
-                <div className="space-y-3">
-                  <div className="p-3 rounded bg-[#1E293B]/50">
-                    <div className="text-xs text-[#64748B] mb-1">Total Unlocked</div>
-                    <div className="text-lg font-bold text-[#D946EF]">{userStats.achievements.unlocked}</div>
-                  </div>
-                  <div className="p-3 rounded bg-[#1E293B]/50">
-                    <div className="text-xs text-[#64748B] mb-1">Remaining</div>
-                    <div className="text-lg font-bold text-white">{userStats.achievements.total - userStats.achievements.unlocked}</div>
-                  </div>
-                  <div className="p-3 rounded bg-[#1E293B]/50">
-                    <div className="text-xs text-[#64748B] mb-1">Rank</div>
-                    <div className="text-lg font-bold text-[#D946EF]">RISING STAR</div>
-                  </div>
-                </div>
-              }
             />
           </div>
 
-          {/* Giant Card 3 - Profile */}
+          {/* Giant Card 3 - Profile Stats */}
           <div className="col-span-12 lg:col-span-4">
-            <ConsolePanelCard
+            <GiantFlipCard
               title="Profile Status"
               description={`${profileCompletion}% Complete`}
               version="Keep Building"
-              icon={<CheckCircleIcon className="h-6 w-6" />}
+              icon={<CheckCircleIcon className="h-8 w-8" />}
               color="cyan"
-              backContent={
-                <div className="space-y-3">
-                  <div className="p-3 rounded bg-[#1E293B]/50">
-                    <div className="text-xs text-[#64748B] mb-1">Profile Completion</div>
-                    <div className="w-full h-2 bg-[#1E293B] rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-gradient-to-r from-[#00D4FF] to-[#22D3EE] rounded-full transition-all duration-500"
-                        style={{ width: `${profileCompletion}%` }}
-                      />
-                    </div>
-                  </div>
-                  <div className="p-3 rounded bg-[#1E293B]/50">
-                    <div className="text-xs text-[#64748B] mb-1">Skills Count</div>
-                    <div className="text-lg font-bold text-[#00D4FF]">{userStats.skills}</div>
-                  </div>
-                  <div className="p-3 rounded bg-[#1E293B]/50">
-                    <div className="text-xs text-[#64748B] mb-1">Portfolio Views</div>
-                    <div className="text-lg font-bold text-white">{userStats.views.toLocaleString()}</div>
-                  </div>
-                </div>
-              }
             />
           </div>
         </div>

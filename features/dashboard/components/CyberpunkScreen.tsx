@@ -8,6 +8,7 @@
  * - Grid pattern with movement
  * - Interference/static effect
  * - Scanline animation
+ * - Burn-in effect on status text
  */
 
 import { HexagonStatCard } from '@/features/dashboard/components'
@@ -27,7 +28,7 @@ export function CyberpunkScreen({ stats, className }: CyberpunkScreenProps) {
   const t = useTranslations('dashboard')
 
   return (
-    <div className={`relative overflow-hidden h-full bg-[#0A0E1A] ${className}`}>
+    <div className={`relative overflow-hidden min-h-32 bg-[#0A0E1A] ${className}`}>
       {/* Screen Glow Effect */}
       <div 
         className="absolute inset-0 opacity-20 animate-pulse"
@@ -67,76 +68,84 @@ export function CyberpunkScreen({ stats, className }: CyberpunkScreenProps) {
         }}
       />
       
-      <div className="relative z-10 p-6 h-full">
-        <h3 className="text-lg font-bold text-white mb-6 text-center animate-pulse" 
-            style={{ textShadow: '0 0 20px rgba(0, 212, 255, 0.8)' }}>
-          Session Stats
-        </h3>
+      <div className="relative z-10 p-6 min-h-full flex flex-col">
+        {/* Top Bar: Title + Connection Status */}
+        <div className="flex justify-between items-center mb-4">
+          {/* Console Title */}
+          <div className="flex items-center gap-2">
+            <span className="text-green-400 font-mono text-sm">$</span>
+            <span className="text-green-400 font-mono text-sm">_</span>
+            <span className="text-cyan-400 font-mono text-sm">session_stats</span>
+            <span className="text-cyan-400 font-mono text-sm">--display</span>
+          </div>
+          
+          {/* Connection Status */}
+          <div className="flex items-center gap-2">
+            {/* Main Status Text */}
+            <div className="text-green-400 font-mono text-xs">
+              ONLINE
+            </div>
+            
+            {/* Timestamp with subtle burn-in */}
+            <div className="text-green-400 font-mono text-xs">
+              <span 
+                style={{
+                  opacity: 0.8,
+                  textShadow: '0 0 2px rgba(74, 222, 128, 0.2)',
+                }}
+              >
+                [{new Date().toLocaleTimeString()}]
+              </span>
+            </div>
+          </div>
+        </div>
         
-        <div className="grid grid-cols-2 gap-6">
+        <div className="flex-1 flex flex-row gap-8 items-center justify-center">
           {/* XP Stat */}
-          <div className="text-center">
+          <div className="flex-shrink-0">
             <HexagonStatCard
               value={stats.xp.toLocaleString()}
               label={t('gaming.stats.experience')}
               color="yellow"
-              icon={<BoltIcon className="h-5 w-5" />}
-              size="lg"
+              icon={<BoltIcon className="h-4 w-4" />}
+              size="md"
             />
           </div>
           
           {/* Level Stat */}
-          <div className="text-center">
+          <div className="flex-shrink-0">
             <HexagonStatCard
               value={`Lv.${stats.level}`}
               label={t('gaming.currentLevel')}
               color="cyan"
-              icon={<LevelIcon className="h-4 w-4" />}
-              size="md"
+              icon={<LevelIcon className="h-3 w-3" />}
+              size="sm"
             />
           </div>
           
           {/* Achievements Stat */}
-          <div className="text-center">
+          <div className="flex-shrink-0">
             <HexagonStatCard
               value={`${stats.achievements.unlocked}/${stats.achievements.total}`}
               label={t('gaming.stats.achievements')}
               color="magenta"
-              icon={<TrophyIcon className="h-4 w-4" />}
-              size="md"
+              icon={<TrophyIcon className="h-3 w-3" />}
+              size="sm"
             />
           </div>
           
           {/* Skills Stat */}
-          <div className="text-center">
+          <div className="flex-shrink-0">
             <HexagonStatCard
               value={stats.skills.toString()}
               label={t('gaming.stats.skills')}
               color="green"
-              icon={<LightbulbIcon className="h-4 w-4" />}
-              size="md"
+              icon={<LightbulbIcon className="h-3 w-3" />}
+              size="sm"
             />
           </div>
         </div>
       </div>
-      
-      <style jsx>{`
-        @keyframes scanline {
-          0% { transform: translateY(-100%); }
-          100% { transform: translateY(100%); }
-        }
-        
-        @keyframes gridMove {
-          0% { transform: translate(0, 0); }
-          100% { transform: translate(20px, 20px); }
-        }
-        
-        @keyframes interference {
-          0% { opacity: 0.05; }
-          50% { opacity: 0.1; }
-          100% { opacity: 0.05; }
-        }
-      `}</style>
     </div>
   )
 }

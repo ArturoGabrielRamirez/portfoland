@@ -28,7 +28,7 @@ export function CyberpunkScreen({ stats, className }: CyberpunkScreenProps) {
   const t = useTranslations('dashboard')
 
   return (
-    <div className={`relative overflow-hidden min-h-32 bg-[#0A0E1A] ${className}`}>
+    <div className={`relative overflow-visible bg-[#0A0E1A] ${className}`}>
       {/* Screen Glow Effect */}
       <div 
         className="absolute inset-0 opacity-20 animate-pulse"
@@ -68,7 +68,7 @@ export function CyberpunkScreen({ stats, className }: CyberpunkScreenProps) {
         }}
       />
       
-      <div className="relative z-10 p-6 min-h-full flex flex-col">
+      <div className="relative z-10 p-6 h-full flex flex-col">
         {/* Top Bar: Title + Connection Status */}
         <div className="flex justify-between items-center mb-4">
           {/* Console Title */}
@@ -100,15 +100,15 @@ export function CyberpunkScreen({ stats, className }: CyberpunkScreenProps) {
           </div>
         </div>
         
-        <div className="flex-1 flex flex-row gap-8 items-center justify-center">
+        <div className="flex-1 flex flex-row gap-6 items-center justify-center pb-4">
           {/* XP Stat */}
           <div className="flex-shrink-0">
             <HexagonStatCard
               value={stats.xp.toLocaleString()}
               label={t('gaming.stats.experience')}
               color="yellow"
-              icon={<BoltIcon className="h-4 w-4" />}
-              size="md"
+              icon={<BoltIcon className="h-5 w-5" />}
+              size="lg"
             />
           </div>
           
@@ -118,8 +118,8 @@ export function CyberpunkScreen({ stats, className }: CyberpunkScreenProps) {
               value={`Lv.${stats.level}`}
               label={t('gaming.currentLevel')}
               color="cyan"
-              icon={<LevelIcon className="h-3 w-3" />}
-              size="sm"
+              icon={<LevelIcon className="h-4 w-4" />}
+              size="md"
             />
           </div>
           
@@ -129,8 +129,8 @@ export function CyberpunkScreen({ stats, className }: CyberpunkScreenProps) {
               value={`${stats.achievements.unlocked}/${stats.achievements.total}`}
               label={t('gaming.stats.achievements')}
               color="magenta"
-              icon={<TrophyIcon className="h-3 w-3" />}
-              size="sm"
+              icon={<TrophyIcon className="h-4 w-4" />}
+              size="md"
             />
           </div>
           
@@ -140,8 +140,8 @@ export function CyberpunkScreen({ stats, className }: CyberpunkScreenProps) {
               value={stats.skills.toString()}
               label={t('gaming.stats.skills')}
               color="green"
-              icon={<LightbulbIcon className="h-3 w-3" />}
-              size="sm"
+              icon={<LightbulbIcon className="h-4 w-4" />}
+              size="md"
             />
           </div>
         </div>

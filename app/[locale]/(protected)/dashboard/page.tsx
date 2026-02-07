@@ -463,7 +463,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
       <div className="min-h-screen p-6 space-y-6 max-w-7xl mx-auto">
         
         {/* ROW 1: Welcome + Cyberpunk Screen - Flex Row */}
-        <div className="flex flex-row gap-6 h-32">
+        <div className="flex flex-row gap-6 h-48">
           
           {/* Welcome Section - Left Side */}
           <div className="flex-1 max-w-md">
@@ -553,37 +553,52 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
         </div>
 
         {/* ROW 2: 3 Giant Flip Cards */}
-        <div className="grid grid-cols-12 gap-8 h-96">
+        <div className="grid grid-cols-12 gap-8 h-[28rem]">
           {/* Giant Card 1 - Level Progress */}
-          <div className="col-span-12 lg:col-span-4">
+          <div className="col-span-12 lg:col-span-4 h-full">
             <GiantFlipCard
               title="Level Progress"
               description={`Level ${userStats.level} • ${xpPercent}% Complete`}
               version={`${xpRemaining} XP to go`}
               icon={<BoltIcon className="h-8 w-8" />}
               color="yellow"
+              stats={{
+                current: userStats.level,
+                total: 50,
+                progress: xpPercent
+              }}
             />
           </div>
 
           {/* Giant Card 2 - Achievements */}
-          <div className="col-span-12 lg:col-span-4">
+          <div className="col-span-12 lg:col-span-4 h-full">
             <GiantFlipCard
               title="Achievements"
               description={`${userStats.achievements.unlocked} of ${userStats.achievements.total} unlocked`}
               version={`${Math.round((userStats.achievements.unlocked / userStats.achievements.total) * 100)}% Complete`}
               icon={<TrophyIcon className="h-8 w-8" />}
               color="magenta"
+              stats={{
+                current: userStats.achievements.unlocked,
+                total: userStats.achievements.total,
+                progress: Math.round((userStats.achievements.unlocked / userStats.achievements.total) * 100)
+              }}
             />
           </div>
 
           {/* Giant Card 3 - Profile Stats */}
-          <div className="col-span-12 lg:col-span-4">
+          <div className="col-span-12 lg:col-span-4 h-full">
             <GiantFlipCard
               title="Profile Status"
               description={`${profileCompletion}% Complete`}
               version="Keep Building"
               icon={<CheckCircleIcon className="h-8 w-8" />}
               color="cyan"
+              stats={{
+                current: profileCompletion,
+                total: 100,
+                progress: profileCompletion
+              }}
             />
           </div>
         </div>
@@ -591,7 +606,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
         {/* ROW 3: 3 Feature Cards (Timeline, Skills, Portfolio) */}
         <div className="grid grid-cols-12 gap-6 h-64">
           {/* Timeline Feature */}
-          <div className="col-span-12 lg:col-span-4">
+          <div className="col-span-12 lg:col-span-4 h-full">
             <Link href={`/${locale}/dashboard/timeline`}>
               <HUDPanel className="relative overflow-hidden h-full cursor-pointer transition-all hover:scale-[1.02] group">
                 {/* Glow Effect on Hover */}
@@ -617,7 +632,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
           </div>
 
           {/* Skills Feature */}
-          <div className="col-span-12 lg:col-span-4">
+          <div className="col-span-12 lg:col-span-4 h-full">
             <Link href={`/${locale}/dashboard/skills`}>
               <HUDPanel className="relative overflow-hidden h-full cursor-pointer transition-all hover:scale-[1.02] group">
                 {/* Glow Effect on Hover */}
@@ -643,7 +658,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
           </div>
 
           {/* Portfolio Feature */}
-          <div className="col-span-12 lg:col-span-4">
+          <div className="col-span-12 lg:col-span-4 h-full">
             <Link href={`/${locale}/portfolio/${user.id}`}>
               <HUDPanel className="relative overflow-hidden h-full cursor-pointer transition-all hover:scale-[1.02] group">
                 {/* Glow Effect on Hover */}

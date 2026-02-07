@@ -1,10 +1,17 @@
 'use client'
 
 /**
- * GiantFlipCard Component - Simplified for debugging
+ * GiantFlipCard Component - Simplified without 3D transforms
+ * 
+ * Simple card with hover flip, no complex 3D:
+ * - Uses GamingCard as base
+ * - Clean hover transition
+ * - No perspective or transform-style issues
+ * - Guaranteed to work with layout
  */
 
 import { useState } from 'react'
+import { GamingCard, XPBar, GamingBadge } from '@/features/gaming'
 
 interface GiantFlipCardProps {
   title: string
@@ -36,137 +43,191 @@ export function GiantFlipCard({
     onFlip?.()
   }
 
-  const colorConfig = {
-    cyan: {
-      primary: '#00D4FF',
-      border: 'border-[#00D4FF]',
-      bg: 'bg-[#00D4FF]/10',
-      text: 'text-[#00D4FF]',
-    },
-    magenta: {
-      primary: '#D946EF',
-      border: 'border-[#D946EF]',
-      bg: 'bg-[#D946EF]/10',
-      text: 'text-[#D946EF]',
-    },
-    green: {
-      primary: '#22C55E',
-      border: 'border-[#22C55E]',
-      bg: 'bg-[#22C55E]/10',
-      text: 'text-[#22C55E]',
-    },
-    yellow: {
-      primary: '#EAB308',
-      border: 'border-[#EAB308]',
-      bg: 'bg-[#EAB308]/10',
-      text: 'text-[#EAB308]',
-    },
+  const getGamingCardVariant = () => {
+    switch (color) {
+      case 'magenta':
+        return 'magenta'
+      case 'green':
+        return 'green'
+      case 'yellow':
+        return 'glow'
+      default:
+        return 'glow'
+    }
   }
 
-  const config = colorConfig[color]
+  const getProgressBarColor = () => {
+    switch (color) {
+      case 'magenta':
+        return '#D946EF'
+      case 'green':
+        return '#22C55E'
+      case 'yellow':
+        return '#EAB308'
+      default:
+        return '#00D4FF'
+    }
+  }
 
   return (
-    <div 
-      className="w-full h-full bg-[#0A0E1A] border-2 rounded-xl p-6 cursor-pointer transition-all hover:scale-105"
-      style={{ borderColor: config.primary }}
-      onClick={handleFlip}
-    >
-      {!isFlipped ? (
-        // Front Side - Simple
-        <div className="h-full flex flex-col justify-between">
-          <div>
-            {/* Header */}
-            <div className="text-center mb-4">
-              <div 
-                className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4 border"
-                style={{ 
-                  backgroundColor: config.bg,
-                  borderColor: config.primary
-                }}
-              >
-                <div className={config.text}>
-                  {icon}
+    <div className="w-full h-full">
+      {/* Simple Card Container - NO 3D transforms */}
+      <div 
+        className="relative w-full h-full cursor-pointer transition-all duration-300"
+        onClick={handleFlip}
+      >
+        {/* Front Side */}
+        {!isFlipped && (
+          <GamingCard variant={getGamingCardVariant()} className="w-full h-full p-6">
+            {/* Header Section */}
+            <div className="mb-6">
+              {/* Icon */}
+              <div className="flex justify-center mb-4">
+                <div 
+                  className="w-20 h-20 rounded-xl flex items-center justify-center border-2 transition-all hover:scale-105"
+                  style={{
+                    background: `linear-gradient(135deg, ${getProgressBarColor()}20 0%, transparent 100%)`,
+                    borderColor: getProgressBarColor() + '50',
+                    boxShadow: `0 0 25px ${getProgressBarColor()}40`
+                  }}
+                >
+                  <div className="text-3xl transition-colors" style={{ color: getProgressBarColor() }}>
+                    {icon}
+                  </div>
                 </div>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">
-                {title}
-              </h3>
-              <p className="text-[#94A3B8] text-sm">
-                {description}
-              </p>
-            </div>
-          </div>
 
-          <div>
+              {/* Title and Description */}
+              <div className="text-center mb-4">
+                <h3 className="text-xl font-bold text-white mb-2">
+                  {title}
+                </h3>
+                <p className="text-sm text-[#94A3B8] leading-relaxed">
+                  {description}
+                </p>
+              </div>
+            </div>
+
             {/* Badge */}
             <div className="text-center mb-4">
-              <div 
-                className="inline-block px-3 py-1 rounded-full text-xs font-bold text-white"
-                style={{ backgroundColor: config.primary }}
-              >
+              <GamingBadge color="gray" className="mb-0">
                 {version}
-              </div>
+              </GamingBadge>
             </div>
 
-            {/* Stats */}
+            {/* Stats Section */}
             {stats && (
-              <div className="space-y-3">
-                <div className="flex justify-between text-xs text-[#64748B]">
-                  <span>Progress</span>
-                  <span>{stats.progress || 0}%</span>
-                </div>
-                <div className="w-full h-2 bg-[#1E293B] rounded-full overflow-hidden">
-                  <div 
-                    className="h-full rounded-full transition-all duration-500"
-                    style={{
-                      width: `${stats.progress || 0}%`,
-                      backgroundColor: config.primary
-                    }}
+              <div className="space-y-4">
+                {/* Progress Bar */}
+                <div>
+                  <div className="flex justify-between text-xs text-[#64748B] mb-2">
+                    <span>Progress</span>
+                    <span>{stats.progress || 0}%</span>
+                  </div>
+                  <XPBar
+                    current={stats.progress || 0}
+                    max={100}
+                    showLabel={false}
+                    className="mb-4"
                   />
                 </div>
+
+                {/* Current/Total Display */}
                 {stats.current !== undefined && stats.total !== undefined && (
-                  <div className="flex justify-between text-sm">
-                    <span className={config.text + " font-bold"}>{stats.current}</span>
-                    <span className="text-white font-bold">{stats.total}</span>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="text-center p-3 rounded-lg bg-[#1E293B]/50 border border-[#1E293B]">
+                      <div className="text-2xl font-bold transition-colors" style={{ color: getProgressBarColor() }}>
+                        {stats.current}
+                      </div>
+                      <div className="text-xs text-[#64748B]">Current</div>
+                    </div>
+                    <div className="text-center p-3 rounded-lg bg-[#1E293B]/50 border border-[#1E293B]">
+                      <div className="text-2xl font-bold text-white">
+                        {stats.total}
+                      </div>
+                      <div className="text-xs text-[#64748B]">Total</div>
+                    </div>
                   </div>
                 )}
+
+                {/* Flip Hint */}
+                <div className="text-center text-xs text-[#64748B] animate-pulse">
+                  Click to flip →
+                </div>
               </div>
             )}
+          </GamingCard>
+        )}
 
-            {/* Flip hint */}
-            <div className="text-center text-xs text-[#64748B] mt-4">
-              Click to flip →
+        {/* Back Side */}
+        {isFlipped && (
+          <GamingCard variant="featured" className="w-full h-full p-6">
+            {/* Back Content */}
+            <div className="h-full flex flex-col justify-center items-center text-center">
+              {/* Large Icon */}
+              <div 
+                className="w-24 h-24 rounded-2xl flex items-center justify-center mb-6 border-2 transition-all hover:scale-105"
+                style={{
+                  background: getProgressBarColor(),
+                  borderColor: getProgressBarColor(),
+                  boxShadow: `0 0 30px ${getProgressBarColor()}60`
+                }}
+              >
+                <div className="text-white text-4xl font-bold">
+                  {title.charAt(0).toUpperCase()}
+                </div>
+              </div>
+
+              {/* Title */}
+              <h4 
+                className="text-2xl font-bold text-white mb-3"
+                style={{ textShadow: `0 0 15px ${getProgressBarColor()}` }}
+              >
+                {title.toUpperCase()}
+              </h4>
+              
+              {/* Status Badge */}
+              <div className="mb-4">
+                <GamingBadge color="gray" className="text-sm">
+                  {title.toLowerCase().includes('level') && 'LEVEL ANALYTICS'}
+                  {title.toLowerCase().includes('achievement') && 'ACHIEVEMENT TRACKER'}
+                  {title.toLowerCase().includes('profile') && 'PROFILE INSIGHTS'}
+                  {!['level', 'achievement', 'profile'].some(word => title.toLowerCase().includes(word)) && 'SYSTEM STATUS'}
+                </GamingBadge>
+              </div>
+
+              {/* Description */}
+              <p className="text-[#94A3B8] text-sm mb-6 max-w-xs">
+                Advanced metrics and detailed analysis of your {title.toLowerCase()} performance and progress.
+              </p>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 justify-center">
+                <button 
+                  className="px-4 py-2 rounded-lg border text-sm font-bold transition-all hover:scale-105"
+                  style={{ 
+                    borderColor: getProgressBarColor(),
+                    color: getProgressBarColor(),
+                    background: 'transparent'
+                  }}
+                >
+                  View Details
+                </button>
+                <button 
+                  className="px-4 py-2 rounded-lg text-sm font-bold text-white transition-all hover:scale-105"
+                  style={{ 
+                    background: getProgressBarColor(),
+                    borderColor: getProgressBarColor()
+                  }}
+                  onClick={handleFlip}
+                >
+                  ← Back
+                </button>
+              </div>
             </div>
-          </div>
-        </div>
-      ) : (
-        // Back Side - Simple
-        <div className="h-full flex flex-col justify-center items-center">
-          <div 
-            className="w-16 h-16 rounded-xl flex items-center justify-center mb-4"
-            style={{ backgroundColor: config.primary }}
-          >
-            <div className="text-white text-2xl font-bold">
-              {title.charAt(0)}
-            </div>
-          </div>
-          <h4 className="text-lg font-bold text-white mb-2">
-            {title} Details
-          </h4>
-          <p className="text-[#94A3B8] text-sm text-center mb-4">
-            Advanced information and metrics about {title.toLowerCase()}
-          </p>
-          <button 
-            className="px-4 py-2 rounded-lg border text-sm font-medium"
-            style={{ 
-              borderColor: config.primary,
-              color: config.primary
-            }}
-          >
-            ← Back
-          </button>
-        </div>
-      )}
+          </GamingCard>
+        )}
+      </div>
     </div>
   )
 }

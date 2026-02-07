@@ -17,7 +17,7 @@ import {
   LevelBadge,
   GamingCard,
 } from '@/features/gaming'
-import { ConsolePanelCard, HexagonAvatar, HexagonStatCard, AnimatedSection, CyberpunkScreen, GiantFlipCard } from '@/features/dashboard/components'
+import { ConsolePanelCard, HexagonAvatar, HexagonStatCard, AnimatedSection, CyberpunkScreen, GiantFlipCard, CRTScanLine } from '@/features/dashboard/components'
 import type { DashboardPageProps } from '@/features/dashboard/types/dashboard'
 
 // =============================================================================
@@ -460,7 +460,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
       }}
     >
       {/* Main Dashboard Frame */}
-      <div className="min-h-screen p-6 space-y-6 max-w-7xl mx-auto">
+      <div className="min-h-screen p-6 space-y-16 max-w-7xl mx-auto">
         
         {/* ROW 1: Welcome + Cyberpunk Screen - Flex Row */}
         <div className="flex flex-row gap-6 h-48">
@@ -552,6 +552,9 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
           </div>
         </div>
 
+        {/* CRT Scan Separator between ROW 1 and ROW 2 */}
+        <CRTScanLine color="cyan" intensity="medium" speed="medium" />
+
         {/* ROW 2: 3 Giant Flip Cards */}
         <div className="grid grid-cols-12 gap-8 h-[28rem]">
           {/* Giant Card 1 - Level Progress */}
@@ -602,6 +605,9 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
             />
           </div>
         </div>
+
+        {/* CRT Scan Separator between ROW 2 and ROW 3 */}
+        <CRTScanLine color="magenta" intensity="subtle" speed="slow" />
 
         {/* ROW 3: 3 Feature Cards (Timeline, Skills, Portfolio) */}
         <div className="grid grid-cols-12 gap-6 h-64">

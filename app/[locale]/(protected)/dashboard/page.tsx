@@ -460,10 +460,10 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
       }}
     >
       {/* Main Dashboard Frame */}
-      <div className="min-h-screen p-6 space-y-16 max-w-7xl mx-auto">
+      <div className="min-h-screen p-6 space-y-20 max-w-7xl mx-auto">
         
         {/* ROW 1: Welcome + Cyberpunk Screen - Flex Row */}
-        <div className="flex flex-row gap-6 h-48">
+        <div className="flex flex-row gap-8 h-48">
           
           {/* Welcome Section - Left Side */}
           <div className="flex-1 max-w-md">
@@ -556,7 +556,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
         <CRTScanLine color="cyan" intensity="medium" speed="medium" />
 
         {/* ROW 2: 3 Giant Flip Cards */}
-        <div className="grid grid-cols-12 gap-8 h-[28rem]">
+        <div className="grid grid-cols-12 gap-16 h-[24rem]">
           {/* Giant Card 1 - Level Progress */}
           <div className="col-span-12 lg:col-span-4 h-full">
             <GiantFlipCard

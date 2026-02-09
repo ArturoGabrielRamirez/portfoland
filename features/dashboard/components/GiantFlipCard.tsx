@@ -73,25 +73,25 @@ export function GiantFlipCard({
     <div className="w-full h-full">
       {/* Simple Card Container - NO 3D transforms */}
       <div 
-        className="relative w-full h-full cursor-pointer transition-all duration-300"
+        className="relative w-full h-full cursor-pointer transition-all duration-300 hover:scale-[1.02] group"
         onClick={handleFlip}
       >
         {/* Front Side */}
         {!isFlipped && (
-          <GamingCard variant={getGamingCardVariant()} className="w-full h-full p-6">
+          <GamingCard variant={getGamingCardVariant()} className="w-full h-full p-4 sm:p-6 border-2 border-transparent group-hover:border-opacity-20 transition-all group-hover:border-[--hover-color]" style={{ '--hover-color': getProgressBarColor() + '30' } as React.CSSProperties}>
             {/* Header Section */}
             <div className="mb-6">
               {/* Icon */}
               <div className="flex justify-center mb-4">
                 <div 
-                  className="w-20 h-20 rounded-xl flex items-center justify-center border-2 transition-all hover:scale-105"
+                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl flex items-center justify-center border-2 transition-all hover:scale-105 group-hover:scale-110"
                   style={{
-                    background: `linear-gradient(135deg, ${getProgressBarColor()}20 0%, transparent 100%)`,
-                    borderColor: getProgressBarColor() + '50',
+                    background: `linear-gradient(135deg, ${getProgressBarColor()}25 0%, transparent 100%)`,
+                    borderColor: getProgressBarColor() + '60',
                     boxShadow: `0 0 25px ${getProgressBarColor()}40`
                   }}
                 >
-                  <div className="text-3xl transition-colors" style={{ color: getProgressBarColor() }}>
+                  <div className="text-2xl sm:text-3xl transition-all group-hover:scale-110" style={{ color: getProgressBarColor() }}>
                     {icon}
                   </div>
                 </div>
@@ -151,7 +151,7 @@ export function GiantFlipCard({
                 )}
 
                 {/* Flip Hint */}
-                <div className="text-center text-xs text-[#64748B] animate-pulse">
+                <div className="text-center text-xs text-[#64748B] animate-pulse group-hover:text-opacity-80">
                   Click to flip →
                 </div>
               </div>

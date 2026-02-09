@@ -28,43 +28,51 @@ export function CyberpunkScreen({ stats, className }: CyberpunkScreenProps) {
   const t = useTranslations('dashboard')
 
   return (
-    <div className={`relative overflow-visible bg-[#0A0E1A] ${className}`}>
-      {/* Screen Glow Effect - Subtle */}
-      <div 
-        className="absolute inset-0 opacity-8"
-        style={{
-          background: 'radial-gradient(ellipse at center, #00D4FF15 0%, transparent 60%)',
-        }}
-      />
-      
-      {/* Grid Pattern Overlay */}
-      <div 
-        className="absolute inset-0 opacity-10"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px)
-          `,
-          backgroundSize: '20px 20px',
-          animation: 'gridMove 10s linear infinite',
-        }}
-      />
-      
-      {/* Interference/Static Effect */}
+    <div className={`relative overflow-hidden bg-[#0A0E1A] rounded-lg ${className}`}>
+      {/* Screen Glow Effect - Enhanced */}
       <div 
         className="absolute inset-0"
         style={{
-          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 212, 255, 0.03) 2px, transparent 4px)',
-          animation: 'interference 0.5s linear infinite',
+          background: 'radial-gradient(ellipse at center, #00D4FF20 0%, #0A0E1A 50%, #000000 100%)',
         }}
       />
       
-      {/* Scanline Effect */}
+      {/* Grid Pattern Overlay - Optimized */}
       <div 
-        className="absolute inset-0 pointer-events-none opacity-30"
+        className="absolute inset-0 opacity-15"
         style={{
-          background: 'linear-gradient(180deg, transparent 0%, rgba(0, 212, 255, 0.1) 50%, transparent 100%)',
-          animation: 'scanline 3s linear infinite',
+          backgroundImage: `
+            linear-gradient(rgba(0, 212, 255, 0.12) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 212, 255, 0.12) 1px, transparent 1px)
+          `,
+          backgroundSize: '25px 25px',
+          animation: 'gridMove 8s linear infinite',
+        }}
+      />
+      
+      {/* Interference/Static Effect - Optimized */}
+      <div 
+        className="absolute inset-0"
+        style={{
+          background: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 212, 255, 0.02) 3px, transparent 6px)',
+          animation: 'interference 0.3s linear infinite',
+        }}
+      />
+      
+      {/* Scanline Effect - Enhanced */}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-25"
+        style={{
+          background: 'linear-gradient(180deg, transparent 0%, rgba(0, 212, 255, 0.08) 50%, transparent 100%)',
+          animation: 'scanline 2s linear infinite',
+        }}
+      />
+      
+      {/* Screen Border Glow */}
+      <div 
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          boxShadow: 'inset 0 0 20px rgba(0, 212, 255, 0.1), inset 0 0 40px rgba(0, 212, 255, 0.05)',
         }}
       />
       
@@ -100,7 +108,7 @@ export function CyberpunkScreen({ stats, className }: CyberpunkScreenProps) {
           </div>
         </div>
         
-        <div className="flex-1 flex flex-row gap-10 items-center justify-center relative">
+        <div className="flex-1 flex flex-row gap-6 lg:gap-10 items-center justify-center relative py-4 px-2">
           {/* Scan Line Effect */}
           <div 
             className="absolute inset-0 pointer-events-none"
@@ -240,46 +248,46 @@ export function CyberpunkScreen({ stats, className }: CyberpunkScreenProps) {
           </div>
 
           {/* XP Stat */}
-          <div className="flex-shrink-0 relative z-10">
+          <div className="flex-shrink-0 relative z-10 transform hover:scale-105 transition-transform duration-300">
             <HexagonStatCard
               value={stats.xp.toLocaleString()}
               label={t('gaming.stats.experience')}
               color="yellow"
-              icon={<BoltIcon className="h-6 w-6" />}
-              size="lg"
+              icon={<BoltIcon className="h-5 w-5 lg:h-6 lg:w-6" />}
+              size="md"
             />
           </div>
           
           {/* Level Stat */}
-          <div className="flex-shrink-0 relative z-10">
+          <div className="flex-shrink-0 relative z-10 transform hover:scale-105 transition-transform duration-300">
             <HexagonStatCard
               value={`Lv.${stats.level}`}
               label={t('gaming.currentLevel')}
               color="cyan"
-              icon={<LevelIcon className="h-5 w-5" />}
-              size="lg"
+              icon={<LevelIcon className="h-4 w-4 lg:h-5 lg:w-5" />}
+              size="md"
             />
           </div>
           
           {/* Achievements Stat */}
-          <div className="flex-shrink-0 relative z-10">
+          <div className="flex-shrink-0 relative z-10 transform hover:scale-105 transition-transform duration-300">
             <HexagonStatCard
               value={`${stats.achievements.unlocked}/${stats.achievements.total}`}
               label={t('gaming.stats.achievements')}
               color="magenta"
-              icon={<TrophyIcon className="h-5 w-5" />}
-              size="lg"
+              icon={<TrophyIcon className="h-4 w-4 lg:h-5 lg:w-5" />}
+              size="md"
             />
           </div>
           
           {/* Skills Stat */}
-          <div className="flex-shrink-0 relative z-10">
+          <div className="flex-shrink-0 relative z-10 transform hover:scale-105 transition-transform duration-300">
             <HexagonStatCard
               value={stats.skills.toString()}
               label={t('gaming.stats.skills')}
               color="green"
-              icon={<LightbulbIcon className="h-5 w-5" />}
-              size="lg"
+              icon={<LightbulbIcon className="h-4 w-4 lg:h-5 lg:w-5" />}
+              size="md"
             />
           </div>
         </div>

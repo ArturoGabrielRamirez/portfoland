@@ -17,7 +17,7 @@ import {
   LevelBadge,
   GamingCard,
 } from '@/features/gaming'
-import { ConsolePanelCard, HexagonAvatar, HexagonStatCard, AnimatedSection, CyberpunkScreen, GiantFlipCard, CRTScanLine, HexagonFeatureCard, CyberpunkGlow, CyberpunkTooltip } from '@/features/dashboard/components'
+import { ConsolePanelCard, HexagonAvatar, HexagonStatCard, AnimatedSection, CyberpunkScreen, GiantFlipCard, CRTScanLine, HexagonFeatureCard, CyberpunkGlow, CyberpunkTooltip, CyberpunkLightStrip, QuickAccessWithLights } from '@/features/dashboard/components'
 import type { DashboardPageProps } from '@/features/dashboard/types/dashboard'
 
 // =============================================================================
@@ -487,84 +487,8 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
                 </h1>
                 <p className="text-sm text-[#94A3B8] mb-2 truncate">{t('welcomeSubtitle')}</p>
                 
-                 {/* Quick Access Hexagons - Optimized with Tooltips */}
-                 <div className="flex gap-3 pt-2">
-                   <Link href={`/${locale}/dashboard/timeline`}>
-                     <div className="group cursor-pointer transform transition-all hover:scale-110 hover:rotate-6">
-                       <CyberpunkTooltip 
-                         content="Add Timeline Events"
-                         color="cyan"
-                         position="top"
-                         size="sm"
-                       >
-                         <HexagonStatCard
-                           value=""
-                           label=""
-                           color="cyan"
-                           icon={<PlusIcon className="h-4 w-4" />}
-                           size="sm"
-                         />
-                       </CyberpunkTooltip>
-                     </div>
-                   </Link>
-                   
-                   <Link href={`/${locale}/dashboard/skills`}>
-                     <div className="group cursor-pointer transform transition-all hover:scale-110 hover:rotate-6">
-                       <CyberpunkTooltip 
-                         content="Edit Skills Profile"
-                         color="magenta"
-                         position="top"
-                         size="sm"
-                       >
-                         <HexagonStatCard
-                           value=""
-                           label=""
-                           color="magenta"
-                           icon={<EditIcon className="h-4 w-4" />}
-                           size="sm"
-                         />
-                       </CyberpunkTooltip>
-                     </div>
-                   </Link>
-                   
-                   <Link href={`/${locale}/dashboard/my-cv`}>
-                     <div className="group cursor-pointer transform transition-all hover:scale-110 hover:rotate-6">
-                       <CyberpunkTooltip 
-                         content="Download CV"
-                         color="green"
-                         position="top"
-                         size="sm"
-                       >
-                         <HexagonStatCard
-                           value=""
-                           label=""
-                           color="green"
-                           icon={<DownloadIcon className="h-4 w-4" />}
-                           size="sm"
-                         />
-                       </CyberpunkTooltip>
-                     </div>
-                   </Link>
-                   
-                   <Link href={`/${locale}/portfolio/${user.id}`}>
-                     <div className="group cursor-pointer transform transition-all hover:scale-110 hover:rotate-6">
-                       <CyberpunkTooltip 
-                         content="View Portfolio"
-                         color="yellow"
-                         position="top"
-                         size="sm"
-                       >
-                         <HexagonStatCard
-                           value=""
-                           label=""
-                           color="yellow"
-                           icon={<ShareIcon className="h-4 w-4" />}
-                           size="sm"
-                         />
-                       </CyberpunkTooltip>
-                     </div>
-                   </Link>
-                 </div>
+                 {/* Quick Access with Integrated Light Strip */}
+                 <QuickAccessWithLights locale={locale} userId={user.id} />
               </div>
             </div>
           </div>

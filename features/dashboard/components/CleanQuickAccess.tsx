@@ -1,20 +1,19 @@
 'use client'
 
 /**
- * QuickAccessWithStaticSpotlights Component
+ * CleanQuickAccess Component
  * 
- * Quick access with static spotlights and snake effect:
- * - Static off-spotlights displayed on landing
- * - Snake/serpent effect controls spotlight activation
- * - Left-to-right sequential spotlight turn-on
- * - Synchronized tooltip and spotlight effects
+ * Quick access with clean tooltips:
+ * - Static spotlights always visible
+ * - Simple clean tooltips without distracting effects
+ * - Focus on essential functionality
  */
 
 import { useState } from 'react'
-import { HexagonStatCard, CyberpunkTooltipWithSpotlights, StaticSpotlights } from '@/features/dashboard/components'
+import { HexagonStatCard, SimpleCyberpunkTooltip, StaticSpotlights } from '@/features/dashboard/components'
 import Link from 'next/link'
 
-interface QuickAccessProps {
+interface CleanQuickAccessProps {
   locale: string
   userId: string
 }
@@ -28,7 +27,7 @@ interface QuickAccessItem {
   label: string
 }
 
-export function QuickAccessWithStaticSpotlights({ locale, userId }: QuickAccessProps) {
+export function CleanQuickAccess({ locale, userId }: CleanQuickAccessProps) {
   const [activeSpotlights, setActiveSpotlights] = useState<boolean[]>([false, false, false, false])
 
   const quickAccessItems: QuickAccessItem[] = [
@@ -82,7 +81,7 @@ export function QuickAccessWithStaticSpotlights({ locale, userId }: QuickAccessP
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Static Spotlights - Always visible, controlled by hover */}
       <div className="flex justify-center">
         <StaticSpotlights
@@ -91,19 +90,18 @@ export function QuickAccessWithStaticSpotlights({ locale, userId }: QuickAccessP
         />
       </div>
 
-      {/* Quick Access Hexagons */}
+      {/* Quick Access Hexagons with Clean Tooltips */}
       <div className="flex gap-3 justify-center">
         {quickAccessItems.map((item) => (
           <Link key={item.id} href={item.href}>
             <div className="group cursor-pointer transform transition-all hover:scale-110 hover:rotate-6">
-              <CyberpunkTooltipWithSpotlights
+              <SimpleCyberpunkTooltip
                 content={item.tooltip}
                 color={item.color}
                 position="top"
                 size="sm"
                 spotlightIndex={item.id}
                 onSpotlightActivate={handleSpotlightActivate}
-                onMouseLeave={handleTooltipHide}
               >
                 <div className="transition-transform duration-300 group-hover:scale-110">
                   <HexagonStatCard
@@ -114,7 +112,7 @@ export function QuickAccessWithStaticSpotlights({ locale, userId }: QuickAccessP
                     size="sm"
                   />
                 </div>
-              </CyberpunkTooltipWithSpotlights>
+              </SimpleCyberpunkTooltip>
             </div>
           </Link>
         ))}
@@ -152,7 +150,7 @@ function EditIcon({ className }: { className?: string }) {
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828L8.586-8.586z"
       />
     </svg>
   )

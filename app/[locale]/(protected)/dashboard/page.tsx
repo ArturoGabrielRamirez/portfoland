@@ -17,7 +17,7 @@ import {
   LevelBadge,
   GamingCard,
 } from '@/features/gaming'
-import { ConsolePanelCard, HexagonAvatar, HexagonStatCard, AnimatedSection, CyberpunkScreen, GiantFlipCard, CRTScanLine, HexagonFeatureCard, CyberpunkGlow } from '@/features/dashboard/components'
+import { ConsolePanelCard, HexagonAvatar, HexagonStatCard, AnimatedSection, CyberpunkScreen, GiantFlipCard, CRTScanLine, HexagonFeatureCard, CyberpunkGlow, CyberpunkTooltip } from '@/features/dashboard/components'
 import type { DashboardPageProps } from '@/features/dashboard/types/dashboard'
 
 // =============================================================================
@@ -487,53 +487,81 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
                 </h1>
                 <p className="text-sm text-[#94A3B8] mb-2 truncate">{t('welcomeSubtitle')}</p>
                 
-                 {/* Quick Access Hexagons - Enhanced */}
-                 <div className="flex gap-3">
+                 {/* Quick Access Hexagons - Optimized with Tooltips */}
+                 <div className="flex gap-3 pt-2">
                    <Link href={`/${locale}/dashboard/timeline`}>
                      <div className="group cursor-pointer transform transition-all hover:scale-110 hover:rotate-6">
-                       <HexagonStatCard
-                         value="ADD"
-                         label="Timeline"
+                       <CyberpunkTooltip 
+                         content="Add Timeline Events"
                          color="cyan"
-                         icon={<PlusIcon className="h-4 w-4" />}
+                         position="top"
                          size="sm"
-                       />
+                       >
+                         <HexagonStatCard
+                           value=""
+                           label=""
+                           color="cyan"
+                           icon={<PlusIcon className="h-4 w-4" />}
+                           size="sm"
+                         />
+                       </CyberpunkTooltip>
                      </div>
                    </Link>
                    
                    <Link href={`/${locale}/dashboard/skills`}>
                      <div className="group cursor-pointer transform transition-all hover:scale-110 hover:rotate-6">
-                       <HexagonStatCard
-                         value="EDIT"
-                         label="Skills"
+                       <CyberpunkTooltip 
+                         content="Edit Skills Profile"
                          color="magenta"
-                         icon={<EditIcon className="h-4 w-4" />}
+                         position="top"
                          size="sm"
-                       />
+                       >
+                         <HexagonStatCard
+                           value=""
+                           label=""
+                           color="magenta"
+                           icon={<EditIcon className="h-4 w-4" />}
+                           size="sm"
+                         />
+                       </CyberpunkTooltip>
                      </div>
                    </Link>
                    
                    <Link href={`/${locale}/dashboard/my-cv`}>
                      <div className="group cursor-pointer transform transition-all hover:scale-110 hover:rotate-6">
-                       <HexagonStatCard
-                         value="GET"
-                         label="CV"
+                       <CyberpunkTooltip 
+                         content="Download CV"
                          color="green"
-                         icon={<DownloadIcon className="h-4 w-4" />}
+                         position="top"
                          size="sm"
-                       />
+                       >
+                         <HexagonStatCard
+                           value=""
+                           label=""
+                           color="green"
+                           icon={<DownloadIcon className="h-4 w-4" />}
+                           size="sm"
+                         />
+                       </CyberpunkTooltip>
                      </div>
                    </Link>
                    
                    <Link href={`/${locale}/portfolio/${user.id}`}>
                      <div className="group cursor-pointer transform transition-all hover:scale-110 hover:rotate-6">
-                       <HexagonStatCard
-                         value="VIEW"
-                         label="Portfolio"
+                       <CyberpunkTooltip 
+                         content="View Portfolio"
                          color="yellow"
-                         icon={<ShareIcon className="h-4 w-4" />}
+                         position="top"
                          size="sm"
-                       />
+                       >
+                         <HexagonStatCard
+                           value=""
+                           label=""
+                           color="yellow"
+                           icon={<ShareIcon className="h-4 w-4" />}
+                           size="sm"
+                         />
+                       </CyberpunkTooltip>
                      </div>
                    </Link>
                  </div>

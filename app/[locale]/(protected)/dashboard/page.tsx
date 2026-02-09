@@ -17,7 +17,7 @@ import {
   LevelBadge,
   GamingCard,
 } from '@/features/gaming'
-import { ConsolePanelCard, HexagonAvatar, HexagonStatCard, AnimatedSection, CyberpunkScreen, GiantFlipCard, CRTScanLine, HexagonFeatureCard, CyberpunkGlow, CyberpunkTooltip, CyberpunkLightStrip, QuickAccessWithLights } from '@/features/dashboard/components'
+import { ConsolePanelCard, HexagonAvatar, HexagonStatCard, AnimatedSection, CyberpunkScreen, GiantFlipCard, CRTScanLine, HexagonFeatureCard, CyberpunkGlow, CyberpunkTooltip, CyberpunkLightStrip, CyberpunkSpotlight, QuickAccessWithSpotlights } from '@/features/dashboard/components'
 import type { DashboardPageProps } from '@/features/dashboard/types/dashboard'
 
 // =============================================================================
@@ -487,8 +487,8 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
                 </h1>
                 <p className="text-sm text-[#94A3B8] mb-2 truncate">{t('welcomeSubtitle')}</p>
                 
-                 {/* Quick Access with Integrated Light Strip */}
-                 <QuickAccessWithLights locale={locale} userId={user.id} />
+                 {/* Quick Access with Individual Spotlights */}
+                 <QuickAccessWithSpotlights locale={locale} userId={user.id} />
               </div>
             </div>
           </div>

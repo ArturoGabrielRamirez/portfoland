@@ -1,17 +1,17 @@
 'use client'
 
 /**
- * QuickAccessWithLights Component
+ * QuickAccessWithSpotlights Component
  * 
- * Integrated quick access with synchronized light strip:
- * - CyberpunkLightStrip synchronized with hexagon hover
- * - Tooltips integrated
- * - Color-changing effects based on active hexagon
- * - Sequential lighting animation
+ * Quick access with individual spotlight effects below each hexagon:
+ * - Individual spotlight/foco below each hexagon
+ * - Sequential vertical light beam effect
+ * - Color-matched to hexagon colors
+ * - Perfect tooltip background effect
  */
 
 import { useState } from 'react'
-import { HexagonStatCard, CyberpunkTooltip, CyberpunkLightStrip } from '@/features/dashboard/components'
+import { HexagonStatCard, CyberpunkTooltip, CyberpunkSpotlight } from '@/features/dashboard/components'
 import Link from 'next/link'
 
 interface QuickAccessProps {
@@ -28,9 +28,8 @@ interface QuickAccessItem {
   label: string
 }
 
-export function QuickAccessWithLights({ locale, userId }: QuickAccessProps) {
-  const [activeLight, setActiveLight] = useState<number | null>(null)
-  const [activeColor, setActiveColor] = useState<'cyan' | 'magenta' | 'green' | 'yellow'>('cyan')
+export function QuickAccessWithSpotlights({ locale, userId }: QuickAccessProps) {
+  const [activeSpotlight, setActiveSpotlight] = useState<number | null>(null)
 
   const quickAccessItems: QuickAccessItem[] = [
     {
@@ -68,54 +67,53 @@ export function QuickAccessWithLights({ locale, userId }: QuickAccessProps) {
   ]
 
   const handleHexagonHover = (item: QuickAccessItem) => {
-    setActiveLight(item.id)
-    setActiveColor(item.color)
+    setActiveSpotlight(item.id)
   }
 
   const handleHexagonLeave = () => {
-    setActiveLight(null)
+    setActiveSpotlight(null)
   }
 
   return (
-    <div className="space-y-4">
-      {/* Light Strip */}
-      <div className="flex justify-center">
-        <CyberpunkLightStrip
-          activeColor={activeColor}
-          size="md"
-          lightCount={4}
-          activeLight={activeLight}
-          className="w-72"
-        />
-      </div>
-
-      {/* Quick Access Hexagons */}
-      <div className="flex gap-3 justify-center">
+    <div className="space-y-8">
+      {/* Quick Access Hexagons with Individual Spotlights Below */}
+      <div className="flex gap-4 justify-center">
         {quickAccessItems.map((item) => (
-          <Link key={item.id} href={item.href}>
-            <div 
-              className="group cursor-pointer transform transition-all hover:scale-110 hover:rotate-6"
-              onMouseEnter={() => handleHexagonHover(item)}
-              onMouseLeave={handleHexagonLeave}
-            >
-              <CyberpunkTooltip 
-                content={item.tooltip}
-                color={item.color}
-                position="top"
-                size="sm"
+          <div key={item.id} className="flex flex-col items-center gap-3">
+            {/* Hexagon with tooltip */}
+            <Link href={item.href}>
+              <div 
+                className="group cursor-pointer transform transition-all hover:scale-110 hover:rotate-6"
+                onMouseEnter={() => handleHexagonHover(item)}
+                onMouseLeave={handleHexagonLeave}
               >
-                <div className={activeLight === item.id ? 'scale-110 transition-transform duration-300' : 'transition-transform duration-300'}>
-                  <HexagonStatCard
-                    value={item.label}
-                    label={item.label}
-                    color={item.color}
-                    icon={item.icon}
-                    size="sm"
-                  />
-                </div>
-              </CyberpunkTooltip>
-            </div>
-          </Link>
+                <CyberpunkTooltip 
+                  content={item.tooltip}
+                  color={item.color}
+                  position="top"
+                  size="sm"
+                >
+                  <div className={activeSpotlight === item.id ? 'scale-110 transition-transform duration-300' : 'transition-transform duration-300'}>
+                    <HexagonStatCard
+                      value={item.label}
+                      label={item.label}
+                      color={item.color}
+                      icon={item.icon}
+                      size="sm"
+                    />
+                  </div>
+                </CyberpunkTooltip>
+              </div>
+            </Link>
+            
+            {/* Individual Spotlight Below Each Hexagon */}
+            <CyberpunkSpotlight
+              isActive={activeSpotlight === item.id}
+              color={item.color}
+              delay={item.id * 100} // Faster sequential delay for spotlight turn-on effect
+              size="md"
+            />
+          </div>
         ))}
       </div>
     </div>

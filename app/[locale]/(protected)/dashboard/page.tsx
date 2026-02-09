@@ -17,7 +17,7 @@ import {
   LevelBadge,
   GamingCard,
 } from '@/features/gaming'
-import { ConsolePanelCard, HexagonAvatar, HexagonStatCard, AnimatedSection, CyberpunkScreen, GiantFlipCard, CRTScanLine } from '@/features/dashboard/components'
+import { ConsolePanelCard, HexagonAvatar, HexagonStatCard, AnimatedSection, CyberpunkScreen, GiantFlipCard, CRTScanLine, HexagonFeatureCard, CyberpunkGlow } from '@/features/dashboard/components'
 import type { DashboardPageProps } from '@/features/dashboard/types/dashboard'
 
 // =============================================================================
@@ -460,7 +460,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
       }}
     >
       {/* Main Dashboard Frame */}
-      <div className="min-h-screen p-6 space-y-20 max-w-7xl mx-auto">
+      <div className="min-h-screen p-6 space-y-32 max-w-7xl mx-auto">
         
         {/* ROW 1: Welcome + Cyberpunk Screen - Flex Row */}
         <div className="flex flex-row gap-8 h-48">
@@ -487,56 +487,56 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
                 </h1>
                 <p className="text-sm text-[#94A3B8] mb-2 truncate">{t('welcomeSubtitle')}</p>
                 
-                {/* Quick Access Hexagons - Inline */}
-                <div className="flex gap-2">
-                  <Link href={`/${locale}/dashboard/timeline`}>
-                    <div className="group cursor-pointer transform transition-all hover:scale-110">
-                      <HexagonStatCard
-                        value="ADD"
-                        label="XP"
-                        color="cyan"
-                        icon={<PlusIcon className="h-3 w-3" />}
-                        size="xs"
-                      />
-                    </div>
-                  </Link>
-                  
-                  <Link href={`/${locale}/dashboard/skills`}>
-                    <div className="group cursor-pointer transform transition-all hover:scale-110">
-                      <HexagonStatCard
-                        value="EDIT"
-                        label="Skills"
-                        color="magenta"
-                        icon={<EditIcon className="h-3 w-3" />}
-                        size="xs"
-                      />
-                    </div>
-                  </Link>
-                  
-                  <Link href={`/${locale}/dashboard/my-cv`}>
-                    <div className="group cursor-pointer transform transition-all hover:scale-110">
-                      <HexagonStatCard
-                        value="GET"
-                        label="CV"
-                        color="green"
-                        icon={<DownloadIcon className="h-3 w-3" />}
-                        size="xs"
-                      />
-                    </div>
-                  </Link>
-                  
-                  <Link href={`/${locale}/portfolio/${user.id}`}>
-                    <div className="group cursor-pointer transform transition-all hover:scale-110">
-                      <HexagonStatCard
-                        value="VIEW"
-                        label="Portfolio"
-                        color="yellow"
-                        icon={<ShareIcon className="h-3 w-3" />}
-                        size="xs"
-                      />
-                    </div>
-                  </Link>
-                </div>
+                 {/* Quick Access Hexagons - Enhanced */}
+                 <div className="flex gap-3">
+                   <Link href={`/${locale}/dashboard/timeline`}>
+                     <div className="group cursor-pointer transform transition-all hover:scale-110 hover:rotate-6">
+                       <HexagonStatCard
+                         value="ADD"
+                         label="Timeline"
+                         color="cyan"
+                         icon={<PlusIcon className="h-4 w-4" />}
+                         size="sm"
+                       />
+                     </div>
+                   </Link>
+                   
+                   <Link href={`/${locale}/dashboard/skills`}>
+                     <div className="group cursor-pointer transform transition-all hover:scale-110 hover:rotate-6">
+                       <HexagonStatCard
+                         value="EDIT"
+                         label="Skills"
+                         color="magenta"
+                         icon={<EditIcon className="h-4 w-4" />}
+                         size="sm"
+                       />
+                     </div>
+                   </Link>
+                   
+                   <Link href={`/${locale}/dashboard/my-cv`}>
+                     <div className="group cursor-pointer transform transition-all hover:scale-110 hover:rotate-6">
+                       <HexagonStatCard
+                         value="GET"
+                         label="CV"
+                         color="green"
+                         icon={<DownloadIcon className="h-4 w-4" />}
+                         size="sm"
+                       />
+                     </div>
+                   </Link>
+                   
+                   <Link href={`/${locale}/portfolio/${user.id}`}>
+                     <div className="group cursor-pointer transform transition-all hover:scale-110 hover:rotate-6">
+                       <HexagonStatCard
+                         value="VIEW"
+                         label="Portfolio"
+                         color="yellow"
+                         icon={<ShareIcon className="h-4 w-4" />}
+                         size="sm"
+                       />
+                     </div>
+                   </Link>
+                 </div>
               </div>
             </div>
           </div>
@@ -556,53 +556,59 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
         <CRTScanLine color="cyan" intensity="medium" speed="medium" />
 
         {/* ROW 2: 3 Giant Flip Cards */}
-        <div className="grid grid-cols-12 gap-16 h-[24rem]">
+        <div className="grid grid-cols-12 gap-12 h-[22rem]">
           {/* Giant Card 1 - Level Progress */}
           <div className="col-span-12 lg:col-span-4 h-full">
-            <GiantFlipCard
-              title="Level Progress"
-              description={`Level ${userStats.level} • ${xpPercent}% Complete`}
-              version={`${xpRemaining} XP to go`}
-              icon={<BoltIcon className="h-8 w-8" />}
-              color="yellow"
-              stats={{
-                current: userStats.level,
-                total: 50,
-                progress: xpPercent
-              }}
-            />
+            <CyberpunkGlow color="yellow" intensity="medium">
+              <GiantFlipCard
+                title="Level Progress"
+                description={`Level ${userStats.level} • ${xpPercent}% Complete`}
+                version={`${xpRemaining} XP to go`}
+                icon={<BoltIcon className="h-8 w-8" />}
+                color="yellow"
+                stats={{
+                  current: userStats.level,
+                  total: 50,
+                  progress: xpPercent
+                }}
+              />
+            </CyberpunkGlow>
           </div>
 
           {/* Giant Card 2 - Achievements */}
           <div className="col-span-12 lg:col-span-4 h-full">
-            <GiantFlipCard
-              title="Achievements"
-              description={`${userStats.achievements.unlocked} of ${userStats.achievements.total} unlocked`}
-              version={`${Math.round((userStats.achievements.unlocked / userStats.achievements.total) * 100)}% Complete`}
-              icon={<TrophyIcon className="h-8 w-8" />}
-              color="magenta"
-              stats={{
-                current: userStats.achievements.unlocked,
-                total: userStats.achievements.total,
-                progress: Math.round((userStats.achievements.unlocked / userStats.achievements.total) * 100)
-              }}
-            />
+            <CyberpunkGlow color="magenta" intensity="medium">
+              <GiantFlipCard
+                title="Achievements"
+                description={`${userStats.achievements.unlocked} of ${userStats.achievements.total} unlocked`}
+                version={`${Math.round((userStats.achievements.unlocked / userStats.achievements.total) * 100)}% Complete`}
+                icon={<TrophyIcon className="h-8 w-8" />}
+                color="magenta"
+                stats={{
+                  current: userStats.achievements.unlocked,
+                  total: userStats.achievements.total,
+                  progress: Math.round((userStats.achievements.unlocked / userStats.achievements.total) * 100)
+                }}
+              />
+            </CyberpunkGlow>
           </div>
 
           {/* Giant Card 3 - Profile Stats */}
           <div className="col-span-12 lg:col-span-4 h-full">
-            <GiantFlipCard
-              title="Profile Status"
-              description={`${profileCompletion}% Complete`}
-              version="Keep Building"
-              icon={<CheckCircleIcon className="h-8 w-8" />}
-              color="cyan"
-              stats={{
-                current: profileCompletion,
-                total: 100,
-                progress: profileCompletion
-              }}
-            />
+            <CyberpunkGlow color="cyan" intensity="medium">
+              <GiantFlipCard
+                title="Profile Status"
+                description={`${profileCompletion}% Complete`}
+                version="Keep Building"
+                icon={<CheckCircleIcon className="h-8 w-8" />}
+                color="cyan"
+                stats={{
+                  current: profileCompletion,
+                  total: 100,
+                  progress: profileCompletion
+                }}
+              />
+            </CyberpunkGlow>
           </div>
         </div>
 
@@ -610,83 +616,41 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
         <CRTScanLine color="magenta" intensity="subtle" speed="slow" />
 
         {/* ROW 3: 3 Feature Cards (Timeline, Skills, Portfolio) */}
-        <div className="grid grid-cols-12 gap-6 h-64">
+        <div className="grid grid-cols-12 gap-8 h-[22rem]">
           {/* Timeline Feature */}
           <div className="col-span-12 lg:col-span-4 h-full">
-            <Link href={`/${locale}/dashboard/timeline`}>
-              <HUDPanel className="relative overflow-hidden h-full cursor-pointer transition-all hover:scale-[1.02] group">
-                {/* Glow Effect on Hover */}
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity"
-                  style={{
-                    background: 'radial-gradient(circle at center, #00D4FF 0%, transparent 70%)',
-                  }}
-                />
-                
-                <div className="p-6 h-full flex flex-col items-center justify-center text-center">
-                  <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-[#00D4FF]/20 group-hover:bg-[#00D4FF]/30 transition-colors">
-                    <ClockIcon className="h-8 w-8 text-[#00D4FF]" />
-                  </div>
-                  <h3 className="text-lg font-bold text-white mb-2">Timeline</h3>
-                  <p className="text-sm text-[#94A3B8] mb-4">Build your professional journey</p>
-                  <div className="inline-block px-3 py-1 rounded-full bg-[#00D4FF]/20 text-[#00D4FF] text-xs font-medium">
-                    ACTIVE NOW
-                  </div>
-                </div>
-              </HUDPanel>
-            </Link>
+            <HexagonFeatureCard
+              title="Timeline"
+              description="Build your professional journey"
+              status="ACTIVE NOW"
+              color="cyan"
+              href={`/${locale}/dashboard/timeline`}
+              icon={<ClockIcon className="h-6 w-6" />}
+            />
           </div>
 
           {/* Skills Feature */}
           <div className="col-span-12 lg:col-span-4 h-full">
-            <Link href={`/${locale}/dashboard/skills`}>
-              <HUDPanel className="relative overflow-hidden h-full cursor-pointer transition-all hover:scale-[1.02] group">
-                {/* Glow Effect on Hover */}
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity"
-                  style={{
-                    background: 'radial-gradient(circle at center, #D946EF 0%, transparent 70%)',
-                  }}
-                />
-                
-                <div className="p-6 h-full flex flex-col items-center justify-center text-center">
-                  <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-[#D946EF]/20 group-hover:bg-[#D946EF]/30 transition-colors">
-                    <LightbulbIcon className="h-8 w-8 text-[#D946EF]" />
-                  </div>
-                  <h3 className="text-lg font-bold text-white mb-2">Skills</h3>
-                  <p className="text-sm text-[#94A3B8] mb-4">Showcase your expertise</p>
-                  <div className="inline-block px-3 py-1 rounded-full bg-[#D946EF]/20 text-[#D946EF] text-xs font-medium">
-                    EXPLORE NOW
-                  </div>
-                </div>
-              </HUDPanel>
-            </Link>
+            <HexagonFeatureCard
+              title="Skills"
+              description="Showcase your expertise"
+              status="EXPLORE NOW"
+              color="magenta"
+              href={`/${locale}/dashboard/skills`}
+              icon={<LightbulbIcon className="h-6 w-6" />}
+            />
           </div>
 
           {/* Portfolio Feature */}
           <div className="col-span-12 lg:col-span-4 h-full">
-            <Link href={`/${locale}/portfolio/${user.id}`}>
-              <HUDPanel className="relative overflow-hidden h-full cursor-pointer transition-all hover:scale-[1.02] group">
-                {/* Glow Effect on Hover */}
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity"
-                  style={{
-                    background: 'radial-gradient(circle at center, #22C55E 0%, transparent 70%)',
-                  }}
-                />
-                
-                <div className="p-6 h-full flex flex-col items-center justify-center text-center">
-                  <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-xl bg-[#22C55E]/20 group-hover:bg-[#22C55E]/30 transition-colors">
-                    <BriefcaseIcon className="h-8 w-8 text-[#22C55E]" />
-                  </div>
-                  <h3 className="text-lg font-bold text-white mb-2">Portfolio</h3>
-                  <p className="text-sm text-[#94A3B8] mb-4">Share your work with world</p>
-                  <div className="inline-block px-3 py-1 rounded-full bg-[#22C55E]/20 text-[#22C55E] text-xs font-medium">
-                    VIEW NOW
-                  </div>
-                </div>
-              </HUDPanel>
-            </Link>
+            <HexagonFeatureCard
+              title="Portfolio"
+              description="Share your work with world"
+              status="VIEW NOW"
+              color="green"
+              href={`/${locale}/portfolio/${user.id}`}
+              icon={<BriefcaseIcon className="h-6 w-6" />}
+            />
           </div>
         </div>
       </div>

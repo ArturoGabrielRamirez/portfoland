@@ -228,51 +228,51 @@ Feature: Public portfolio page at `/[locale]/[username]` with two visual modes (
 #### Task Group 6: Professional Mode Section Components
 **Dependencies:** Task Group 5
 
-- [ ] 6.0 Complete all Professional mode section panels
-  - [ ] 6.1 Write 5 focused tests for Professional mode components
+- [x] 6.0 Complete all Professional mode section panels
+  - [x] 6.1 Write 5 focused tests for Professional mode components
     - Test `ProfessionalHero` renders user name in `<h1>`, title, avatar with initials fallback
     - Test `ProfessionalTimeline` renders experiences as semantic ordered list (`<ol>`, `<li>`, `<time>`)
     - Test `ProfessionalSkills` renders skills grouped by category with progress bars
     - Test `ProfessionalProjects` renders project cards using shadcn `Card` component
     - Test `ProfessionalAbout` shows empty state message when `bio` is empty
-  - [ ] 6.2 Create `features/portfolio/components/professional/ProfessionalHero.tsx`
+  - [x] 6.2 Create `features/portfolio/components/professional/ProfessionalHero.tsx`
     - Semantic `<header>` with `<h1>` for user name
     - User avatar with initials fallback (reuse `getInitials` pattern from `UserMenu`)
     - Professional title/role display
     - Social links as text links
     - Styling: white/light-gray card, standard typography, no glow effects
     - Color palette: white backgrounds, `gray-900` text, `gray-100` borders, `blue-600` accent links
-  - [ ] 6.3 Create `features/portfolio/components/professional/ProfessionalAbout.tsx`
+  - [x] 6.3 Create `features/portfolio/components/professional/ProfessionalAbout.tsx`
     - Semantic `<section>` with `<h2>` title
     - Render `bio` field as standard paragraph text
     - Empty state: "No summary provided" (translated) with no decorative elements
     - No gaming visual elements
-  - [ ] 6.4 Create `features/portfolio/components/professional/ProfessionalTimeline.tsx`
+  - [x] 6.4 Create `features/portfolio/components/professional/ProfessionalTimeline.tsx`
     - Render experiences as a clean chronological list
     - Each item: company, title, dates (using `<time>` element), description, skill tags
     - Semantic HTML: `<ol>`, `<li>`, `<time>` for ATS friendliness
     - Proper heading hierarchy (`<h3>` for item titles)
     - Use data from existing `getPublicTimelineByUsername` function
-  - [ ] 6.5 Create `features/portfolio/components/professional/ProfessionalSkills.tsx`
+  - [x] 6.5 Create `features/portfolio/components/professional/ProfessionalSkills.tsx`
     - Skills grouped by category in a clean grid/list layout
     - Each skill: name, level as a simple progress bar (no XP/glow), category color dot
     - Use `SkillsByCategory` data structure from existing skills feature
     - Standard Tailwind styling with `gray` palette
-  - [ ] 6.6 Create `features/portfolio/components/professional/ProfessionalProjects.tsx`
+  - [x] 6.6 Create `features/portfolio/components/professional/ProfessionalProjects.tsx`
     - Card grid using shadcn `Card`, `CardHeader`, `CardTitle`, `CardContent` components
     - Each card: project title, description, date range, skill tags
     - Empty state when no projects exist (translated)
-  - [ ] 6.7 Create `features/portfolio/components/professional/ProfessionalContact.tsx`
+  - [x] 6.7 Create `features/portfolio/components/professional/ProfessionalContact.tsx`
     - Clean card with email link, social icons (GitHub, LinkedIn)
     - "Download CV" placeholder button (disabled, labeled "Coming Soon")
     - Use semantic `<address>` element
     - Social links use placeholder values until settings page is built
-  - [ ] 6.8 Create `features/portfolio/components/professional/ProfessionalAI.tsx`
+  - [x] 6.8 Create `features/portfolio/components/professional/ProfessionalAI.tsx`
     - Placeholder card with "AI-Powered Insights" heading (`<h2>`)
     - Brief description of future capabilities
     - "Coming Soon" badge using shadcn `Badge` component
     - Clearly marked as placeholder in both visual and code
-  - [ ] 6.9 Ensure Professional mode tests pass
+  - [x] 6.9 Ensure Professional mode tests pass
     - Run ONLY the 5 tests written in 6.1
     - Do NOT run the entire test suite at this stage
 
@@ -293,50 +293,50 @@ Feature: Public portfolio page at `/[locale]/[username]` with two visual modes (
 #### Task Group 7: Gaming Mode Section Components
 **Dependencies:** Task Group 5
 
-- [ ] 7.0 Complete all Gaming mode section panels
-  - [ ] 7.1 Write 5 focused tests for Gaming mode components
+- [x] 7.0 Complete all Gaming mode section panels
+  - [x] 7.1 Write 5 focused tests for Gaming mode components
     - Test `GamingHero` renders `GamingCard` with `variant="featured"` and `GamingAvatar` with `frame="legendary"`
     - Test `GamingTimeline` embeds `TimelineMap` with `isEditable={false}`
     - Test `GamingSkills` embeds `SkillTreeView` with `isEditable={false}`
     - Test `GamingProjects` renders `GamingCard` with `variant="glow"` for each project
     - Test `GamingAI` renders pulsing dot animation and "SYSTEM INITIALIZING..." text
-  - [ ] 7.2 Create `features/portfolio/components/gaming/GamingHero.tsx`
+  - [x] 7.2 Create `features/portfolio/components/gaming/GamingHero.tsx`
     - Use `GamingCard` with `variant="featured"` wrapper
     - `GamingAvatar` with `frame="legendary"` for user avatar
     - `LevelBadge` component for user level
     - Neon glow text for user name (cyan `#00D4FF` text-shadow)
     - `GamingBadge` components for social links
     - Import all gaming components from `features/gaming`
-  - [ ] 7.3 Create `features/portfolio/components/gaming/GamingAbout.tsx`
+  - [x] 7.3 Create `features/portfolio/components/gaming/GamingAbout.tsx`
     - `HUDPanel` wrapper with cyan accent line
     - Summary text with subtle text-glow effect
     - Empty state: "BIOGRAPHY DATA NOT FOUND" styled as terminal message with monospace font
-  - [ ] 7.4 Create `features/portfolio/components/gaming/GamingTimeline.tsx`
+  - [x] 7.4 Create `features/portfolio/components/gaming/GamingTimeline.tsx`
     - Embed existing `TimelineMap` component in read-only mode (`isEditable={false}`)
     - Reuse `HexagonNode`, `ExperienceCard`, and `TimelineConnections`
     - Contained within the panel dimensions (no overflow on desktop)
     - Pass experiences data from `PortfolioData`
-  - [ ] 7.5 Create `features/portfolio/components/gaming/GamingSkills.tsx`
+  - [x] 7.5 Create `features/portfolio/components/gaming/GamingSkills.tsx`
     - Embed existing `SkillTreeView` with `isEditable={false}`
     - Reuses `GalaxyCanvas` on desktop and `MobileSkillList` on mobile
     - Pass skills data from `PortfolioData`
     - Contained within panel dimensions
-  - [ ] 7.6 Create `features/portfolio/components/gaming/GamingProjects.tsx`
+  - [x] 7.6 Create `features/portfolio/components/gaming/GamingProjects.tsx`
     - `GamingCard` with `variant="glow"` for each project
     - Skill tags as `GamingBadge` components
     - `StatCard` showing total project count
     - Empty state styled with gaming terminal aesthetic
-  - [ ] 7.7 Create `features/portfolio/components/gaming/GamingContact.tsx`
+  - [x] 7.7 Create `features/portfolio/components/gaming/GamingContact.tsx`
     - `HUDPanel` wrapper for the contact section
     - Social link buttons using `GamingButton` with `variant="outline"`
     - Neon-styled layout matching cyberpunk palette (`#0A0E1A` bg, `#00D4FF` cyan, `#D946EF` magenta)
-  - [ ] 7.8 Create `features/portfolio/components/gaming/GamingAI.tsx`
+  - [x] 7.8 Create `features/portfolio/components/gaming/GamingAI.tsx`
     - `HUDPanel` with glowing "AI CORE" title (neon text-shadow)
     - Animated pulsing dot using Tailwind `animate-pulse` or Framer Motion
     - Scanline CSS effect (custom CSS in `globals.css` is acceptable for complex animations per standards)
     - "SYSTEM INITIALIZING..." text in monospace font
     - Clearly marked as placeholder
-  - [ ] 7.9 Ensure Gaming mode tests pass
+  - [x] 7.9 Ensure Gaming mode tests pass
     - Run ONLY the 5 tests written in 7.1
     - Do NOT run the entire test suite at this stage
 

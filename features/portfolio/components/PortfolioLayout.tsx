@@ -15,38 +15,50 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { PanelNavigation } from './PanelNavigation';
 import { DEFAULT_SECTION, PORTFOLIO_SECTIONS } from '../constants/sections';
-import type { PortfolioLayoutProps } from '../types/portfolio';
+import type { PortfolioLayoutProps, PortfolioSectionProps } from '../types/portfolio';
 import type { PortfolioSectionKey } from '../constants/sections';
 
+// Professional mode components
+import { ProfessionalHero } from './professional/ProfessionalHero';
+import { ProfessionalAbout } from './professional/ProfessionalAbout';
+import { ProfessionalTimeline } from './professional/ProfessionalTimeline';
+import { ProfessionalSkills } from './professional/ProfessionalSkills';
+import { ProfessionalProjects } from './professional/ProfessionalProjects';
+import { ProfessionalContact } from './professional/ProfessionalContact';
+import { ProfessionalAI } from './professional/ProfessionalAI';
+
 // =============================================================================
-// Placeholder Section Components
+// Section Component Maps
 // =============================================================================
 
-// Placeholder components for sections not yet implemented (Task Groups 6 & 7).
-// These render the section name so the layout can be tested and verified.
+const professionalSections: Record<PortfolioSectionKey, React.ComponentType<PortfolioSectionProps>> = {
+  hero: ProfessionalHero,
+  about: ProfessionalAbout,
+  timeline: ProfessionalTimeline,
+  skills: ProfessionalSkills,
+  projects: ProfessionalProjects,
+  contact: ProfessionalContact,
+  ai: ProfessionalAI,
+};
 
-function PlaceholderSection({
-  sectionKey,
-  mode,
-}: {
-  sectionKey: string;
-  mode: string;
-}) {
-  const isProfessional = mode === 'professional';
-  const label = PORTFOLIO_SECTIONS.find((s) => s.key === sectionKey)?.key ?? sectionKey;
+// Gaming mode components
+import { GamingHero } from './gaming/GamingHero';
+import { GamingAbout } from './gaming/GamingAbout';
+import { GamingTimeline } from './gaming/GamingTimeline';
+import { GamingSkills } from './gaming/GamingSkills';
+import { GamingProjects } from './gaming/GamingProjects';
+import { GamingContact } from './gaming/GamingContact';
+import { GamingAI } from './gaming/GamingAI';
 
-  return (
-    <div
-      className={cn(
-        'flex h-full items-center justify-center',
-        isProfessional ? 'text-gray-500' : 'text-slate-400'
-      )}
-      data-testid={`section-${sectionKey}`}
-    >
-      <p className="text-lg font-medium capitalize">{label}</p>
-    </div>
-  );
-}
+const gamingSections: Record<PortfolioSectionKey, React.ComponentType<PortfolioSectionProps>> = {
+  hero: GamingHero,
+  about: GamingAbout,
+  timeline: GamingTimeline,
+  skills: GamingSkills,
+  projects: GamingProjects,
+  contact: GamingContact,
+  ai: GamingAI,
+};
 
 // =============================================================================
 // Animation Variants
@@ -111,7 +123,11 @@ export function PortfolioLayout({ data, mode }: PortfolioLayoutProps) {
             aria-labelledby={`tab-${activeSection}`}
             className="h-full p-4 md:p-6"
           >
-            <PlaceholderSection sectionKey={activeSection} mode={mode} />
+            {(() => {
+              const sections = isProfessional ? professionalSections : gamingSections;
+              const SectionComponent = sections[activeSection];
+              return <SectionComponent data={data} />;
+            })()}
           </motion.div>
         </AnimatePresence>
       </main>

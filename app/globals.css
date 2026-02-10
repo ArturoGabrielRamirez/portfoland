@@ -173,3 +173,20 @@
 .animate-glow-golden {
   animation: glow-golden 2s ease-in-out infinite;
 }
+
+/* Scanline overlay effect for Gaming AI section */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+.scanline-overlay {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 212, 255, 0.03) 2px,
+    rgba(0, 212, 255, 0.03) 4px
+  );
+  animation: scanline 8s linear infinite;
+}

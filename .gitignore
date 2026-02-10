@@ -24,6 +24,18 @@
 .DS_Store
 *.pem
 
+# local reference/backup files
+/backups
+/agent-os
+/designs
+/.claude
+
+# local scripts and notes
+recordatorio.md
+test-auth-api.ts
+proxy.ts
+package-lock.json
+
 # debug
 npm-debug.log*
 yarn-debug.log*

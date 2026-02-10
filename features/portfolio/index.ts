@@ -49,6 +49,24 @@ export { PortfolioModeToggle } from './components/PortfolioModeToggle';
 export { PanelNavigation } from './components/PanelNavigation';
 export { PortfolioLayout } from './components/PortfolioLayout';
 
+// Professional Mode Components
+export { ProfessionalHero } from './components/professional/ProfessionalHero';
+export { ProfessionalAbout } from './components/professional/ProfessionalAbout';
+export { ProfessionalTimeline } from './components/professional/ProfessionalTimeline';
+export { ProfessionalSkills } from './components/professional/ProfessionalSkills';
+export { ProfessionalProjects } from './components/professional/ProfessionalProjects';
+export { ProfessionalContact } from './components/professional/ProfessionalContact';
+export { ProfessionalAI } from './components/professional/ProfessionalAI';
+
+// Gaming Mode Components
+export { GamingHero } from './components/gaming/GamingHero';
+export { GamingAbout } from './components/gaming/GamingAbout';
+export { GamingTimeline } from './components/gaming/GamingTimeline';
+export { GamingSkills } from './components/gaming/GamingSkills';
+export { GamingProjects } from './components/gaming/GamingProjects';
+export { GamingContact } from './components/gaming/GamingContact';
+export { GamingAI } from './components/gaming/GamingAI';
+
 // =============================================================================
 // Constants
 // =============================================================================

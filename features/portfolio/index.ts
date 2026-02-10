@@ -16,6 +16,7 @@ export type {
   PortfolioLayoutProps,
   PortfolioSectionProps,
   PanelNavigationProps,
+  PortfolioModeToggleProps,
 } from './types/portfolio';
 
 // =============================================================================
@@ -39,6 +40,12 @@ export { updatePortfolioModeService } from './services/portfolio.service';
 // =============================================================================
 
 export { togglePortfolioMode } from './actions/togglePortfolioMode';
+
+// =============================================================================
+// Components
+// =============================================================================
+
+export { PortfolioModeToggle } from './components/PortfolioModeToggle';
 
 // =============================================================================
 // Constants

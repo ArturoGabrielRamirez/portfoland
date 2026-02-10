@@ -75,3 +75,10 @@ export interface PanelNavigationProps {
   mode: PortfolioMode;
   className?: string;
 }
+
+/**
+ * Props for the portfolio mode toggle in the dashboard header
+ */
+export interface PortfolioModeToggleProps {
+  currentMode: string;
+}

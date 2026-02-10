@@ -139,23 +139,23 @@ Feature: Public portfolio page at `/[locale]/[username]` with two visual modes (
 #### Task Group 4: Portfolio Mode Toggle in Dashboard Header
 **Dependencies:** Task Groups 1, 2, 3
 
-- [ ] 4.0 Complete dashboard mode toggle integration
-  - [ ] 4.1 Write 3 focused tests for the toggle component
+- [x] 4.0 Complete dashboard mode toggle integration
+  - [x] 4.1 Write 3 focused tests for the toggle component
     - Test `PortfolioModeToggle` renders correct icon for current mode (briefcase for professional, gamepad for gaming)
     - Test clicking the toggle calls `togglePortfolioMode` server action
     - Test toggle shows loading state during transition
-  - [ ] 4.2 Create `features/portfolio/components/PortfolioModeToggle.tsx`
+  - [x] 4.2 Create `features/portfolio/components/PortfolioModeToggle.tsx`
     - Client component (`'use client'`) extracted as a small, focused toggle
     - Display current mode with icon: briefcase (lucide `Briefcase`) for professional, gamepad (lucide `Gamepad2`) for gaming
     - Single click switches mode
     - Use `useTransition` + `togglePortfolioMode` server action + `toast` pattern from `UserMenu`
     - Use `useTranslations('dashboard')` for toggle labels
     - Style: small button fitting the dark dashboard header aesthetic, with subtle cyan/magenta accent matching current mode
-  - [ ] 4.3 Integrate `PortfolioModeToggle` into `DashboardHeader`
+  - [x] 4.3 Integrate `PortfolioModeToggle` into `DashboardHeader`
     - Place between the nav links area and the right-side controls (language switcher + user menu)
     - Pass `portfolioMode` from the `user` prop (now available via updated `DashboardUser` type)
     - Ensure the header query/fetch includes `portfolioMode` from the user record
-  - [ ] 4.4 Ensure dashboard toggle tests pass
+  - [x] 4.4 Ensure dashboard toggle tests pass
     - Run ONLY the 3 tests written in 4.1
     - Do NOT run the entire test suite at this stage
 

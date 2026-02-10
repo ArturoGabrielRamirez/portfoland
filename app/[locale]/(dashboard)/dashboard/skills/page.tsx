@@ -27,21 +27,10 @@ export default async function DashboardSkillsPage() {
   const t = await getTranslations('skills');
 
   // Fetch user's skills and categories data
-  console.log('Loading page for user:', session.user.id);
-  
   const [skills, categories] = await Promise.all([
-    getUserSkillsData(session.user.id).catch(err => {
-      console.error('Error loading skills:', err);
-      return [];
-    }),
-    getSkillCategoriesData(session.user.id).catch(err => {
-      console.error('Error loading categories:', err);
-      return [];
-    }),
+    getUserSkillsData(session.user.id).catch(() => []),
+    getSkillCategoriesData(session.user.id).catch(() => []),
   ]);
-  
-  console.log('Loaded skills:', skills.length);
-  console.log('Loaded categories:', categories.length);
 
   // Calculate stats
   const totalSkills = skills.length;

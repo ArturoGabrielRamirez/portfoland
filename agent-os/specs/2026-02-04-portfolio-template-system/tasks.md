@@ -173,26 +173,26 @@ Feature: Public portfolio page at `/[locale]/[username]` with two visual modes (
 #### Task Group 5: Public Portfolio Route and Panel Navigation
 **Dependencies:** Task Groups 1, 3
 
-- [ ] 5.0 Complete portfolio route structure and panel-based navigation
-  - [ ] 5.1 Write 5 focused tests for route and navigation
+- [x] 5.0 Complete portfolio route structure and panel-based navigation
+  - [x] 5.1 Write 5 focused tests for route and navigation
     - Test portfolio page server component returns `notFound()` for non-existent username
     - Test portfolio page fetches and passes correct `portfolioMode` to client layout
     - Test `PanelNavigation` renders all 7 section tabs with translated labels
     - Test `PanelNavigation` switches active panel on tab click with Framer Motion animation
     - Test mobile layout renders sticky bottom tab bar at `<768px` viewport
-  - [ ] 5.2 Create `app/[locale]/[username]/page.tsx` (server component)
+  - [x] 5.2 Create `app/[locale]/[username]/page.tsx` (server component)
     - Fetch all portfolio data via `getPortfolioByUsername`
     - Return `notFound()` if username does not exist
     - Pass serialized `PortfolioData` to the client layout component
     - Use parallel data fetching pattern with `Promise.all`
-  - [ ] 5.3 Create `app/[locale]/[username]/layout.tsx`
+  - [x] 5.3 Create `app/[locale]/[username]/layout.tsx`
     - Minimal public layout similar to existing `skills/layout.tsx` pattern
     - Include logo linking to home and a CTA button
     - Professional mode: white/light background, clean header
     - Gaming mode: dark `#0A0E1A` background, cyberpunk header with gradient logo
     - Conditionally style based on `portfolioMode` (passed via context or read from page data)
     - Use `setRequestLocale` for static rendering per existing pattern
-  - [ ] 5.4 Create `features/portfolio/components/PanelNavigation.tsx` (client component)
+  - [x] 5.4 Create `features/portfolio/components/PanelNavigation.tsx` (client component)
     - Tabbed navigation showing 7 sections: Hero, About, Timeline, Skills, Projects, Contact, AI
     - Desktop (`>=768px`): sidebar or top tab bar; one section visible at a time; entire portfolio fits single viewport with NO vertical scroll
     - Mobile (`<768px`): sticky bottom tab bar; sections stack vertically with scroll permitted
@@ -200,14 +200,14 @@ Feature: Public portfolio page at `/[locale]/[username]` with two visual modes (
     - Navigation labels translated via `useTranslations('portfolio')`
     - Use Framer Motion `AnimatePresence` for panel transition animations (fade or slide)
     - Icons for each section tab using lucide-react
-  - [ ] 5.5 Create `features/portfolio/components/PortfolioLayout.tsx` (client component)
+  - [x] 5.5 Create `features/portfolio/components/PortfolioLayout.tsx` (client component)
     - Master layout component that receives `PortfolioData` and `portfolioMode`
     - Renders `PanelNavigation` and the active section panel
     - Conditionally renders Professional or Gaming variant of each section based on mode
     - Desktop: `h-screen` with `overflow-hidden` to enforce no-scroll constraint
     - Mobile: natural document flow with scroll
     - Uses `cn()` for conditional class application
-  - [ ] 5.6 Ensure route and navigation tests pass
+  - [x] 5.6 Ensure route and navigation tests pass
     - Run ONLY the 5 tests written in 5.1
     - Do NOT run the entire test suite at this stage
 

@@ -46,12 +46,19 @@ export { togglePortfolioMode } from './actions/togglePortfolioMode';
 // =============================================================================
 
 export { PortfolioModeToggle } from './components/PortfolioModeToggle';
+export { PanelNavigation } from './components/PanelNavigation';
+export { PortfolioLayout } from './components/PortfolioLayout';
 
 // =============================================================================
 // Constants
 // =============================================================================
 
 export { PORTFOLIO_MESSAGES, PORTFOLIO_MODES } from './constants/messages';
+export {
+  PORTFOLIO_SECTIONS,
+  DEFAULT_SECTION,
+  type PortfolioSectionKey,
+} from './constants/sections';
 
 // =============================================================================
 // Schemas

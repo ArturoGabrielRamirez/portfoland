@@ -38,6 +38,7 @@ model User {
   experiences     Experience[]
   userSkills      UserSkill[]
   skillCategories SkillCategory[]
+  projects        Project[]
 
   @@map("users")
 }
@@ -125,6 +126,40 @@ model Experience {
 
   @@index([userId])
   @@map("experiences")
+}
+
+// =============================================================================
+// Project Showcase Feature Models
+// =============================================================================
+
+enum ProjectStatus {
+  IN_PROGRESS
+  COMPLETED
+  ARCHIVED
+}
+
+model Project {
+  id               String        @id @default(cuid()) @map("_id")
+  userId           String
+  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title            String
+  slug             String
+  description      String
+  shortDescription String?
+  imageUrl         String?
+  technologies     String[]
+  links            Json
+  featured         Boolean       @default(false)
+  status           ProjectStatus @default(IN_PROGRESS)
+  startDate        DateTime
+  endDate          DateTime?
+  order            Int?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@unique([userId, slug])
+  @@index([userId])
+  @@map("projects")
 }
 
 // =============================================================================

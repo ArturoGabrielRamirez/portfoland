@@ -5,9 +5,14 @@
  * Desktop: flex column with h-screen so the header + portfolio fill one viewport.
  * Mobile: natural document flow with scroll.
  * Visual theming is handled by the PortfolioLayout client component.
+ *
+ * When served via subdomain, header links point to the root domain so that
+ * navigation away from the portfolio lands on portfoland.com rather than
+ * staying on the username subdomain.
  */
 
 import Link from 'next/link';
+import { headers } from 'next/headers';
 import { setRequestLocale } from 'next-intl/server';
 import { getPortfolioByUsername } from '@/features/portfolio/data';
 import { cn } from '@/lib/utils';
@@ -30,6 +35,19 @@ export default async function PublicPortfolioLayout({
 
   const portfolioData = await getPortfolioByUsername(username);
   const isProfessional = portfolioData?.user.portfolioMode === 'professional';
+
+  // Detect subdomain context via header set by the proxy during rewrites
+  const requestHeaders = await headers();
+  const subdomain = requestHeaders.get('x-subdomain');
+  const isSubdomain = Boolean(subdomain);
+
+  const appDomain = process.env.NEXT_PUBLIC_APP_DOMAIN;
+  const homeHref = isSubdomain
+    ? `https://${appDomain}/${locale}`
+    : `/${locale}`;
+  const ctaHref = isSubdomain
+    ? `https://${appDomain}/${locale}/register`
+    : `/${locale}/register`;
 
   return (
     <div
@@ -55,7 +73,7 @@ export default async function PublicPortfolioLayout({
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
           <Link
-            href={`/${locale}`}
+            href={homeHref}
             className={cn(
               'flex items-center gap-2 text-lg font-bold tracking-tight transition-opacity hover:opacity-80',
               isProfessional ? 'text-gray-900' : 'text-white'
@@ -88,7 +106,7 @@ export default async function PublicPortfolioLayout({
 
           {/* CTA */}
           <Link
-            href={`/${locale}/register`}
+            href={ctaHref}
             className={cn(
               'rounded-lg px-4 py-2 text-sm font-medium transition-opacity hover:opacity-90',
               isProfessional

@@ -7,7 +7,7 @@
 
 import type { PublicTimelineData } from '@/features/timeline/types/experience';
 import type { PublicSkillsData } from '@/features/skills/data/getPublicSkills.data';
-import type { ExperienceModel } from '@/app/generated/prisma/models/Experience';
+import type { Project } from '@/features/projects/types/project';
 
 // =============================================================================
 // Core Types
@@ -33,9 +33,9 @@ export interface PortfolioUser {
 }
 
 /**
- * Project data derived from Experience model with type PROJECT
+ * Project data derived from the Project model
  */
-export type ProjectData = ExperienceModel;
+export type ProjectData = Project;
 
 /**
  * Aggregated portfolio data for a public portfolio page

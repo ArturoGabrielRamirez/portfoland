@@ -1,7 +1,17 @@
 'use client';
 
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { FolderOpen } from 'lucide-react';
+import Image from 'next/image';
+import {
+  FolderOpen,
+  ExternalLink,
+  Github,
+  FileText,
+  Video,
+  BookOpen,
+  Link as LinkIcon,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   GamingCard,
@@ -9,13 +19,40 @@ import {
   GamingCardTitle,
   GamingCardContent,
   GamingBadge,
+  GamingButton,
   StatCard,
 } from '@/features/gaming';
-import type { PortfolioSectionProps } from '../../types/portfolio';
+import type { PortfolioSectionProps, ProjectData } from '../../types/portfolio';
+import type { ProjectLink } from '@/features/projects/types/project';
+
+// =============================================================================
+// Helpers
+// =============================================================================
+
+const LINK_TYPE_ICONS: Record<string, React.ReactNode> = {
+  LIVE: <ExternalLink className="h-3 w-3" />,
+  REPO: <Github className="h-3 w-3" />,
+  DOCS: <FileText className="h-3 w-3" />,
+  VIDEO: <Video className="h-3 w-3" />,
+  CASE_STUDY: <BookOpen className="h-3 w-3" />,
+  OTHER: <LinkIcon className="h-3 w-3" />,
+};
+
+// =============================================================================
+// Component
+// =============================================================================
 
 export function GamingProjects({ data, className }: PortfolioSectionProps) {
   const t = useTranslations('portfolio');
   const { projects } = data;
+
+  const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCardClick = (project: ProjectData) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+  };
 
   if (projects.length === 0) {
     return (
@@ -39,28 +76,80 @@ export function GamingProjects({ data, className }: PortfolioSectionProps) {
 
       {/* Project Cards */}
       <div className="grid gap-4 md:grid-cols-2">
-        {projects.map((project) => (
-          <GamingCard key={project.id} variant="glow" data-testid="gaming-project-card">
-            <GamingCardHeader>
-              <GamingCardTitle>{project.title}</GamingCardTitle>
-            </GamingCardHeader>
-            <GamingCardContent>
-              {project.description && (
-                <p className="mb-3 text-sm text-slate-400">{project.description}</p>
-              )}
-              {project.skills && project.skills.length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
-                  {project.skills.map((skill: string) => (
-                    <GamingBadge key={skill} color="cyan">
-                      {skill}
-                    </GamingBadge>
-                  ))}
+        {projects.map((project) => {
+          const links = (project.links ?? []) as ProjectLink[];
+
+          return (
+            <GamingCard
+              key={project.id}
+              variant={project.featured ? 'featured' : 'glow'}
+              data-testid="gaming-project-card"
+              className="cursor-pointer"
+              onClick={() => handleCardClick(project)}
+            >
+              {/* Cover image with cyberpunk gradient overlay */}
+              {project.imageUrl && (
+                <div className="relative h-36 w-full overflow-hidden rounded-t-xl">
+                  <Image
+                    src={project.imageUrl}
+                    alt={project.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-b from-[#00D4FF]/20 via-transparent to-[#D946EF]/20" />
                 </div>
               )}
-            </GamingCardContent>
-          </GamingCard>
-        ))}
+
+              <GamingCardHeader>
+                <GamingCardTitle>{project.title}</GamingCardTitle>
+              </GamingCardHeader>
+
+              <GamingCardContent>
+                {/* Short description */}
+                {(project.shortDescription || project.description) && (
+                  <p className="mb-3 line-clamp-2 text-sm text-slate-400">
+                    {project.shortDescription || project.description}
+                  </p>
+                )}
+
+                {/* Technology badges */}
+                {project.technologies && project.technologies.length > 0 && (
+                  <div className="mb-3 flex flex-wrap gap-1.5">
+                    {project.technologies.map((tech: string) => (
+                      <GamingBadge key={tech} color="cyan">
+                        {tech}
+                      </GamingBadge>
+                    ))}
+                  </div>
+                )}
+
+                {/* Link buttons */}
+                {links.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {links.map((link, index) => (
+                      <GamingButton
+                        key={index}
+                        variant="outline"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open(link.url, '_blank', 'noopener,noreferrer');
+                        }}
+                      >
+                        {LINK_TYPE_ICONS[link.type] || LINK_TYPE_ICONS.OTHER}
+                        <span>{link.label}</span>
+                      </GamingButton>
+                    ))}
+                  </div>
+                )}
+              </GamingCardContent>
+            </GamingCard>
+          );
+        })}
       </div>
+
+      {/* ProjectDetailModal will be rendered here in TG7 with mode="gaming" */}
     </div>
   );
 }

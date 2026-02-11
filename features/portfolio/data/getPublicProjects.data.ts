@@ -1,7 +1,7 @@
 /**
  * Get Public Projects by Username
  *
- * Retrieves a user's project experiences (type: PROJECT) by username.
+ * Retrieves a user's projects by username from the Project model.
  * Used for the projects section on the public portfolio page.
  */
 
@@ -11,8 +11,11 @@ import type { ProjectData } from '../types/portfolio';
 /**
  * Get public projects for a username
  *
+ * Orders by: featured desc (featured first), then order asc (nulls last),
+ * then startDate desc.
+ *
  * @param username - The user's username
- * @returns Array of project experiences or null if user not found
+ * @returns Array of projects or null if user not found
  */
 export async function getPublicProjectsByUsername(
   username: string
@@ -26,11 +29,14 @@ export async function getPublicProjectsByUsername(
     return null;
   }
 
-  return await prisma.experience.findMany({
+  return await prisma.project.findMany({
     where: {
       userId: user.id,
-      type: 'PROJECT',
     },
-    orderBy: { startDate: 'desc' },
+    orderBy: [
+      { featured: 'desc' },
+      { order: 'asc' },
+      { startDate: 'desc' },
+    ],
   });
 }

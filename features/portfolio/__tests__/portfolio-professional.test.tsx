@@ -27,6 +27,7 @@ vi.mock('next-intl', () => ({
       'sections.skills.professional.emptyState': 'No skills listed yet',
       'sections.projects.professional.title': 'Projects',
       'sections.projects.professional.emptyState': 'No projects yet',
+      'sections.projects.professional.featured': 'Featured',
       'sections.contact.professional.title': 'Contact',
       'sections.ai.professional.title': 'AI-Powered Insights',
       'sections.ai.professional.description': 'Intelligent analysis powered by AI.',
@@ -34,6 +35,11 @@ vi.mock('next-intl', () => ({
     };
     return translations[key] ?? key;
   },
+}));
+
+// Mock next/image
+vi.mock('next/image', () => ({
+  default: (props: any) => <img {...props} />,
 }));
 
 // =============================================================================
@@ -48,6 +54,7 @@ const mockUser = {
   image: null,
   bio: null,
   portfolioMode: 'professional' as const,
+  locale: 'en',
 };
 
 const mockExperiences = {
@@ -121,18 +128,19 @@ const mockSkills = {
 const mockProjects = [
   {
     id: 'proj-1',
+    userId: 'user-1',
     title: 'Portfolio App',
+    slug: 'portfolio-app',
     description: 'A portfolio application',
+    shortDescription: null,
+    imageUrl: null,
+    technologies: ['Next.js', 'Tailwind'],
+    links: [],
+    featured: false,
+    status: 'COMPLETED',
     startDate: new Date('2023-06-01'),
     endDate: null,
-    type: 'PROJECT',
-    skills: ['Next.js', 'Tailwind'],
-    userId: 'user-1',
-    company: 'Personal',
-    xp: 50,
-    latitude: 0,
-    longitude: 0,
-    address: '',
+    order: null,
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -234,7 +242,7 @@ describe('Professional Mode Section Components', () => {
     // Project title
     expect(screen.getByText('Portfolio App')).toBeInTheDocument();
 
-    // Skill tags
+    // Technology badges
     expect(screen.getByText('Next.js')).toBeInTheDocument();
     expect(screen.getByText('Tailwind')).toBeInTheDocument();
   });

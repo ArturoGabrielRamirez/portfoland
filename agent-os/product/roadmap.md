@@ -42,7 +42,7 @@
 
 14. [x] Skill Tree Visualization — Arbol de habilidades estilo videojuego con progresion y dependencias `L`
 15. [x] Portfolio Template System — Templates con modos Professional y Gaming `L`
-16. [ ] Subdomain Routing — username.portfoland.com con Next.js middleware `M`
+16. [x] Subdomain Routing — username.portfoland.com con proxy.ts rewrite `M`
 17. [ ] Project Showcase — Cards de proyectos con imagenes, tech stack, links `M`
 18. [ ] Portfolio SEO & Meta Tags — Open Graph, structured data dinamico `S`
 

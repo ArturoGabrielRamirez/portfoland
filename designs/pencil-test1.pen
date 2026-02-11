@@ -1,0 +1,2192 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "ucwNF",
+      "x": 1600,
+      "y": -1369,
+      "name": "Timeline Section",
+      "width": "fill_container(3760)",
+      "height": 600,
+      "fill": "#1A2332",
+      "cornerRadius": 24,
+      "stroke": {
+        "align": "inside",
+        "thickness": 4,
+        "fill": "#00D4FF"
+      },
+      "layout": "vertical",
+      "gap": 24,
+      "padding": 40,
+      "children": [
+        {
+          "type": "text",
+          "id": "PCQuN",
+          "name": "Timeline Title",
+          "fill": "#00D4FF",
+          "content": "CAREER TIMELINE",
+          "textAlign": "center",
+          "fontFamily": "Space Grotesk",
+          "fontSize": 32,
+          "fontWeight": "700"
+        },
+        {
+          "type": "frame",
+          "id": "wwFcb",
+          "name": "Timeline Map",
+          "width": "fill_container",
+          "height": 400,
+          "fill": "#0D1421",
+          "cornerRadius": 16,
+          "stroke": {
+            "align": "inside",
+            "thickness": 2,
+            "fill": "#1E293B"
+          },
+          "gap": 32,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "qdErK",
+              "name": "Timeline Node 1",
+              "layout": "vertical",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "AMVSW",
+                  "name": "Timeline Marker",
+                  "width": 100,
+                  "height": 100,
+                  "fill": "#22C55E",
+                  "cornerRadius": 50,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 4,
+                    "fill": "#F1F5F9"
+                  },
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "emZIt",
+                      "name": "Start",
+                      "fill": "#0D1421",
+                      "content": "START",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "2SQT8",
+                  "name": "Timeline Date",
+                  "fill": "#22C55E",
+                  "content": "2020",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "mJ16z",
+                  "name": "Timeline Description",
+                  "fill": "#F1F5F9",
+                  "content": "University",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "H28jx",
+              "name": "Timeline Node 2",
+              "layout": "vertical",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "NVHgT",
+                  "name": "Timeline Marker",
+                  "width": 100,
+                  "height": 100,
+                  "fill": "#8B5CF6",
+                  "cornerRadius": 50,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 4,
+                    "fill": "#F1F5F9"
+                  },
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "88rOm",
+                      "name": "Skill",
+                      "fill": "#0D1421",
+                      "content": "SKILL",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "r8CmD",
+                  "name": "Timeline Date",
+                  "fill": "#8B5CF6",
+                  "content": "2022",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "zKtyD",
+                  "name": "Timeline Description",
+                  "fill": "#F1F5F9",
+                  "content": "First Job",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "eVljG",
+              "name": "Timeline Node 3",
+              "layout": "vertical",
+              "gap": 12,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "6gX2I",
+                  "name": "Timeline Marker",
+                  "width": 100,
+                  "height": 100,
+                  "fill": "#D946EF",
+                  "cornerRadius": 50,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 4,
+                    "fill": "#F1F5F9"
+                  },
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "H91Fo",
+                      "name": "Current",
+                      "fill": "#0D1421",
+                      "content": "NOW",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "K4zbl",
+                  "name": "Timeline Date",
+                  "fill": "#D946EF",
+                  "content": "2024",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "Ib2u5",
+                  "name": "Timeline Description",
+                  "fill": "#F1F5F9",
+                  "content": "Senior Dev",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "PKDX1",
+      "x": 0,
+      "y": 0,
+      "name": "Portfoland - Gamer Edition",
+      "clip": true,
+      "width": 3200,
+      "height": 1800,
+      "fill": "#0A0E1A",
+      "layout": "none",
+      "children": [
+        {
+          "type": "frame",
+          "id": "POKDX2",
+          "x": 591,
+          "y": 50,
+          "name": "Main Console Frame",
+          "width": 1582,
+          "height": 1700,
+          "fill": "#1A1F2E",
+          "cornerRadius": 24,
+          "stroke": {
+            "align": "inside",
+            "thickness": 4,
+            "fill": "#00D4FF"
+          },
+          "layout": "vertical",
+          "gap": 32,
+          "padding": 40,
+          "children": [
+            {
+              "type": "frame",
+              "id": "HUD1",
+              "name": "Top HUD Bar",
+              "width": "fill_container",
+              "height": 80,
+              "fill": "#0D1421",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#00D4FF"
+              },
+              "gap": 20,
+              "padding": 16,
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "LVL1",
+                  "name": "Player Level",
+                  "gap": 12,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "LVLICON",
+                      "name": "Level Icon",
+                      "width": 48,
+                      "height": 48,
+                      "fill": "#00D4FF",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "LVLTEXT",
+                          "name": "LV",
+                          "fill": "#0A0E1A",
+                          "content": "LV",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "LVLNUM",
+                      "name": "Level Number",
+                      "fill": "#00D4FF",
+                      "content": "42",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 28,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "HPBAR",
+                  "name": "HP Bar Container",
+                  "width": 300,
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "HPLABEL",
+                      "name": "HP Label",
+                      "fill": "#22C55E",
+                      "content": "HP",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "HPBARBG",
+                      "name": "HP Bar Background",
+                      "width": "fill_container",
+                      "height": 20,
+                      "fill": "#1E293B",
+                      "cornerRadius": 10,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#22C55E"
+                      },
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "HPBARFILL",
+                          "name": "HP Bar Fill",
+                          "width": 200,
+                          "height": 12,
+                          "fill": "#22C55E",
+                          "cornerRadius": 6
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "XPBAR",
+                  "name": "XP Bar Container",
+                  "width": 300,
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "XPLABEL",
+                      "name": "XP Label",
+                      "fill": "#8B5CF6",
+                      "content": "XP",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "XPBARBG",
+                      "name": "XP Bar Background",
+                      "width": "fill_container",
+                      "height": 20,
+                      "fill": "#1E293B",
+                      "cornerRadius": 10,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#8B5CF6"
+                      },
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "XPBARFILL",
+                          "name": "XP Bar Fill",
+                          "width": 150,
+                          "height": 12,
+                          "fill": "#8B5CF6",
+                          "cornerRadius": 6
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "COINS",
+                  "name": "Currency Display",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "COINICON",
+                      "name": "Coin Icon",
+                      "fill": "#F59E0B",
+                      "content": "🪙",
+                      "fontFamily": "Inter",
+                      "fontSize": 24,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "COINAMOUNT",
+                      "name": "Coin Amount",
+                      "fill": "#F59E0B",
+                      "content": "2,847",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 20,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "CHARSEL",
+              "name": "Character Selection Screen",
+              "width": "fill_container",
+              "height": 400,
+              "fill": "#0D1421",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#D946EF"
+              },
+              "layout": "vertical",
+              "gap": 24,
+              "padding": 32,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "CHARTITLE",
+                  "name": "Character Selection Title",
+                  "fill": "#D946EF",
+                  "content": "SELECT YOUR AVATAR",
+                  "textAlign": "center",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 24,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "frame",
+                  "id": "CHARGRID",
+                  "name": "Character Grid",
+                  "width": "fill_container",
+                  "gap": 20,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "CHAR1",
+                      "name": "Character/Wizard",
+                      "reusable": true,
+                      "width": 120,
+                      "height": 120,
+                      "fill": "#1A2332",
+                      "cornerRadius": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 3,
+                        "fill": "#8B5CF6"
+                      },
+                      "layout": "vertical",
+                      "gap": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "WIZICON",
+                          "name": "Wizard Icon",
+                          "fill": "#8B5CF6",
+                          "content": "🧙‍♂️",
+                          "fontFamily": "Inter",
+                          "fontSize": 48,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "WIZNAME",
+                          "name": "Wizard Name",
+                          "fill": "#8B5CF6",
+                          "content": "WIZARD",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 10,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "CHAR2",
+                      "name": "Character/Developer",
+                      "reusable": true,
+                      "width": 120,
+                      "height": 120,
+                      "fill": "#1A2332",
+                      "cornerRadius": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#1E293B"
+                      },
+                      "layout": "vertical",
+                      "gap": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "DEVICON",
+                          "name": "Developer Icon",
+                          "fill": "#00D4FF",
+                          "content": "👨‍💻",
+                          "fontFamily": "Inter",
+                          "fontSize": 48,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "DEVNAME",
+                          "name": "Developer Name",
+                          "fill": "#00D4FF",
+                          "content": "DEVELOPER",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 10,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "CHAR3",
+                      "name": "Character/Designer",
+                      "reusable": true,
+                      "width": 120,
+                      "height": 120,
+                      "fill": "#1A2332",
+                      "cornerRadius": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#1E293B"
+                      },
+                      "layout": "vertical",
+                      "gap": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "DESICON",
+                          "name": "Designer Icon",
+                          "fill": "#D946EF",
+                          "content": "👩‍🎨",
+                          "fontFamily": "Inter",
+                          "fontSize": 48,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "DESNAME",
+                          "name": "Designer Name",
+                          "fill": "#D946EF",
+                          "content": "DESIGNER",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 10,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "CHAR4",
+                      "name": "Character/Warrior",
+                      "reusable": true,
+                      "width": 120,
+                      "height": 120,
+                      "fill": "#1A2332",
+                      "cornerRadius": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#1E293B"
+                      },
+                      "layout": "vertical",
+                      "gap": 8,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "WARICON",
+                          "name": "Warrior Icon",
+                          "fill": "#EF4444",
+                          "content": "⚔️",
+                          "fontFamily": "Inter",
+                          "fontSize": 48,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "WARNAME",
+                          "name": "Warrior Name",
+                          "fill": "#EF4444",
+                          "content": "WARRIOR",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 10,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "pOdHZ",
+      "x": 3296,
+      "y": 0,
+      "name": "Portfoland Console UI",
+      "clip": true,
+      "width": 3840,
+      "height": 2160,
+      "fill": "#0D1421",
+      "children": [
+        {
+          "type": "frame",
+          "id": "YhV89",
+          "name": "HUD Container",
+          "width": "fill_container",
+          "height": 120,
+          "fill": "linear-gradient(90deg, #0D1421 0%, #1A2332 50%, #0D1421 100%)",
+          "padding": 32,
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "0jfTz",
+              "name": "User Profile HUD",
+              "gap": 20,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "jjjxS",
+                  "name": "Avatar Frame",
+                  "width": 80,
+                  "height": 80,
+                  "fill": "#1A2332",
+                  "cornerRadius": 16,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 3,
+                    "fill": "#00D4FF"
+                  },
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "I3xf9",
+                      "name": "Avatar Icon",
+                      "fill": "#00D4FF",
+                      "content": "👤",
+                      "fontFamily": "Inter",
+                      "fontSize": 40,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "GZQwM",
+                  "name": "User Info",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "5bT9A",
+                      "name": "Username",
+                      "fill": "#F1F5F9",
+                      "content": "PLAYER_ONE",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 20,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "a4xnw",
+                      "name": "User Title",
+                      "fill": "#94A3B8",
+                      "content": "Full Stack Developer",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "nhpis",
+              "name": "Stats Panel",
+              "gap": 40,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "yNHcG",
+                  "name": "Level Display",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Gfqe9",
+                      "name": "Level Badge",
+                      "width": 60,
+                      "height": 60,
+                      "fill": "#00D4FF",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "z35Nn",
+                          "name": "LV",
+                          "fill": "#0D1421",
+                          "content": "LV",
+                          "fontFamily": "Space Grotesk",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "Mja49",
+                      "name": "Level Number",
+                      "fill": "#00D4FF",
+                      "content": "42",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 24,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Ibi51",
+                  "name": "XP Container",
+                  "width": 300,
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "tOF8n",
+                      "name": "XP Label",
+                      "fill": "#8B5CF6",
+                      "content": "EXPERIENCE",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "b0y4G",
+                      "name": "XP Bar Background",
+                      "width": "fill_container",
+                      "height": 24,
+                      "fill": "#1E293B",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#8B5CF6"
+                      },
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "ApUyj",
+                          "name": "XP Bar Fill",
+                          "width": 180,
+                          "height": 16,
+                          "fill": "linear-gradient(90deg, #8B5CF6 0%, #D946EF 100%)",
+                          "cornerRadius": 8
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Xe4T0",
+              "name": "Skills Progress",
+              "gap": 24,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "30ZAG",
+                  "name": "Skill React",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "wgYOS",
+                      "name": "Skill Icon React",
+                      "width": 48,
+                      "height": 48,
+                      "fill": "#00D4FF",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "vHfTa",
+                          "name": "React",
+                          "fill": "#0D1421",
+                          "content": "⚛",
+                          "fontFamily": "Inter",
+                          "fontSize": 24,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "NqZHo",
+                      "name": "Skill Level",
+                      "fill": "#00D4FF",
+                      "content": "MAX",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 10,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "TYLaV",
+                  "name": "Skill Node",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "B2N7l",
+                      "name": "Skill Icon Node",
+                      "width": 48,
+                      "height": 48,
+                      "fill": "#22C55E",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "SCOqC",
+                          "name": "Node",
+                          "fill": "#0D1421",
+                          "content": "🟢",
+                          "fontFamily": "Inter",
+                          "fontSize": 24,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "Dx7LY",
+                      "name": "Skill Level",
+                      "fill": "#22C55E",
+                      "content": "LVL 8",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 10,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "vEsBD",
+                  "name": "Skill Design",
+                  "layout": "vertical",
+                  "gap": 4,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "DQEIC",
+                      "name": "Skill Icon Design",
+                      "width": 48,
+                      "height": 48,
+                      "fill": "#D946EF",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "UY9r5",
+                          "name": "Design",
+                          "fill": "#0D1421",
+                          "content": "🎨",
+                          "fontFamily": "Inter",
+                          "fontSize": 24,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "cMyDf",
+                      "name": "Skill Level",
+                      "fill": "#D946EF",
+                      "content": "LVL 5",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 10,
+                      "fontWeight": "700"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "qHYp8",
+          "name": "Bottom Navigation",
+          "width": "fill_container",
+          "height": 100,
+          "fill": "linear-gradient(90deg, #1A2332 0%, #0D1421 50%, #1A2332 100%)",
+          "padding": 20,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "hvkfv",
+              "name": "Nav Button Timeline",
+              "width": 120,
+              "height": 60,
+              "fill": "#00D4FF",
+              "cornerRadius": 16,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "c9Hi8",
+                  "name": "Timeline Icon",
+                  "fill": "#0D1421",
+                  "content": "📊",
+                  "fontFamily": "Inter",
+                  "fontSize": 24,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "BD9YT",
+                  "name": "Timeline Text",
+                  "fill": "#0D1421",
+                  "content": "TIMELINE",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 10,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "rSldY",
+              "name": "Nav Button Skills",
+              "width": 120,
+              "height": 60,
+              "fill": "#1E293B",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#8B5CF6"
+              },
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "przT4",
+                  "name": "Skills Icon",
+                  "fill": "#8B5CF6",
+                  "content": "🌟",
+                  "fontFamily": "Inter",
+                  "fontSize": 24,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "WZ4qM",
+                  "name": "Skills Text",
+                  "fill": "#8B5CF6",
+                  "content": "SKILLS",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 10,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "8GYEg",
+              "name": "Nav Button Portfolio",
+              "width": 120,
+              "height": 60,
+              "fill": "#1E293B",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#D946EF"
+              },
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "XUeb3",
+                  "name": "Portfolio Icon",
+                  "fill": "#D946EF",
+                  "content": "💼",
+                  "fontFamily": "Inter",
+                  "fontSize": 24,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "9vvzl",
+                  "name": "Portfolio Text",
+                  "fill": "#D946EF",
+                  "content": "PORTFOLIO",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 10,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "nBf9D",
+              "name": "Nav Button Settings",
+              "width": 120,
+              "height": 60,
+              "fill": "#1E293B",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#94A3B8"
+              },
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "t74qR",
+                  "name": "Settings Icon",
+                  "fill": "#94A3B8",
+                  "content": "⚙️",
+                  "fontFamily": "Inter",
+                  "fontSize": 24,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "AZwOV",
+                  "name": "Settings Text",
+                  "fill": "#94A3B8",
+                  "content": "SETTINGS",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 10,
+                  "fontWeight": "700"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "f18F8",
+      "x": 40,
+      "y": -1493,
+      "name": "Main Content Area",
+      "width": 3760,
+      "height": 1200,
+      "layout": "vertical",
+      "gap": 32
+    },
+    {
+      "type": "frame",
+      "id": "eRkQg",
+      "x": 0,
+      "y": 2410,
+      "name": "Portfoland OAuth Console",
+      "clip": true,
+      "width": 3840,
+      "height": 2160,
+      "fill": "#0D1421",
+      "children": [
+        {
+          "type": "frame",
+          "id": "YMx4O",
+          "name": "Background Gradient",
+          "width": "fill_container",
+          "height": "fill_container",
+          "fill": "radial-gradient(circle at 50% 50%, #1A2332 0%, #0D1421 50%, #0A0E1A 100%)"
+        },
+        {
+          "type": "frame",
+          "id": "hWcb2",
+          "name": "Left Info Panel",
+          "width": 1594,
+          "height": "fill_container",
+          "fill": "linear-gradient(135deg, #1A2332 0%, #0D1421 100%)",
+          "layout": "vertical",
+          "padding": 80,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "0SjlA",
+              "name": "Brand Logo Container",
+              "layout": "vertical",
+              "gap": 24,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "XGuMp",
+                  "name": "Logo Icon",
+                  "width": 120,
+                  "height": 120,
+                  "fill": "linear-gradient(135deg, #00D4FF 0%, #D946EF 100%)",
+                  "cornerRadius": 30,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "m6uyV",
+                      "name": "Logo Text",
+                      "fill": "#0D1421",
+                      "content": "P",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 64,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "elz7H",
+                  "name": "Brand Name",
+                  "fill": "#00D4FF",
+                  "content": "PORTFOLAND",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 48,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "h0bF5",
+                  "name": "Tagline",
+                  "fill": "#94A3B8",
+                  "content": "Gamified Career Storytelling",
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 20,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "ZAnVu",
+              "name": "Features List",
+              "layout": "vertical",
+              "gap": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "OAvkt",
+                  "name": "Feature 1",
+                  "gap": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "CWYd2",
+                      "name": "Feature Icon",
+                      "width": 48,
+                      "height": 48,
+                      "fill": "#22C55E",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "E8blr",
+                          "name": "Check",
+                          "fill": "#0D1421",
+                          "content": "✓",
+                          "fontFamily": "Inter",
+                          "fontSize": 24,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "xbuas",
+                      "name": "Feature Description",
+                      "fill": "#F1F5F9",
+                      "content": "Interactive Career Timeline",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "CWqsI",
+                  "name": "Feature 2",
+                  "gap": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "6scxf",
+                      "name": "Feature Icon",
+                      "width": 48,
+                      "height": 48,
+                      "fill": "#8B5CF6",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "GlBoq",
+                          "name": "Star",
+                          "fill": "#0D1421",
+                          "content": "⭐",
+                          "fontFamily": "Inter",
+                          "fontSize": 24,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "APyFD",
+                      "name": "Feature Description",
+                      "fill": "#F1F5F9",
+                      "content": "AI-Powered Portfolio Generation",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "qfdcV",
+                  "name": "Feature 3",
+                  "gap": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "YWxhu",
+                      "name": "Feature Icon",
+                      "width": 48,
+                      "height": 48,
+                      "fill": "#F59E0B",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "do0ev",
+                          "name": "Globe",
+                          "fill": "#0D1421",
+                          "content": "🌐",
+                          "fontFamily": "Inter",
+                          "fontSize": 24,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "zBucw",
+                      "name": "Feature Description",
+                      "fill": "#F1F5F9",
+                      "content": "Custom Subdomain Hosting",
+                      "fontFamily": "Inter",
+                      "fontSize": 18,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "j1SR4",
+          "name": "Right Auth Panel",
+          "width": 2240,
+          "height": "fill_container",
+          "fill": "#0D1421",
+          "layout": "vertical",
+          "padding": 80,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "XX9BM",
+              "name": "Auth Card",
+              "width": 600,
+              "fill": "#1A2332",
+              "cornerRadius": 24,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#00D4FF"
+              },
+              "layout": "vertical",
+              "gap": 32,
+              "padding": 48,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "sMv74",
+                  "name": "Auth Title",
+                  "fill": "#00D4FF",
+                  "content": "START YOUR QUEST",
+                  "textAlign": "center",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 32,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "aYEA4",
+                  "name": "Auth Subtitle",
+                  "fill": "#94A3B8",
+                  "content": "Choose your authentication method",
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "MIyeL",
+                  "name": "OAuth Providers",
+                  "layout": "vertical",
+                  "gap": 16,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "C0UZC",
+                      "name": "Google OAuth Button",
+                      "width": "fill_container",
+                      "height": 60,
+                      "fill": "#1E293B",
+                      "cornerRadius": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#4285F4"
+                      },
+                      "gap": 16,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "4I71C",
+                          "name": "Google Icon",
+                          "width": 32,
+                          "height": 32,
+                          "fill": "#4285F4",
+                          "cornerRadius": 8,
+                          "layout": "vertical",
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "6xsiP",
+                              "name": "G",
+                              "fill": "#F1F5F9",
+                              "content": "G",
+                              "fontFamily": "Inter",
+                              "fontSize": 20,
+                              "fontWeight": "700"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "B6yfy",
+                          "name": "Google Text",
+                          "fill": "#F1F5F9",
+                          "content": "Continue with Google",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "iewIH",
+                      "name": "GitHub OAuth Button",
+                      "width": "fill_container",
+                      "height": 60,
+                      "fill": "#1E293B",
+                      "cornerRadius": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#333333"
+                      },
+                      "gap": 16,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "ZQ6In",
+                          "name": "GitHub Icon",
+                          "width": 32,
+                          "height": 32,
+                          "fill": "#333333",
+                          "cornerRadius": 8,
+                          "layout": "vertical",
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "61kuQ",
+                              "name": "GitHub",
+                              "fill": "#F1F5F9",
+                              "content": "⚡",
+                              "fontFamily": "Inter",
+                              "fontSize": 20,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "H1Xy0",
+                          "name": "GitHub Text",
+                          "fill": "#F1F5F9",
+                          "content": "Continue with GitHub",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "i88qo",
+                      "name": "LinkedIn OAuth Button",
+                      "width": "fill_container",
+                      "height": 60,
+                      "fill": "#1E293B",
+                      "cornerRadius": 16,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#0077B5"
+                      },
+                      "gap": 16,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "au5YR",
+                          "name": "LinkedIn Icon",
+                          "width": 32,
+                          "height": 32,
+                          "fill": "#0077B5",
+                          "cornerRadius": 8,
+                          "layout": "vertical",
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "2y911",
+                              "name": "LinkedIn",
+                              "fill": "#F1F5F9",
+                              "content": "💼",
+                              "fontFamily": "Inter",
+                              "fontSize": 20,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "s60Hy",
+                          "name": "LinkedIn Text",
+                          "fill": "#F1F5F9",
+                          "content": "Continue with LinkedIn",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "UzKk0",
+                  "name": "Divider",
+                  "width": "fill_container",
+                  "gap": 16,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "PIb3t",
+                      "name": "Divider Line",
+                      "width": "fit_content(0)",
+                      "height": 2,
+                      "fill": "#1E293B",
+                      "cornerRadius": 1
+                    },
+                    {
+                      "type": "text",
+                      "id": "YFAPP",
+                      "name": "OR",
+                      "fill": "#64748B",
+                      "content": "OR",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Plrh9",
+                      "name": "Divider Line 2",
+                      "width": "fit_content(0)",
+                      "height": 2,
+                      "fill": "#1E293B",
+                      "cornerRadius": 1
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Ncr8u",
+                  "name": "Email Input Container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "cvruZ",
+                      "name": "Email Label",
+                      "fill": "#94A3B8",
+                      "content": "EMAIL ADDRESS",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "4FjRO",
+                      "name": "Email Field",
+                      "width": "fill_container",
+                      "height": 50,
+                      "fill": "#0D1421",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#1E293B"
+                      },
+                      "padding": 16,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "co4z9",
+                          "name": "Email Icon",
+                          "fill": "#64748B",
+                          "content": "📧",
+                          "fontFamily": "Inter",
+                          "fontSize": 20,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "PapWG",
+                          "name": "Email Placeholder",
+                          "fill": "#64748B",
+                          "content": "your@email.com",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "nguIl",
+                  "name": "Password Input Container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Jmu1C",
+                      "name": "Password Label",
+                      "fill": "#94A3B8",
+                      "content": "PASSWORD",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "nI93w",
+                      "name": "Password Field",
+                      "width": "fill_container",
+                      "height": 50,
+                      "fill": "#0D1421",
+                      "cornerRadius": 12,
+                      "stroke": {
+                        "align": "inside",
+                        "thickness": 2,
+                        "fill": "#1E293B"
+                      },
+                      "padding": 16,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "gfMcU",
+                          "name": "Password Icon",
+                          "fill": "#64748B",
+                          "content": "🔒",
+                          "fontFamily": "Inter",
+                          "fontSize": 20,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "text",
+                          "id": "jK8Mj",
+                          "name": "Password Placeholder",
+                          "fill": "#64748B",
+                          "content": "••••••••",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "AUIuP",
+                  "name": "Remember Forgot",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Qw6Dg",
+                      "name": "Remember Checkbox",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "3PnIv",
+                          "name": "Checkbox",
+                          "width": 20,
+                          "height": 20,
+                          "fill": "#0D1421",
+                          "cornerRadius": 4,
+                          "stroke": {
+                            "align": "inside",
+                            "thickness": 2,
+                            "fill": "#1E293B"
+                          }
+                        },
+                        {
+                          "type": "text",
+                          "id": "WhnMU",
+                          "name": "Remember Text",
+                          "fill": "#94A3B8",
+                          "content": "Remember me",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "o7Fya",
+                      "name": "Forgot Link",
+                      "fill": "#00D4FF",
+                      "content": "Forgot password?",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "QXLof",
+                  "name": "Login Button",
+                  "width": "fill_container",
+                  "height": 60,
+                  "fill": "linear-gradient(135deg, #00D4FF 0%, #D946EF 100%)",
+                  "cornerRadius": 16,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "omFfp",
+                      "name": "Login Button Text",
+                      "fill": "#0D1421",
+                      "content": "START ADVENTURE",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 18,
+                      "fontWeight": "700"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "WGsMw",
+                  "name": "Signup Text",
+                  "gap": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "VmoPL",
+                      "name": "Signup Prompt",
+                      "fill": "#94A3B8",
+                      "content": "New player?",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "p7V4o",
+                      "name": "Signup Link",
+                      "fill": "#00D4FF",
+                      "content": "Create account",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "XNH0R",
+      "x": 1713,
+      "y": -625,
+      "name": "Quest Board",
+      "width": "fill_container(3760)",
+      "height": 400,
+      "fill": "#1A2332",
+      "cornerRadius": 24,
+      "stroke": {
+        "align": "inside",
+        "thickness": 4,
+        "fill": "#D946EF"
+      },
+      "layout": "vertical",
+      "gap": 24,
+      "padding": 40,
+      "children": [
+        {
+          "type": "text",
+          "id": "xx12M",
+          "name": "Quest Board Title",
+          "fill": "#D946EF",
+          "content": "CAREER QUESTS",
+          "textAlign": "center",
+          "fontFamily": "Space Grotesk",
+          "fontSize": 32,
+          "fontWeight": "700"
+        },
+        {
+          "type": "frame",
+          "id": "aobMx",
+          "name": "Quest Grid",
+          "width": "fill_container",
+          "gap": 24,
+          "justifyContent": "space_around",
+          "children": [
+            {
+              "type": "frame",
+              "id": "q8zXR",
+              "name": "Quest - Build Portfolio",
+              "width": 320,
+              "height": 280,
+              "fill": "#0D1421",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#00D4FF"
+              },
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "hkEGa",
+                  "name": "Quest Icon",
+                  "width": 80,
+                  "height": 80,
+                  "fill": "#00D4FF",
+                  "cornerRadius": 16,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "rzakR",
+                      "name": "Portfolio Icon",
+                      "fill": "#0D1421",
+                      "content": "🚀",
+                      "fontFamily": "Inter",
+                      "fontSize": 40,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "iTktK",
+                  "name": "Quest Title",
+                  "fill": "#00D4FF",
+                  "content": "BUILD PORTFOLIO",
+                  "textAlign": "center",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 18,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "83wdX",
+                  "name": "Quest Description",
+                  "fill": "#94A3B8",
+                  "content": "Create your professional portfolio with AI assistance",
+                  "lineHeight": 1.4,
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "Yaanq",
+                  "name": "Quest Reward",
+                  "gap": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "SHpWw",
+                      "name": "Reward Icon",
+                      "content": "🏆",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "nqsBh",
+                      "name": "Reward Text",
+                      "fill": "#F59E0B",
+                      "content": "+500 XP",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "XT0tu",
+              "name": "Quest - AI Assistant",
+              "width": 320,
+              "height": 280,
+              "fill": "#0D1421",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#8B5CF6"
+              },
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "SOwEb",
+                  "name": "Quest Icon",
+                  "width": 80,
+                  "height": 80,
+                  "fill": "#8B5CF6",
+                  "cornerRadius": 16,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "jxumw",
+                      "name": "AI Icon",
+                      "fill": "#0D1421",
+                      "content": "🤖",
+                      "fontFamily": "Inter",
+                      "fontSize": 40,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "XxJru",
+                  "name": "Quest Title",
+                  "fill": "#8B5CF6",
+                  "content": "AI ASSISTANT",
+                  "textAlign": "center",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 18,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "Gfmhy",
+                  "name": "Quest Description",
+                  "fill": "#94A3B8",
+                  "content": "Get AI help with your career story",
+                  "lineHeight": 1.4,
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "ylVH6",
+                  "name": "Quest Reward",
+                  "gap": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "4eJPc",
+                      "name": "Reward Icon",
+                      "content": "🏆",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "7mWRI",
+                      "name": "Reward Text",
+                      "fill": "#F59E0B",
+                      "content": "+300 XP",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "5TvdR",
+              "name": "Quest - Subdomain Setup",
+              "width": 320,
+              "height": 280,
+              "fill": "#0D1421",
+              "cornerRadius": 16,
+              "stroke": {
+                "align": "inside",
+                "thickness": 2,
+                "fill": "#22C55E"
+              },
+              "layout": "vertical",
+              "gap": 16,
+              "padding": 20,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "q1B6L",
+                  "name": "Quest Icon",
+                  "width": 80,
+                  "height": 80,
+                  "fill": "#22C55E",
+                  "cornerRadius": 16,
+                  "layout": "vertical",
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "nZ3jB",
+                      "name": "Subdomain Icon",
+                      "fill": "#0D1421",
+                      "content": "🌐",
+                      "fontFamily": "Inter",
+                      "fontSize": 40,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "N8nGD",
+                  "name": "Quest Title",
+                  "fill": "#22C55E",
+                  "content": "SUBDOMAIN SETUP",
+                  "textAlign": "center",
+                  "fontFamily": "Space Grotesk",
+                  "fontSize": 18,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "kTluI",
+                  "name": "Quest Description",
+                  "fill": "#94A3B8",
+                  "content": "Configure your custom portfolio URL",
+                  "lineHeight": 1.4,
+                  "textAlign": "center",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "8N8bB",
+                  "name": "Quest Reward",
+                  "gap": 8,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "tS7Zr",
+                      "name": "Reward Icon",
+                      "content": "🏆",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "o2aWr",
+                      "name": "Reward Text",
+                      "fill": "#F59E0B",
+                      "content": "+200 XP",
+                      "fontFamily": "Space Grotesk",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

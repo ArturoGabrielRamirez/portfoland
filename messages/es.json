@@ -1,0 +1,561 @@
+{
+  "common": {
+    "appName": "Portfoland",
+    "loading": "Cargando...",
+    "error": "Ocurrio un error",
+    "success": "Exito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "submit": "Enviar",
+    "or": "o",
+    "and": "y",
+    "dashboard": "Panel",
+    "timeline": "Linea de Tiempo",
+    "languages": {
+      "en": "Ingles",
+      "es": "Espanol"
+    },
+    "errors": {
+      "unexpected": "Ocurrio un error inesperado. Por favor, intenta de nuevo.",
+      "networkError": "Error de conexion. Por favor, verifica tu internet.",
+      "sessionExpired": "Tu sesion ha expirado. Por favor, inicia sesion de nuevo."
+    }
+  },
+  "navigation": {
+    "home": "Inicio",
+    "dashboard": "Panel",
+    "timeline": "Linea de Tiempo",
+    "skillTree": "Arbol de Skills",
+    "projects": "Proyectos",
+    "portfolio": "Portafolio",
+    "settings": "Configuracion",
+    "signIn": "Iniciar Sesion",
+    "signUp": "Registrarse",
+    "signOut": "Cerrar Sesion",
+    "profile": "Perfil",
+    "language": "Idioma"
+  },
+  "auth": {
+    "login": {
+      "title": "Bienvenido de Nuevo",
+      "subtitle": "Inicia sesion en tu cuenta para continuar",
+      "emailLabel": "Correo Electronico",
+      "emailPlaceholder": "Ingresa tu correo electronico",
+      "passwordLabel": "Contrasena",
+      "passwordPlaceholder": "Ingresa tu contrasena",
+      "submitButton": "Iniciar Sesion",
+      "googleButton": "Iniciar sesion con Google",
+      "noAccount": "No tienes una cuenta?",
+      "createAccount": "Crear una cuenta",
+      "forgotPassword": "Olvidaste tu contrasena?",
+      "gaming": {
+        "heroTitle": "INICIA TU AVENTURA",
+        "heroSubtitle": "Crea tu portfolio gamificado y destaca entre la multitud de candidatos.",
+        "feature1": "Timeline Interactivo",
+        "feature2": "Sistema de Logros",
+        "feature3": "CV con IA",
+        "tabLogin": "INICIAR SESION",
+        "tabRegister": "REGISTRARSE",
+        "submitButton": "INICIAR PARTIDA",
+        "orContinueWith": "O CONTINUAR CON"
+      },
+      "errors": {
+        "invalidCredentials": "Correo electronico o contrasena invalidos",
+        "accountNotFound": "No se encontro una cuenta con este correo electronico",
+        "accountLocked": "Tu cuenta ha sido bloqueada. Por favor, contacta a soporte.",
+        "emailRequired": "El correo electronico es requerido",
+        "passwordRequired": "La contrasena es requerida",
+        "invalidEmail": "Por favor, ingresa un correo electronico valido"
+      }
+    },
+    "register": {
+      "title": "Crear Cuenta",
+      "subtitle": "Registrate para comenzar con Portfoland",
+      "nameLabel": "Nombre Completo",
+      "namePlaceholder": "Ingresa tu nombre completo",
+      "emailLabel": "Correo Electronico",
+      "emailPlaceholder": "Ingresa tu correo electronico",
+      "passwordLabel": "Contrasena",
+      "passwordPlaceholder": "Crea una contrasena",
+      "confirmPasswordLabel": "Confirmar Contrasena",
+      "confirmPasswordPlaceholder": "Confirma tu contrasena",
+      "submitButton": "Registrarse",
+      "googleButton": "Registrarse con Google",
+      "hasAccount": "Ya tienes una cuenta?",
+      "signInLink": "Iniciar sesion",
+      "termsText": "Al registrarte, aceptas nuestros",
+      "termsLink": "Terminos de Servicio",
+      "privacyLink": "Politica de Privacidad",
+      "gaming": {
+        "heroTitle": "COMIENZA TU MISION",
+        "heroSubtitle": "Unite a miles de profesionales que cuentan su historia con un portfolio gamificado.",
+        "feature1": "Timeline Interactivo",
+        "feature2": "Sistema de Logros",
+        "feature3": "CV con IA",
+        "tabLogin": "INICIAR SESION",
+        "tabRegister": "REGISTRARSE",
+        "submitButton": "CREAR PERSONAJE",
+        "orContinueWith": "O CONTINUAR CON"
+      },
+      "errors": {
+        "nameRequired": "El nombre es requerido",
+        "nameTooShort": "El nombre debe tener al menos 2 caracteres",
+        "emailRequired": "El correo electronico es requerido",
+        "invalidEmail": "Por favor, ingresa un correo electronico valido",
+        "emailInUse": "Este correo electronico ya esta registrado",
+        "passwordRequired": "La contrasena es requerida",
+        "passwordTooShort": "La contrasena debe tener al menos 8 caracteres",
+        "passwordTooWeak": "La contrasena debe incluir mayusculas, minusculas y numeros",
+        "confirmPasswordRequired": "Por favor, confirma tu contrasena",
+        "passwordsMismatch": "Las contrasenas no coinciden"
+      }
+    },
+    "validation": {
+      "emailRequired": "El correo electronico es requerido",
+      "emailInvalid": "Por favor, ingresa un correo electronico valido",
+      "passwordRequired": "La contrasena es requerida",
+      "passwordMinLength": "La contrasena debe tener al menos 8 caracteres",
+      "nameRequired": "El nombre es requerido",
+      "nameMinLength": "El nombre debe tener al menos 2 caracteres",
+      "confirmPasswordRequired": "Por favor, confirma tu contrasena",
+      "passwordsMustMatch": "Las contrasenas deben coincidir"
+    }
+  },
+  "dashboard": {
+    "welcome": "Bienvenido de nuevo, {name}!",
+    "welcomeSubtitle": "Continua construyendo tu aventura profesional",
+    "modeToggle": {
+      "professional": "Profesional",
+      "gaming": "Gaming",
+      "label": "Modo de Portafolio",
+      "success": "Modo de portafolio actualizado exitosamente"
+    },
+    "gaming": {
+      "levelProgress": "PROGRESO AL NIVEL {level}",
+      "currentLevel": "Nivel actual",
+      "xpRemaining": "{xp} XP restantes - {percent}% completado - Sigue asi!",
+      "stats": {
+        "experience": "Experiencia",
+        "achievements": "Logros",
+        "skills": "Habilidades",
+        "views": "Visitas"
+      },
+      "quickActions": {
+        "title": "ACCIONES RAPIDAS",
+        "addExperience": "Agregar Experiencia",
+        "addExperienceDesc": "Nuevo item en timeline",
+        "editSkills": "Editar Skills",
+        "editSkillsDesc": "Actualiza tu skill tree",
+        "generateCV": "Generar CV",
+        "generateCVDesc": "Crea tu CV con IA",
+        "sharePortfolio": "Compartir Portfolio",
+        "sharePortfolioDesc": "Comparte tu perfil"
+      },
+      "recentAchievements": {
+        "title": "LOGROS RECIENTES",
+        "viewAll": "Ver todos"
+      },
+      "recentActivity": {
+        "title": "ACTIVIDAD RECIENTE",
+        "new": "nuevas"
+      }
+    },
+    "progress": {
+      "title": "Completar Perfil",
+      "percentage": "{percent}% Completado",
+      "completeProfile": "Completa tu perfil para desbloquear todas las funciones"
+    },
+    "stats": {
+      "title": "Estadisticas Rapidas",
+      "experiences": "Experiencias",
+      "skills": "Habilidades",
+      "projects": "Proyectos",
+      "achievements": "Logros"
+    },
+    "features": {
+      "title": "Tus Herramientas",
+      "timeline": {
+        "title": "Linea de Tiempo",
+        "description": "Rastrea tu trayectoria profesional con una linea de tiempo interactiva de tus experiencias, logros e hitos.",
+        "comingSoon": "Proximamente en v0.2.0"
+      },
+      "portfolio": {
+        "title": "Portafolio",
+        "description": "Muestra tu trabajo con un portafolio hermoso y personalizado. Comparte tus proyectos y logros con el mundo.",
+        "comingSoon": "Proximamente en v0.3.0"
+      },
+      "aiAssistant": {
+        "title": "Asistente IA",
+        "description": "Obtene sugerencias impulsadas por IA para tu CV, cartas de presentacion y desarrollo profesional. Deja que nuestro asistente te ayude a destacar.",
+        "comingSoon": "Proximamente en v0.4.0"
+      }
+    },
+    "recentActivity": {
+      "title": "Actividad Reciente",
+      "noActivity": "No hay actividad reciente para mostrar",
+      "viewAll": "Ver toda la actividad"
+    }
+  },
+  "projects": {
+    "form": {
+      "title": "Titulo",
+      "titlePlaceholder": "Ingresa el titulo del proyecto",
+      "slug": "Slug",
+      "slugPlaceholder": "slug-del-proyecto",
+      "shortDescription": "Descripcion Corta",
+      "shortDescriptionPlaceholder": "Resumen breve para tarjetas de vista previa (max 200 caracteres)",
+      "description": "Descripcion",
+      "descriptionPlaceholder": "Descripcion detallada del proyecto (max 5000 caracteres)",
+      "imageUpload": "Imagen de Portada",
+      "technologies": "Tecnologias",
+      "technologiesPlaceholder": "Escribe una tecnologia y presiona Enter",
+      "links": "Enlaces",
+      "linkType": "Tipo",
+      "linkLabel": "Etiqueta",
+      "linkLabelPlaceholder": "Etiqueta del enlace",
+      "linkUrl": "URL",
+      "addLink": "Agregar Enlace",
+      "featured": "Proyecto Destacado",
+      "status": "Estado",
+      "startDate": "Fecha de Inicio",
+      "endDate": "Fecha de Fin",
+      "saving": "Guardando...",
+      "saved": "Guardado",
+      "cancel": "Cancelar",
+      "addProject": "Crear Proyecto",
+      "updateProject": "Actualizar Proyecto"
+    },
+    "status": {
+      "IN_PROGRESS": "En Progreso",
+      "COMPLETED": "Completado",
+      "ARCHIVED": "Archivado"
+    },
+    "linkTypes": {
+      "LIVE": "Sitio en Vivo",
+      "REPO": "Repositorio",
+      "DOCS": "Documentacion",
+      "VIDEO": "Video",
+      "CASE_STUDY": "Caso de Estudio",
+      "OTHER": "Otro"
+    },
+    "messages": {
+      "createSuccess": "Proyecto creado exitosamente",
+      "updateSuccess": "Proyecto actualizado exitosamente",
+      "deleteSuccess": "Proyecto eliminado exitosamente",
+      "notFound": "Proyecto no encontrado",
+      "unauthorized": "No tienes permiso para realizar esta accion",
+      "loginRequired": "Inicia sesion para continuar",
+      "uploadSuccess": "Imagen subida exitosamente",
+      "uploadError": "Error al subir la imagen",
+      "uploadTypeError": "Tipo de archivo no valido. Sube una imagen PNG, JPG o WEBP",
+      "uploadSizeError": "El archivo supera el limite de 5MB",
+      "deleteImageSuccess": "Imagen eliminada exitosamente",
+      "deleteImageError": "Error al eliminar la imagen"
+    },
+    "emptyState": {
+      "title": "No hay proyectos aun",
+      "description": "Crea tu primer proyecto para mostrar tu trabajo."
+    },
+    "validation": {
+      "titleRequired": "El titulo es requerido",
+      "titleMinLength": "El titulo debe tener al menos 2 caracteres",
+      "titleMaxLength": "El titulo debe tener como maximo 100 caracteres",
+      "slugInvalid": "El slug solo puede contener letras minusculas, numeros y guiones",
+      "descriptionRequired": "La descripcion es requerida",
+      "descriptionMinLength": "La descripcion debe tener al menos 10 caracteres",
+      "descriptionMaxLength": "La descripcion debe tener como maximo 5000 caracteres",
+      "shortDescriptionMaxLength": "La descripcion corta debe tener como maximo 200 caracteres",
+      "imageUrlInvalid": "Ingresa una URL valida",
+      "technologiesMaxItems": "Puedes agregar hasta 15 tecnologias",
+      "linkLabelMaxLength": "La etiqueta del enlace debe tener como maximo 50 caracteres",
+      "linkUrlInvalid": "Ingresa una URL valida",
+      "linkTypeInvalid": "Tipo de enlace no valido",
+      "startDateRequired": "La fecha de inicio es requerida"
+    }
+  },
+  "portfolio": {
+    "nav": {
+      "hero": "Inicio",
+      "about": "Acerca de",
+      "timeline": "Experiencia",
+      "skills": "Habilidades",
+      "projects": "Proyectos",
+      "contact": "Contacto",
+      "ai": "IA"
+    },
+    "modes": {
+      "professional": "Profesional",
+      "gaming": "Gaming"
+    },
+    "sections": {
+      "hero": {
+        "professional": {
+          "title": "Perfil"
+        },
+        "gaming": {
+          "title": "PERFIL DE JUGADOR"
+        }
+      },
+      "about": {
+        "professional": {
+          "title": "Acerca de",
+          "emptyState": "No se ha proporcionado un resumen"
+        },
+        "gaming": {
+          "title": "BIOGRAFIA",
+          "emptyState": "DATOS DE BIOGRAFIA NO ENCONTRADOS"
+        }
+      },
+      "timeline": {
+        "professional": {
+          "title": "Experiencia",
+          "emptyState": "No se ha agregado experiencia aun"
+        },
+        "gaming": {
+          "title": "REGISTRO DE MISIONES",
+          "emptyState": "NO HAY MISIONES REGISTRADAS"
+        }
+      },
+      "skills": {
+        "professional": {
+          "title": "Habilidades",
+          "emptyState": "No hay habilidades listadas aun"
+        },
+        "gaming": {
+          "title": "ARBOL DE SKILLS",
+          "emptyState": "NO HAY SKILLS DESBLOQUEADAS"
+        }
+      },
+      "projects": {
+        "professional": {
+          "title": "Proyectos",
+          "emptyState": "No hay proyectos aun",
+          "featured": "Destacado"
+        },
+        "gaming": {
+          "title": "MISIONES",
+          "emptyState": "NO HAY MISIONES DESPLEGADAS"
+        }
+      },
+      "contact": {
+        "professional": {
+          "title": "Contacto"
+        },
+        "gaming": {
+          "title": "ENLACE DE COMUNICACION"
+        }
+      },
+      "ai": {
+        "professional": {
+          "title": "Analisis Impulsado por IA",
+          "description": "Analisis inteligente y recomendaciones impulsadas por IA para mejorar tu presencia profesional.",
+          "comingSoon": "Proximamente"
+        },
+        "gaming": {
+          "title": "NUCLEO DE IA",
+          "description": "Interfaz neuronal avanzada para inteligencia profesional y analisis tactico.",
+          "status": "SISTEMA INICIALIZANDO..."
+        }
+      }
+    },
+    "ui": {
+      "downloadCv": "Descargar CV",
+      "comingSoon": "Proximamente",
+      "contact": "Contacto",
+      "email": "Correo",
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "website": "Sitio Web",
+      "viewProject": "Ver Proyecto",
+      "totalProjects": "Total de Proyectos",
+      "category": "Categoria",
+      "level": "Nivel",
+      "present": "Presente",
+      "closeModal": "Cerrar",
+      "technologies": "Tecnologias",
+      "links": "Enlaces",
+      "status": "Estado",
+      "dates": "Fechas",
+      "featured": "Destacado",
+      "statusLabels": {
+        "IN_PROGRESS": "En Progreso",
+        "COMPLETED": "Completado",
+        "ARCHIVED": "Archivado"
+      },
+      "linkTypes": {
+        "LIVE": "Sitio en Vivo",
+        "REPO": "Repositorio",
+        "DOCS": "Documentacion",
+        "VIDEO": "Video",
+        "CASE_STUDY": "Caso de Estudio",
+        "OTHER": "Enlace"
+      }
+    }
+  },
+  "skills": {
+    "pageTitle": "Mi Arbol de Skills",
+    "pageSubtitle": "Rastrea tus habilidades profesionales y sube de nivel",
+    "viewPublic": "Ver Publico",
+    "stats": {
+      "totalSkills": "Total de Skills",
+      "totalXP": "XP Total",
+      "masterSkills": "Skills Maestras",
+      "categories": "Categorias"
+    },
+    "emptyState": {
+      "title": "Comienza a Construir tu Arbol de Skills",
+      "description": "Agrega skills manualmente o seran extraidas automaticamente de tus experiencias en el timeline.",
+      "hint": "Tip: Agrega experiencias a tu timeline y las skills seran extraidas automaticamente!"
+    },
+    "levels": {
+      "novice": "Novato",
+      "apprentice": "Aprendiz",
+      "journeyman": "Oficial",
+      "expert": "Experto",
+      "master": "Maestro"
+    },
+    "selfAssessment": {
+      "beginner": "Principiante",
+      "intermediate": "Intermedio",
+      "advanced": "Avanzado"
+    },
+    "form": {
+      "skillName": "Nombre del Skill",
+      "skillNamePlaceholder": "ej., React, Python, Liderazgo",
+      "category": "Categoria",
+      "selectCategory": "Selecciona una categoria",
+      "selfAssessment": "Nivel de Autoevaluacion",
+      "learningSources": "Fuentes de Aprendizaje (opcional)",
+      "learningSourcesPlaceholder": "ej., Cursos online, libros, tutoriales, autodidacta...",
+      "dateStarted": "Fecha de Inicio de Aprendizaje",
+      "createCategory": "Crear nueva categoria",
+      "addSkill": "Agregar Skill",
+      "updateSkill": "Actualizar Skill"
+    },
+    "category": {
+      "createTitle": "Crear Categoria",
+      "name": "Nombre de Categoria",
+      "namePlaceholder": "ej., Servicios Cloud, Desarrollo Movil",
+      "color": "Color de Categoria",
+      "create": "Crear Categoria"
+    },
+    "detail": {
+      "level": "Nivel",
+      "totalXP": "XP Total",
+      "xpToNextLevel": "XP para siguiente nivel",
+      "sources": "Fuentes de XP",
+      "experienceSource": "De Experiencia",
+      "manualSource": "Autodidacta",
+      "learningSources": "Fuentes de Aprendizaje",
+      "dateStarted": "Inicio de Aprendizaje",
+      "linkedExperiences": "Experiencias Vinculadas"
+    },
+    "suggestions": {
+      "title": "Skills Sugeridas",
+      "addSuggested": "Agregar esta skill"
+    },
+    "messages": {
+      "skillCreated": "Skill agregada exitosamente!",
+      "skillUpdated": "Skill actualizada exitosamente!",
+      "skillDeleted": "Skill eliminada exitosamente!",
+      "categoryCreated": "Categoria creada exitosamente!",
+      "cannotDeleteExperienceSkill": "No se pueden eliminar skills vinculadas a experiencias. Elimina la skill de tus experiencias primero.",
+      "errorCreating": "Error al agregar skill. Por favor, intenta de nuevo.",
+      "errorUpdating": "Error al actualizar skill. Por favor, intenta de nuevo.",
+      "errorDeleting": "Error al eliminar skill. Por favor, intenta de nuevo."
+    },
+    "validation": {
+      "nameRequired": "El nombre del skill es requerido",
+      "nameTooShort": "El nombre del skill debe tener al menos 2 caracteres",
+      "assessmentRequired": "Por favor, selecciona tu nivel de skill",
+      "categoryNameRequired": "El nombre de la categoria es requerido",
+      "categoryColorRequired": "Por favor, selecciona un color"
+    }
+  },
+  "landing": {
+    "hero": {
+      "badge": "Tu carrera, tu aventura",
+      "titlePrefix": "Transforma tu CV en una",
+      "titleHighlight": "Aventura Epica",
+      "title": "Cuenta Tu Historia Profesional",
+      "subtitle": "Crea portfolios interactivos con timelines gamificados, arboles de habilidades y tu propio subdominio. Destaca ante recruiters con una experiencia unica.",
+      "ctaSignUp": "Comenzar Aventura",
+      "ctaSignIn": "Ver Demo"
+    },
+    "stats": {
+      "users": "Usuarios activos",
+      "portfolios": "Portfolios creados",
+      "satisfaction": "Satisfaccion"
+    },
+    "features": {
+      "title": "Caracteristicas",
+      "headline": "Todo lo que necesitas para brillar",
+      "subheadline": "Herramientas disenadas para contar tu historia profesional de manera unica",
+      "timeline": {
+        "title": "Timeline Interactivo",
+        "description": "Mapea tu journey profesional como una aventura. Cada trabajo, proyecto y logro es un punto en tu camino hacia el exito."
+      },
+      "portfolio": {
+        "title": "Arbol de Habilidades",
+        "description": "Visualiza tus skills como un RPG. Desbloquea habilidades, sube de nivel y muestra tu progresion de manera visual."
+      },
+      "aiAssistant": {
+        "title": "Portfolio con Subdominio",
+        "description": "Tu propio espacio en internet: usuario.portfoland.com. Comparte tu portfolio con un link profesional y memorable."
+      }
+    },
+    "howItWorks": {
+      "title": "Como funciona",
+      "headline": "3 pasos para comenzar tu aventura",
+      "step1": {
+        "title": "Crea tu cuenta",
+        "description": "Registrate gratis y elige tu personaje. Podes ser un wizard, un developer, o cualquier avatar que te represente."
+      },
+      "step2": {
+        "title": "Construye tu timeline",
+        "description": "Agrega tus experiencias, educacion y proyectos. Nuestro asistente AI te ayuda a escribir descripciones profesionales."
+      },
+      "step3": {
+        "title": "Comparte y destaca",
+        "description": "Obtene tu subdominio personalizado y comparte tu portfolio con recruiters. Tu historia profesional, lista para brillar."
+      }
+    },
+    "modes": {
+      "title": "Dos Modos",
+      "headline": "Tu portfolio, tu estilo",
+      "subheadline": "Elige como queres presentarte al mundo",
+      "professional": {
+        "title": "Modo Profesional",
+        "subtitle": "Para recruiters y empresas",
+        "feature1": "CV tradicional con IA asistida",
+        "feature2": "Timeline cronologico limpio",
+        "feature3": "Exportar a PDF profesional",
+        "feature4": "Integracion con LinkedIn",
+        "cta": "Elegir Profesional"
+      },
+      "gaming": {
+        "title": "Modo Gaming",
+        "subtitle": "Para creativos y gamers",
+        "feature1": "Timeline como aventura RPG",
+        "feature2": "Arbol de habilidades visual",
+        "feature3": "Sistema de logros y XP",
+        "feature4": "Avatar personalizable",
+        "cta": "Elegir Gaming"
+      }
+    },
+    "cta": {
+      "title": "Listo para tu aventura?",
+      "subtitle": "Unite a miles de profesionales que ya estan destacando con Portfoland",
+      "button": "Crear cuenta gratis"
+    }
+  },
+  "languageSwitcher": {
+    "label": "Seleccionar idioma",
+    "current": "Idioma actual: {language}"
+  }
+}

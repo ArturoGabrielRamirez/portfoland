@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(for file in mission.md roadmap.md tech-stack.md)",
+      "Bash(do if [ ! -f \"C:/Users/Colo/Cmder/Code/NextJS/portfoland/agent-os/product/$file\" ])",
+      "Bash(then echo \"Error: Missing $file\")",
+      "Bash(else echo \"Created agent-os/product/$file\")",
+      "Bash(fi)",
+      "Bash(done)",
+      "WebFetch(domain:www.prisma.io)",
+      "WebFetch(domain:www.better-auth.com)",
+      "Bash(bunx prisma db push:*)",
+      "WebFetch(domain:next-intl.dev)",
+      "Bash(bunx shadcn@latest add:*)",
+      "Bash(bun add:*)",
+      "Bash(npm run test:run -- --testPathPattern=\"features/pages/__tests__/pages.test.tsx\")",
+      "Bash(npx vitest run \"features/pages/__tests__/pages.test.tsx\")",
+      "Bash(bun run test:run:*)",
+      "Bash(dir:*)",
+      "Bash(ls:*)",
+      "Bash(bun vitest run:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}

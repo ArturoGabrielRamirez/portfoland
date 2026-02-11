@@ -1,0 +1,239 @@
+// =============================================================================
+// Portfoland Prisma Schema
+// =============================================================================
+// Database: MongoDB Atlas
+// Prisma Version: 6.19
+// Compatible with Better Auth
+// =============================================================================
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// =============================================================================
+// User Model
+// =============================================================================
+
+model User {
+  id            String   @id @default(cuid()) @map("_id")
+  email         String   @unique
+  name          String
+  image         String?
+  username      String?  @unique
+  locale        String   @default("en")
+  emailVerified Boolean  @default(false)
+  portfolioMode String   @default("professional")
+  bio           String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  sessions        Session[]
+  accounts        Account[]
+  experiences     Experience[]
+  userSkills      UserSkill[]
+  skillCategories SkillCategory[]
+  projects        Project[]
+
+  @@map("users")
+}
+
+// =============================================================================
+// Better Auth Models
+// =============================================================================
+
+model Session {
+  id        String   @id @default(cuid()) @map("_id")
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Account {
+  id                    String    @id @default(cuid()) @map("_id")
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Verification {
+  id         String   @id @default(cuid()) @map("_id")
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verifications")
+}
+
+// =============================================================================
+// Timeline Feature Models
+// =============================================================================
+
+enum ExperienceType {
+  WORK
+  EDUCATION
+  PROJECT
+  CERTIFICATION
+}
+
+model Experience {
+  id           String         @id @default(cuid()) @map("_id")
+  userId       String
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type         ExperienceType
+  title        String
+  company      String
+  latitude     Float
+  longitude    Float
+  address      String
+  startDate    DateTime
+  endDate      DateTime?
+  description  String
+  skills       String[]
+  xp           Int
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  skillSources SkillSource[]
+
+  @@index([userId])
+  @@map("experiences")
+}
+
+// =============================================================================
+// Project Showcase Feature Models
+// =============================================================================
+
+enum ProjectStatus {
+  IN_PROGRESS
+  COMPLETED
+  ARCHIVED
+}
+
+model Project {
+  id               String        @id @default(cuid()) @map("_id")
+  userId           String
+  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title            String
+  slug             String
+  description      String
+  shortDescription String?
+  imageUrl         String?
+  technologies     String[]
+  links            Json
+  featured         Boolean       @default(false)
+  status           ProjectStatus @default(IN_PROGRESS)
+  startDate        DateTime
+  endDate          DateTime?
+  order            Int?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@unique([userId, slug])
+  @@index([userId])
+  @@map("projects")
+}
+
+// =============================================================================
+// Skill Tree Feature Models
+// =============================================================================
+
+enum SourceType {
+  EXPERIENCE
+  MANUAL
+}
+
+model Skill {
+  id         String   @id @default(cuid()) @map("_id")
+  name       String
+  slug       String   @unique
+  categoryId String
+  category   SkillCategory @relation(fields: [categoryId], references: [id])
+  iconName   String?
+  isCore     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userSkills UserSkill[]
+
+  @@index([categoryId])
+  @@map("skills")
+}
+
+model SkillCategory {
+  id        String   @id @default(cuid()) @map("_id")
+  name      String
+  slug      String
+  color     String
+  isDefault Boolean  @default(false)
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  skills    Skill[]
+
+  @@unique([slug, userId])
+  @@index([userId])
+  @@map("skill_categories")
+}
+
+model UserSkill {
+  id        String   @id @default(cuid()) @map("_id")
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillId   String
+  skill     Skill    @relation(fields: [skillId], references: [id])
+  totalXP   Int      @default(0)
+  level     Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sources   SkillSource[]
+
+  @@unique([userId, skillId])
+  @@index([userId])
+  @@index([skillId])
+  @@map("user_skills")
+}
+
+model SkillSource {
+  id           String      @id @default(cuid()) @map("_id")
+  userSkillId  String
+  userSkill    UserSkill   @relation(fields: [userSkillId], references: [id], onDelete: Cascade)
+  sourceType   SourceType
+  experienceId String?
+  experience   Experience? @relation(fields: [experienceId], references: [id], onDelete: SetNull)
+  xpAmount     Int
+  metadata     Json?
+  createdAt    DateTime    @default(now())
+
+  @@index([userSkillId])
+  @@index([experienceId])
+  @@map("skill_sources")
+}

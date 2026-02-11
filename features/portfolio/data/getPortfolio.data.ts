@@ -31,6 +31,7 @@ export async function getPortfolioByUsername(
       image: true,
       bio: true,
       portfolioMode: true,
+      locale: true,
     },
   });
 
@@ -54,6 +55,7 @@ export async function getPortfolioByUsername(
       image: user.image,
       bio: user.bio,
       portfolioMode: user.portfolioMode as PortfolioMode,
+      locale: user.locale,
     },
     experiences,
     skills,

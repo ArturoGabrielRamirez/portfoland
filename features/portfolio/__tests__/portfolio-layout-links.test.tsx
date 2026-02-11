@@ -15,12 +15,16 @@ import '@testing-library/jest-dom';
 // Mocks
 // =============================================================================
 
-// Mock next/headers to simulate request headers
+// Mock next/headers to simulate request headers and cookies
 let mockHeaders = new Map<string, string>();
 
 vi.mock('next/headers', () => ({
   headers: async () => ({
     get: (key: string) => mockHeaders.get(key) ?? null,
+  }),
+  cookies: async () => ({
+    get: () => undefined,
+    set: vi.fn(),
   }),
 }));
 

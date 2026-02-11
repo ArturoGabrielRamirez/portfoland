@@ -9,12 +9,16 @@
  * When served via subdomain, header links point to the root domain so that
  * navigation away from the portfolio lands on portfoland.com rather than
  * staying on the username subdomain.
+ *
+ * On first visit, sets the NEXT_LOCALE cookie to the portfolio owner's
+ * stored locale so the proxy can serve the correct locale on subsequent visits.
  */
 
 import Link from 'next/link';
 import { headers } from 'next/headers';
 import { setRequestLocale } from 'next-intl/server';
 import { getPortfolioByUsername } from '@/features/portfolio/data';
+import { SetLocaleCookie } from '@/features/portfolio/components/SetLocaleCookie';
 import { cn } from '@/lib/utils';
 
 interface PublicPortfolioLayoutProps {
@@ -118,6 +122,9 @@ export default async function PublicPortfolioLayout({
           </Link>
         </div>
       </header>
+
+      {/* Set NEXT_LOCALE cookie to portfolio owner's locale on first visit */}
+      {portfolioData && <SetLocaleCookie locale={portfolioData.user.locale} />}
 
       {/* Portfolio content fills remaining space on desktop */}
       <div className="md:flex-1 md:min-h-0">

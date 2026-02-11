@@ -29,6 +29,7 @@ export interface PortfolioUser {
   image: string | null;
   bio: string | null;
   portfolioMode: PortfolioMode;
+  locale: string;
 }
 
 /**

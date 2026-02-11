@@ -130,7 +130,7 @@ function ProjectFormComponent({
         try {
           const payload = {
             ...data,
-            links: JSON.stringify(data.links || []),
+            links: data.links || [],
           };
 
           const result = isEditMode

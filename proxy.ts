@@ -1,13 +1,15 @@
 // =============================================================================
 // Next.js 16 Proxy Configuration
 // =============================================================================
-// Handles route protection, authentication redirects, and locale routing.
+// Handles route protection, authentication redirects, locale routing,
+// and subdomain-based portfolio URL rewriting.
 // This file replaces middleware.ts in Next.js 16 and provides request
-// interception capabilities for both auth and i18n.
+// interception capabilities for auth, i18n, and subdomain routing.
 // =============================================================================
 
 import { type NextRequest, NextResponse } from 'next/server'
 import { getSessionCookie } from 'better-auth/cookies'
+import { isReservedSubdomain } from '@/features/core'
 
 // =============================================================================
 // Route Configuration
@@ -47,6 +49,69 @@ const PUBLIC_PATHS = ['/', '/login', '/register'] as const
  * Better Auth handles its own authentication for these routes.
  */
 const PUBLIC_API_PREFIXES = ['/api/auth'] as const
+
+/**
+ * Paths that are valid on subdomain-routed portfolios.
+ * These correspond to routes under app/[locale]/[username]/.
+ * Any path not in this list triggers a redirect to the root domain.
+ */
+const VALID_SUBDOMAIN_PATHS = ['/', '/skills'] as const
+
+// =============================================================================
+// Domain Configuration
+// =============================================================================
+
+/**
+ * Returns the application's base domain from the environment.
+ * Read at call time so that tests can set the env var before invoking proxy().
+ * Development: 'localhost' -- Production: 'portfoland.com'
+ */
+function getAppDomain(): string {
+  return process.env.NEXT_PUBLIC_APP_DOMAIN || 'localhost'
+}
+
+// =============================================================================
+// Subdomain Extraction
+// =============================================================================
+
+/**
+ * Extracts the subdomain portion from a hostname by comparing it against a
+ * base domain. Strips port numbers before comparison.
+ *
+ * @param hostname - The full hostname (e.g., 'john.portfoland.com', 'john.localhost:3000')
+ * @param baseDomain - The application's base domain (e.g., 'portfoland.com', 'localhost')
+ * @returns The subdomain string, or null if the hostname is the bare domain
+ *
+ * @example
+ * extractSubdomain('john.portfoland.com', 'portfoland.com')   // 'john'
+ * extractSubdomain('john.localhost:3000', 'localhost')         // 'john'
+ * extractSubdomain('portfoland.com', 'portfoland.com')        // null
+ */
+export function extractSubdomain(hostname: string, baseDomain: string): string | null {
+  // Strip port number if present
+  const host = hostname.split(':')[0]
+
+  // If the hostname exactly matches the base domain, there is no subdomain
+  if (host === baseDomain) {
+    return null
+  }
+
+  // The hostname must end with the base domain
+  const suffix = `.${baseDomain}`
+  if (!host.endsWith(suffix)) {
+    return null
+  }
+
+  // Extract the subdomain by removing the base domain suffix
+  const subdomain = host.slice(0, -suffix.length)
+
+  // Guard against empty strings (e.g., '.portfoland.com')
+  if (!subdomain) {
+    return null
+  }
+
+  return subdomain
+}
 
 // =============================================================================
 // Locale Detection Utilities
@@ -286,14 +351,16 @@ export const config = {
 // =============================================================================
 
 /**
- * Proxy function for handling route protection, locale routing, and redirects.
+ * Proxy function for handling subdomain rewriting, route protection,
+ * locale routing, and redirects.
  *
  * This function intercepts requests and:
- * 1. Redirects requests without locale prefix to include detected locale
- * 2. Checks authentication status via Better Auth session cookie
- * 3. Redirects unauthenticated users from protected routes to login
- * 4. Redirects authenticated users from auth pages to dashboard
- * 5. Preserves locale in all redirects
+ * 1. Detects subdomains and rewrites portfolio requests internally
+ * 2. Redirects requests without locale prefix to include detected locale
+ * 3. Checks authentication status via Better Auth session cookie
+ * 4. Redirects unauthenticated users from protected routes to login
+ * 5. Redirects authenticated users from auth pages to dashboard
+ * 6. Preserves locale in all redirects
  *
  * Locale detection priority:
  * - NEXT_LOCALE cookie (user's saved preference)
@@ -304,15 +371,57 @@ export const config = {
  * validation should happen in server components for security.
  *
  * @param request - The incoming Next.js request
- * @returns NextResponse - Either continues the request or redirects
+ * @returns NextResponse - Either continues the request, rewrites, or redirects
  */
 export function proxy(request: NextRequest): NextResponse {
   const { pathname } = request.nextUrl
+  const appDomain = getAppDomain()
 
   // Allow public API routes to pass through without locale handling
   if (isPublicApiPath(pathname)) {
     return NextResponse.next()
   }
+
+  // ---------------------------------------------------------------------------
+  // Subdomain detection and rewriting
+  // ---------------------------------------------------------------------------
+
+  const host = request.headers.get('host')
+  const subdomain = host ? extractSubdomain(host, appDomain) : null
+
+  if (subdomain && !isReservedSubdomain(subdomain)) {
+    const locale = detectLocale(request)
+
+    // Strip any locale prefix the user may have typed (subdomain URLs have no locale prefix)
+    const cleanPathname = stripLocalePrefix(pathname)
+
+    // Check if this path is valid for subdomain portfolio routing
+    if ((VALID_SUBDOMAIN_PATHS as readonly string[]).includes(cleanPathname)) {
+      // Rewrite to the internal portfolio route: /{locale}/{username}{path}
+      const internalPath = cleanPathname === '/'
+        ? `/${locale}/${subdomain}`
+        : `/${locale}/${subdomain}${cleanPathname}`
+
+      const rewriteUrl = new URL(internalPath, request.url)
+      const response = NextResponse.rewrite(rewriteUrl)
+
+      // Set custom header so downstream components can detect subdomain context
+      response.headers.set('x-subdomain', subdomain)
+
+      return response
+    }
+
+    // Non-portfolio path on subdomain -- redirect to root domain
+    const protocol = request.url.startsWith('https') ? 'https' : 'http'
+    const redirectUrl = new URL(`${protocol}://${appDomain}/${locale}${cleanPathname}`)
+    return NextResponse.redirect(redirectUrl)
+  }
+
+  // Reserved subdomains and bare domain requests fall through to normal routing
+
+  // ---------------------------------------------------------------------------
+  // Standard locale and auth routing (existing logic)
+  // ---------------------------------------------------------------------------
 
   // Check if the request already has a locale prefix
   if (!hasLocalePrefix(pathname)) {

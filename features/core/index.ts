@@ -7,6 +7,12 @@
 // Actions
 export { actionWrapper } from './actions/actionWrapper';
 
+// Constants
+export {
+  RESERVED_SUBDOMAINS,
+  isReservedSubdomain,
+} from './constants/reservedSubdomains';
+
 // Types
 export type { ActionResponse, ActionSuccess, ActionError } from './types/action';
 

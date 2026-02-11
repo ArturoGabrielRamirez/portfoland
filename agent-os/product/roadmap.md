@@ -41,7 +41,7 @@
 ## Phase 3: Skill Tree & Portfolio (v0.3.0) IN PROGRESS
 
 14. [x] Skill Tree Visualization — Arbol de habilidades estilo videojuego con progresion y dependencias `L`
-15. [ ] Portfolio Template System — Templates con modos Professional y Gaming `L`
+15. [x] Portfolio Template System — Templates con modos Professional y Gaming `L`
 16. [ ] Subdomain Routing — username.portfoland.com con Next.js middleware `M`
 17. [ ] Project Showcase — Cards de proyectos con imagenes, tech stack, links `M`
 18. [ ] Portfolio SEO & Meta Tags — Open Graph, structured data dinamico `S`
@@ -87,7 +87,7 @@
 
 - Phase 1 completada establece la infraestructura base
 - Phase 2 completada - Timeline con Google Maps + Hexagonos
-- Phase 3 en progreso - Skill Tree completado, Portfolio Template System pendiente
+- Phase 3 en progreso - Skill Tree y Portfolio Template System completados
 - Dos modos visuales: **Professional** (limpio, ATS-friendly) y **Gaming** (cyberpunk)
 - Pixelated style postponed a v0.5.0+ para evaluar implementacion
 - AI features vienen despues de tener contenido para mejorar

@@ -43,37 +43,38 @@
 14. [x] Skill Tree Visualization — Arbol de habilidades estilo videojuego con progresion y dependencias `L`
 15. [x] Portfolio Template System — Templates con modos Professional y Gaming `L`
 16. [x] Subdomain Routing — username.portfoland.com con proxy.ts rewrite `M`
-17. [ ] Project Showcase — Cards de proyectos con imagenes, tech stack, links `M`
+17. [x] Project Showcase — Cards de proyectos con imagenes, tech stack, links `M`
 18. [ ] Portfolio SEO & Meta Tags — Open Graph, structured data dinamico `S`
+19. [ ] Portfolio Dashboard — Pagina unificada para gestionar portfolio: About/Bio, Contact info, modo visual, orden de secciones `M`
 
 ---
 
 ## Phase 4: AI Assistant (v0.4.0)
 
-19. [ ] Vercel AI SDK Integration — Streaming responses, conversation state `M`
-20. [ ] Guided CV Interview — AI conversacional para recopilar info de CV `L`
-21. [ ] AI Content Suggestions — Sugerencias para mejorar descripciones `M`
-22. [ ] CV Document Generator — Export PDF con templates profesionales `M`
+20. [ ] Vercel AI SDK Integration — Streaming responses, conversation state `M`
+21. [ ] Guided CV Interview — AI conversacional para recopilar info de CV `L`
+22. [ ] AI Content Suggestions — Sugerencias para mejorar descripciones `M`
+23. [ ] CV Document Generator — Export PDF con templates profesionales `M`
 
 ---
 
 ## Phase 5: Styles & Polish (v0.5.0+)
 
-23. [ ] Pixelated Style Mode — Tercer modo visual con estetica pixel art (evaluar complejidad) `L`
-24. [ ] Geographic Map Expansion — Mapa de Argentina/mundo con regiones clickeables `L`
-25. [ ] Character Customization — Avatares personalizables con pixel art `M`
-26. [ ] Achievement System — Badges y logros desbloqueables `M`
-27. [ ] Social Share Cards — Imagenes dinamicas para compartir `M`
+24. [ ] Pixelated Style Mode — Tercer modo visual con estetica pixel art (evaluar complejidad) `L`
+25. [ ] Geographic Map Expansion — Mapa de Argentina/mundo con regiones clickeables `L`
+26. [ ] Character Customization — Avatares personalizables con pixel art `M`
+27. [ ] Achievement System — Badges y logros desbloqueables `M`
+28. [ ] Social Share Cards — Imagenes dinamicas para compartir `M`
 
 ---
 
 ## Phase 6: Scale & Launch (v1.0.0)
 
-28. [ ] Performance Optimization — Bundle size, lazy loading, caching `M`
-29. [ ] Mobile Refinement — Timeline y skill tree responsive `M`
-30. [ ] Onboarding Flow — Guia para nuevos usuarios `S`
-31. [ ] Accessibility Audit — WCAG compliance, keyboard navigation `M`
-32. [ ] Analytics Dashboard — Metricas de portfolio views `S`
+29. [ ] Performance Optimization — Bundle size, lazy loading, caching `M`
+30. [ ] Mobile Refinement — Timeline y skill tree responsive `M`
+31. [ ] Onboarding Flow — Guia para nuevos usuarios `S`
+32. [ ] Accessibility Audit — WCAG compliance, keyboard navigation `M`
+33. [ ] Analytics Dashboard — Metricas de portfolio views `S`
 
 ---
 

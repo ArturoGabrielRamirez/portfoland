@@ -4,7 +4,7 @@
  * Tests for data layer functions that handle portfolio database operations:
  * - getPortfolioByUsername returns aggregated data for a valid username
  * - getPortfolioByUsername returns null for a non-existent username
- * - getPublicProjectsByUsername returns only experiences with type: PROJECT
+ * - getPublicProjectsByUsername returns projects from the Project model
  * - updatePortfolioModeData correctly updates the portfolioMode field
  */
 
@@ -17,7 +17,7 @@ vi.mock('@/lib/prisma', () => ({
       findUnique: vi.fn(),
       update: vi.fn(),
     },
-    experience: {
+    project: {
       findMany: vi.fn(),
     },
   },
@@ -54,6 +54,7 @@ const mockUser = {
   image: null,
   bio: 'A test bio',
   portfolioMode: 'professional',
+  locale: 'en',
 };
 
 const mockTimelineData = {
@@ -76,31 +77,23 @@ const mockSkillsData = {
   stats: { totalSkills: 0, totalXP: 0, masterSkills: 0, categoriesUsed: 0 },
 };
 
-const mockProjectExperience = {
-  id: 'clexp-project-1',
+const mockProject = {
+  id: 'clproj-1',
   userId: mockUserId,
-  type: 'PROJECT' as const,
   title: 'Portfolio App',
-  company: 'Personal',
-  latitude: -34.6037,
-  longitude: -58.3816,
-  address: 'Buenos Aires, Argentina',
+  slug: 'portfolio-app',
+  description: 'Built a portfolio app',
+  shortDescription: null,
+  imageUrl: null,
+  technologies: ['TypeScript', 'React'],
+  links: [],
+  featured: false,
+  status: 'COMPLETED',
   startDate: new Date('2024-01-01'),
   endDate: null,
-  description: 'Built a portfolio app',
-  skills: ['TypeScript', 'React'],
-  xp: 350,
+  order: null,
   createdAt: new Date('2024-01-01'),
   updatedAt: new Date('2024-01-01'),
-};
-
-const mockWorkExperience = {
-  ...mockProjectExperience,
-  id: 'clexp-work-1',
-  type: 'WORK' as const,
-  title: 'Senior Developer',
-  company: 'Tech Corp',
-  xp: 500,
 };
 
 // =============================================================================
@@ -117,7 +110,7 @@ describe('Portfolio Data Layer', () => {
       vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser as any);
       vi.mocked(getPublicTimelineByUsername).mockResolvedValue(mockTimelineData as any);
       vi.mocked(getPublicSkillsByUsername).mockResolvedValue(mockSkillsData as any);
-      vi.mocked(prisma.experience.findMany).mockResolvedValue([mockProjectExperience]);
+      vi.mocked(prisma.project.findMany).mockResolvedValue([mockProject] as any);
 
       const result = await getPortfolioByUsername('testuser');
 
@@ -139,25 +132,28 @@ describe('Portfolio Data Layer', () => {
   });
 
   describe('getPublicProjectsByUsername', () => {
-    it('returns only experiences with type PROJECT', async () => {
+    it('returns projects from the Project model', async () => {
       vi.mocked(prisma.user.findUnique).mockResolvedValue({
         id: mockUserId,
         username: 'testuser',
       } as any);
-      vi.mocked(prisma.experience.findMany).mockResolvedValue([mockProjectExperience]);
+      vi.mocked(prisma.project.findMany).mockResolvedValue([mockProject] as any);
 
       const result = await getPublicProjectsByUsername('testuser');
 
       expect(result).not.toBeNull();
       expect(result).toHaveLength(1);
-      expect(result![0].type).toBe('PROJECT');
-      expect(prisma.experience.findMany).toHaveBeenCalledWith(
+      expect(result![0].title).toBe('Portfolio App');
+      expect(prisma.project.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
           where: {
             userId: mockUserId,
-            type: 'PROJECT',
           },
-          orderBy: { startDate: 'desc' },
+          orderBy: [
+            { featured: 'desc' },
+            { order: 'asc' },
+            { startDate: 'desc' },
+          ],
         })
       );
     });

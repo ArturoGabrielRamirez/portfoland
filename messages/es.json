@@ -31,6 +31,7 @@
     "dashboard": "Panel",
     "timeline": "Linea de Tiempo",
     "skillTree": "Arbol de Skills",
+    "projects": "Proyectos",
     "portfolio": "Portafolio",
     "settings": "Configuracion",
     "signIn": "Iniciar Sesion",
@@ -200,6 +201,83 @@
       "viewAll": "Ver toda la actividad"
     }
   },
+  "projects": {
+    "form": {
+      "title": "Titulo",
+      "titlePlaceholder": "Ingresa el titulo del proyecto",
+      "slug": "Slug",
+      "slugPlaceholder": "slug-del-proyecto",
+      "shortDescription": "Descripcion Corta",
+      "shortDescriptionPlaceholder": "Resumen breve para tarjetas de vista previa (max 200 caracteres)",
+      "description": "Descripcion",
+      "descriptionPlaceholder": "Descripcion detallada del proyecto (max 5000 caracteres)",
+      "imageUpload": "Imagen de Portada",
+      "technologies": "Tecnologias",
+      "technologiesPlaceholder": "Escribe una tecnologia y presiona Enter",
+      "links": "Enlaces",
+      "linkType": "Tipo",
+      "linkLabel": "Etiqueta",
+      "linkLabelPlaceholder": "Etiqueta del enlace",
+      "linkUrl": "URL",
+      "addLink": "Agregar Enlace",
+      "featured": "Proyecto Destacado",
+      "status": "Estado",
+      "startDate": "Fecha de Inicio",
+      "endDate": "Fecha de Fin",
+      "saving": "Guardando...",
+      "saved": "Guardado",
+      "cancel": "Cancelar",
+      "addProject": "Crear Proyecto",
+      "updateProject": "Actualizar Proyecto"
+    },
+    "status": {
+      "IN_PROGRESS": "En Progreso",
+      "COMPLETED": "Completado",
+      "ARCHIVED": "Archivado"
+    },
+    "linkTypes": {
+      "LIVE": "Sitio en Vivo",
+      "REPO": "Repositorio",
+      "DOCS": "Documentacion",
+      "VIDEO": "Video",
+      "CASE_STUDY": "Caso de Estudio",
+      "OTHER": "Otro"
+    },
+    "messages": {
+      "createSuccess": "Proyecto creado exitosamente",
+      "updateSuccess": "Proyecto actualizado exitosamente",
+      "deleteSuccess": "Proyecto eliminado exitosamente",
+      "notFound": "Proyecto no encontrado",
+      "unauthorized": "No tienes permiso para realizar esta accion",
+      "loginRequired": "Inicia sesion para continuar",
+      "uploadSuccess": "Imagen subida exitosamente",
+      "uploadError": "Error al subir la imagen",
+      "uploadTypeError": "Tipo de archivo no valido. Sube una imagen PNG, JPG o WEBP",
+      "uploadSizeError": "El archivo supera el limite de 5MB",
+      "deleteImageSuccess": "Imagen eliminada exitosamente",
+      "deleteImageError": "Error al eliminar la imagen"
+    },
+    "emptyState": {
+      "title": "No hay proyectos aun",
+      "description": "Crea tu primer proyecto para mostrar tu trabajo."
+    },
+    "validation": {
+      "titleRequired": "El titulo es requerido",
+      "titleMinLength": "El titulo debe tener al menos 2 caracteres",
+      "titleMaxLength": "El titulo debe tener como maximo 100 caracteres",
+      "slugInvalid": "El slug solo puede contener letras minusculas, numeros y guiones",
+      "descriptionRequired": "La descripcion es requerida",
+      "descriptionMinLength": "La descripcion debe tener al menos 10 caracteres",
+      "descriptionMaxLength": "La descripcion debe tener como maximo 5000 caracteres",
+      "shortDescriptionMaxLength": "La descripcion corta debe tener como maximo 200 caracteres",
+      "imageUrlInvalid": "Ingresa una URL valida",
+      "technologiesMaxItems": "Puedes agregar hasta 15 tecnologias",
+      "linkLabelMaxLength": "La etiqueta del enlace debe tener como maximo 50 caracteres",
+      "linkUrlInvalid": "Ingresa una URL valida",
+      "linkTypeInvalid": "Tipo de enlace no valido",
+      "startDateRequired": "La fecha de inicio es requerida"
+    }
+  },
   "portfolio": {
     "nav": {
       "hero": "Inicio",
@@ -256,7 +334,8 @@
       "projects": {
         "professional": {
           "title": "Proyectos",
-          "emptyState": "No hay proyectos aun"
+          "emptyState": "No hay proyectos aun",
+          "featured": "Destacado"
         },
         "gaming": {
           "title": "MISIONES",
@@ -296,7 +375,26 @@
       "totalProjects": "Total de Proyectos",
       "category": "Categoria",
       "level": "Nivel",
-      "present": "Presente"
+      "present": "Presente",
+      "closeModal": "Cerrar",
+      "technologies": "Tecnologias",
+      "links": "Enlaces",
+      "status": "Estado",
+      "dates": "Fechas",
+      "featured": "Destacado",
+      "statusLabels": {
+        "IN_PROGRESS": "En Progreso",
+        "COMPLETED": "Completado",
+        "ARCHIVED": "Archivado"
+      },
+      "linkTypes": {
+        "LIVE": "Sitio en Vivo",
+        "REPO": "Repositorio",
+        "DOCS": "Documentacion",
+        "VIDEO": "Video",
+        "CASE_STUDY": "Caso de Estudio",
+        "OTHER": "Enlace"
+      }
     }
   },
   "skills": {

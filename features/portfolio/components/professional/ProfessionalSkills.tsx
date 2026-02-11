@@ -7,7 +7,7 @@ import type { PortfolioSectionProps } from '../../types/portfolio';
 
 export function ProfessionalSkills({ data, className }: PortfolioSectionProps) {
   const t = useTranslations('portfolio');
-  const userSkills = data.skills?.userSkills ?? [];
+  const userSkills = data.skills?.skills ?? [];
 
   // Group skills by category
   const skillsByCategory = useMemo(() => {

@@ -18,7 +18,10 @@
       "Bash(npx vitest run \"features/pages/__tests__/pages.test.tsx\")",
       "Bash(bun run test:run:*)",
       "Bash(dir:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(bun vitest run:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }

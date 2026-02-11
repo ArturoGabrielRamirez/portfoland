@@ -36,6 +36,11 @@ vi.mock('next-intl', () => ({
   },
 }));
 
+// Mock next/image
+vi.mock('next/image', () => ({
+  default: (props: any) => <img {...props} />,
+}));
+
 // Mock TimelineMap
 vi.mock('@/features/timeline/components', () => ({
   TimelineMap: (props: any) => (
@@ -66,6 +71,7 @@ const mockUser = {
   image: null,
   bio: 'A developer',
   portfolioMode: 'gaming' as const,
+  locale: 'en',
 };
 
 const mockExperiences = {
@@ -123,18 +129,19 @@ const mockSkills = {
 const mockProjects = [
   {
     id: 'proj-1',
+    userId: 'user-1',
     title: 'Cyber Mission',
+    slug: 'cyber-mission',
     description: 'A cyberpunk project',
+    shortDescription: null,
+    imageUrl: null,
+    technologies: ['Next.js'],
+    links: [],
+    featured: false,
+    status: 'COMPLETED',
     startDate: new Date('2023-06-01'),
     endDate: null,
-    type: 'PROJECT',
-    skills: ['Next.js'],
-    userId: 'user-1',
-    company: 'Personal',
-    xp: 50,
-    latitude: 0,
-    longitude: 0,
-    address: '',
+    order: null,
     createdAt: new Date(),
     updatedAt: new Date(),
   },

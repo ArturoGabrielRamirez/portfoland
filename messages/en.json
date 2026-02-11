@@ -31,6 +31,7 @@
     "dashboard": "Dashboard",
     "timeline": "Timeline",
     "skillTree": "Skill Tree",
+    "projects": "Projects",
     "portfolio": "Portfolio",
     "settings": "Settings",
     "signIn": "Sign In",
@@ -200,6 +201,83 @@
       "viewAll": "View all activity"
     }
   },
+  "projects": {
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "Enter project title",
+      "slug": "Slug",
+      "slugPlaceholder": "project-url-slug",
+      "shortDescription": "Short Description",
+      "shortDescriptionPlaceholder": "Brief summary for card previews (max 200 chars)",
+      "description": "Description",
+      "descriptionPlaceholder": "Detailed project description (max 5000 chars)",
+      "imageUpload": "Cover Image",
+      "technologies": "Technologies",
+      "technologiesPlaceholder": "Type a technology and press Enter",
+      "links": "Links",
+      "linkType": "Type",
+      "linkLabel": "Label",
+      "linkLabelPlaceholder": "Link label",
+      "linkUrl": "URL",
+      "addLink": "Add Link",
+      "featured": "Featured Project",
+      "status": "Status",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "saving": "Saving...",
+      "saved": "Saved",
+      "cancel": "Cancel",
+      "addProject": "Create Project",
+      "updateProject": "Update Project"
+    },
+    "status": {
+      "IN_PROGRESS": "In Progress",
+      "COMPLETED": "Completed",
+      "ARCHIVED": "Archived"
+    },
+    "linkTypes": {
+      "LIVE": "Live Site",
+      "REPO": "Repository",
+      "DOCS": "Documentation",
+      "VIDEO": "Video",
+      "CASE_STUDY": "Case Study",
+      "OTHER": "Other"
+    },
+    "messages": {
+      "createSuccess": "Project created successfully",
+      "updateSuccess": "Project updated successfully",
+      "deleteSuccess": "Project deleted successfully",
+      "notFound": "Project not found",
+      "unauthorized": "You are not authorized to perform this action",
+      "loginRequired": "Please log in to continue",
+      "uploadSuccess": "Image uploaded successfully",
+      "uploadError": "Failed to upload image",
+      "uploadTypeError": "Invalid file type. Please upload a PNG, JPG, or WEBP image",
+      "uploadSizeError": "File size exceeds 5MB limit",
+      "deleteImageSuccess": "Image deleted successfully",
+      "deleteImageError": "Failed to delete image"
+    },
+    "emptyState": {
+      "title": "No projects yet",
+      "description": "Create your first project to showcase your work."
+    },
+    "validation": {
+      "titleRequired": "Title is required",
+      "titleMinLength": "Title must be at least 2 characters",
+      "titleMaxLength": "Title must be at most 100 characters",
+      "slugInvalid": "Slug must contain only lowercase letters, numbers, and hyphens",
+      "descriptionRequired": "Description is required",
+      "descriptionMinLength": "Description must be at least 10 characters",
+      "descriptionMaxLength": "Description must be at most 5000 characters",
+      "shortDescriptionMaxLength": "Short description must be at most 200 characters",
+      "imageUrlInvalid": "Please enter a valid URL",
+      "technologiesMaxItems": "You can add up to 15 technologies",
+      "linkLabelMaxLength": "Link label must be at most 50 characters",
+      "linkUrlInvalid": "Please enter a valid URL",
+      "linkTypeInvalid": "Invalid link type",
+      "startDateRequired": "Start date is required"
+    }
+  },
   "portfolio": {
     "nav": {
       "hero": "Hero",
@@ -256,7 +334,8 @@
       "projects": {
         "professional": {
           "title": "Projects",
-          "emptyState": "No projects yet"
+          "emptyState": "No projects yet",
+          "featured": "Featured"
         },
         "gaming": {
           "title": "MISSIONS",
@@ -296,7 +375,26 @@
       "totalProjects": "Total Projects",
       "category": "Category",
       "level": "Level",
-      "present": "Present"
+      "present": "Present",
+      "closeModal": "Close",
+      "technologies": "Technologies",
+      "links": "Links",
+      "status": "Status",
+      "dates": "Dates",
+      "featured": "Featured",
+      "statusLabels": {
+        "IN_PROGRESS": "In Progress",
+        "COMPLETED": "Completed",
+        "ARCHIVED": "Archived"
+      },
+      "linkTypes": {
+        "LIVE": "Live Site",
+        "REPO": "Repository",
+        "DOCS": "Documentation",
+        "VIDEO": "Video",
+        "CASE_STUDY": "Case Study",
+        "OTHER": "Link"
+      }
     }
   },
   "skills": {

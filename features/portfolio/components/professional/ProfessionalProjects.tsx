@@ -18,6 +18,7 @@ import {
   CardTitle,
   CardContent,
 } from '@/features/shadcn/ui/card';
+import { ProjectDetailModal } from '@/features/projects/components/ProjectDetailModal';
 import type { PortfolioSectionProps, ProjectData } from '../../types/portfolio';
 import type { ProjectLink } from '@/features/projects/types/project';
 
@@ -55,6 +56,11 @@ export function ProfessionalProjects({ data, className }: PortfolioSectionProps)
   const handleCardClick = (project: ProjectData) => {
     setSelectedProject(project);
     setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedProject(null);
   };
 
   return (
@@ -161,7 +167,15 @@ export function ProfessionalProjects({ data, className }: PortfolioSectionProps)
         </div>
       )}
 
-      {/* ProjectDetailModal will be rendered here in TG7 */}
+      {/* Project Detail Modal */}
+      {selectedProject && (
+        <ProjectDetailModal
+          project={selectedProject}
+          mode="professional"
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+        />
+      )}
     </section>
   );
 }

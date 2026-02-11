@@ -256,7 +256,8 @@
       "projects": {
         "professional": {
           "title": "Proyectos",
-          "emptyState": "No hay proyectos aun"
+          "emptyState": "No hay proyectos aun",
+          "featured": "Destacado"
         },
         "gaming": {
           "title": "MISIONES",
@@ -296,7 +297,26 @@
       "totalProjects": "Total de Proyectos",
       "category": "Categoria",
       "level": "Nivel",
-      "present": "Presente"
+      "present": "Presente",
+      "closeModal": "Cerrar",
+      "technologies": "Tecnologias",
+      "links": "Enlaces",
+      "status": "Estado",
+      "dates": "Fechas",
+      "featured": "Destacado",
+      "statusLabels": {
+        "IN_PROGRESS": "En Progreso",
+        "COMPLETED": "Completado",
+        "ARCHIVED": "Archivado"
+      },
+      "linkTypes": {
+        "LIVE": "Sitio en Vivo",
+        "REPO": "Repositorio",
+        "DOCS": "Documentacion",
+        "VIDEO": "Video",
+        "CASE_STUDY": "Caso de Estudio",
+        "OTHER": "Enlace"
+      }
     }
   },
   "skills": {

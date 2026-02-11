@@ -22,6 +22,7 @@ import {
   GamingButton,
   StatCard,
 } from '@/features/gaming';
+import { ProjectDetailModal } from '@/features/projects/components/ProjectDetailModal';
 import type { PortfolioSectionProps, ProjectData } from '../../types/portfolio';
 import type { ProjectLink } from '@/features/projects/types/project';
 
@@ -52,6 +53,11 @@ export function GamingProjects({ data, className }: PortfolioSectionProps) {
   const handleCardClick = (project: ProjectData) => {
     setSelectedProject(project);
     setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedProject(null);
   };
 
   if (projects.length === 0) {
@@ -149,7 +155,15 @@ export function GamingProjects({ data, className }: PortfolioSectionProps) {
         })}
       </div>
 
-      {/* ProjectDetailModal will be rendered here in TG7 with mode="gaming" */}
+      {/* Project Detail Modal */}
+      {selectedProject && (
+        <ProjectDetailModal
+          project={selectedProject}
+          mode="gaming"
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+        />
+      )}
     </div>
   );
 }

@@ -2,8 +2,9 @@
  * Public Portfolio Layout
  *
  * Minimal layout for public portfolio pages.
- * Visual theming is handled by the PortfolioLayout client component
- * which receives portfolioMode from the page data.
+ * Desktop: flex column with h-screen so the header + portfolio fill one viewport.
+ * Mobile: natural document flow with scroll.
+ * Visual theming is handled by the PortfolioLayout client component.
  */
 
 import Link from 'next/link';
@@ -27,13 +28,15 @@ export default async function PublicPortfolioLayout({
 
   setRequestLocale(locale);
 
-  // Fetch portfolio data to determine mode for header styling
   const portfolioData = await getPortfolioByUsername(username);
   const isProfessional = portfolioData?.user.portfolioMode === 'professional';
 
   return (
     <div
       className={cn(
+        // Desktop: full viewport height, flex column so children fill remaining space
+        'md:flex md:h-screen md:flex-col md:overflow-hidden',
+        // Mobile: natural document flow
         'min-h-screen',
         isProfessional ? 'bg-white text-gray-900' : 'bg-[#0A0E1A] text-white'
       )}
@@ -41,7 +44,9 @@ export default async function PublicPortfolioLayout({
       {/* Minimal header */}
       <header
         className={cn(
-          'sticky top-0 z-50 border-b backdrop-blur-lg',
+          'shrink-0 border-b backdrop-blur-lg',
+          // Mobile: sticky top header
+          'sticky top-0 z-50 md:static',
           isProfessional
             ? 'bg-white/95 border-gray-200'
             : 'bg-[#0A0E1A]/95 border-[#334155]/50'
@@ -96,7 +101,10 @@ export default async function PublicPortfolioLayout({
         </div>
       </header>
 
-      {children}
+      {/* Portfolio content fills remaining space on desktop */}
+      <div className="md:flex-1 md:min-h-0">
+        {children}
+      </div>
     </div>
   );
 }

@@ -10,7 +10,7 @@ export function GamingAI({ data, className }: PortfolioSectionProps) {
 
   return (
     <HUDPanel className={className}>
-      <div className="flex flex-col items-center gap-6 py-8">
+      <div className="relative flex flex-col items-center gap-6 overflow-hidden py-8">
         {/* Title with neon glow */}
         <h2
           className="text-2xl font-bold text-[#00D4FF]"
@@ -36,7 +36,10 @@ export function GamingAI({ data, className }: PortfolioSectionProps) {
         </div>
 
         {/* Scanline effect overlay */}
-        <div className="scanline-overlay absolute inset-0 pointer-events-none opacity-10" />
+        <div
+          className="scanline-overlay absolute inset-0 pointer-events-none opacity-10"
+          data-testid="scanline-overlay"
+        />
       </div>
     </HUDPanel>
   );

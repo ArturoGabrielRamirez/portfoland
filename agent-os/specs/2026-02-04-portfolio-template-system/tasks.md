@@ -356,31 +356,31 @@ Feature: Public portfolio page at `/[locale]/[username]` with two visual modes (
 #### Task Group 8: Responsive Layout and Cross-Mode Integration
 **Dependencies:** Task Groups 5, 6, 7
 
-- [ ] 8.0 Complete responsive design and mode integration
-  - [ ] 8.1 Write 3 focused tests for responsive behavior
+- [x] 8.0 Complete responsive design and mode integration
+  - [x] 8.1 Write 3 focused tests for responsive behavior
     - Test desktop viewport (`>=768px`) renders portfolio in single viewport with no vertical scrollbar
     - Test mobile viewport (`<768px`) renders stacked sections with sticky bottom navigation
     - Test `PortfolioLayout` correctly switches between Professional and Gaming component sets based on `portfolioMode` prop
-  - [ ] 8.2 Apply desktop layout constraints
+  - [x] 8.2 Apply desktop layout constraints
     - Ensure `h-screen overflow-hidden` on desktop wrapper
     - Panel content areas use `overflow-y-auto` only within individual panels if content exceeds panel height
     - Sidebar navigation takes fixed width; main panel area fills remaining space
     - Test with all 7 sections to verify no viewport overflow
-  - [ ] 8.3 Apply mobile layout
+  - [x] 8.3 Apply mobile layout
     - Sections stack vertically in natural document flow
     - Sticky bottom tab bar (`position: sticky; bottom: 0`) with section icons
     - Touch-friendly tab targets (minimum 44x44px per accessibility standards)
     - Scroll-to-section behavior on tab tap
     - Breakpoint at `768px` using Tailwind `md:` prefix (mobile-first approach)
-  - [ ] 8.4 Add Framer Motion transitions polish
+  - [x] 8.4 Add Framer Motion transitions polish
     - `AnimatePresence` wrapping active panel with `mode="wait"`
     - Fade or slide-in animation on panel switch (desktop)
     - Subtle entrance animations for section content
     - Keep animations performant (transform/opacity only, no layout triggers)
-  - [ ] 8.5 Add scanline CSS effect for Gaming AI section
+  - [x] 8.5 Add scanline CSS effect for Gaming AI section
     - Add keyframe animation in `app/globals.css` (acceptable per CSS standards for complex animations)
     - Apply only within Gaming mode AI placeholder panel
-  - [ ] 8.6 Ensure responsive tests pass
+  - [x] 8.6 Ensure responsive tests pass
     - Run ONLY the 3 tests written in 8.1
     - Do NOT run the entire test suite at this stage
 

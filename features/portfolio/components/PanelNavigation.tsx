@@ -3,7 +3,7 @@
  *
  * Tabbed navigation for switching between portfolio sections.
  * Desktop: sidebar nav with one section visible at a time.
- * Mobile: sticky bottom tab bar.
+ * Mobile: sticky bottom tab bar with scroll-to-section on tap.
  */
 
 'use client';
@@ -74,6 +74,7 @@ export function PanelNavigation({
           return (
             <button
               key={section.key}
+              id={`tab-${section.key}`}
               role="tab"
               aria-selected={isActive}
               aria-controls={`panel-${section.key}`}
@@ -123,9 +124,10 @@ export function PanelNavigation({
           return (
             <button
               key={section.key}
+              id={`tab-mobile-${section.key}`}
               role="tab"
               aria-selected={isActive}
-              aria-controls={`panel-${section.key}`}
+              aria-controls={`section-${section.key}`}
               onClick={() => onSectionChange(section.key)}
               className={cn(
                 'flex min-h-[44px] min-w-[44px] flex-col items-center justify-center gap-0.5 px-1 py-2 text-[10px] font-medium transition-colors',

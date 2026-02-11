@@ -22,7 +22,7 @@ export async function getProjectsByUserIdData(userId: string): Promise<Project[]
   const projects = await prisma.project.findMany({
     where: { userId },
     orderBy: [
-      { order: { sort: 'asc', nulls: 'last' } },
+      { order: 'asc' },
       { createdAt: 'desc' },
     ],
   });

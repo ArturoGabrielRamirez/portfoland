@@ -8,7 +8,7 @@ import type { PortfolioSectionProps } from '../../types/portfolio';
 
 export function GamingSkills({ data, className }: PortfolioSectionProps) {
   const t = useTranslations('portfolio');
-  const userSkills = data.skills?.userSkills ?? [];
+  const userSkills = data.skills?.skills ?? [];
   const categories = data.skills?.categories ?? [];
 
   if (userSkills.length === 0) {

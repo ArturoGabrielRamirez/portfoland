@@ -11,6 +11,7 @@ import { headers } from 'next/headers'
 import { setRequestLocale } from 'next-intl/server'
 
 import { auth } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
 import { DashboardHeader } from '@/features/dashboard/components'
 import type { ProtectedLayoutProps } from '@/features/dashboard/types/dashboard'
 
@@ -50,12 +51,25 @@ export default async function ProtectedLayout({
     redirect(`/${locale}/login`)
   }
 
+  // Fetch user with portfolioMode from database
+  const dbUser = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      image: true,
+      portfolioMode: true,
+    },
+  })
+
   // Extract user data for the header
   const user = {
     id: session.user.id,
-    name: session.user.name,
-    email: session.user.email,
-    image: session.user.image ?? null,
+    name: dbUser?.name ?? session.user.name,
+    email: dbUser?.email ?? session.user.email,
+    image: dbUser?.image ?? session.user.image ?? null,
+    portfolioMode: dbUser?.portfolioMode ?? 'professional',
   }
 
   return (

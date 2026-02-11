@@ -1,0 +1,203 @@
+'use client'
+
+/**
+ * CleanCyberpunkTooltip Component
+ * 
+ * Simplified cyberpunk tooltip - clean and focused:
+ * - Controls external spotlights
+ * - Minimal visual effects
+ * - Essential cyberpunk styling only
+ * - No distracting animations
+ * - Clean and professional
+ */
+
+import { useState, useRef, useEffect } from 'react'
+import { cn } from '@/lib/utils'
+
+interface CleanCyberpunkTooltipProps {
+  children: React.ReactNode
+  content: string
+  position?: 'top' | 'bottom' | 'left' | 'right'
+  color?: 'cyan' | 'magenta' | 'green' | 'yellow' | 'white'
+  delay?: number
+  size?: 'sm' | 'md' | 'lg'
+  className?: string
+  spotlightIndex?: number // Which spotlight to control
+  onSpotlightActivate?: (spotlightIndex: number) => void
+  onMouseLeave?: () => void
+}
+
+export function CleanCyberpunkTooltip({
+  children,
+  content,
+  position = 'top',
+  color = 'cyan',
+  delay = 600,
+  size = 'md',
+  className,
+  spotlightIndex,
+  onSpotlightActivate,
+  onMouseLeave
+}: CleanCyberpunkTooltipProps) {
+  const [isVisible, setIsVisible] = useState(false)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  const colorConfig = {
+    cyan: {
+      border: 'border-[#00D4FF]',
+      bg: 'bg-[#0A0E1A]/95',
+      text: 'text-[#00D4FF]',
+      glow: 'shadow-[0_0_15px_rgba(0,212,255,0.4)]',
+    },
+    magenta: {
+      border: 'border-[#D946EF]',
+      bg: 'bg-[#0A0E1A]/95',
+      text: 'text-[#D946EF]',
+      glow: 'shadow-[0_0_15px_rgba(217,70,239,0.4)]',
+    },
+    green: {
+      border: 'border-[#22C55E]',
+      bg: 'bg-[#0A0E1A]/95',
+      text: 'text-[#22C55E]',
+      glow: 'shadow-[0_0_15px_rgba(34,197,94,0.4)]',
+    },
+    yellow: {
+      border: 'border-[#EAB308]',
+      bg: 'bg-[#0A0E1A]/95',
+      text: 'text-[#EAB308]',
+      glow: 'shadow-[0_0_15px_rgba(234,179,8,0.4)]',
+    },
+    white: {
+      border: 'border-[#FFFFFF]',
+      bg: 'bg-[#0A0E1A]/95',
+      text: 'text-[#FFFFFF]',
+      glow: 'shadow-[0_0_15px_rgba(255,255,255,0.4)]',
+    },
+  }
+
+  const sizeConfig = {
+    sm: 'px-2 py-1 text-xs',
+    md: 'px-3 py-2 text-sm',
+    lg: 'px-4 py-3 text-base',
+  }
+
+  const colors = colorConfig[color]
+  const sizes = sizeConfig[size]
+
+  const showTooltip = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+    
+    timeoutRef.current = setTimeout(() => {
+      setIsVisible(true)
+      
+      // Trigger spotlight activation
+      if (spotlightIndex !== undefined && onSpotlightActivate) {
+        onSpotlightActivate(spotlightIndex)
+      }
+    }, delay)
+  }
+
+  const hideTooltip = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+    
+    setIsVisible(false)
+    onMouseLeave?.()
+  }
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [])
+
+  const getPositionClasses = () => {
+    switch (position) {
+      case 'top':
+        return 'bottom-full left-1/2 transform -translate-x-1/2 mb-2'
+      case 'bottom':
+        return 'top-full left-1/2 transform -translate-x-1/2 mt-2'
+      case 'left':
+        return 'right-full top-1/2 transform -translate-y-1/2 mr-2'
+      case 'right':
+        return 'left-full top-1/2 transform -translate-y-1/2 ml-2'
+      default:
+        return 'bottom-full left-1/2 transform -translate-x-1/2 mb-2'
+    }
+  }
+
+  const getArrowClasses = () => {
+    switch (position) {
+      case 'top':
+        return 'top-full left-1/2 transform -translate-x-1/2 -mt-1 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px]'
+      case 'bottom':
+        return 'bottom-full left-1/2 transform -translate-x-1/2 -mb-1 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[6px]'
+      case 'left':
+        return 'left-full top-1/2 transform -translate-y-1/2 -ml-1 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-r-[6px]'
+      case 'right':
+        return 'right-full top-1/2 transform -translate-y-1/2 -mr-1 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[6px]'
+      default:
+        return 'top-full left-1/2 transform -translate-x-1/2 -mt-1 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px]'
+    }
+  }
+
+  return (
+    <div 
+      className={cn('relative inline-block', className)}
+      onMouseEnter={showTooltip}
+      onMouseLeave={hideTooltip}
+    >
+      {children}
+      
+      {/* Clean tooltip - no distracting effects */}
+      {isVisible && (
+        <div 
+          className={cn(
+            'absolute z-50 whitespace-nowrap',
+            getPositionClasses()
+          )}
+        >
+          {/* Simple tooltip content */}
+          <div 
+            className={cn(
+              'relative border backdrop-blur-sm font-bold transition-all duration-200',
+              colors.border,
+              colors.bg,
+              colors.text,
+              sizes,
+              colors.glow,
+              'opacity-0 scale-95'
+            )}
+            style={{
+              opacity: isVisible ? '1' : '0',
+              transform: isVisible ? 'scale(1)' : 'scale(0.95)',
+            }}
+          >
+            {/* Text content only */}
+            <span className="relative z-10">{content}</span>
+          </div>
+          
+          {/* Simple arrow */}
+          <div 
+            className={cn(
+              'absolute w-0 h-0',
+              getArrowClasses(),
+              colors.border
+            )}
+            style={{
+              borderTopColor: position === 'top' ? colors.bg.replace('bg-', '').replace('/95', '') : 'transparent',
+              borderBottomColor: position === 'bottom' ? colors.bg.replace('bg-', '').replace('/95', '') : 'transparent',
+              borderLeftColor: position === 'left' ? colors.bg.replace('bg-', '').replace('/95', '') : 'transparent',
+              borderRightColor: position === 'right' ? colors.bg.replace('bg-', '').replace('/95', '') : 'transparent',
+            }}
+          />
+        </div>
+      )}
+    </div>
+  )
+}

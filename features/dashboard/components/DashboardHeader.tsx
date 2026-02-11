@@ -11,6 +11,7 @@ import { getTranslations } from 'next-intl/server'
 import type { DashboardHeaderProps } from '../types/dashboard'
 import { UserMenu } from './UserMenu'
 import { LanguageSwitcher } from '@/features/i18n'
+import { PortfolioModeToggle } from '@/features/portfolio/components/PortfolioModeToggle'
 
 // =============================================================================
 // Component
@@ -22,6 +23,7 @@ import { LanguageSwitcher } from '@/features/i18n'
  * Displays:
  * - Application logo linking to dashboard
  * - Navigation links (Dashboard, Timeline, Skill Tree)
+ * - Portfolio mode toggle (professional/gaming)
  * - Language switcher for locale selection
  * - User menu with avatar and actions
  */
@@ -115,6 +117,9 @@ export async function DashboardHeader({ user, locale }: DashboardHeaderProps) {
 
         {/* Right side - User controls */}
         <div className="flex items-center gap-3">
+          {/* Portfolio mode toggle */}
+          <PortfolioModeToggle currentMode={user.portfolioMode} />
+
           {/* Language switcher */}
           <LanguageSwitcher isAuthenticated={true} />
 

@@ -128,6 +128,12 @@
   "dashboard": {
     "welcome": "Welcome back, {name}!",
     "welcomeSubtitle": "Continue building your professional adventure",
+    "modeToggle": {
+      "professional": "Professional",
+      "gaming": "Gaming",
+      "label": "Portfolio Mode",
+      "success": "Portfolio mode updated successfully"
+    },
     "gaming": {
       "levelProgress": "PROGRESS TO LEVEL {level}",
       "currentLevel": "Current level",
@@ -192,6 +198,105 @@
       "title": "Recent Activity",
       "noActivity": "No recent activity to show",
       "viewAll": "View all activity"
+    }
+  },
+  "portfolio": {
+    "nav": {
+      "hero": "Hero",
+      "about": "About",
+      "timeline": "Timeline",
+      "skills": "Skills",
+      "projects": "Projects",
+      "contact": "Contact",
+      "ai": "AI"
+    },
+    "modes": {
+      "professional": "Professional",
+      "gaming": "Gaming"
+    },
+    "sections": {
+      "hero": {
+        "professional": {
+          "title": "Profile"
+        },
+        "gaming": {
+          "title": "PLAYER PROFILE"
+        }
+      },
+      "about": {
+        "professional": {
+          "title": "About",
+          "emptyState": "No summary provided"
+        },
+        "gaming": {
+          "title": "BIOGRAPHY",
+          "emptyState": "BIOGRAPHY DATA NOT FOUND"
+        }
+      },
+      "timeline": {
+        "professional": {
+          "title": "Experience",
+          "emptyState": "No experience added yet"
+        },
+        "gaming": {
+          "title": "QUEST LOG",
+          "emptyState": "NO MISSIONS LOGGED"
+        }
+      },
+      "skills": {
+        "professional": {
+          "title": "Skills",
+          "emptyState": "No skills listed yet"
+        },
+        "gaming": {
+          "title": "SKILL TREE",
+          "emptyState": "NO SKILLS UNLOCKED"
+        }
+      },
+      "projects": {
+        "professional": {
+          "title": "Projects",
+          "emptyState": "No projects yet"
+        },
+        "gaming": {
+          "title": "MISSIONS",
+          "emptyState": "NO MISSIONS DEPLOYED"
+        }
+      },
+      "contact": {
+        "professional": {
+          "title": "Contact"
+        },
+        "gaming": {
+          "title": "COMM LINK"
+        }
+      },
+      "ai": {
+        "professional": {
+          "title": "AI-Powered Insights",
+          "description": "Intelligent analysis and recommendations powered by AI to enhance your professional presence.",
+          "comingSoon": "Coming Soon"
+        },
+        "gaming": {
+          "title": "AI CORE",
+          "description": "Advanced neural interface for career intelligence and tactical analysis.",
+          "status": "SYSTEM INITIALIZING..."
+        }
+      }
+    },
+    "ui": {
+      "downloadCv": "Download CV",
+      "comingSoon": "Coming Soon",
+      "contact": "Contact",
+      "email": "Email",
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "website": "Website",
+      "viewProject": "View Project",
+      "totalProjects": "Total Projects",
+      "category": "Category",
+      "level": "Level",
+      "present": "Present"
     }
   },
   "skills": {

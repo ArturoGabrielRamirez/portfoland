@@ -12,6 +12,7 @@ export interface DashboardUser {
   name: string | null
   email: string
   image: string | null
+  portfolioMode: string
 }
 
 /**

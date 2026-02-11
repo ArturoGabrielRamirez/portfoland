@@ -1,0 +1,25 @@
+/**
+ * Portfolio Validation Schemas
+ *
+ * Yup schemas for validating portfolio data in server actions.
+ */
+
+import * as yup from 'yup';
+import { PORTFOLIO_MODES } from '../constants/messages';
+
+const validModes = [PORTFOLIO_MODES.PROFESSIONAL, PORTFOLIO_MODES.GAMING] as const;
+
+/**
+ * Schema for updating portfolio mode
+ */
+export const updatePortfolioModeSchema = yup.object({
+  mode: yup
+    .string()
+    .oneOf(validModes, 'Invalid portfolio mode')
+    .required('Portfolio mode is required'),
+});
+
+/**
+ * Inferred type from the schema
+ */
+export type UpdatePortfolioModeInput = yup.InferType<typeof updatePortfolioModeSchema>;

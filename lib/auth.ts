@@ -2,12 +2,20 @@
 // Better Auth Configuration
 // =============================================================================
 // Configures Better Auth with Prisma adapter for MongoDB, email/password
-// authentication, and Google OAuth social login.
+// authentication, Google OAuth social login, and cross-subdomain cookie
+// sharing for username.portfoland.com subdomain routing.
 // =============================================================================
 
 import { betterAuth } from 'better-auth'
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { prisma } from './prisma'
+
+// Read the app domain to determine cookie configuration.
+// In production (e.g., "portfoland.com"), cookies are shared across subdomains.
+// In development ("localhost"), no cookie domain is set -- browsers handle
+// localhost subdomains differently.
+const appDomain = process.env.NEXT_PUBLIC_APP_DOMAIN ?? 'localhost'
+const isProduction = appDomain !== 'localhost'
 
 /**
  * Better Auth instance configured with Prisma adapter for MongoDB.
@@ -17,6 +25,7 @@ import { prisma } from './prisma'
  * - Google OAuth social login
  * - Session management via Prisma/MongoDB
  * - Custom user fields: locale and username
+ * - Cross-subdomain session cookies (production only)
  */
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -49,5 +58,14 @@ export const auth = betterAuth({
         input: true,
       },
     },
+  },
+
+  advanced: {
+    ...(isProduction && {
+      crossSubDomainCookies: {
+        enabled: true,
+        domain: `.${appDomain}`,
+      },
+    }),
   },
 })

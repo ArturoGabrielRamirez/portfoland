@@ -52,7 +52,7 @@ export async function uploadProjectImage(formData: FormData) {
     }
 
     // Upload to Vercel Blob
-    const blob = await put(file.name, file, { access: 'public' });
+    const blob = await put(file.name, file, { access: 'public', addRandomSuffix: true });
 
     return {
       payload: { url: blob.url },

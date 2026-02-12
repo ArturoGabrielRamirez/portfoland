@@ -1,28 +1,27 @@
 'use client';
 
 /**
- * DashboardTimelineView Component
+ * DashboardTimelineView Component - Cyberpunk V2
  *
- * Client component for the dashboard timeline with editing capabilities.
+ * Client component for the dashboard timeline with cyberpunk hexagonal design.
  */
 
 import { useState, useCallback, useMemo, useTransition } from 'react';
-import { motion } from 'framer-motion';
-import { Plus, MapPin, ExternalLink } from 'lucide-react';
+import { Plus, MapPin, ExternalLink, Zap, Flag, Star, Trophy } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
-import { Button } from '@/features/shadcn/ui/button';
+import { HexBadge, DashboardNav } from '@/features/gaming';
+import { useParams } from 'next/navigation';
 import type {
   TimelineData,
   Experience,
   CreateExperienceInput,
   UpdateExperienceInput,
 } from '@/features/timeline/types/experience';
-import type { ExperienceType } from '@/app/generated/prisma/enums';
+import type { ExperienceType, PortfolioMode } from '@/app/generated/prisma/enums';
 import {
   TimelineMap,
   TimelineFilter,
-  TimelineStats,
   MobileTimelineEvent,
   ExperienceFormModal,
   DeleteConfirmModal,
@@ -40,11 +39,17 @@ interface DashboardTimelineViewProps {
   user: {
     id: string;
     name: string;
+    email: string;
     username: string | null;
+    image: string | null;
+    portfolioMode: PortfolioMode;
   };
 }
 
 export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps) {
+  const params = useParams();
+  const locale = params.locale as string;
+
   const [selectedExperience, setSelectedExperience] = useState<Experience | null>(null);
   const [activeFilter, setActiveFilter] = useState<FilterOption>('ALL');
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
@@ -161,62 +166,74 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
   }, [deletingExperience]);
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A]">
-      {/* Header */}
-      <header className="border-b border-[#1E293B] bg-[#0D1421]">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-white">My Timeline</h1>
-              <p className="text-slate-400">Manage your professional journey</p>
-            </div>
+    <div className="min-h-screen bg-[#0A0E1A] font-mono">
+      {/* Main Navigation */}
+      <DashboardNav locale={locale} user={user} />
 
-            <div className="flex items-center gap-3">
-              {/* Public link */}
-              {user.username && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="border-slate-700 text-slate-300 hover:bg-slate-800"
-                  asChild
-                >
-                  <a href={`/timeline/${user.username}`} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    View Public
-                  </a>
-                </Button>
-              )}
-
-              {/* Add experience button */}
-              <Button
-                onClick={handleOpenCreate}
-                className="bg-cyan-500 hover:bg-cyan-600 text-white"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Experience
-              </Button>
-            </div>
-          </div>
+      {/* Page Header */}
+      <div className="px-6 py-6 flex items-center justify-between border-b border-[hsl(174,100%,50%,0.1)]">
+        <div>
+          <h1 className="text-2xl font-mono font-bold text-foreground">My Timeline</h1>
+          <p className="text-xs font-mono text-muted-foreground mt-1">Manage your professional journey</p>
         </div>
-      </header>
+        <div className="flex items-center gap-3">
+          {user.username && (
+            <a
+              href={`/timeline/${user.username}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              View Public
+            </a>
+          )}
+          <button
+            onClick={handleOpenCreate}
+            className="flex items-center gap-1.5 bg-[hsl(174,100%,50%)] text-[hsl(200,25%,8%)] px-3 py-1.5 text-xs font-mono font-bold hover:shadow-[0_0_12px_hsl(174_100%_50%_/_0.4)] transition-shadow"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            Add Experience
+          </button>
+        </div>
+      </div>
 
       {/* Stats */}
-      <section className="border-b border-[#1E293B] bg-[#0D1421]/50">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <TimelineStats stats={data.stats} />
-        </div>
-      </section>
+      <div className="px-6 py-4 grid grid-cols-2 lg:grid-cols-4 gap-3 border-b border-[hsl(174,100%,50%,0.1)]">
+        {[
+          { value: data.stats.totalXP.toLocaleString(), label: "TOTAL XP", color: "cyan" as const, icon: <Zap className="w-4 h-4" /> },
+          { value: data.stats.milestones.toString(), label: "MILESTONES", color: "magenta" as const, icon: <Flag className="w-4 h-4" /> },
+          { value: data.stats.totalExperiences.toString(), label: "EXPERIENCES", color: "yellow" as const, icon: <Star className="w-4 h-4" /> },
+          { value: data.stats.achievements?.toString() || "0", label: "ACHIEVEMENTS", color: "green" as const, icon: <Trophy className="w-4 h-4" /> },
+        ].map((stat) => (
+          <div key={stat.label} className="border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-3 flex items-center gap-3">
+            <HexBadge color={stat.color} size="sm" filled>
+              {stat.icon}
+            </HexBadge>
+            <div>
+              <div className={cn(
+                "text-xl font-mono font-bold",
+                stat.color === "cyan" && "text-[hsl(174,100%,50%)]",
+                stat.color === "magenta" && "text-[hsl(330,100%,65%)]",
+                stat.color === "yellow" && "text-[hsl(60,100%,50%)]",
+                stat.color === "green" && "text-[hsl(150,100%,45%)]"
+              )}>
+                {stat.value}
+              </div>
+              <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">{stat.label}</div>
+            </div>
+          </div>
+        ))}
+      </div>
 
       {/* Filter */}
-      <section className="border-b border-[#1E293B]">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <TimelineFilter
-            activeFilter={activeFilter}
-            onFilterChange={handleFilterChange}
-            counts={filterCounts}
-          />
-        </div>
-      </section>
+      <div className="px-6 py-4 border-b border-[hsl(174,100%,50%,0.1)]">
+        <TimelineFilter
+          activeFilter={activeFilter}
+          onFilterChange={handleFilterChange}
+          counts={filterCounts}
+        />
+      </div>
 
       {/* Main content */}
       <main className="relative">
@@ -247,21 +264,17 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
         <div className="lg:hidden">
           <div className="max-w-lg mx-auto px-4 py-6">
             {filteredExperiences.length === 0 ? (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-center py-12"
-              >
-                <MapPin className="w-12 h-12 text-slate-600 mx-auto mb-4" />
-                <p className="text-slate-400 mb-4">No experiences yet</p>
-                <Button
+              <div className="text-center py-12">
+                <MapPin className="w-12 h-12 text-[hsl(174,100%,50%,0.3)] mx-auto mb-4" />
+                <p className="text-muted-foreground font-mono mb-4">No experiences yet</p>
+                <button
                   onClick={handleOpenCreate}
-                  className="bg-cyan-500 hover:bg-cyan-600 text-white"
+                  className="bg-[hsl(174,100%,50%)] text-[hsl(200,25%,8%)] px-4 py-2 text-sm font-mono font-bold hover:shadow-[0_0_12px_hsl(174_100%_50%_/_0.4)] transition-shadow inline-flex items-center gap-2"
                 >
-                  <Plus className="w-4 h-4 mr-2" />
+                  <Plus className="w-4 h-4" />
                   Add Your First Experience
-                </Button>
-              </motion.div>
+                </button>
+              </div>
             ) : (
               <div>
                 {filteredExperiences.map((experience, index) => (

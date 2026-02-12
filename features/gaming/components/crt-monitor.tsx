@@ -69,7 +69,7 @@ export function CRTMonitor({
       </div>
 
       {/* Content */}
-      <div ref={containerRef} className="p-3 font-mono text-xs leading-relaxed min-h-[180px]">
+      <div ref={containerRef} className="p-3 font-mono text-xs leading-relaxed h-[180px] flex flex-col justify-between">
         {children ? (
           children
         ) : (

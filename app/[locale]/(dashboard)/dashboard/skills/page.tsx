@@ -10,6 +10,7 @@ import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
 import { auth } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 import { getUserSkillsData, getSkillCategoriesData } from '@/features/skills/data';
 import { DashboardSkillsView } from './DashboardSkillsView';
 
@@ -25,6 +26,19 @@ export default async function DashboardSkillsPage() {
 
   // Get translations
   const t = await getTranslations('skills');
+
+  // Fetch user with complete data
+  const dbUser = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      username: true,
+      image: true,
+      portfolioMode: true,
+    },
+  });
 
   // Fetch user's skills and categories data
   const [skills, categories] = await Promise.all([
@@ -50,8 +64,11 @@ export default async function DashboardSkillsPage() {
       }}
       user={{
         id: session.user.id,
-        name: session.user.name,
-        username: (session.user as { username?: string }).username || null,
+        name: dbUser?.name ?? session.user.name ?? 'User',
+        email: dbUser?.email ?? session.user.email,
+        username: dbUser?.username || null,
+        image: dbUser?.image ?? session.user.image ?? null,
+        portfolioMode: dbUser?.portfolioMode ?? 'professional',
       }}
     />
   );

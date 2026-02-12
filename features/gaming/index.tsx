@@ -640,3 +640,5 @@ export function Spinner({ className }: { className?: string }) {
 export { HexBadge, HexStatBadge } from './components/hex-badge'
 export { CRTMonitor } from './components/crt-monitor'
 export { CyberpunkNav } from './components/cyberpunk-nav'
+export { WelcomeCard } from './components/welcome-card'
+export { DashboardNav } from './components/dashboard-nav'

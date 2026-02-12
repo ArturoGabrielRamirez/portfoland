@@ -70,13 +70,13 @@ function ExperienceFormModalComponent({
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
             className={cn(
-              'relative w-full max-w-lg max-h-[90vh] overflow-y-auto',
-              'bg-[#0D1421] border border-[#1E293B] rounded-lg shadow-2xl'
+              'relative w-full max-w-lg max-h-[90vh] overflow-y-auto font-mono',
+              'bg-[hsl(200,30%,8%)] border border-[hsl(174,100%,50%,0.15)] rounded-sm shadow-2xl'
             )}
           >
             {/* Header */}
-            <div className="sticky top-0 z-10 flex items-center justify-between p-4 border-b border-[#1E293B] bg-[#0D1421]">
-              <h2 className="text-lg font-semibold text-white">
+            <div className="sticky top-0 z-10 flex items-center justify-between p-4 border-b border-[hsl(174,100%,50%,0.1)] bg-[hsl(200,30%,8%)]">
+              <h2 className="text-lg font-semibold text-foreground">
                 {isEditMode ? 'Edit Experience' : 'Add New Experience'}
               </h2>
               <Button

@@ -92,10 +92,10 @@ export function UserMenu({ user, locale }: UserMenuProps) {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="relative h-9 w-9 p-0 clip-hexagon bg-[hsl(174,100%,50%,0.15)] hover:bg-[hsl(174,100%,50%,0.25)] transition-all shadow-[0_0_8px_rgba(0,212,255,0.2)] hover:shadow-[0_0_12px_rgba(0,212,255,0.4)]"
+          className="relative h-9 w-9 p-0 clip-hexagon bg-[hsl(174,100%,50%,0.15)] hover:bg-[hsl(174,100%,50%,0.25)] transition-all shadow-[0_0_8px_rgba(0,212,255,0.2)] hover:shadow-[0_0_12px_rgba(0,212,255,0.4)] overflow-hidden"
           aria-label={t('profile')}
         >
-          <Avatar className="h-9 w-9 clip-hexagon rounded-none">
+          <Avatar className="h-9 w-9 clip-hexagon rounded-none overflow-hidden">
             {user.image && (
               <AvatarImage
                 src={user.image}

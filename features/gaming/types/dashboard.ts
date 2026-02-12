@@ -4,6 +4,7 @@ import { LucideIcon } from "lucide-react"
 export interface WelcomeCardProps {
   userName: string
   userInitial: string
+  userImage?: string | null
   level: number
   currentXP: number
   maxXP: number
@@ -17,6 +18,7 @@ export interface QuickAction {
   label: string
   color: string
   onClick?: () => void
+  href?: string
 }
 
 export interface DashboardStat {

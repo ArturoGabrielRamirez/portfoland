@@ -62,8 +62,8 @@ function DeleteConfirmModalComponent({
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
             className={cn(
-              'relative w-full max-w-sm',
-              'bg-[#0D1421] border border-[#1E293B] rounded-lg shadow-2xl',
+              'relative w-full max-w-sm font-mono',
+              'bg-[hsl(200,30%,8%)] border border-[hsl(174,100%,50%,0.15)] rounded-sm shadow-2xl',
               'overflow-hidden'
             )}
           >

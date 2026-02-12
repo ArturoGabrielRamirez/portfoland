@@ -1,6 +1,8 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Image from "next/image"
+import Link from "next/link"
 import { cn } from "@/lib/utils"
 import type { WelcomeCardProps } from "../types/dashboard"
 import { Briefcase, Clock, GitBranch, Target } from "lucide-react"
@@ -15,6 +17,7 @@ const defaultQuickActions = [
 export function WelcomeCard({
   userName,
   userInitial,
+  userImage,
   level,
   currentXP,
   maxXP,
@@ -42,18 +45,21 @@ export function WelcomeCard({
           <div className="flex items-center gap-4 mb-4">
             {/* Avatar hex */}
             <div className="relative">
-              <svg width="56" height="56" viewBox="0 0 100 100">
-                <path
-                  d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z"
-                  fill="hsl(174,100%,50%)"
-                  fillOpacity="0.2"
-                  stroke="hsl(174,100%,50%)"
-                  strokeWidth="2"
-                />
-                <text x="50" y="58" textAnchor="middle" fill="hsl(174,100%,50%)" fontSize="36" fontWeight="bold" fontFamily="monospace">
-                  {userInitial}
-                </text>
-              </svg>
+              <div className="w-14 h-14 clip-hexagon bg-[hsl(174,100%,50%,0.2)] overflow-hidden flex items-center justify-center">
+                {userImage ? (
+                  <Image
+                    src={userImage}
+                    alt={userName}
+                    width={56}
+                    height={56}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-xl font-mono font-bold text-[hsl(174,100%,50%)]">
+                    {userInitial}
+                  </span>
+                )}
+              </div>
               <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-[hsl(330,100%,65%)] text-[hsl(200,25%,8%)] text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-sm">
                 Lv.{level}
               </div>
@@ -94,10 +100,15 @@ export function WelcomeCard({
             {quickActions.map((action, i) => {
               const Icon = action.icon
               const isOddRow = Math.floor(i / 2) % 2 === 1
+              const Component = action.href ? Link : "button"
+              const componentProps = action.href
+                ? { href: action.href }
+                : { onClick: action.onClick, type: "button" as const }
+
               return (
-                <button
+                <Component
                   key={action.label}
-                  onClick={action.onClick}
+                  {...componentProps}
                   className="group relative flex flex-col items-center justify-center transition-all duration-300 hover:scale-105"
                   style={{ marginLeft: isOddRow ? "32px" : "0", marginTop: i >= 2 ? "-10px" : "0" }}
                 >
@@ -139,7 +150,7 @@ export function WelcomeCard({
                   <span className="text-[9px] font-mono text-muted-foreground -mt-1 group-hover:text-foreground transition-colors duration-300 tracking-wider">
                     {action.label}
                   </span>
-                </button>
+                </Component>
               )
             })}
           </div>

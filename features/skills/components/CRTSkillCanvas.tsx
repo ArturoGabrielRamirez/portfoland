@@ -244,6 +244,26 @@ function CRTSkillCanvasComponent({
           transition: isDragging ? 'none' : 'transform 0.2s ease-out',
         }}
       >
+        {/* Floating particles (decorative) */}
+        <svg className="absolute inset-0 pointer-events-none opacity-20">
+          {Array.from({ length: 30 }).map((_, i) => (
+            <circle
+              key={i}
+              cx={`${Math.random() * 100}%`}
+              cy={`${Math.random() * 100}%`}
+              r={Math.random() * 1.5 + 0.5}
+              fill="hsl(174,100%,50%)"
+            >
+              <animate
+                attributeName="opacity"
+                values={`${0.1 + Math.random() * 0.3};${0.4 + Math.random() * 0.4};${0.1 + Math.random() * 0.3}`}
+                dur={`${3 + Math.random() * 4}s`}
+                repeatCount="indefinite"
+              />
+            </circle>
+          ))}
+        </svg>
+
         {/* Connection lines (light beams) */}
         <svg
           className="absolute inset-0 pointer-events-none"
@@ -403,10 +423,15 @@ function CRTSkillCanvasComponent({
                 />
               </svg>
 
-              {/* Skill level */}
-              <span className="relative text-lg font-mono font-bold z-10">
-                {node.skill.level}
+              {/* Skill initial */}
+              <span className="relative text-sm font-mono font-bold z-10">
+                {node.skill.skill?.name?.charAt(0) || '?'}
               </span>
+
+              {/* Mini level badge */}
+              <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[hsl(200,30%,8%)] border border-current flex items-center justify-center z-20">
+                <span className="text-[7px] font-mono font-bold">{node.skill.level}</span>
+              </div>
 
               {/* Glow effect on hover */}
               <div

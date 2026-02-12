@@ -70,7 +70,7 @@ function MobileTimelineEventComponent({
       <div className="flex flex-col items-center">
         {/* Top line */}
         {!isFirst && (
-          <div className="w-0.5 h-4 bg-slate-700" />
+          <div className="w-0.5 h-4 bg-[hsl(174,100%,50%,0.15)]" />
         )}
         {isFirst && <div className="h-4" />}
 
@@ -90,7 +90,7 @@ function MobileTimelineEventComponent({
 
         {/* Bottom line */}
         {!isLast && (
-          <div className="w-0.5 flex-1 min-h-[20px] bg-slate-700" />
+          <div className="w-0.5 flex-1 min-h-[20px] bg-[hsl(174,100%,50%,0.15)]" />
         )}
       </div>
 
@@ -99,9 +99,9 @@ function MobileTimelineEventComponent({
         type="button"
         onClick={handleClick}
         className={cn(
-          'flex-1 text-left p-4 mb-4 rounded-lg',
-          'bg-[#0D1421] border border-[#1E293B]',
-          'hover:border-slate-600 transition-colors',
+          'flex-1 text-left p-4 mb-4 rounded-sm font-mono',
+          'bg-[hsl(200,30%,8%)] border border-[hsl(174,100%,50%,0.15)]',
+          'hover:border-[hsl(174,100%,50%,0.3)] transition-colors',
           'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500'
         )}
         whileHover={{ x: 4 }}
@@ -117,11 +117,11 @@ function MobileTimelineEventComponent({
         </div>
 
         {/* Title and company */}
-        <h3 className="text-base font-semibold text-white">{experience.title}</h3>
-        <p className="text-sm text-slate-400 mb-2">{experience.company}</p>
+        <h3 className="text-base font-semibold text-foreground">{experience.title}</h3>
+        <p className="text-sm text-muted-foreground mb-2">{experience.company}</p>
 
         {/* Date and location */}
-        <div className="flex flex-col gap-1 text-xs text-slate-500">
+        <div className="flex flex-col gap-1 text-xs text-muted-foreground">
           <div className="flex items-center gap-1.5">
             <Calendar className="w-3 h-3" />
             <span>{formatDateRange(experience.startDate, experience.endDate)}</span>

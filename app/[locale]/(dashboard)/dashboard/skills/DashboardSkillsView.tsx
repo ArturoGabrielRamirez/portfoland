@@ -150,6 +150,34 @@ export function DashboardSkillsView({
         </div>
       </div>
 
+      {/* Legend Row */}
+      <div className="px-6 py-2 flex items-center gap-4 border-b border-[hsl(174,100%,50%,0.1)]">
+        <button onClick={handleAddSkill} className="flex items-center gap-1 text-[10px] font-mono text-[hsl(174,100%,50%)] hover:underline">
+          <Plus className="w-3 h-3" /> Add Skill
+        </button>
+        <div className="flex items-center gap-3 ml-auto">
+          {/* Category color dots */}
+          <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
+            <span className="w-2 h-2 rounded-full bg-[hsl(330,100%,65%)]" /> Core
+          </span>
+          <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
+            <span className="w-2 h-2 rounded-full bg-[hsl(150,100%,45%)]" /> Backend
+          </span>
+          <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
+            <span className="w-2 h-2 rounded-full bg-[hsl(174,100%,50%)]" /> Frontend
+          </span>
+          <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
+            <span className="w-2 h-2 rounded-full bg-[hsl(60,100%,50%)]" /> Tools
+          </span>
+          <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
+            <span className="w-2 h-2 rounded-full bg-[hsl(280,100%,70%)]" /> Soft Skills
+          </span>
+        </div>
+        <span className="text-[9px] font-mono text-muted-foreground">
+          {skills.length} skills &middot; {stats.totalXP.toLocaleString()} XP
+        </span>
+      </div>
+
       {/* Main Content - Skill Tree View */}
       <section className="px-4 py-6">
         <div style={{ height: 'calc(100vh - 300px)', minHeight: '500px' }}>

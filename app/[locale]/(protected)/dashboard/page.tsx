@@ -7,7 +7,7 @@
 
 import { headers } from 'next/headers'
 import { setRequestLocale } from 'next-intl/server'
-import { Zap, TrendingUp, Star, Trophy, Target, Briefcase, Award, BookOpen, GitBranch, MapPin } from 'lucide-react'
+import { Zap, TrendingUp, Star, Trophy, Target, Briefcase, Award, BookOpen, GitBranch, MapPin, Clock } from 'lucide-react'
 
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -114,6 +114,14 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
     streakDays: 12,
   }
 
+  // Quick Actions with functional links
+  const quickActions = [
+    { icon: Briefcase, label: "Timeline", color: "hsl(174,100%,50%)", href: `/${locale}/dashboard/timeline` },
+    { icon: Clock, label: "Projects", color: "hsl(60,100%,50%)", href: `/${locale}/dashboard/projects` },
+    { icon: GitBranch, label: "Skills", color: "hsl(330,100%,65%)", href: `/${locale}/dashboard/skills` },
+    { icon: Target, label: "New Goal", color: "hsl(150,100%,45%)" },
+  ]
+
   return (
     <div className="min-h-screen bg-[#0A0E1A] font-mono">
       {/* Main Navigation */}
@@ -125,10 +133,12 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
           <WelcomeCard
             userName={displayName}
             userInitial={initials}
+            userImage={userData.image}
             level={userStats.level}
             currentXP={userStats.currentXP}
             maxXP={userStats.maxXP}
             streakDays={userStats.streakDays}
+            quickActions={quickActions}
           />
           <CRTMonitor className="min-h-[220px]" />
         </div>

@@ -116,10 +116,10 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
 
   // Quick Actions with functional links
   const quickActions = [
-    { icon: Briefcase, label: "Timeline", color: "hsl(174,100%,50%)", href: `/${locale}/dashboard/timeline` },
-    { icon: Clock, label: "Projects", color: "hsl(60,100%,50%)", href: `/${locale}/dashboard/projects` },
-    { icon: GitBranch, label: "Skills", color: "hsl(330,100%,65%)", href: `/${locale}/dashboard/skills` },
-    { icon: Target, label: "New Goal", color: "hsl(150,100%,45%)" },
+    { icon: "Briefcase", label: "Timeline", color: "hsl(174,100%,50%)", href: `/${locale}/dashboard/timeline` },
+    { icon: "Clock", label: "Projects", color: "hsl(60,100%,50%)", href: `/${locale}/dashboard/projects` },
+    { icon: "GitBranch", label: "Skills", color: "hsl(330,100%,65%)", href: `/${locale}/dashboard/skills` },
+    { icon: "Target", label: "New Goal", color: "hsl(150,100%,45%)" },
   ]
 
   return (

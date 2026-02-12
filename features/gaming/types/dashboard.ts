@@ -14,7 +14,7 @@ export interface WelcomeCardProps {
 }
 
 export interface QuickAction {
-  icon: LucideIcon
+  icon: string  // Icon name instead of component
   label: string
   color: string
   onClick?: () => void

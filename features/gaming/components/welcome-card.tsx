@@ -6,12 +6,21 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import type { WelcomeCardProps } from "../types/dashboard"
 import { Briefcase, Clock, GitBranch, Target } from "lucide-react"
+import * as Icons from "lucide-react"
+
+// Icon mapping
+const iconMap: Record<string, any> = {
+  Briefcase,
+  Clock,
+  GitBranch,
+  Target,
+}
 
 const defaultQuickActions = [
-  { icon: Briefcase, label: "Add Experience", color: "hsl(174,100%,50%)" },
-  { icon: Clock, label: "Timeline", color: "hsl(60,100%,50%)" },
-  { icon: GitBranch, label: "Level Up", color: "hsl(330,100%,65%)" },
-  { icon: Target, label: "New Goal", color: "hsl(150,100%,45%)" },
+  { icon: "Briefcase", label: "Add Experience", color: "hsl(174,100%,50%)" },
+  { icon: "Clock", label: "Timeline", color: "hsl(60,100%,50%)" },
+  { icon: "GitBranch", label: "Level Up", color: "hsl(330,100%,65%)" },
+  { icon: "Target", label: "New Goal", color: "hsl(150,100%,45%)" },
 ]
 
 export function WelcomeCard({
@@ -98,7 +107,7 @@ export function WelcomeCard({
           <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground mb-4">Quick Actions</p>
           <div className="grid grid-cols-2 gap-y-0 gap-x-2">
             {quickActions.map((action, i) => {
-              const Icon = action.icon
+              const Icon = iconMap[action.icon] || Target
               const isOddRow = Math.floor(i / 2) % 2 === 1
               const Component = action.href ? Link : "button"
               const componentProps = action.href

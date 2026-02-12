@@ -223,13 +223,13 @@ function CRTSkillCanvasComponent({
       <div className="crt-scanner" />
 
       {/* Hexagonal grid background */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.06]">
+      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.15]">
         <defs>
           <pattern id="hex-grid" width="56" height="48.5" patternUnits="userSpaceOnUse" patternTransform="scale(1)">
             {/* Row 1 hexagon */}
-            <path d="M28 0 L56 14 L56 34 L28 48.5 L0 34 L0 14 Z" fill="none" stroke="hsl(174,100%,50%)" strokeWidth="0.5" />
+            <path d="M28 0 L56 14 L56 34 L28 48.5 L0 34 L0 14 Z" fill="none" stroke="hsl(174,100%,50%)" strokeWidth="1" />
             {/* Row 2 offset hexagon (shifted by half) */}
-            <path d="M56 24.25 L84 38.25 L84 58.25 L56 72.75 L28 58.25 L28 38.25 Z" fill="none" stroke="hsl(174,100%,50%)" strokeWidth="0.5" />
+            <path d="M56 24.25 L84 38.25 L84 58.25 L56 72.75 L28 58.25 L28 38.25 Z" fill="none" stroke="hsl(174,100%,50%)" strokeWidth="1" />
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#hex-grid)" />

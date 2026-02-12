@@ -84,6 +84,21 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+
+  /* Cyberpunk Design Tokens */
+  --cyber-bg: #0A0E1A;
+  --cyber-bg-elevated: #0D1421;
+  --cyber-bg-surface: #131B2E;
+  --cyber-bg-overlay: #1E293B;
+  --cyber-cyan: #00D4FF;
+  --cyber-magenta: #D946EF;
+  --cyber-green: #22C55E;
+  --cyber-yellow: #EAB308;
+  --cyber-red: #EF4444;
+  --cyber-purple: #A855F7;
+  --cyber-text: #E2E8F0;
+  --cyber-text-muted: #64748B;
+  --cyber-text-dim: #475569;
 }
 
 .dark {
@@ -118,6 +133,21 @@
   --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.551 0.027 264.364);
+
+  /* Cyberpunk Design Tokens */
+  --cyber-bg: #0A0E1A;
+  --cyber-bg-elevated: #0D1421;
+  --cyber-bg-surface: #131B2E;
+  --cyber-bg-overlay: #1E293B;
+  --cyber-cyan: #00D4FF;
+  --cyber-magenta: #D946EF;
+  --cyber-green: #22C55E;
+  --cyber-yellow: #EAB308;
+  --cyber-red: #EF4444;
+  --cyber-purple: #A855F7;
+  --cyber-text: #E2E8F0;
+  --cyber-text-muted: #64748B;
+  --cyber-text-dim: #475569;
 }
 
 @layer base {
@@ -189,4 +219,53 @@
     rgba(0, 212, 255, 0.03) 4px
   );
   animation: scanline 8s linear infinite;
+}
+
+/* Cyberpunk Animations */
+@keyframes crt-scan {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.crt-scanner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.15), transparent);
+  animation: crt-scan 4s linear infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes hex-pulse {
+  0%, 100% { filter: drop-shadow(0 0 4px currentColor); }
+  50%      { filter: drop-shadow(0 0 12px currentColor); }
+}
+
+.animate-hex-pulse {
+  animation: hex-pulse 2s ease-in-out infinite;
+}
+
+@keyframes data-stream {
+  0%   { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -30; }
+}
+
+.animate-data-stream {
+  animation: data-stream 1.5s linear infinite;
+}
+
+.clip-hexagon {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.clip-hex-tab {
+  clip-path: polygon(8% 0%, 92% 0%, 100% 50%, 92% 100%, 8% 100%, 0% 50%);
+}
+
+.crt-lines {
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,212,255,0.03) 2px, rgba(0,212,255,0.03) 4px);
+  pointer-events: none;
 }

@@ -37,10 +37,10 @@ const gamingButtonVariants = cva(
           'bg-[#EAB308] text-[#0A0E1A] hover:bg-[#EAB308]/90 border border-[#EAB308] shadow-[0_0_15px_rgba(234,179,8,0.3)]',
       },
       size: {
-        default: 'h-10 px-4 py-2 rounded-lg',
-        sm: 'h-8 px-3 text-xs rounded-md',
-        lg: 'h-12 px-6 text-base rounded-lg',
-        icon: 'h-10 w-10 rounded-lg',
+        default: 'h-10 px-4 py-2 rounded-sm',
+        sm: 'h-8 px-3 text-xs rounded-sm',
+        lg: 'h-12 px-6 text-base rounded-sm',
+        icon: 'h-10 w-10 rounded-sm',
       },
     },
     defaultVariants: {
@@ -84,7 +84,7 @@ export const GamingInput = React.forwardRef<HTMLInputElement, GamingInputProps>(
       <input
         type={type}
         className={cn(
-          'flex h-11 w-full rounded-lg border bg-[#0D1421] px-4 py-2 text-sm text-white placeholder:text-[#64748B] transition-all duration-200',
+          'flex h-11 w-full rounded-sm border bg-[#0D1421] px-4 py-2 text-sm text-white placeholder:text-[#64748B] transition-all duration-200',
           'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0A0E1A]',
           'disabled:cursor-not-allowed disabled:opacity-50',
           error &&
@@ -109,7 +109,7 @@ GamingInput.displayName = 'GamingInput'
 // =============================================================================
 
 const gamingCardVariants = cva(
-  'rounded-xl border transition-all duration-300',
+  'rounded-sm border transition-all duration-300',
   {
     variants: {
       variant: {
@@ -222,14 +222,14 @@ export function CharacterSelect({
     <button
       onClick={onClick}
       className={cn(
-        'flex flex-col items-center gap-3 p-4 rounded-xl border-2 transition-all duration-300 bg-[#0D1421]',
+        'flex flex-col items-center gap-3 p-4 rounded-sm border-2 transition-all duration-300 bg-[#0D1421]',
         colorClasses[color],
         className
       )}
     >
       <div
         className={cn(
-          'w-16 h-16 rounded-xl flex items-center justify-center text-3xl',
+          'w-16 h-16 rounded-sm flex items-center justify-center text-3xl',
           selected ? 'scale-110' : ''
         )}
       >
@@ -299,7 +299,7 @@ export function StatCard({
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center rounded-xl border p-4 bg-[#0D1421] transition-all duration-300 hover:scale-105',
+        'flex flex-col items-center justify-center rounded-sm border p-4 bg-[#0D1421] transition-all duration-300 hover:scale-105',
         colors.border,
         colors.glow,
         className
@@ -341,7 +341,7 @@ export function XPBar({
         <div className="flex items-center justify-between mb-2">
           {level && (
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#00D4FF] text-[#0A0E1A] font-bold text-sm">
+              <span className="inline-flex items-center justify-center w-8 h-8 rounded-sm bg-[#00D4FF] text-[#0A0E1A] font-bold text-sm">
                 {level}
               </span>
               <span className="text-sm text-[#64748B]">Level</span>
@@ -352,12 +352,13 @@ export function XPBar({
           </span>
         </div>
       )}
-      <div className="h-3 bg-[#1E293B] rounded-full overflow-hidden">
+      <div className="h-3 bg-[#1E293B] rounded-sm overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-[#EAB308] to-[#FCD34D] rounded-full transition-all duration-500 ease-out"
+          className="h-full bg-gradient-to-r from-[#EAB308] to-[#FCD34D] transition-all duration-500 ease-out"
           style={{
             width: `${percentage}%`,
             boxShadow: '0 0 10px rgba(234, 179, 8, 0.5)',
+            clipPath: 'polygon(0 0, 100% 0, 98% 100%, 2% 100%)',
           }}
         />
       </div>
@@ -385,7 +386,7 @@ export function HUDPanel({
   return (
     <div
       className={cn(
-        'relative rounded-xl border border-[#1E293B] bg-[#0D1421] overflow-hidden',
+        'relative rounded-sm border border-[#1E293B] bg-[#0D1421] overflow-hidden',
         className
       )}
     >
@@ -429,7 +430,7 @@ export function LevelBadge({ level, size = 'md', className }: LevelBadgeProps) {
   return (
     <div
       className={cn(
-        'inline-flex items-center justify-center rounded-lg bg-[#00D4FF] text-[#0A0E1A] font-bold',
+        'inline-flex items-center justify-center clip-hexagon bg-[#00D4FF] text-[#0A0E1A] font-bold',
         'shadow-[0_0_15px_rgba(0,212,255,0.4)]',
         sizeClasses[size],
         className
@@ -450,6 +451,7 @@ interface GamingAvatarProps {
   fallback: string
   size?: 'sm' | 'md' | 'lg' | 'xl'
   frame?: 'none' | 'cyan' | 'magenta' | 'gold' | 'legendary'
+  shape?: 'circle' | 'hexagon'
   className?: string
 }
 
@@ -459,6 +461,7 @@ export function GamingAvatar({
   fallback,
   size = 'md',
   frame = 'cyan',
+  shape = 'circle',
   className,
 }: GamingAvatarProps) {
   const sizeClasses = {
@@ -477,10 +480,13 @@ export function GamingAvatar({
       'border-[#EAB308] shadow-[0_0_20px_rgba(234,179,8,0.6)] ring-2 ring-[#EAB308]/30',
   }
 
+  const shapeClass = shape === 'hexagon' ? 'clip-hexagon' : 'rounded-full'
+
   return (
     <div
       className={cn(
-        'rounded-full border-2 overflow-hidden bg-[#1E293B] flex items-center justify-center',
+        'border-2 overflow-hidden bg-[#1E293B] flex items-center justify-center',
+        shapeClass,
         sizeClasses[size],
         frameClasses[frame],
         className
@@ -626,3 +632,11 @@ export function Spinner({ className }: { className?: string }) {
     />
   )
 }
+
+// =============================================================================
+// CYBERPUNK COMPONENTS
+// =============================================================================
+
+export { HexBadge, HexStatBadge } from './components/hex-badge'
+export { CRTMonitor } from './components/crt-monitor'
+export { CyberpunkNav } from './components/cyberpunk-nav'

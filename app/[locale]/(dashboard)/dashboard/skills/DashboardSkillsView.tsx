@@ -19,7 +19,7 @@ import {
   ManualSkillModal
 } from '@/features/skills/components';
 import type { UserSkillWithDetails, SkillCategory } from '@/features/skills/types/skill';
-import type { PortfolioMode } from '@/app/generated/prisma/enums';
+import type { PortfolioMode } from '@/features/portfolio/types/portfolio';
 
 // =============================================================================
 // Types
@@ -168,6 +168,7 @@ export function DashboardSkillsView({
         isOpen={isAddModalOpen}
         onClose={handleCloseAddModal}
         onSuccess={handleAddSuccess}
+        categories={categories}
       />
     </div>
   );

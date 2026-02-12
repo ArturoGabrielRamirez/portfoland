@@ -1,14 +1,13 @@
 "use client"
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { LayoutDashboard, Clock, GitBranch, FolderOpen } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { PortfolioModeToggle } from '@/features/portfolio/components/PortfolioModeToggle'
 import { LanguageSwitcher } from '@/features/i18n'
 import { UserMenu } from '@/features/dashboard/components/UserMenu'
-import type { PortfolioMode } from '@/app/generated/prisma/enums'
+import type { PortfolioMode } from '@/features/portfolio/types/portfolio'
 
 interface DashboardNavProps {
   locale: string
@@ -22,10 +21,10 @@ interface DashboardNavProps {
 }
 
 const navItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/dashboard/timeline', label: 'Timeline', icon: Clock },
-  { href: '/dashboard/skills', label: 'Skills', icon: GitBranch },
-  { href: '/dashboard/projects', label: 'Projects', icon: FolderOpen },
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, exact: true },
+  { href: '/dashboard/timeline', label: 'Timeline', icon: Clock, exact: false },
+  { href: '/dashboard/skills', label: 'Skills', icon: GitBranch, exact: false },
+  { href: '/dashboard/projects', label: 'Projects', icon: FolderOpen, exact: false },
 ]
 
 export function DashboardNav({ locale, user }: DashboardNavProps) {
@@ -33,20 +32,6 @@ export function DashboardNav({ locale, user }: DashboardNavProps) {
 
   // Remove locale prefix for matching: /en/dashboard → /dashboard
   const cleanPathname = pathname.replace(/^\/[a-z]{2}(-[A-Z]{2})?(\/|$)/, '/')
-
-  // Get initials for avatar fallback
-  const getInitials = (name: string, email: string) => {
-    if (name) {
-      const parts = name.trim().split(/\s+/)
-      if (parts.length >= 2) {
-        return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase()
-      }
-      return parts[0].substring(0, 2).toUpperCase()
-    }
-    return email[0].toUpperCase()
-  }
-
-  const initials = getInitials(user.name, user.email)
 
   return (
     <div className="flex items-center justify-between px-6 py-3 border-b border-[hsl(174,100%,50%,0.1)]">
@@ -60,13 +45,12 @@ export function DashboardNav({ locale, user }: DashboardNavProps) {
           <span className="font-mono font-bold text-foreground tracking-wider">Portfoland</span>
         </Link>
 
-        {/* Navigation with VIEW: label */}
+        {/* Navigation links */}
         <nav className="flex items-center gap-1">
-          <span className="text-xs font-mono uppercase tracking-[0.3em] text-[#64748B] mr-2">
-            VIEW:
-          </span>
           {navItems.map((item) => {
-            const isActive = cleanPathname === item.href || cleanPathname.startsWith(item.href + '/')
+            const isActive = item.exact
+              ? cleanPathname === item.href
+              : cleanPathname === item.href || cleanPathname.startsWith(item.href + '/')
             const Icon = item.icon
             return (
               <Link
@@ -89,10 +73,7 @@ export function DashboardNav({ locale, user }: DashboardNavProps) {
 
       {/* Right side - Controls and User */}
       <div className="flex items-center gap-3">
-        {/* Portfolio Mode Toggle */}
         <PortfolioModeToggle currentMode={user.portfolioMode} />
-
-        {/* Language Switcher */}
         <LanguageSwitcher isAuthenticated={true} />
 
         {/* Online Status */}
@@ -101,23 +82,7 @@ export function DashboardNav({ locale, user }: DashboardNavProps) {
           ONLINE
         </span>
 
-        {/* User Avatar - Hexagonal */}
-        <div className="relative w-8 h-8 clip-hexagon bg-[hsl(174,100%,50%,0.2)] border border-[hsl(174,100%,50%,0.3)] overflow-hidden">
-          {user.image ? (
-            <Image
-              src={user.image}
-              alt={user.name}
-              fill
-              className="object-cover"
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-xs font-mono font-bold text-[hsl(174,100%,50%)]">
-              {initials}
-            </div>
-          )}
-        </div>
-
-        {/* User Menu */}
+        {/* Single User Menu (hexagonal avatar integrated) */}
         <UserMenu user={user} locale={locale} />
       </div>
     </div>

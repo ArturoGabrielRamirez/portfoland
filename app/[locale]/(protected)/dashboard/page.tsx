@@ -59,11 +59,11 @@ const goals = [
 ]
 
 const activities = [
-  { icon: Briefcase, text: "Added Senior Developer experience", time: "2 hours ago", xp: "+200 XP", color: "cyan" },
-  { icon: Award, text: "Earned 'First Certification' badge", time: "1 day ago", xp: "+100 XP", color: "yellow" },
-  { icon: BookOpen, text: "Completed React Advanced course", time: "3 days ago", xp: "+150 XP", color: "magenta" },
-  { icon: GitBranch, text: "TypeScript skill reached Lv.4", time: "5 days ago", xp: "+50 XP", color: "green" },
-  { icon: MapPin, text: "Updated location: Buenos Aires", time: "1 week ago", xp: "+10 XP", color: "cyan" },
+  { icon: Briefcase, text: "Added Senior Developer experience", time: "2 hours ago", xp: "+200 XP", color: "cyan" as const },
+  { icon: Award, text: "Earned 'First Certification' badge", time: "1 day ago", xp: "+100 XP", color: "yellow" as const },
+  { icon: BookOpen, text: "Completed React Advanced course", time: "3 days ago", xp: "+150 XP", color: "magenta" as const },
+  { icon: GitBranch, text: "TypeScript skill reached Lv.4", time: "5 days ago", xp: "+50 XP", color: "green" as const },
+  { icon: MapPin, text: "Updated location: Buenos Aires", time: "1 week ago", xp: "+10 XP", color: "cyan" as const },
 ]
 
 // =============================================================================
@@ -100,7 +100,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
     name: dbUser?.name ?? user.name ?? 'User',
     email: dbUser?.email ?? user.email,
     image: dbUser?.image ?? user.image ?? null,
-    portfolioMode: dbUser?.portfolioMode ?? 'professional',
+    portfolioMode: (dbUser?.portfolioMode ?? 'professional') as 'professional' | 'gaming',
   }
 
   const displayName = getDisplayName(userData.name, userData.email)

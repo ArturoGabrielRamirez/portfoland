@@ -92,17 +92,18 @@ export function UserMenu({ user, locale }: UserMenuProps) {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="relative h-10 w-10 rounded-full ring-2 ring-[#334155] hover:ring-[#00D4FF]/50 transition-all"
+          className="relative h-9 w-9 p-0 clip-hexagon bg-[hsl(174,100%,50%,0.15)] hover:bg-[hsl(174,100%,50%,0.25)] transition-all shadow-[0_0_8px_rgba(0,212,255,0.2)] hover:shadow-[0_0_12px_rgba(0,212,255,0.4)]"
           aria-label={t('profile')}
         >
-          <Avatar className="h-10 w-10">
+          <Avatar className="h-9 w-9 clip-hexagon rounded-none">
             {user.image && (
               <AvatarImage
                 src={user.image}
                 alt={user.name ?? 'User avatar'}
+                className="object-cover"
               />
             )}
-            <AvatarFallback className="bg-gradient-to-br from-[#00D4FF]/20 to-[#8B5CF6]/20 text-white font-medium">
+            <AvatarFallback className="bg-[hsl(174,100%,50%,0.15)] text-[hsl(174,100%,50%)] font-mono font-bold text-xs rounded-none">
               {initials}
             </AvatarFallback>
           </Avatar>

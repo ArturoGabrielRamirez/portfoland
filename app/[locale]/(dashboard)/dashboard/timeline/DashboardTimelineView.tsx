@@ -18,7 +18,8 @@ import type {
   CreateExperienceInput,
   UpdateExperienceInput,
 } from '@/features/timeline/types/experience';
-import type { ExperienceType, PortfolioMode } from '@/app/generated/prisma/enums';
+import type { ExperienceType } from '@/app/generated/prisma/enums';
+import type { PortfolioMode } from '@/features/portfolio/types/portfolio';
 import {
   TimelineMap,
   TimelineFilter,

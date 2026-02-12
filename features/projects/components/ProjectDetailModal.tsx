@@ -64,7 +64,7 @@ function ProfessionalModal({
   onClose,
   t,
 }: ProjectDetailProps & { t: (key: string) => string }) {
-  const links = (project.links ?? []) as ProjectLink[];
+  const links = (project.links ?? []) as unknown as ProjectLink[];
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -181,7 +181,7 @@ function GamingModal({
   onClose,
   t,
 }: ProjectDetailProps & { t: (key: string) => string }) {
-  const links = (project.links ?? []) as ProjectLink[];
+  const links = (project.links ?? []) as unknown as ProjectLink[];
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Close on Escape key

@@ -89,8 +89,8 @@ export function WelcomeCard({
 
         {/* Right: Quick Actions as honeycomb */}
         <div className="lg:w-[280px] border-t lg:border-t-0 lg:border-l border-[hsl(174,100%,50%,0.1)] p-4 flex flex-col items-center justify-center">
-          <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">Quick Actions</p>
-          <div className="grid grid-cols-2 gap-x-1" style={{ gap: "2px" }}>
+          <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground mb-4">Quick Actions</p>
+          <div className="grid grid-cols-2 gap-y-0 gap-x-2">
             {quickActions.map((action, i) => {
               const Icon = action.icon
               const isOddRow = Math.floor(i / 2) % 2 === 1
@@ -98,24 +98,45 @@ export function WelcomeCard({
                 <button
                   key={action.label}
                   onClick={action.onClick}
-                  className="group relative flex flex-col items-center justify-center transition-transform duration-200 hover:scale-110"
-                  style={{ marginLeft: isOddRow ? "28px" : "0", marginTop: i >= 2 ? "-8px" : "0" }}
+                  className="group relative flex flex-col items-center justify-center transition-all duration-300 hover:scale-105"
+                  style={{ marginLeft: isOddRow ? "32px" : "0", marginTop: i >= 2 ? "-10px" : "0" }}
                 >
-                  <svg width="56" height="56" viewBox="0 0 100 100" className="transition-all duration-300">
-                    <path
-                      d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z"
-                      fill={`${action.color}`}
-                      fillOpacity="0.08"
-                      stroke={action.color}
-                      strokeWidth="1.5"
-                      strokeOpacity="0.5"
-                      className="group-hover:fill-opacity-20 group-hover:stroke-opacity-100 transition-all"
-                    />
-                  </svg>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <Icon className="w-4 h-4 transition-colors" style={{ color: action.color }} />
+                  <div className="relative">
+                    <svg width="64" height="64" viewBox="0 0 100 100" className="transition-all duration-300 drop-shadow-none group-hover:drop-shadow-[0_0_8px_var(--action-color)]" style={{ "--action-color": action.color } as React.CSSProperties}>
+                      {/* Outer glow hex */}
+                      <path
+                        d="M50 2 L97 26 L97 74 L50 98 L3 74 L3 26 Z"
+                        fill="none"
+                        stroke={action.color}
+                        strokeWidth="0.5"
+                        strokeOpacity="0.2"
+                        className="group-hover:stroke-opacity-60 transition-all"
+                      />
+                      {/* Main hex */}
+                      <path
+                        d="M50 5 L95 27 L95 73 L50 95 L5 73 L5 27 Z"
+                        fill={action.color}
+                        fillOpacity="0.06"
+                        stroke={action.color}
+                        strokeWidth="1.5"
+                        strokeOpacity="0.4"
+                        className="group-hover:fill-opacity-20 group-hover:stroke-opacity-100 transition-all duration-300"
+                      />
+                      {/* Inner accent line */}
+                      <path
+                        d="M50 15 L85 32 L85 68 L50 85 L15 68 L15 32 Z"
+                        fill="none"
+                        stroke={action.color}
+                        strokeWidth="0.5"
+                        strokeOpacity="0"
+                        className="group-hover:stroke-opacity-30 transition-all duration-500"
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
+                      <Icon className="w-5 h-5 transition-all duration-300 opacity-70 group-hover:opacity-100 group-hover:scale-110" style={{ color: action.color }} />
+                    </div>
                   </div>
-                  <span className="text-[8px] font-mono text-muted-foreground mt-0.5 group-hover:text-foreground transition-colors">
+                  <span className="text-[9px] font-mono text-muted-foreground -mt-1 group-hover:text-foreground transition-colors duration-300 tracking-wider">
                     {action.label}
                   </span>
                 </button>

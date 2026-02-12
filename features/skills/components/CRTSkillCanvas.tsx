@@ -15,7 +15,6 @@ import { memo, useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { UserSkillWithDetails, SkillCategory } from '../types/skill';
-import anime from 'animejs';
 
 interface CRTSkillCanvasProps {
   userSkills: UserSkillWithDetails[];
@@ -223,14 +222,17 @@ function CRTSkillCanvasComponent({
       <div className="absolute inset-0 pointer-events-none crt-lines opacity-30" />
       <div className="crt-scanner" />
 
-      {/* Grid background */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-10">
+      {/* Hexagonal grid background */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.06]">
         <defs>
-          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="hsl(174,100%,50%)" strokeWidth="0.5" />
+          <pattern id="hex-grid" width="56" height="48.5" patternUnits="userSpaceOnUse" patternTransform="scale(1)">
+            {/* Row 1 hexagon */}
+            <path d="M28 0 L56 14 L56 34 L28 48.5 L0 34 L0 14 Z" fill="none" stroke="hsl(174,100%,50%)" strokeWidth="0.5" />
+            {/* Row 2 offset hexagon (shifted by half) */}
+            <path d="M56 24.25 L84 38.25 L84 58.25 L56 72.75 L28 58.25 L28 38.25 Z" fill="none" stroke="hsl(174,100%,50%)" strokeWidth="0.5" />
           </pattern>
         </defs>
-        <rect width="100%" height="100%" fill="url(#grid)" />
+        <rect width="100%" height="100%" fill="url(#hex-grid)" />
       </svg>
 
       {/* Canvas content */}
@@ -250,9 +252,16 @@ function CRTSkillCanvasComponent({
         >
           <defs>
             <filter id="glow-beam">
-              <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+              <feGaussianBlur stdDeviation="4" result="coloredBlur" />
               <feMerge>
                 <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <filter id="glow-soft">
+              <feGaussianBlur stdDeviation="2" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
@@ -263,7 +272,7 @@ function CRTSkillCanvasComponent({
             const groupNodes = nodes.filter(n => n.category.id === group.category.id);
             const connections: Array<{from: typeof groupNodes[0], to: typeof groupNodes[0]}> = [];
 
-            // Connect each skill to the next one in the category (circular)
+            // Connect each skill to the next one in the category
             groupNodes.forEach((node, i) => {
               const nextIndex = (i + 1) % groupNodes.length;
               if (groupNodes.length > 1 && i < groupNodes.length - 1) {
@@ -271,14 +280,13 @@ function CRTSkillCanvasComponent({
               }
             });
 
-            return connections.map((conn, idx) => {
+            return connections.map((conn) => {
               const key = `${conn.from.id}-${conn.to.id}`;
               const midX = (conn.from.x + conn.to.x) / 2;
               const midY = (conn.from.y + conn.to.y) / 2;
               const dx = conn.to.x - conn.from.x;
               const dy = conn.to.y - conn.from.y;
 
-              // Perpendicular offset for curve
               const offsetX = -dy * 0.15;
               const offsetY = dx * 0.15;
               const controlX = midX + offsetX;
@@ -288,51 +296,67 @@ function CRTSkillCanvasComponent({
 
               return (
                 <g key={key}>
-                  {/* Background line */}
+                  {/* Persistent dim background trace */}
                   <path
                     d={pathData}
                     stroke={conn.from.color}
                     strokeWidth="1"
                     fill="none"
-                    opacity="0.2"
-                    strokeDasharray="5,5"
+                    opacity="0.15"
                   />
 
-                  {/* Glowing animated line */}
+                  {/* Main colored beam - solid with glow */}
                   <path
                     d={pathData}
                     stroke={conn.from.color}
-                    strokeWidth="2"
+                    strokeWidth="1.5"
+                    fill="none"
+                    strokeLinecap="round"
+                    filter="url(#glow-soft)"
+                    opacity="0.4"
+                  >
+                    <animate
+                      attributeName="opacity"
+                      values="0.25;0.5;0.25"
+                      dur={`${3 + Math.random() * 2}s`}
+                      repeatCount="indefinite"
+                    />
+                  </path>
+
+                  {/* Animated energy pulse along path */}
+                  <path
+                    d={pathData}
+                    stroke={conn.from.color}
+                    strokeWidth="2.5"
                     fill="none"
                     strokeLinecap="round"
                     filter="url(#glow-beam)"
-                    opacity="0.5"
-                    strokeDasharray="10,10"
+                    strokeDasharray="8,40"
                   >
                     <animate
                       attributeName="stroke-dashoffset"
                       from="0"
-                      to="20"
-                      dur="2s"
+                      to="-48"
+                      dur={`${2 + Math.random()}s`}
                       repeatCount="indefinite"
                     />
                     <animate
                       attributeName="opacity"
-                      values="0.3;0.7;0.3"
-                      dur="3s"
+                      values="0.6;0.9;0.6"
+                      dur="2s"
                       repeatCount="indefinite"
                     />
                   </path>
 
                   {/* Particle flowing along path */}
                   <circle
-                    r="3"
+                    r="2.5"
                     fill={conn.from.color}
-                    opacity="0.9"
+                    opacity="0.8"
                     filter="url(#glow-beam)"
                   >
                     <animateMotion
-                      dur="4s"
+                      dur={`${3 + Math.random() * 2}s`}
                       repeatCount="indefinite"
                       path={pathData}
                     />

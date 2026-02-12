@@ -16,7 +16,7 @@ import { DashboardNav } from '@/features/gaming';
 import { ProjectForm } from '@/features/projects/components/ProjectForm';
 import { deleteProject } from '@/features/projects/actions/deleteProject';
 import type { Project } from '@/features/projects/types/project';
-import type { PortfolioMode } from '@/app/generated/prisma/enums';
+import type { PortfolioMode } from '@/features/portfolio/types/portfolio';
 
 interface DashboardProjectsViewProps {
   projects: Project[];

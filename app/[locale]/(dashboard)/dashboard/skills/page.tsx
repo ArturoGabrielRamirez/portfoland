@@ -68,7 +68,7 @@ export default async function DashboardSkillsPage() {
         email: dbUser?.email ?? session.user.email,
         username: dbUser?.username || null,
         image: dbUser?.image ?? session.user.image ?? null,
-        portfolioMode: dbUser?.portfolioMode ?? 'professional',
+        portfolioMode: (dbUser?.portfolioMode ?? 'professional') as 'professional' | 'gaming',
       }}
     />
   );

@@ -76,7 +76,7 @@ export function ProfessionalProjects({ data, className }: PortfolioSectionProps)
       ) : (
         <div className="grid gap-4 md:grid-cols-2" data-testid="projects-grid">
           {projects.map((project) => {
-            const links = (project.links ?? []) as ProjectLink[];
+            const links = (project.links ?? []) as unknown as ProjectLink[];
 
             return (
               <Card

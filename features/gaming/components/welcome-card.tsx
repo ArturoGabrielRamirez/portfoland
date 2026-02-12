@@ -6,7 +6,6 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import type { WelcomeCardProps } from "../types/dashboard"
 import { Briefcase, Clock, GitBranch, Target } from "lucide-react"
-import * as Icons from "lucide-react"
 
 // Icon mapping
 const iconMap: Record<string, any> = {
@@ -109,21 +108,13 @@ export function WelcomeCard({
             {quickActions.map((action, i) => {
               const Icon = iconMap[action.icon] || Target
               const isOddRow = Math.floor(i / 2) % 2 === 1
-              const Component = action.href ? Link : "button"
-              const componentProps = action.href
-                ? { href: action.href }
-                : { onClick: action.onClick, type: "button" as const }
+              const sharedClass = "group relative flex flex-col items-center justify-center transition-all duration-300 hover:scale-105"
+              const sharedStyle = { marginLeft: isOddRow ? "32px" : "0", marginTop: i >= 2 ? "-10px" : "0" }
 
-              return (
-                <Component
-                  key={action.label}
-                  {...componentProps}
-                  className="group relative flex flex-col items-center justify-center transition-all duration-300 hover:scale-105"
-                  style={{ marginLeft: isOddRow ? "32px" : "0", marginTop: i >= 2 ? "-10px" : "0" }}
-                >
+              const inner = (
+                <>
                   <div className="relative">
                     <svg width="64" height="64" viewBox="0 0 100 100" className="transition-all duration-300 drop-shadow-none group-hover:drop-shadow-[0_0_8px_var(--action-color)]" style={{ "--action-color": action.color } as React.CSSProperties}>
-                      {/* Outer glow hex */}
                       <path
                         d="M50 2 L97 26 L97 74 L50 98 L3 74 L3 26 Z"
                         fill="none"
@@ -132,7 +123,6 @@ export function WelcomeCard({
                         strokeOpacity="0.2"
                         className="group-hover:stroke-opacity-60 transition-all"
                       />
-                      {/* Main hex */}
                       <path
                         d="M50 5 L95 27 L95 73 L50 95 L5 73 L5 27 Z"
                         fill={action.color}
@@ -142,7 +132,6 @@ export function WelcomeCard({
                         strokeOpacity="0.4"
                         className="group-hover:fill-opacity-20 group-hover:stroke-opacity-100 transition-all duration-300"
                       />
-                      {/* Inner accent line */}
                       <path
                         d="M50 15 L85 32 L85 68 L50 85 L15 68 L15 32 Z"
                         fill="none"
@@ -159,7 +148,17 @@ export function WelcomeCard({
                   <span className="text-[9px] font-mono text-muted-foreground -mt-1 group-hover:text-foreground transition-colors duration-300 tracking-wider">
                     {action.label}
                   </span>
-                </Component>
+                </>
+              )
+
+              return action.href ? (
+                <Link key={action.label} href={action.href} className={sharedClass} style={sharedStyle}>
+                  {inner}
+                </Link>
+              ) : (
+                <button key={action.label} type="button" onClick={action.onClick} className={sharedClass} style={sharedStyle}>
+                  {inner}
+                </button>
               )
             })}
           </div>

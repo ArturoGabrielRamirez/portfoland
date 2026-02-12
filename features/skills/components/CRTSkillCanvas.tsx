@@ -223,13 +223,18 @@ function CRTSkillCanvasComponent({
       <div className="crt-scanner" />
 
       {/* Hexagonal grid background */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.15]">
+      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.08]">
         <defs>
-          <pattern id="hex-grid" width="56" height="48.5" patternUnits="userSpaceOnUse" patternTransform="scale(1)">
-            {/* Row 1 hexagon */}
-            <path d="M28 0 L56 14 L56 34 L28 48.5 L0 34 L0 14 Z" fill="none" stroke="hsl(174,100%,50%)" strokeWidth="1" />
-            {/* Row 2 offset hexagon (shifted by half) */}
-            <path d="M56 24.25 L84 38.25 L84 58.25 L56 72.75 L28 58.25 L28 38.25 Z" fill="none" stroke="hsl(174,100%,50%)" strokeWidth="1" />
+          <pattern id="hex-grid" width="60" height="52" patternUnits="userSpaceOnUse">
+            {/* Top-left hex (clipped) */}
+            <path d="M15 0 L30 0 L30 8.66 L15 17.32 L0 8.66 L0 0 Z" fill="none" stroke="hsl(174,100%,50%)" strokeWidth="0.6" />
+            {/* Center hex */}
+            <path d="M30 8.66 L45 17.32 L45 34.64 L30 43.3 L15 34.64 L15 17.32 Z" fill="none" stroke="hsl(174,100%,50%)" strokeWidth="0.6" />
+            {/* Right-side hex (clipped) */}
+            <path d="M45 0 L60 0 L60 8.66 L45 17.32 L30 8.66 L30 0 Z" fill="none" stroke="hsl(174,100%,50%)" strokeWidth="0.6" />
+            {/* Bottom hex row offset */}
+            <path d="M0 26 L15 17.32 L30 26 L30 43.3 L15 52 L0 43.3 Z" fill="none" stroke="hsl(174,100%,50%)" strokeWidth="0.6" />
+            <path d="M45 34.64 L60 26 L60 43.3 L45 52 L30 43.3 L30 26 Z" fill="none" stroke="hsl(174,100%,50%)" strokeWidth="0.6" />
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#hex-grid)" />

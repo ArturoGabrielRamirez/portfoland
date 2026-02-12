@@ -131,7 +131,7 @@ function LocationPickerComponent({ value, onChange, className }: LocationPickerP
 
   if (loadError) {
     return (
-      <div className={cn('p-4 bg-red-500/10 border border-red-500/20 rounded-lg', className)}>
+      <div className={cn('p-4 bg-red-500/10 border border-red-500/20 rounded-sm', className)}>
         <p className="text-red-400 text-sm">Error loading location picker</p>
       </div>
     );
@@ -139,9 +139,9 @@ function LocationPickerComponent({ value, onChange, className }: LocationPickerP
 
   if (!isLoaded) {
     return (
-      <div className={cn('p-4 bg-slate-800 rounded-lg animate-pulse', className)}>
-        <div className="h-10 bg-slate-700 rounded mb-2" />
-        <div className="h-[200px] bg-slate-700 rounded" />
+      <div className={cn('p-4 bg-[hsl(200,30%,8%)] rounded-sm animate-pulse', className)}>
+        <div className="h-10 bg-[#1E293B] rounded mb-2" />
+        <div className="h-[200px] bg-[#1E293B] rounded" />
       </div>
     );
   }
@@ -170,14 +170,14 @@ function LocationPickerComponent({ value, onChange, className }: LocationPickerP
               placeholder="Search for a location..."
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
-              className="pl-10 bg-slate-900 border-slate-700 text-white placeholder:text-slate-500"
+              className="pl-10 bg-[#0D1421] border-[#1E293B] text-white placeholder:text-[#64748B]"
             />
           </div>
         </Autocomplete>
       </div>
 
       {/* Mini map for visual selection */}
-      <div className="relative rounded-lg overflow-hidden border border-slate-700">
+      <div className="relative rounded-sm overflow-hidden border border-[#1E293B]">
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={mapCenter}
@@ -214,7 +214,7 @@ function LocationPickerComponent({ value, onChange, className }: LocationPickerP
 
       {/* Selected location display */}
       {value && (
-        <div className="flex items-start gap-2 p-2 bg-slate-800/50 rounded-lg">
+        <div className="flex items-start gap-2 p-2 bg-[hsl(200,30%,8%)]/50 rounded-sm">
           <MapPin className="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" />
           <div className="text-sm">
             <p className="text-white">{value.address}</p>

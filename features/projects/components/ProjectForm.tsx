@@ -91,8 +91,8 @@ function ProjectFormComponent({
 
   const form = useForm({
     resolver: yupResolver(
-      isEditMode ? updateProjectSchema : createProjectSchema
-    ) as any,
+      (isEditMode ? updateProjectSchema : createProjectSchema) as any
+    ),
     defaultValues: {
       ...(isEditMode && project ? { id: project.id } : {}),
       title: project?.title || '',
@@ -245,7 +245,7 @@ function ProjectFormComponent({
                   rows={6}
                   maxLength={5000}
                   placeholder={t('form.descriptionPlaceholder')}
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="w-full px-3 py-2 bg-[#0D1421] border border-[#1E293B] rounded-sm text-white placeholder:text-[#64748B] focus:outline-none focus:ring-2 focus:ring-[#00D4FF]"
                   data-testid="description-input"
                 />
               </FormControl>
@@ -339,7 +339,7 @@ function ProjectFormComponent({
               <FormControl>
                 <select
                   {...field}
-                  className="w-full h-9 px-3 rounded-md border border-slate-700 bg-slate-900 text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="w-full h-9 px-3 rounded-sm border border-[#1E293B] bg-[#0D1421] text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#00D4FF]"
                   data-testid="status-select"
                 >
                   {PROJECT_STATUSES.map((status) => (

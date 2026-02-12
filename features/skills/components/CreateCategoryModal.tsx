@@ -174,7 +174,7 @@ function CreateCategoryModalComponent({
                 </h2>
                 <button
                   onClick={onClose}
-                  className="p-1.5 rounded-lg text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
+                  className="p-1.5 rounded-sm text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
                   aria-label="Close"
                 >
                   <X className="w-4 h-4" />
@@ -185,7 +185,7 @@ function CreateCategoryModalComponent({
               <form onSubmit={handleSubmit} className="p-4 space-y-5">
                 {/* Error Message */}
                 {error && (
-                  <div className="p-3 rounded-lg bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] text-sm">
+                  <div className="p-3 rounded-sm bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] text-sm">
                     {error}
                   </div>
                 )}
@@ -221,7 +221,7 @@ function CreateCategoryModalComponent({
                         type="button"
                         onClick={() => setColor(swatch.color)}
                         className={cn(
-                          'w-full aspect-square rounded-lg transition-all duration-200',
+                          'w-full aspect-square rounded-sm transition-all duration-200',
                           'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0A0E1A] focus:ring-[#00D4FF]',
                           color === swatch.color
                             ? 'ring-2 ring-white ring-offset-2 ring-offset-[#0A0E1A] scale-110'
@@ -264,9 +264,9 @@ function CreateCategoryModalComponent({
                   </div>
 
                   {/* Preview */}
-                  <div className="flex items-center gap-3 p-3 rounded-lg bg-[#1E293B]/50">
+                  <div className="flex items-center gap-3 p-3 rounded-sm bg-[#1E293B]/50">
                     <div
-                      className="w-8 h-8 rounded-lg"
+                      className="w-8 h-8 rounded-sm"
                       style={{
                         backgroundColor: color,
                         boxShadow: `0 0 15px ${color}60`,

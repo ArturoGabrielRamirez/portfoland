@@ -73,7 +73,7 @@ function DeleteConfirmModalComponent({
             {/* Content */}
             <div className="p-6 text-center">
               {/* Warning icon */}
-              <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-full bg-red-500/20">
+              <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-sm bg-red-500/20">
                 <AlertTriangle className="w-6 h-6 text-red-400" />
               </div>
 

@@ -193,7 +193,7 @@ function SkillDetailCardComponent({
                     {/* Close button */}
                     <button
                       onClick={onClose}
-                      className="absolute top-3 right-3 p-1.5 rounded-lg text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
+                      className="absolute top-3 right-3 p-1.5 rounded-sm text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
                       aria-label="Close"
                     >
                       <X className="w-4 h-4" />
@@ -263,7 +263,7 @@ function SkillDetailCardComponent({
                   <div className="p-4 pt-0 flex items-center justify-between">
                     <button
                       onClick={handleFlip}
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-[#00D4FF] hover:bg-[#00D4FF]/10 transition-colors"
+                      className="flex items-center gap-2 px-3 py-2 rounded-sm text-sm text-[#00D4FF] hover:bg-[#00D4FF]/10 transition-colors"
                       aria-label="Flip card to see XP breakdown"
                     >
                       <RotateCcw className="w-4 h-4" />
@@ -275,7 +275,7 @@ function SkillDetailCardComponent({
                         {onEdit && (
                           <button
                             onClick={onEdit}
-                            className="p-2 rounded-lg text-[#64748B] hover:text-[#00D4FF] hover:bg-[#1E293B] transition-colors"
+                            className="p-2 rounded-sm text-[#64748B] hover:text-[#00D4FF] hover:bg-[#1E293B] transition-colors"
                             aria-label="Edit skill"
                           >
                             <Edit className="w-4 h-4" />
@@ -284,7 +284,7 @@ function SkillDetailCardComponent({
                         {onDelete && canDelete && (
                           <button
                             onClick={onDelete}
-                            className="p-2 rounded-lg text-[#64748B] hover:text-[#EF4444] hover:bg-[#1E293B] transition-colors"
+                            className="p-2 rounded-sm text-[#64748B] hover:text-[#EF4444] hover:bg-[#1E293B] transition-colors"
                             aria-label="Delete skill"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -316,14 +316,14 @@ function SkillDetailCardComponent({
                     <div className="flex items-center gap-2">
                       <button
                         onClick={handleFlip}
-                        className="p-1.5 rounded-lg text-[#64748B] hover:text-[#00D4FF] hover:bg-[#1E293B] transition-colors"
+                        className="p-1.5 rounded-sm text-[#64748B] hover:text-[#00D4FF] hover:bg-[#1E293B] transition-colors"
                         aria-label="Flip card back"
                       >
                         <RotateCcw className="w-4 h-4" />
                       </button>
                       <button
                         onClick={onClose}
-                        className="p-1.5 rounded-lg text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
+                        className="p-1.5 rounded-sm text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
                         aria-label="Close"
                       >
                         <X className="w-4 h-4" />

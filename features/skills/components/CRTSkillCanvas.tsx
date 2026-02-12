@@ -15,6 +15,7 @@ import { memo, useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { UserSkillWithDetails, SkillCategory } from '../types/skill';
+import { getCategoryColor, type CategorySlug } from '../constants/categories';
 
 interface CRTSkillCanvasProps {
   userSkills: UserSkillWithDetails[];
@@ -39,20 +40,7 @@ interface CategoryGroup {
   color: string;
 }
 
-// Category colors matching cyberpunk palette
-const categoryColors: Record<string, string> = {
-  'core': 'hsl(330,100%,65%)', // Magenta
-  'fundamentals': 'hsl(330,100%,65%)', // Magenta
-  'backend': 'hsl(150,100%,45%)', // Green
-  'frontend': 'hsl(174,100%,50%)', // Cyan
-  'tools': 'hsl(60,100%,50%)', // Yellow
-  'soft-skills': 'hsl(280,100%,70%)', // Purple
-  'default': 'hsl(174,100%,50%)', // Cyan
-};
-
-function getCategoryColor(slug: string): string {
-  return categoryColors[slug.toLowerCase()] || categoryColors.default;
-}
+// Category colors are imported from constants/categories.ts
 
 // Generate positions in a circular/clustered layout
 function generateNodePositions(
@@ -149,7 +137,7 @@ function CRTSkillCanvasComponent({
         groups.push({
           category,
           skills,
-          color: getCategoryColor(category.slug),
+          color: getCategoryColor(category.slug as CategorySlug),
         });
       }
     });

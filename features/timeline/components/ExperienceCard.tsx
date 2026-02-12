@@ -83,7 +83,7 @@ function ExperienceCardComponent({
         <div className="flex items-center justify-between p-4 border-b border-[hsl(174,100%,50%,0.1)]">
           <div
             className={cn(
-              'flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium',
+              'flex items-center gap-2 px-3 py-1.5 rounded-sm text-sm font-medium',
               'bg-opacity-20'
             )}
             style={{ backgroundColor: `${color}20`, color }}
@@ -153,13 +153,13 @@ function ExperienceCardComponent({
               {experience.skills.slice(0, 5).map((skill) => (
                 <span
                   key={skill}
-                  className="px-2 py-0.5 text-xs rounded-full bg-[hsl(174,100%,50%,0.1)] text-[hsl(174,100%,50%)] border border-[hsl(174,100%,50%,0.2)]"
+                  className="px-2 py-0.5 text-xs rounded-sm bg-[hsl(174,100%,50%,0.1)] text-[hsl(174,100%,50%)] border border-[hsl(174,100%,50%,0.2)]"
                 >
                   {skill}
                 </span>
               ))}
               {experience.skills.length > 5 && (
-                <span className="px-2 py-0.5 text-xs rounded-full bg-[hsl(200,30%,8%)] text-muted-foreground">
+                <span className="px-2 py-0.5 text-xs rounded-sm bg-[hsl(200,30%,8%)] text-muted-foreground">
                   +{experience.skills.length - 5}
                 </span>
               )}

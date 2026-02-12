@@ -69,19 +69,19 @@ export function CRTMonitor({
       </div>
 
       {/* Content */}
-      <div ref={containerRef} className="p-3 font-mono text-xs leading-relaxed h-[180px] flex flex-col justify-between">
+      <div ref={containerRef} className="p-3 font-mono text-xs leading-relaxed min-h-[180px] flex flex-col gap-1">
         {children ? (
           children
         ) : (
           <>
             {contentLines.slice(0, visibleLines).map((line, i) => (
-              <div key={i} className={cn("mb-1", colorClasses[line.color])} style={{ animationDelay: `${i * 0.1}s` }}>
+              <div key={i} className={cn(colorClasses[line.color])} style={{ animationDelay: `${i * 0.1}s` }}>
                 <span className="text-muted-foreground">{line.prefix}</span>
                 {line.text}
               </div>
             ))}
             {visibleLines >= contentLines.length && (
-              <div className="mt-3 flex items-center gap-3">
+              <div className="mt-2 flex items-center gap-2">
                 {/* Hex stat badges in CRT */}
                 {[
                   { value: "2,450", label: "XP", color: "hsl(174,100%,50%)" },
@@ -90,7 +90,7 @@ export function CRTMonitor({
                   { value: "24", label: "SKILLS", color: "hsl(150,100%,45%)" },
                 ].map((stat) => (
                   <div key={stat.label} className="flex flex-col items-center">
-                    <svg width="36" height="36" viewBox="0 0 100 100">
+                    <svg width="32" height="32" viewBox="0 0 100 100">
                       <path
                         d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z"
                         fill={`${stat.color}`}
@@ -103,14 +103,14 @@ export function CRTMonitor({
                         y="55"
                         textAnchor="middle"
                         fill={stat.color}
-                        fontSize="22"
+                        fontSize="20"
                         fontFamily="monospace"
                         fontWeight="bold"
                       >
                         {stat.value}
                       </text>
                     </svg>
-                    <span className="text-[8px] mt-0.5 text-muted-foreground uppercase tracking-wider">{stat.label}</span>
+                    <span className="text-[7px] mt-0.5 text-muted-foreground uppercase tracking-wider">{stat.label}</span>
                   </div>
                 ))}
               </div>

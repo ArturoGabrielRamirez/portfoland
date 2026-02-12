@@ -60,6 +60,20 @@ export async function createUserSkillData(
       update: {}, // Don't update if exists
     });
 
+    // Check if user already has this skill
+    const existingUserSkill = await tx.userSkill.findUnique({
+      where: {
+        userId_skillId: {
+          userId,
+          skillId: skill.id,
+        },
+      },
+    });
+
+    if (existingUserSkill) {
+      throw new Error(`You already have "${skillName}" in your skills list. You can edit it from your skills page.`);
+    }
+
     // Build metadata for the manual source
     const metadata: SkillSourceMetadata = {
       selfAssessmentLevel,

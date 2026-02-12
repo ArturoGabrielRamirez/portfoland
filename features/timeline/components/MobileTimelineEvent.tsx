@@ -76,7 +76,7 @@ function MobileTimelineEventComponent({
 
         {/* Dot with icon */}
         <motion.div
-          className="relative flex items-center justify-center w-10 h-10 rounded-full border-2"
+          className="relative flex items-center justify-center w-10 h-10 rounded-sm border-2"
           style={{
             borderColor: color,
             backgroundColor: `${color}20`,
@@ -109,7 +109,7 @@ function MobileTimelineEventComponent({
       >
         {/* Type badge */}
         <div
-          className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium mb-2"
+          className="inline-flex items-center gap-1.5 px-2 py-1 rounded-sm text-xs font-medium mb-2"
           style={{ backgroundColor: `${color}20`, color }}
         >
           <Icon className="w-3 h-3" />

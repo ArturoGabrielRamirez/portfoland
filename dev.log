@@ -1,0 +1,24 @@
+
+> portfolio@0.3.0 dev
+> next dev
+
+▲ Next.js 16.1.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.78:3000
+- Environments: .env.local
+
+✓ Starting...
+✓ Ready in 1738ms
+Checking for default skill categories...
+Found 6 default categories
+ GET /es/dashboard/skills 200 in 5.7s (compile: 3.1s, proxy.ts: 320ms, generate-params: 1177ms, render: 2.3s)
+Checking for default skill categories...
+Found 6 default categories
+ POST /es/dashboard/skills 200 in 1474ms (compile: 32ms, proxy.ts: 7ms, generate-params: 8ms, render: 1435ms)
+Checking for default skill categories...
+Found 6 default categories
+ GET /es/dashboard/skills 200 in 1055ms (compile: 232ms, proxy.ts: 9ms, generate-params: 9ms, render: 814ms)
+Checking for default skill categories...
+Found 6 default categories
+ POST /es/dashboard/skills 200 in 1441ms (compile: 33ms, proxy.ts: 6ms, generate-params: 12ms, render: 1402ms)
+ POST /es/dashboard/skills 200 in 452ms (compile: 21ms, proxy.ts: 6ms, generate-params: 11ms, render: 425ms)

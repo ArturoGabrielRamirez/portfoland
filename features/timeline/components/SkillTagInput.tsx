@@ -88,7 +88,7 @@ function SkillTagInputComponent({
           {value.map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-sm bg-cyan-500/20 text-cyan-400 border border-cyan-500/30"
+              className="inline-flex items-center gap-1 px-2 py-1 rounded-sm text-sm bg-cyan-500/20 text-cyan-400 border border-cyan-500/30"
             >
               {tag}
               <button
@@ -112,7 +112,7 @@ function SkillTagInputComponent({
           onKeyDown={handleKeyDown}
           onBlur={handleBlur}
           placeholder={placeholder}
-          className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-500"
+          className="bg-[#0D1421] border-[#1E293B] text-white placeholder:text-[#64748B]"
         />
       )}
 

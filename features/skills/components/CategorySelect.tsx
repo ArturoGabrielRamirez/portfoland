@@ -84,7 +84,7 @@ function CategorySelectComponent({
         type="button"
         onClick={handleToggle}
         className={cn(
-          'flex items-center justify-between w-full px-4 py-3 rounded-lg border',
+          'flex items-center justify-between w-full px-4 py-3 rounded-sm border',
           'bg-[#0D1421] text-sm transition-all duration-200',
           'hover:border-[#334155]',
           'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0A0E1A] focus:ring-[#00D4FF]',
@@ -123,7 +123,7 @@ function CategorySelectComponent({
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.15 }}
             className={cn(
-              'absolute z-50 w-full mt-2 rounded-lg border border-[#1E293B] bg-[#0D1421]',
+              'absolute z-50 w-full mt-2 rounded-sm border border-[#1E293B] bg-[#0D1421]',
               'shadow-lg shadow-black/20 overflow-hidden'
             )}
             role="listbox"

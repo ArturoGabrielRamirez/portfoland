@@ -180,7 +180,7 @@ function ManualSkillModalComponent({
                   </div>
                   <button
                     onClick={onClose}
-                    className="p-1.5 rounded-lg text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
+                    className="p-1.5 rounded-sm text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
                     aria-label="Close"
                   >
                     <X className="w-4 h-4" />

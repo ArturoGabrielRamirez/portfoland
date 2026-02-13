@@ -42,7 +42,7 @@ interface CategoryGroup {
 
 // Category colors are imported from constants/categories.ts
 
-// Generate positions in a circular/clustered layout
+// Generate positions in a circular/clustered layout (chronologically ordered)
 function generateNodePositions(
   groups: CategoryGroup[],
   width: number,
@@ -53,7 +53,44 @@ function generateNodePositions(
   const centerY = height / 2;
   const radiusBase = Math.min(width, height) * 0.3;
 
+  // Get label position for angle calculation
+  const getLabelPosition = (slug: string, groupIndex: number, height: number, width: number): { x: number; y: number } => {
+    const positions: Record<string, { x: number; y: number }> = {
+      'frontend': { x: 140, y: 50 },
+      'backend': { x: 120, y: height - 50 },
+      'soft-skills': { x: width - 140, y: height / 2 },
+      'devops': { x: width - 120, y: height - 50 },
+      'design': { x: width - 140, y: 50 },
+      'core': { x: width / 2, y: 50 },
+    };
+
+    if (positions[slug]) {
+      return positions[slug];
+    }
+
+    const angle = (Math.PI * 2 * groupIndex) / groups.length;
+    const margin = 80;
+    if (Math.abs(Math.cos(angle)) > Math.abs(Math.sin(angle))) {
+      return {
+        x: Math.cos(angle) > 0 ? width - margin : margin,
+        y: height / 2 + Math.sin(angle) * (height / 3),
+      };
+    } else {
+      return {
+        x: width / 2 + Math.cos(angle) * (width / 3),
+        y: Math.sin(angle) > 0 ? height - margin : margin,
+      };
+    }
+  };
+
   groups.forEach((group, groupIndex) => {
+    // Sort skills by creation date (oldest first)
+    const sortedSkills = [...group.skills].sort((a, b) => {
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return dateA - dateB;
+    });
+
     const angleStep = (Math.PI * 2) / groups.length;
     const groupAngle = angleStep * groupIndex - Math.PI / 2;
     const groupRadius = radiusBase + (groupIndex % 2) * 80;
@@ -62,10 +99,17 @@ function generateNodePositions(
     const groupCenterX = centerX + Math.cos(groupAngle) * groupRadius;
     const groupCenterY = centerY + Math.sin(groupAngle) * groupRadius;
 
-    // Arrange skills in a cluster around group center
-    group.skills.forEach((skill, skillIndex) => {
-      const skillCount = group.skills.length;
-      const skillAngle = (Math.PI * 2 * skillIndex) / Math.max(skillCount, 1);
+    // Get label position to determine starting angle
+    const labelPos = getLabelPosition(group.category.slug, groupIndex, height, width);
+    const labelToGroupAngle = Math.atan2(groupCenterY - labelPos.y, groupCenterX - labelPos.x);
+
+    // Arrange skills in a circle, starting from the direction of the label
+    sortedSkills.forEach((skill, skillIndex) => {
+      const skillCount = sortedSkills.length;
+
+      // Start the circle from the label direction, then go around
+      // This puts the oldest skill (index 0) closest to the label
+      const skillAngle = labelToGroupAngle + (Math.PI * 2 * skillIndex) / Math.max(skillCount, 1);
       const skillRadius = 60 + (skillCount > 3 ? 40 : 0);
 
       const x = groupCenterX + Math.cos(skillAngle) * skillRadius;
@@ -228,7 +272,7 @@ function CRTSkillCanvasComponent({
         <rect width="100%" height="100%" fill="url(#hex-grid)" />
       </svg>
 
-      {/* Canvas content */}
+      {/* Canvas content (zoomable/pannable) */}
       <div
         className="absolute inset-0"
         style={{
@@ -450,32 +494,244 @@ function CRTSkillCanvasComponent({
           </div>
         ))}
 
-        {/* Category labels */}
-        {categoryGroups.map((group, index) => {
-          const angleStep = (Math.PI * 2) / categoryGroups.length;
-          const angle = angleStep * index - Math.PI / 2;
-          const radius = Math.min(dimensions.width, dimensions.height) * 0.3 + (index % 2) * 80;
-          const x = dimensions.width / 2 + Math.cos(angle) * radius;
-          const y = dimensions.height / 2 + Math.sin(angle) * radius;
+      </div>
+
+      {/* Category labels with connectors (fixed to viewport, not affected by zoom/pan) */}
+      <svg
+        className="absolute inset-0 pointer-events-none"
+        width={dimensions.width}
+        height={dimensions.height}
+        style={{ zIndex: 5 }}
+      >
+        {categoryGroups.map((group, groupIndex) => {
+          // Get all nodes for this category
+          const groupNodes = nodes.filter(n => n.category.id === group.category.id);
+          if (groupNodes.length === 0) return null;
+
+          // Strategic label positioning
+          const slug = group.category.slug;
+          let labelX = 0;
+          let labelY = 0;
+
+          const positions: Record<string, { x: number; y: number }> = {
+            'frontend': { x: 140, y: 50 },
+            'backend': { x: 120, y: dimensions.height - 50 },
+            'soft-skills': { x: dimensions.width - 140, y: dimensions.height / 2 },
+            'devops': { x: dimensions.width - 120, y: dimensions.height - 50 },
+            'design': { x: dimensions.width - 140, y: 50 },
+            'core': { x: dimensions.width / 2, y: 50 },
+          };
+
+          if (positions[slug]) {
+            labelX = positions[slug].x;
+            labelY = positions[slug].y;
+          } else {
+            const angle = (Math.PI * 2 * groupIndex) / categoryGroups.length;
+            const margin = 80;
+            if (Math.abs(Math.cos(angle)) > Math.abs(Math.sin(angle))) {
+              labelX = Math.cos(angle) > 0 ? dimensions.width - margin : margin;
+              labelY = dimensions.height / 2 + Math.sin(angle) * (dimensions.height / 3);
+            } else {
+              labelX = dimensions.width / 2 + Math.cos(angle) * (dimensions.width / 3);
+              labelY = Math.sin(angle) > 0 ? dimensions.height - margin : margin;
+            }
+          }
+
+          // Find the closest node to the label position (in canvas coordinates, not screen)
+          let targetNode = groupNodes[0];
+          let minDistance = Infinity;
+          groupNodes.forEach(node => {
+            // Calculate distance in canvas space (before zoom/pan transform)
+            const dist = Math.sqrt(Math.pow(node.x - labelX, 2) + Math.pow(node.y - labelY, 2));
+            if (dist < minDistance) {
+              minDistance = dist;
+              targetNode = node;
+            }
+          });
+
+          // Transform node position to screen coordinates
+          const nodeScreenX = targetNode.x * zoom + pan.x;
+          const nodeScreenY = targetNode.y * zoom + pan.y;
+
+          // Calculate angle from label to node center
+          const angleToNode = Math.atan2(nodeScreenY - labelY, nodeScreenX - labelX);
+
+          // Hexagon dimensions (64x64, but we need to account for zoom)
+          const hexRadius = 32 * zoom; // Half of 64
+
+          // Calculate connection point on hexagon edge
+          // Include both vertices and edge midpoints for better accuracy (12 points total)
+          const hexPoints = [
+            // Vertices
+            { x: hexRadius * 0, y: -hexRadius },           // Top
+            { x: hexRadius * 0.866, y: -hexRadius * 0.5 }, // Top-right
+            { x: hexRadius * 0.866, y: hexRadius * 0.5 },  // Bottom-right
+            { x: hexRadius * 0, y: hexRadius },            // Bottom
+            { x: -hexRadius * 0.866, y: hexRadius * 0.5 }, // Bottom-left
+            { x: -hexRadius * 0.866, y: -hexRadius * 0.5 },// Top-left
+            // Edge midpoints for better connection accuracy
+            { x: hexRadius * 0.433, y: -hexRadius * 0.75 }, // Top to Top-right
+            { x: hexRadius * 0.866, y: 0 },                 // Top-right to Bottom-right
+            { x: hexRadius * 0.433, y: hexRadius * 0.75 },  // Bottom-right to Bottom
+            { x: -hexRadius * 0.433, y: hexRadius * 0.75 }, // Bottom to Bottom-left
+            { x: -hexRadius * 0.866, y: 0 },                // Bottom-left to Top-left
+            { x: -hexRadius * 0.433, y: -hexRadius * 0.75 },// Top-left to Top
+          ];
+
+          // Find the point that's most aligned with the incoming angle
+          // We want the point that faces the label (opposite direction from label to node)
+          let bestPoint = hexPoints[0];
+          let bestDot = -Infinity;
+
+          hexPoints.forEach(point => {
+            // Calculate angle of this point relative to hexagon center
+            const pointAngle = Math.atan2(point.y, point.x);
+            // How well does this point align with the direction FROM label TO node?
+            // We want the point on the side facing the label (opposite side)
+            const dot = Math.cos(angleToNode - pointAngle - Math.PI);
+            if (dot > bestDot) {
+              bestDot = dot;
+              bestPoint = point;
+            }
+          });
+
+          // Final connection point on hexagon edge (external side)
+          const hexConnectX = nodeScreenX + bestPoint.x;
+          const hexConnectY = nodeScreenY + bestPoint.y;
+
+          // Calculate curved path
+          const midX = (labelX + hexConnectX) / 2;
+          const midY = (labelY + hexConnectY) / 2;
+          const dx = hexConnectX - labelX;
+          const dy = hexConnectY - labelY;
+
+          const offsetX = -dy * 0.15;
+          const offsetY = dx * 0.15;
+          const controlX = midX + offsetX;
+          const controlY = midY + offsetY;
+
+          const pathData = `M ${labelX} ${labelY + 15} Q ${controlX} ${controlY} ${hexConnectX} ${hexConnectY}`;
 
           return (
-            <div
-              key={group.category.id}
-              className="absolute pointer-events-none"
-              style={{
-                left: x,
-                top: y - 80,
-                transform: 'translate(-50%, -50%)',
-                color: group.color,
-              }}
-            >
-              <div className="text-xs font-mono uppercase tracking-[0.3em] opacity-70">
-                {group.category.name}
-              </div>
-            </div>
+            <g key={`connector-${group.category.id}`}>
+              {/* Persistent dim background trace */}
+              <path
+                d={pathData}
+                stroke={group.color}
+                strokeWidth="1"
+                fill="none"
+                opacity="0.15"
+              />
+
+              {/* Main colored beam - solid with glow */}
+              <path
+                d={pathData}
+                stroke={group.color}
+                strokeWidth="1.5"
+                fill="none"
+                strokeLinecap="round"
+                filter="url(#glow-soft)"
+                opacity="0.4"
+              >
+                <animate
+                  attributeName="opacity"
+                  values="0.25;0.5;0.25"
+                  dur={`${3 + Math.random() * 2}s`}
+                  repeatCount="indefinite"
+                />
+              </path>
+
+              {/* Animated energy pulse along path */}
+              <path
+                d={pathData}
+                stroke={group.color}
+                strokeWidth="2.5"
+                fill="none"
+                strokeLinecap="round"
+                filter="url(#glow-beam)"
+                strokeDasharray="8,40"
+              >
+                <animate
+                  attributeName="stroke-dashoffset"
+                  from="0"
+                  to="-48"
+                  dur={`${2 + Math.random()}s`}
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="opacity"
+                  values="0.6;0.9;0.6"
+                  dur="2s"
+                  repeatCount="indefinite"
+                />
+              </path>
+
+              {/* Particle flowing along path */}
+              <circle
+                r="2.5"
+                fill={group.color}
+                opacity="0.8"
+                filter="url(#glow-beam)"
+              >
+                <animateMotion
+                  dur={`${3 + Math.random() * 2}s`}
+                  repeatCount="indefinite"
+                  path={pathData}
+                />
+              </circle>
+            </g>
           );
         })}
-      </div>
+      </svg>
+
+      {/* Category labels (fixed to viewport) */}
+      {categoryGroups.map((group, groupIndex) => {
+        const slug = group.category.slug;
+        let x = 0;
+        let y = 0;
+
+        // Same positioning logic as connectors
+        const positions: Record<string, { x: number; y: number }> = {
+          'frontend': { x: 140, y: 50 },
+          'backend': { x: 120, y: dimensions.height - 50 },
+          'soft-skills': { x: dimensions.width - 140, y: dimensions.height / 2 },
+          'devops': { x: dimensions.width - 120, y: dimensions.height - 50 },
+          'design': { x: dimensions.width - 140, y: 50 },
+          'core': { x: dimensions.width / 2, y: 50 },
+        };
+
+        if (positions[slug]) {
+          x = positions[slug].x;
+          y = positions[slug].y;
+        } else {
+          const angle = (Math.PI * 2 * groupIndex) / categoryGroups.length;
+          const margin = 80;
+          if (Math.abs(Math.cos(angle)) > Math.abs(Math.sin(angle))) {
+            x = Math.cos(angle) > 0 ? dimensions.width - margin : margin;
+            y = dimensions.height / 2 + Math.sin(angle) * (dimensions.height / 3);
+          } else {
+            x = dimensions.width / 2 + Math.cos(angle) * (dimensions.width / 3);
+            y = Math.sin(angle) > 0 ? dimensions.height - margin : margin;
+          }
+        }
+
+        return (
+          <div
+            key={group.category.id}
+            className="absolute pointer-events-none z-10"
+            style={{
+              left: x,
+              top: y,
+              transform: 'translate(-50%, -50%)',
+              color: group.color,
+            }}
+          >
+            <div className="text-xs font-mono uppercase tracking-[0.3em] font-bold opacity-90 drop-shadow-[0_0_8px_currentColor] whitespace-nowrap bg-[hsl(200,30%,4%,0.8)] px-2 py-1 rounded-sm border border-current/20">
+              {group.category.name}
+            </div>
+          </div>
+        );
+      })}
 
       {/* Zoom controls */}
       <div className="absolute bottom-4 right-4 flex flex-col gap-2 z-10">

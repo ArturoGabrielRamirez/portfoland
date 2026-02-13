@@ -22,3 +22,57 @@ Checking for default skill categories...
 Found 6 default categories
  POST /es/dashboard/skills 200 in 1441ms (compile: 33ms, proxy.ts: 6ms, generate-params: 12ms, render: 1402ms)
  POST /es/dashboard/skills 200 in 452ms (compile: 21ms, proxy.ts: 6ms, generate-params: 11ms, render: 425ms)
+✓ Compiled in 454ms
+ POST /es/dashboard/skills 200 in 920ms (compile: 386ms, proxy.ts: 6ms, generate-params: 7ms, render: 528ms)
+Checking for default skill categories...
+Found 6 default categories
+ POST /es/dashboard/skills 200 in 1468ms (compile: 23ms, proxy.ts: 5ms, generate-params: 7ms, render: 1440ms)
+ POST /es/dashboard/skills 200 in 477ms (compile: 25ms, proxy.ts: 10ms, generate-params: 12ms, render: 441ms)
+✓ Compiled in 636ms
+✓ Compiled in 199ms
+✓ Compiled in 131ms
+ POST /es/dashboard/skills 200 in 646ms (compile: 197ms, proxy.ts: 6ms, generate-params: 6ms, render: 442ms)
+✓ Compiled in 1708ms
+Checking for default skill categories...
+Found 6 default categories
+ GET /es/dashboard/skills 200 in 1975ms (compile: 256ms, proxy.ts: 13ms, generate-params: 8ms, render: 1706ms)
+✓ Compiled in 1084ms
+✓ Compiled in 220ms
+ POST /es/dashboard/skills 200 in 930ms (compile: 336ms, proxy.ts: 28ms, generate-params: 10ms, render: 567ms)
+Checking for default skill categories...
+Found 6 default categories
+ POST /es/dashboard/skills 200 in 1738ms (compile: 27ms, proxy.ts: 69ms, generate-params: 12ms, render: 1642ms)
+ POST /es/dashboard/skills 200 in 476ms (compile: 17ms, proxy.ts: 50ms, generate-params: 9ms, render: 409ms)
+✓ Compiled in 14.6s
+✓ Compiled in 292ms
+✓ Compiled in 593ms
+✓ Compiled in 412ms
+✓ Compiled in 627ms
+✓ Finished filesystem cache database compaction in 73s
+✓ Finished writing to filesystem cache in 58s
+✓ Compiled in 327ms
+✓ Compiled in 264ms
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+Checking for default skill categories...
+Found 6 default categories
+ GET /es/dashboard/skills 200 in 9.8s (compile: 2.7s, proxy.ts: 1235ms, generate-params: 90ms, render: 5.8s)
+✓ Compiled in 284ms
+✓ Compiled in 4.7s
+✓ Finished filesystem cache database compaction in 10.2s
+Checking for default skill categories...
+Found 6 default categories
+ GET /es/dashboard/skills 200 in 31.3s (compile: 8.7s, proxy.ts: 1486ms, generate-params: 399ms, render: 21.1s)
+Checking for default skill categories...
+Found 6 default categories
+ GET /es/dashboard/skills 200 in 24.8s (compile: 1291ms, proxy.ts: 81ms, generate-params: 45µs, render: 23.4s)
+✓ Finished writing to filesystem cache in 72s
+✓ Finished filesystem cache database compaction in 73s
+✓ Finished writing to filesystem cache in 71s
+✓ Finished filesystem cache database compaction in 21.6s
+✓ Finished writing to filesystem cache in 19.9s
+ POST /es/dashboard/skills 200 in 2.3s (compile: 142ms, proxy.ts: 1161ms, generate-params: 91ms, render: 1033ms)
+ POST /es/dashboard/skills 200 in 932ms (compile: 466ms, proxy.ts: 5ms, generate-params: 6ms, render: 460ms)
+ POST /es/dashboard/skills 200 in 515ms (compile: 64ms, proxy.ts: 12ms, generate-params: 6ms, render: 439ms)
+✓ Finished filesystem cache database compaction in 10.0s
+ POST /es/dashboard/skills 200 in 485ms (compile: 68ms, proxy.ts: 8ms, generate-params: 42ms, render: 409ms)
+ POST /es/dashboard/skills 200 in 446ms (compile: 11ms, proxy.ts: 4ms, generate-params: 5ms, render: 432ms)

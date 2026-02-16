@@ -119,7 +119,7 @@ export default function RegisterPage() {
         <div>
           {/* Logo */}
           <Link href={`/${locale}`} className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-lg bg-[#00D4FF] flex items-center justify-center shadow-[0_0_15px_rgba(0,212,255,0.4)]">
+            <div className="w-10 h-10 rounded-sm bg-[#00D4FF] flex items-center justify-center shadow-[0_0_15px_rgba(0,212,255,0.4)]">
               <span className="font-bold text-[#0A0E1A] text-lg">P</span>
             </div>
             <span className="font-bold text-xl text-white">
@@ -165,7 +165,7 @@ export default function RegisterPage() {
               href={`/${locale}`}
               className="inline-flex items-center gap-2"
             >
-              <div className="w-10 h-10 rounded-lg bg-[#00D4FF] flex items-center justify-center shadow-[0_0_15px_rgba(0,212,255,0.4)]">
+              <div className="w-10 h-10 rounded-sm bg-[#00D4FF] flex items-center justify-center shadow-[0_0_15px_rgba(0,212,255,0.4)]">
                 <span className="font-bold text-[#0A0E1A] text-lg">P</span>
               </div>
               <span className="font-bold text-xl text-white">
@@ -175,17 +175,17 @@ export default function RegisterPage() {
           </div>
 
           {/* Auth Tabs */}
-          <div className="flex rounded-lg border border-[#1E293B] bg-[#0D1421] p-1 mb-8">
+          <div className="flex rounded-sm border border-[#1E293B] bg-[#0D1421] p-1 mb-8">
             <Link
               href={`/${locale}/login`}
               className={cn(
-                'flex-1 py-2.5 px-4 rounded-md text-sm font-medium text-[#94A3B8] hover:text-white transition-colors text-center',
+                'flex-1 py-2.5 px-4 rounded-sm text-sm font-medium text-[#94A3B8] hover:text-white transition-colors text-center',
                 isSubmitting && 'pointer-events-none opacity-50'
               )}
             >
               {t('gaming.tabLogin')}
             </Link>
-            <div className="flex-1 py-2.5 px-4 rounded-md text-sm font-medium bg-[#00D4FF] text-[#0A0E1A] shadow-[0_0_15px_rgba(0,212,255,0.3)] text-center">
+            <div className="flex-1 py-2.5 px-4 rounded-sm text-sm font-medium bg-[#00D4FF] text-[#0A0E1A] shadow-[0_0_15px_rgba(0,212,255,0.3)] text-center">
               {t('gaming.tabRegister')}
             </div>
           </div>

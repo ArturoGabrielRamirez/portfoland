@@ -51,7 +51,7 @@ function ZoomControlsComponent({
   return (
     <motion.div
       className={cn(
-        'flex flex-col items-center gap-1 p-2 rounded-xl',
+        'flex flex-col items-center gap-1 p-2 rounded-sm',
         'bg-[#0D1421]/90 border border-[#1E293B]',
         'backdrop-blur-sm shadow-lg',
         className
@@ -66,7 +66,7 @@ function ZoomControlsComponent({
         onClick={onZoomIn}
         disabled={!canZoomIn}
         className={cn(
-          'p-2 rounded-lg transition-all duration-200',
+          'p-2 rounded-sm transition-all duration-200',
           'focus:outline-none focus:ring-2 focus:ring-[#00D4FF]/50 focus:ring-offset-2 focus:ring-offset-[#0D1421]',
           canZoomIn
             ? 'text-[#94A3B8] hover:text-white hover:bg-[#1E293B]'
@@ -80,7 +80,7 @@ function ZoomControlsComponent({
       {/* Zoom Level Indicator */}
       <div
         className={cn(
-          'px-2 py-1 rounded-lg text-xs font-medium',
+          'px-2 py-1 rounded-sm text-xs font-medium',
           'bg-[#1E293B] text-[#00D4FF] min-w-[48px] text-center'
         )}
       >
@@ -93,7 +93,7 @@ function ZoomControlsComponent({
         onClick={onZoomOut}
         disabled={!canZoomOut}
         className={cn(
-          'p-2 rounded-lg transition-all duration-200',
+          'p-2 rounded-sm transition-all duration-200',
           'focus:outline-none focus:ring-2 focus:ring-[#00D4FF]/50 focus:ring-offset-2 focus:ring-offset-[#0D1421]',
           canZoomOut
             ? 'text-[#94A3B8] hover:text-white hover:bg-[#1E293B]'
@@ -112,7 +112,7 @@ function ZoomControlsComponent({
         type="button"
         onClick={onFitAll}
         className={cn(
-          'p-2 rounded-lg transition-all duration-200',
+          'p-2 rounded-sm transition-all duration-200',
           'text-[#94A3B8] hover:text-white hover:bg-[#1E293B]',
           'focus:outline-none focus:ring-2 focus:ring-[#00D4FF]/50 focus:ring-offset-2 focus:ring-offset-[#0D1421]'
         )}

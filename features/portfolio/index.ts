@@ -20,23 +20,7 @@ export type {
 } from './types/portfolio';
 
 // =============================================================================
-// Data Layer
-// =============================================================================
-
-export {
-  getPortfolioByUsername,
-  getPublicProjectsByUsername,
-  updatePortfolioModeData,
-} from './data';
-
-// =============================================================================
-// Services
-// =============================================================================
-
-export { updatePortfolioModeService } from './services/portfolio.service';
-
-// =============================================================================
-// Actions
+// Actions (safe for client imports)
 // =============================================================================
 
 export { togglePortfolioMode } from './actions/togglePortfolioMode';

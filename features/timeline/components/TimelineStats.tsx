@@ -32,7 +32,7 @@ function StatCard({ icon: Icon, label, value, color, delay = 0 }: StatCardProps)
       transition={{ delay, duration: 0.4 }}
       className={cn(
         'relative flex flex-col items-center justify-center',
-        'p-4 rounded-lg',
+        'p-4 rounded-sm',
         'bg-[#0D1421] border border-[#1E293B]',
         'min-w-[140px]'
       )}
@@ -48,7 +48,7 @@ function StatCard({ icon: Icon, label, value, color, delay = 0 }: StatCardProps)
 
       {/* Icon */}
       <div
-        className="flex items-center justify-center w-10 h-10 rounded-full mb-2"
+        className="flex items-center justify-center w-10 h-10 rounded-sm mb-2"
         style={{ backgroundColor: `${color}20` }}
       >
         <Icon className="w-5 h-5" style={{ color }} />

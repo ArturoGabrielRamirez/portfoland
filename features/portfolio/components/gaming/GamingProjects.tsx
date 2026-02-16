@@ -83,7 +83,7 @@ export function GamingProjects({ data, className }: PortfolioSectionProps) {
       {/* Project Cards */}
       <div className="grid gap-4 md:grid-cols-2">
         {projects.map((project) => {
-          const links = (project.links ?? []) as ProjectLink[];
+          const links = (project.links ?? []) as unknown as ProjectLink[];
 
           return (
             <GamingCard

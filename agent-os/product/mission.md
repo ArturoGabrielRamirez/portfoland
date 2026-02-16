@@ -81,10 +81,10 @@ At the end of the timeline creation process, users receive a generated image fea
 
 ### Core Features
 
-- **Interactive Pixelated Timeline:** Map your career journey on a stylized map of Argentina (expandable to other regions) with selectable characters representing different ethnicities and fun options (wizard, troll, etc.)
+- **Interactive Timeline Map:** Map your career journey on Google Maps with hexagonal gaming nodes, zoom interactions, and experience cards
 - **Video Game Skill Tree:** Visualize skill progression in an engaging, gamified format that adapts to your career field
 - **Personal Portfolio Generator:** Create professional portfolios hosted on personalized subdomains (username.portfoland.com)
-- **AI CV Generator:** Generate professional, tailored CVs with AI assistance using Vercel AI SDK
+- **AI CV Generator:** Generate professional, tailored CVs with AI assistance using Vercel AI SDK (Phase 4)
 
 ### Collaboration Features
 
@@ -97,3 +97,23 @@ At the end of the timeline creation process, users receive a generated image fea
 - **Multi-language Support:** Full English and Spanish localization with next-intl
 - **Achievement Image Generator:** Create shareable images featuring your character and accomplishments
 - **Field-Dynamic Content:** Automatically adapt skill trees and prompts based on career field (tech, law, design, etc.)
+
+## Two-Mode Strategy
+
+Portfoland operates with two distinct visual presentation modes that share the same underlying data:
+
+### Gaming Mode (Default)
+- Cyberpunk aesthetic with neon colors (cyan, magenta, purple)
+- HUD-style panels, XP bars, level badges, gaming cards
+- Gamified naming (Freelance → "Freelancero", Developer → "Code Wizard")
+- Interactive hexagonal timeline with Google Maps integration
+- Video game-style skill trees with progression mechanics
+
+### Professional Mode
+- Clean, corporate aesthetic optimized for ATS (Applicant Tracking Systems)
+- Traditional layout with professional typography
+- Standard CV/portfolio formatting that recruiters expect
+- SEO-optimized for job search visibility
+
+### Why Two Modes?
+Users build their career story once in the engaging gaming mode, then toggle to professional mode when they need to share with recruiters or apply for jobs. This dual approach drives engagement (gaming) while maintaining practical utility (professional).

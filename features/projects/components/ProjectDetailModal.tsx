@@ -64,7 +64,7 @@ function ProfessionalModal({
   onClose,
   t,
 }: ProjectDetailProps & { t: (key: string) => string }) {
-  const links = (project.links ?? []) as ProjectLink[];
+  const links = (project.links ?? []) as unknown as ProjectLink[];
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -181,7 +181,7 @@ function GamingModal({
   onClose,
   t,
 }: ProjectDetailProps & { t: (key: string) => string }) {
-  const links = (project.links ?? []) as ProjectLink[];
+  const links = (project.links ?? []) as unknown as ProjectLink[];
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Close on Escape key
@@ -240,7 +240,7 @@ function GamingModal({
               <button
                 onClick={onClose}
                 data-testid="modal-close-button"
-                className="absolute right-4 top-4 z-10 rounded-lg border border-[#1E293B] bg-[#0D1421] p-1.5 text-[#94A3B8] transition-colors hover:border-[#00D4FF] hover:text-[#00D4FF]"
+                className="absolute right-4 top-4 z-10 rounded-sm border border-[#1E293B] bg-[#0D1421] p-1.5 text-[#94A3B8] transition-colors hover:border-[#00D4FF] hover:text-[#00D4FF]"
                 aria-label={t('ui.closeModal')}
               >
                 <X className="h-4 w-4" />

@@ -72,7 +72,7 @@ const panelVariants = {
 
 const panelTransition = {
   duration: 0.2,
-  ease: 'easeInOut',
+  ease: 'easeInOut' as const,
 };
 
 const sectionEntranceVariants = {
@@ -82,7 +82,7 @@ const sectionEntranceVariants = {
 
 const sectionEntranceTransition = {
   duration: 0.3,
-  ease: 'easeOut',
+  ease: 'easeOut' as const,
 };
 
 // =============================================================================

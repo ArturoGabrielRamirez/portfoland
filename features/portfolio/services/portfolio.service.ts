@@ -7,6 +7,7 @@
 
 import { PORTFOLIO_MODES, PORTFOLIO_MESSAGES } from '../constants/messages';
 import { updatePortfolioModeData } from '../data/updatePortfolioMode.data';
+import { updateUserProfileData } from '../data/updateProfile.data';
 
 const VALID_MODES = [PORTFOLIO_MODES.PROFESSIONAL, PORTFOLIO_MODES.GAMING];
 
@@ -29,4 +30,24 @@ export async function updatePortfolioModeService(
   }
 
   return await updatePortfolioModeData(userId, mode);
+}
+
+/**
+ * Update a user's profile information
+ *
+ * Validates and delegates to the data layer.
+ *
+ * @param userId - The user's ID
+ * @param data - Profile data to update (name, bio, image)
+ * @returns Updated user record
+ */
+export async function updateProfileService(
+  userId: string,
+  data: {
+    name: string;
+    bio?: string | null;
+    image?: string | null;
+  }
+) {
+  return await updateUserProfileData(userId, data);
 }

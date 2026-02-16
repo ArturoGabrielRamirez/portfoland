@@ -62,7 +62,7 @@ function LinksFieldArrayComponent({ className, t }: LinksFieldArrayProps) {
                 <FormControl>
                   <select
                     {...selectField}
-                    className="w-full h-9 px-2 rounded-md border border-slate-700 bg-slate-900 text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                    className="w-full h-9 px-2 rounded-sm border border-[#1E293B] bg-[#0D1421] text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#00D4FF]"
                     data-testid={`link-type-${index}`}
                   >
                     {PROJECT_LINK_TYPES.map((type) => (

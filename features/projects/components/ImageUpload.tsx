@@ -99,7 +99,7 @@ function ImageUploadComponent({ value, onChange, className }: ImageUploadProps) 
   if (value) {
     return (
       <div className={cn('space-y-2', className)}>
-        <div className="relative w-full h-48 rounded-lg overflow-hidden border border-slate-700 bg-slate-900">
+        <div className="relative w-full h-48 rounded-sm overflow-hidden border border-[#1E293B] bg-[#0D1421]">
           <Image
             src={value}
             alt="Project cover image"
@@ -113,7 +113,7 @@ function ImageUploadComponent({ value, onChange, className }: ImageUploadProps) 
             size="sm"
             onClick={handleRemove}
             disabled={loading}
-            className="absolute top-2 right-2 bg-slate-900/80 hover:bg-red-500/80 text-white rounded-full h-8 w-8 p-0"
+            className="absolute top-2 right-2 bg-[#0D1421]/80 hover:bg-red-500/80 text-white rounded-sm h-8 w-8 p-0"
             data-testid="remove-image-button"
           >
             {isRemoving ? (
@@ -137,10 +137,10 @@ function ImageUploadComponent({ value, onChange, className }: ImageUploadProps) 
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
         className={cn(
-          'flex flex-col items-center justify-center w-full h-48 rounded-lg border-2 border-dashed transition-all cursor-pointer',
+          'flex flex-col items-center justify-center w-full h-48 rounded-sm border-2 border-dashed transition-all cursor-pointer',
           isDragging
-            ? 'border-cyan-500 bg-cyan-500/10'
-            : 'border-slate-700 bg-slate-900/50 hover:border-slate-600',
+            ? 'border-[#00D4FF] bg-[#00D4FF]/10'
+            : 'border-[#1E293B] bg-[#0D1421]/50 hover:border-[#334155]',
           loading && 'pointer-events-none opacity-60'
         )}
       >

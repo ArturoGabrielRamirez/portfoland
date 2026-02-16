@@ -136,7 +136,7 @@ function ManualSkillFormComponent({
                     <label
                       key={option.value}
                       className={cn(
-                        'flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all',
+                        'flex items-center gap-3 p-3 rounded-sm border cursor-pointer transition-all',
                         'hover:bg-[#1E293B]',
                         field.value === option.value
                           ? 'border-[#00D4FF] bg-[#00D4FF]/10'
@@ -219,7 +219,7 @@ function ManualSkillFormComponent({
                   rows={3}
                   disabled={isLoading}
                   className={cn(
-                    'flex w-full rounded-lg border bg-[#0D1421] px-4 py-3 text-sm text-white placeholder:text-[#64748B]',
+                    'flex w-full rounded-sm border bg-[#0D1421] px-4 py-3 text-sm text-white placeholder:text-[#64748B]',
                     'transition-all duration-200 resize-none',
                     'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0A0E1A]',
                     'disabled:cursor-not-allowed disabled:opacity-50',

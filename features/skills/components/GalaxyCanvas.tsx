@@ -381,11 +381,11 @@ function GalaxyCanvasComponent({
 
       {/* Stats overlay */}
       <div className="absolute top-4 left-4 flex items-center gap-3">
-        <div className="px-3 py-1.5 rounded-lg bg-[#0D1421]/90 border border-[#1E293B] backdrop-blur-sm">
+        <div className="px-3 py-1.5 rounded-sm bg-[#0D1421]/90 border border-[#1E293B] backdrop-blur-sm">
           <span className="text-sm text-[#64748B]">Skills: </span>
           <span className="text-sm font-medium text-white">{userSkills.length}</span>
         </div>
-        <div className="px-3 py-1.5 rounded-lg bg-[#0D1421]/90 border border-[#1E293B] backdrop-blur-sm">
+        <div className="px-3 py-1.5 rounded-sm bg-[#0D1421]/90 border border-[#1E293B] backdrop-blur-sm">
           <span className="text-sm text-[#64748B]">Total XP: </span>
           <span className="text-sm font-medium text-[#EAB308]">
             {userSkills.reduce((sum, s) => sum + (s.totalXP ?? 0), 0).toLocaleString()}
@@ -396,7 +396,7 @@ function GalaxyCanvasComponent({
             type="button"
             onClick={() => onAddSkill()}
             className={cn(
-              'px-3 py-1.5 rounded-lg font-medium text-sm',
+              'px-3 py-1.5 rounded-sm font-medium text-sm',
               'bg-[#00D4FF] text-[#0A0E1A]',
               'hover:bg-[#00D4FF]/90',
               'shadow-[0_0_10px_rgba(0,212,255,0.2)]',
@@ -416,7 +416,7 @@ function GalaxyCanvasComponent({
       {userSkills.length === 0 && (
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.div
-            className="text-center p-8 rounded-xl bg-[#0D1421]/90 border border-[#1E293B] backdrop-blur-sm"
+            className="text-center p-8 rounded-sm bg-[#0D1421]/90 border border-[#1E293B] backdrop-blur-sm"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
           >
@@ -431,7 +431,7 @@ function GalaxyCanvasComponent({
               type="button"
               onClick={() => onAddSkill?.()}
               className={cn(
-                'px-4 py-2 rounded-lg font-medium',
+                'px-4 py-2 rounded-sm font-medium',
                 'bg-[#00D4FF] text-[#0A0E1A]',
                 'hover:bg-[#00D4FF]/90',
                 'shadow-[0_0_15px_rgba(0,212,255,0.3)]',

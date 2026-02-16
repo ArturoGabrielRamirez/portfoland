@@ -67,40 +67,81 @@ export function ToastBorderEffect({ className }: ToastBorderEffectProps) {
         }}
       />
 
-      {/* Corner hexagons */}
-      {['top-left', 'top-right', 'bottom-left', 'bottom-right'].map((corner) => {
-        const positions = {
-          'top-left': 'top-4 left-4',
-          'top-right': 'top-4 right-4',
-          'bottom-left': 'bottom-4 left-4',
-          'bottom-right': 'bottom-4 right-4',
-        };
+      {/* Status indicator - Hexagon with ring (top-right) */}
+      <div className="absolute top-6 right-6">
+        <svg
+          width="48"
+          height="48"
+          viewBox="0 0 100 100"
+          className="transform-gpu"
+        >
+          {/* Outer hexagonal ring */}
+          <path
+            d="M50 5 L90 27.5 L90 72.5 L50 95 L10 72.5 L10 27.5 Z"
+            fill="none"
+            stroke={isAnimating ? color : 'hsl(174,100%,50%)'}
+            strokeWidth="2"
+            opacity={isAnimating ? 0.8 : 0.2}
+            className={cn(
+              'transition-all duration-300',
+              isAnimating && 'animate-pulse-ring'
+            )}
+            style={{
+              filter: isAnimating ? `drop-shadow(0 0 12px ${color})` : 'none',
+            }}
+          />
 
-        return (
-          <div
-            key={corner}
-            className={cn('absolute', positions[corner as keyof typeof positions])}
-          >
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 100 100"
-              className={cn(isAnimating && 'animate-hex-ping')}
-            >
-              <path
-                d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z"
-                fill="none"
+          {/* Inner hexagon (always visible, dim when idle) */}
+          <path
+            d="M50 15 L80 32.5 L80 67.5 L50 85 L20 67.5 L20 32.5 Z"
+            fill={isAnimating ? `${color}20` : 'hsl(174,100%,50%,0.05)'}
+            stroke={isAnimating ? color : 'hsl(174,100%,50%)'}
+            strokeWidth="1.5"
+            opacity={isAnimating ? 0.6 : 0.15}
+            className="transition-all duration-300"
+          />
+
+          {/* Central dot indicator */}
+          <circle
+            cx="50"
+            cy="50"
+            r="6"
+            fill={isAnimating ? color : 'hsl(174,100%,50%)'}
+            opacity={isAnimating ? 1 : 0.3}
+            className={cn(
+              'transition-all duration-200',
+              isAnimating && 'animate-pulse-dot'
+            )}
+            style={{
+              filter: isAnimating ? `drop-shadow(0 0 8px ${color})` : 'none',
+            }}
+          />
+
+          {/* Rotating segments for loading state */}
+          {isAnimating && (
+            <>
+              <line
+                x1="50" y1="10"
+                x2="50" y2="20"
                 stroke={color}
-                strokeWidth="3"
-                opacity={isAnimating ? 0.8 : 0}
-                style={{
-                  filter: `drop-shadow(0 0 8px ${color})`,
-                }}
+                strokeWidth="2"
+                opacity="0.6"
+                className="animate-spin origin-center"
+                style={{ transformOrigin: '50px 50px' }}
               />
-            </svg>
-          </div>
-        );
-      })}
+              <line
+                x1="85" y1="30"
+                x2="75" y2="35"
+                stroke={color}
+                strokeWidth="2"
+                opacity="0.4"
+                className="animate-spin-slow origin-center"
+                style={{ transformOrigin: '50px 50px' }}
+              />
+            </>
+          )}
+        </svg>
+      </div>
 
       {/* Scanline flash effect */}
       {isAnimating && (

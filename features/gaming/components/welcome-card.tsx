@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import type { WelcomeCardProps } from "../types/dashboard"
-import { Briefcase, Clock, GitBranch, Target } from "lucide-react"
+import { Briefcase, Clock, GitBranch, Target, User } from "lucide-react"
 
 // Icon mapping
 const iconMap: Record<string, any> = {
@@ -13,6 +13,7 @@ const iconMap: Record<string, any> = {
   Clock,
   GitBranch,
   Target,
+  User,
 }
 
 const defaultQuickActions = [
@@ -34,8 +35,12 @@ export function WelcomeCard({
   className,
 }: WelcomeCardProps) {
   const [mounted, setMounted] = useState(false)
+  const [imageError, setImageError] = useState(false)
   const percentage = Math.round((currentXP / maxXP) * 100)
   const xpToNextLevel = maxXP - currentXP
+
+  // Validate image URL
+  const isValidImage = userImage && userImage.trim() !== '' && !imageError
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 300)
@@ -54,13 +59,14 @@ export function WelcomeCard({
             {/* Avatar hex */}
             <div className="relative">
               <div className="w-14 h-14 clip-hexagon bg-[hsl(174,100%,50%,0.2)] overflow-hidden flex items-center justify-center">
-                {userImage ? (
+                {isValidImage ? (
                   <Image
                     src={userImage}
                     alt={userName}
                     width={56}
                     height={56}
                     className="w-full h-full object-cover"
+                    onError={() => setImageError(true)}
                   />
                 ) : (
                   <span className="text-xl font-mono font-bold text-[hsl(174,100%,50%)]">

@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from "react"
 import {
   CircleCheckIcon,
   InfoIcon,
@@ -8,10 +9,54 @@ import {
   TriangleAlertIcon,
 } from "lucide-react"
 import { useTheme } from "next-themes"
-import { Toaster as Sonner, type ToasterProps } from "sonner"
+import { Toaster as Sonner, type ToasterProps, toast as sonnerToast } from "sonner"
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme()
+
+  // Auto-trigger visual effects for all toasts
+  useEffect(() => {
+    const originalError = sonnerToast.error
+    const originalSuccess = sonnerToast.success
+    const originalWarning = sonnerToast.warning
+    const originalInfo = sonnerToast.info
+
+    // Wrap toast methods to auto-trigger effects
+    sonnerToast.error = (...args: Parameters<typeof originalError>) => {
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('toast-show', { detail: { type: 'error' } }))
+      }
+      return originalError(...args)
+    }
+
+    sonnerToast.success = (...args: Parameters<typeof originalSuccess>) => {
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('toast-show', { detail: { type: 'success' } }))
+      }
+      return originalSuccess(...args)
+    }
+
+    sonnerToast.warning = (...args: Parameters<typeof originalWarning>) => {
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('toast-show', { detail: { type: 'warning' } }))
+      }
+      return originalWarning(...args)
+    }
+
+    sonnerToast.info = (...args: Parameters<typeof originalInfo>) => {
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('toast-show', { detail: { type: 'info' } }))
+      }
+      return originalInfo(...args)
+    }
+
+    return () => {
+      sonnerToast.error = originalError
+      sonnerToast.success = originalSuccess
+      sonnerToast.warning = originalWarning
+      sonnerToast.info = originalInfo
+    }
+  }, [])
 
   return (
     <Sonner
@@ -33,10 +78,10 @@ const Toaster = ({ ...props }: ToasterProps) => {
           actionButton: "group-[.toast]:bg-[hsl(174,100%,50%)] group-[.toast]:text-[#0A0E1A] group-[.toast]:rounded-sm group-[.toast]:font-mono group-[.toast]:font-bold group-[.toast]:uppercase group-[.toast]:text-xs",
           cancelButton: "group-[.toast]:bg-[#1E293B] group-[.toast]:text-white group-[.toast]:rounded-sm group-[.toast]:font-mono group-[.toast]:uppercase group-[.toast]:text-xs",
           closeButton: "group-[.toast]:bg-[#1E293B] group-[.toast]:text-white group-[.toast]:border-[#1E293B] group-[.toast]:hover:bg-[#334155] group-[.toast]:rounded-sm",
-          error: "group-[.toaster]:border-[hsl(0,100%,50%,0.5)] group-[.toaster]:bg-[hsl(0,30%,6%)]",
-          success: "group-[.toaster]:border-[hsl(150,100%,45%,0.5)] group-[.toaster]:bg-[hsl(150,30%,6%)]",
-          warning: "group-[.toaster]:border-[hsl(60,100%,50%,0.5)] group-[.toaster]:bg-[hsl(60,30%,6%)]",
-          info: "group-[.toaster]:border-[hsl(174,100%,50%,0.5)] group-[.toaster]:bg-[hsl(174,30%,6%)]",
+          error: "group-[.toaster]:border-[hsl(0,100%,50%,0.5)] group-[.toaster]:bg-[hsl(0,30%,6%)] group-[.toaster]:shadow-[0_0_20px_rgba(255,68,68,0.3),0_0_40px_rgba(255,68,68,0.15)]",
+          success: "group-[.toaster]:border-[hsl(150,100%,45%,0.5)] group-[.toaster]:bg-[hsl(150,30%,6%)] group-[.toaster]:shadow-[0_0_20px_rgba(34,197,94,0.3),0_0_40px_rgba(34,197,94,0.15)]",
+          warning: "group-[.toaster]:border-[hsl(60,100%,50%,0.5)] group-[.toaster]:bg-[hsl(60,30%,6%)] group-[.toaster]:shadow-[0_0_20px_rgba(234,179,8,0.3),0_0_40px_rgba(234,179,8,0.15)]",
+          info: "group-[.toaster]:border-[hsl(174,100%,50%,0.5)] group-[.toaster]:bg-[hsl(174,30%,6%)] group-[.toaster]:shadow-[0_0_20px_rgba(0,212,255,0.3),0_0_40px_rgba(0,212,255,0.15)]",
         },
       }}
       style={

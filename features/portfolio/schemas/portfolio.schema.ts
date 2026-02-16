@@ -23,3 +23,27 @@ export const updatePortfolioModeSchema = yup.object({
  * Inferred type from the schema
  */
 export type UpdatePortfolioModeInput = yup.InferType<typeof updatePortfolioModeSchema>;
+
+/**
+ * Schema for updating user profile
+ */
+export const updateProfileSchema = yup.object({
+  name: yup
+    .string()
+    .required('Name is required')
+    .min(2, 'Name must be at least 2 characters')
+    .max(50, 'Name must be less than 50 characters'),
+  bio: yup
+    .string()
+    .nullable()
+    .max(500, 'Bio must be less than 500 characters'),
+  image: yup
+    .string()
+    .nullable()
+    .url('Image must be a valid URL'),
+});
+
+/**
+ * Inferred type from the profile schema
+ */
+export type UpdateProfileInput = yup.InferType<typeof updateProfileSchema>;

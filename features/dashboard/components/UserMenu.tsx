@@ -87,6 +87,9 @@ export function UserMenu({ user, locale }: UserMenuProps) {
 
   const initials = getInitials(user.name)
 
+  // Validate image URL (not empty string or invalid)
+  const validImageUrl = user.image?.trim() && user.image.trim() !== '' ? user.image.trim() : null
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -96,9 +99,9 @@ export function UserMenu({ user, locale }: UserMenuProps) {
           aria-label={t('profile')}
         >
           <Avatar className="h-9 w-9 clip-hexagon rounded-none overflow-hidden">
-            {user.image && (
+            {validImageUrl && (
               <AvatarImage
-                src={user.image}
+                src={validImageUrl}
                 alt={user.name ?? 'User avatar'}
                 className="object-cover"
               />

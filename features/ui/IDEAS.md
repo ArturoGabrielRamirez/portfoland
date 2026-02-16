@@ -1,11 +1,77 @@
-# Toast Border Effects - Future Ideas
+# Toast Border Effects - Ideas & Evolution
 
 ## Current Implementation (v1)
 - ✅ Pulsing border around viewport
-- ✅ Hexagonal corner indicators
+- ✅ Hexagonal corner indicators (4 corners)
 - ✅ Scanline flash effect
 - ✅ Color-coded by toast type
 - ✅ Custom hook `useCyberpunkToast()`
+
+## Current Implementation (v2) - ACTIVE
+- ✅ Pulsing border around viewport
+- ✅ Single status indicator (top-right corner)
+- ✅ Three states: idle (dim) → loading (blinking) → active (colored)
+- ✅ Hexagon with ring design
+- ✅ Color-coded by toast type
+
+## Status Indicator Design Options
+
+### Option 1: Hexagon with Ring (IMPLEMENTED)
+```
+   ╱───╲
+  ╱  ●  ╲  ← Central dot that blinks during loading
+  ╲     ╱  ← Hexagonal ring that lights up on completion
+   ╲───╱
+```
+- Most consistent with app's hexagonal theme
+- Simple and non-invasive
+- Ring can rotate/pulse for loading state
+- Central dot can blink/pulse
+
+### Option 2: Tech Circle with Segments
+```
+   ╱─────╲
+  │ ● ─── │  ← Segments that fill progressively
+   ╲─────╱
+```
+- Progress indication through segment filling
+- More tech/industrial feel
+- Could show loading percentage
+
+### Option 3: Mini CRT Screen Indicator
+```
+┌─────┐
+│░▓▓░░│ ← Mini screen with scanlines
+└─────┘
+```
+- Matches CRT toast aesthetic
+- Could show mini status text
+- More detailed but potentially distracting
+
+### Option 4: Corner Hexagon Cluster (Original v1)
+- 4 hexagons in all corners
+- Synced animations
+- More visual presence
+- Rejected: too invasive
+
+## Section-Specific Effects (Future)
+
+### Component Wrapper Approach
+```tsx
+<CyberpunkSection onError onSuccess>
+  <LoginForm />
+</CyberpunkSection>
+```
+- Wraps individual components/sections
+- Local effects instead of global
+- Better error localization
+- Each section can have its own indicator
+
+### Auto-Detection
+- Detect error boundaries
+- Trigger effects on caught errors
+- Form validation integration
+- Server action response handling
 
 ## Future Enhancements
 

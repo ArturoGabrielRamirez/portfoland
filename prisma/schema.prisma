@@ -25,6 +25,7 @@ model User {
   email         String   @unique
   name          String
   image         String?
+  oauthImage    String?
   username      String?  @unique
   locale        String   @default("en")
   emailVerified Boolean  @default(false)

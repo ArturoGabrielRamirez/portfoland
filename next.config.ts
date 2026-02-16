@@ -25,13 +25,33 @@ const nextConfig: NextConfig = {
   /* config options here */
   images: {
     remotePatterns: [
+      // Google OAuth images
       {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
       },
+      /*     {
+            protocol: 'https',
+            hostname: 'lh3.ggusercontent.com',
+          }, */
+      // GitHub OAuth images
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
+      },
+      // Vercel Blob storage
       {
         protocol: 'https',
         hostname: '*.public.blob.vercel-storage.com',
+      },
+      // Generic CDNs (for manual URL input)
+      {
+        protocol: 'https',
+        hostname: 'cdn.discordapp.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.imgur.com',
       },
     ],
   }

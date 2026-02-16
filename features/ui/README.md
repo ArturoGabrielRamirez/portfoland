@@ -1,21 +1,101 @@
-# UI Features - Cyberpunk Toast Border Effects
+# UI Features - Cyberpunk Visual Effects
 
-Sistema de efectos visuales cyberpunk para notificaciones toast.
+Sistema de efectos visuales cyberpunk para notificaciones y formularios.
 
 ## Características
 
-- 🔲 **Borde pulsante** - El viewport se ilumina con el color del tipo de toast
-- 🔶 **Hexágonos en esquinas** - Indicadores hexagonales animados en las 4 esquinas
-- 📡 **Scanline flash** - Efecto de líneas escaneadas que atraviesa la pantalla
+### Toast Effects
+- 🔲 **Borde pulsante global** - El viewport se ilumina sutilmente
 - 🎨 **Color-coded** - Colores automáticos según tipo de notificación
   - Error: Rojo (`hsl(0,100%,50%)`)
   - Success: Verde (`hsl(150,100%,45%)`)
   - Warning: Amarillo (`hsl(60,100%,50%)`)
   - Info: Cyan (`hsl(174,100%,50%)`)
 
+### Form Indicators
+- 🔶 **Indicador hexagonal integrado** - LED cyberpunk en formularios/componentes
+- 📍 **Posición configurable** - top-right, top-left, bottom-right, bottom-left
+- 🔄 **Estados visuales**: idle, loading, error, success
+- ⚡ **Auto-reset** - Vuelve a idle automáticamente después de mostrar estado
+
 ## Uso Básico
 
-### Opción 1: Hook personalizado (Recomendado)
+### FormWithIndicator - Indicadores en Formularios
+
+#### Ejemplo básico con hook
+
+```tsx
+'use client';
+
+import { FormWithIndicator, useFormIndicator } from '@/features/ui';
+import { toast } from 'sonner';
+
+export function LoginForm() {
+  const indicator = useFormIndicator('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Mostrar loading
+    indicator.setLoading();
+
+    try {
+      const result = await loginAction(formData);
+
+      // Mostrar success (auto-reset después de 3s)
+      indicator.setTemporary('success');
+      toast.success('Login successful!');
+    } catch (error) {
+      // Mostrar error (auto-reset después de 3s)
+      indicator.setTemporary('error');
+      toast.error('Login failed');
+    }
+  };
+
+  return (
+    <FormWithIndicator status={indicator.status}>
+      <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-card rounded-sm">
+        <h2>Login</h2>
+        <input type="email" />
+        <input type="password" />
+        <button type="submit">Submit</button>
+      </form>
+    </FormWithIndicator>
+  );
+}
+```
+
+#### Ejemplo con posición personalizada
+
+```tsx
+<FormWithIndicator
+  status={indicator.status}
+  indicatorPosition="bottom-right"  // Para sidebar forms
+>
+  <form>...</form>
+</FormWithIndicator>
+```
+
+#### Ejemplo sin hook (control manual)
+
+```tsx
+'use client';
+
+import { FormWithIndicator } from '@/features/ui';
+import { useState } from 'react';
+
+export function MyForm() {
+  const [status, setStatus] = useState<'idle' | 'loading' | 'error' | 'success'>('idle');
+
+  return (
+    <FormWithIndicator status={status}>
+      <form>...</form>
+    </FormWithIndicator>
+  );
+}
+```
+
+### Toast Effects - Opción 1: Hook personalizado (Recomendado)
 
 ```tsx
 'use client';

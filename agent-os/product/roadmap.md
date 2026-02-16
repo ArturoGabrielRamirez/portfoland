@@ -37,7 +37,7 @@
 15. [x] Portfolio Template System — Templates con modos Professional y Gaming `L`
 16. [x] Subdomain Routing — username.portfoland.com con proxy.ts rewrite `M`
 17. [x] Project Showcase — Cards de proyectos con imagenes, tech stack, links `M`
-18. [ ] Portfolio SEO & Meta Tags — Open Graph, structured data dinamico `S`
+18. [x] Portfolio SEO & Meta Tags — Open Graph, structured data dinamico `S`
 19. [ ] Portfolio Dashboard — Pagina unificada para gestionar portfolio: About/Bio, Contact info, modo visual, orden de secciones `M`
 
 ---

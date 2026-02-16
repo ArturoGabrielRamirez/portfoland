@@ -48,7 +48,7 @@ const PUBLIC_PATHS = ['/', '/login', '/register'] as const
  * API paths that should bypass authentication checks.
  * Better Auth handles its own authentication for these routes.
  */
-const PUBLIC_API_PREFIXES = ['/api/auth'] as const
+const PUBLIC_API_PREFIXES = ['/api'] as const
 
 /**
  * Paths that are valid on subdomain-routed portfolios.

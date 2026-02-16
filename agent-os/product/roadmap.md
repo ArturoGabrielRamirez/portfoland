@@ -1,10 +1,11 @@
 # Product Roadmap
 
 > **Design Reference:** Ver `agent-os/product/design-ideas.md` para conceptos visuales detallados.
+> **AI Features:** Ver `agent-os/product/ai-features-ideas.md` para ideas de IA priorizadas.
 
 ---
 
-## Phase 1: Foundation (v0.1.0) COMPLETED
+## Phase 1: Foundation (v0.1.0) ✅ COMPLETED
 
 1. [x] Database Schema & Prisma Setup — MongoDB Atlas + Prisma 6.19, modelos User/Session/Account
 2. [x] Authentication System — Better Auth con Google OAuth y email/password
@@ -14,17 +15,9 @@
 6. [x] Landing Page — Hero section gaming, dos modos (Professional/Gaming), features preview
 7. [x] Protected Routes — proxy.ts con redirecciones auth/unauth
 
-**Tech Stack implementado:**
-- Next.js 16.1.1 + App Router
-- Better Auth (NO NextAuth.js)
-- MongoDB + Prisma 6.19
-- Tailwind CSS 4 + shadcn/ui
-- next-intl (EN/ES)
-- Vitest + Testing Library
-
 ---
 
-## Phase 2: Interactive Timeline (v0.2.0) COMPLETED
+## Phase 2: Interactive Timeline (v0.2.0) ✅ COMPLETED
 
 > **Concepto aprobado:** Google Maps + Hexagons Gaming
 > Ver detalles en `agent-os/product/design-ideas.md`
@@ -38,7 +31,7 @@
 
 ---
 
-## Phase 3: Skill Tree & Portfolio (v0.3.0) IN PROGRESS
+## Phase 3: Skill Tree & Portfolio (v0.3.0) ⏳ IN PROGRESS
 
 14. [x] Skill Tree Visualization — Arbol de habilidades estilo videojuego con progresion y dependencias `L`
 15. [x] Portfolio Template System — Templates con modos Professional y Gaming `L`
@@ -51,30 +44,35 @@
 
 ## Phase 4: AI Assistant (v0.4.0)
 
+> **Referencia:** Ver `agent-os/product/ai-features-ideas.md` para la lista completa de ideas priorizadas.
+
 20. [ ] Vercel AI SDK Integration — Streaming responses, conversation state `M`
 21. [ ] Guided CV Interview — AI conversacional para recopilar info de CV `L`
 22. [ ] AI Content Suggestions — Sugerencias para mejorar descripciones `M`
 23. [ ] CV Document Generator — Export PDF con templates profesionales `M`
+24. [ ] AI Skill Explorer — Consultas al árbol de skills: "¿Qué me falta para Senior?" `M`
+25. [ ] Career Timeline Narrator — IA que narra la historia profesional para recruiters `S`
 
 ---
 
 ## Phase 5: Styles & Polish (v0.5.0+)
 
-24. [ ] Pixelated Style Mode — Tercer modo visual con estetica pixel art (evaluar complejidad) `L`
-25. [ ] Geographic Map Expansion — Mapa de Argentina/mundo con regiones clickeables `L`
-26. [ ] Character Customization — Avatares personalizables con pixel art `M`
-27. [ ] Achievement System — Badges y logros desbloqueables `M`
-28. [ ] Social Share Cards — Imagenes dinamicas para compartir `M`
+26. [ ] Pixelated Style Mode — Tercer modo visual con estetica pixel art (evaluar complejidad) `L`
+27. [ ] Geographic Map Expansion — Mapa de Argentina/mundo con regiones clickeables `L`
+28. [ ] Character Customization — Avatares personalizables con pixel art `M`
+29. [ ] Achievement System — Badges y logros desbloqueables `M`
+30. [ ] Social Share Cards — Imagenes dinamicas para compartir `M`
 
 ---
 
 ## Phase 6: Scale & Launch (v1.0.0)
 
-29. [ ] Performance Optimization — Bundle size, lazy loading, caching `M`
-30. [ ] Mobile Refinement — Timeline y skill tree responsive `M`
-31. [ ] Onboarding Flow — Guia para nuevos usuarios `S`
-32. [ ] Accessibility Audit — WCAG compliance, keyboard navigation `M`
-33. [ ] Analytics Dashboard — Metricas de portfolio views `S`
+31. [ ] Performance Optimization — Bundle size, lazy loading, caching `M`
+32. [ ] Mobile Refinement — Timeline y skill tree responsive `M`
+33. [ ] Onboarding Flow — Guia para nuevos usuarios `S`
+34. [ ] Accessibility Audit — WCAG compliance, keyboard navigation `M`
+35. [ ] Analytics Dashboard — Metricas de portfolio views `S`
+36. [ ] Recruiter View Mode — Vista optimizada para recruiters revisando perfiles `M`
 
 ---
 
@@ -86,9 +84,10 @@
 
 ## Notes
 
-- Phase 1 completada establece la infraestructura base
-- Phase 2 completada - Timeline con Google Maps + Hexagonos
-- Phase 3 en progreso - Skill Tree y Portfolio Template System completados
+- Phase 1 y 2 completadas — infraestructura base + timeline interactivo
+- Phase 3 en progreso — Skill Tree y Portfolio listos, falta SEO y Dashboard
 - Dos modos visuales: **Professional** (limpio, ATS-friendly) y **Gaming** (cyberpunk)
 - Pixelated style postponed a v0.5.0+ para evaluar implementacion
-- AI features vienen despues de tener contenido para mejorar
+- AI features (Phase 4) vienen despues de tener contenido para mejorar
+- AI features priorizadas: CV Dinámico > Skill Explorer > Timeline Narrator
+- Skills de desarrollo instalados: 27 skills para Next.js, Better Auth, React, debugging, planning

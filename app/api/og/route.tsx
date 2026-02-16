@@ -3,7 +3,7 @@ import { ImageResponse } from '@vercel/og';
 import { NextRequest } from 'next/server';
 import { getPortfolioByUsername } from '@/features/portfolio/data/getPortfolio.data';
 
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 export async function GET(request: NextRequest) {
     try {
@@ -28,13 +28,17 @@ export async function GET(request: NextRequest) {
         const userTitle = isGaming ? 'Player' : 'Professional';
 
         // Font loading - using standard fetch for Google Fonts
-        const interSemiBold = await fetch(
-            new URL('https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYMZs.woff', import.meta.url)
-        ).then((res) => res.arrayBuffer());
+        const interSemiBold = await fetch('https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYMZs.woff')
+            .then(res => {
+                if (!res.ok) throw new Error(`Failed to load Inter font: ${res.status}`);
+                return res.arrayBuffer();
+            });
 
-        const gamingFont = await fetch(
-            new URL('https://fonts.gstatic.com/s/vt323/v17/pxiKyp0ihIEF2isF53lGgrQ5b7UB.woff', import.meta.url)
-        ).then((res) => res.arrayBuffer());
+        const gamingFont = await fetch('https://raw.githubusercontent.com/google/fonts/main/ofl/vt323/VT323-Regular.ttf')
+            .then(res => {
+                if (!res.ok) throw new Error(`Failed to load Gaming font: ${res.status}`);
+                return res.arrayBuffer();
+            });
 
         return new ImageResponse(
             (
@@ -100,7 +104,12 @@ export async function GET(request: NextRequest) {
                                 <div style={{ fontSize: 60, fontWeight: 'bold', color: 'white', lineHeight: 1 }}>
                                     {user.name}
                                 </div>
-                                <div style={{ fontSize: 30, color: '#94A3B8', marginTop: '10px' }}>
+                                <div style={{
+                                    display: 'flex',
+                                    fontSize: 30,
+                                    color: '#94A3B8',
+                                    marginTop: '10px'
+                                }}>
                                     Level {skills && skills.skills ? skills.skills.length > 5 ? Math.floor(skills.skills.length * 1.5) : 1 : 1} {userTitle}
                                 </div>
 
@@ -174,8 +183,15 @@ export async function GET(request: NextRequest) {
                                     </div>
                                 </div>
                             </div>
-                            <div style={{ position: 'absolute', bottom: 40, color: '#94A3B8', fontSize: 20, fontWeight: 500 }}>
-                                portfoland.com/{user.username}
+                            <div style={{
+                                display: 'flex',
+                                position: 'absolute',
+                                bottom: 40,
+                                color: '#94A3B8',
+                                fontSize: 20,
+                                fontWeight: 500
+                            }}>
+                                {user.username}.portfoland.com
                             </div>
                         </div>
                     )}
@@ -201,8 +217,8 @@ export async function GET(request: NextRequest) {
             }
         );
     } catch (e: any) {
-        console.log(`${e.message}`);
-        return new Response(`Failed to generate the image`, {
+        console.error(e);
+        return new Response(`Failed to generate the image: ${e.message}`, {
             status: 500,
         });
     }

@@ -48,8 +48,8 @@ Better Auth is the authentication layer, providing OAuth flow, session managemen
 
 | Category | Technology | Version | Purpose |
 |----------|------------|---------|---------|
-| AI SDK | Vercel AI SDK | Planned | Streaming AI responses, conversation management |
-| LLM Provider | OpenAI / Anthropic | Planned | Language model for CV generation and guidance |
+| AI SDK | Vercel AI SDK | ^3.0.29 / ^6.0.0 | Core SDK installed (ai, @ai-sdk/openai, @ai-sdk/react) |
+| LLM Provider | OpenAI / Anthropic | - | Provider packages installed, ready for API keys |
 
 ## Testing & Quality
 

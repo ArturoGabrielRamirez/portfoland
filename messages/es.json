@@ -557,5 +557,14 @@
   "languageSwitcher": {
     "label": "Seleccionar idioma",
     "current": "Idioma actual: {language}"
+  },
+  "Seo": {
+    "titleTemplate": "{name} - {role} | Portfoland",
+    "descriptionTemplate": "Descubre la trayectoria profesional de {name} en Portfoland. Explora sus habilidades, proyectos y experiencias en un portfolio interactivo.",
+    "defaultRole": "Profesional",
+    "modes": {
+      "gaming": "Perfil Cyborg",
+      "professional": "Perfil Profesional"
+    }
   }
 }

@@ -557,5 +557,14 @@
   "languageSwitcher": {
     "label": "Select language",
     "current": "Current language: {language}"
+  },
+  "Seo": {
+    "titleTemplate": "{name} - {role} | Portfoland",
+    "descriptionTemplate": "Discover the professional journey of {name} on Portfoland. Explore their skills, projects, and experiences in an interactive portfolio.",
+    "defaultRole": "Professional",
+    "modes": {
+      "gaming": "Cyborg Profile",
+      "professional": "Professional Profile"
+    }
   }
 }

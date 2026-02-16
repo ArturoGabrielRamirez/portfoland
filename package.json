@@ -19,6 +19,7 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@react-google-maps/api": "^2.20.8",
     "@vercel/blob": "^2.2.0",
+    "@vercel/og": "^0.8.6",
     "animejs": "^4.3.5",
     "better-auth": "^1.4.10",
     "class-variance-authority": "^0.7.1",

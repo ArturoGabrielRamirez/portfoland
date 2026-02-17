@@ -5,12 +5,14 @@ import { useChat } from 'ai/react';
 import { Bot, User, Send, Zap, AlertCircle, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/features/shadcn/ui/button';
+import { useLocale } from 'next-intl';
 
 interface AIChatContainerProps {
     className?: string;
 }
 
 export function AIChatContainer({ className }: AIChatContainerProps) {
+    const locale = useLocale();
     const [mounted, setMounted] = React.useState(false);
     const [lives, setLives] = React.useState<number>(3);
     const [isLoadingLives, setIsLoadingLives] = React.useState(true);
@@ -19,11 +21,16 @@ export function AIChatContainer({ className }: AIChatContainerProps) {
 
     const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat({
         api: '/api/chat',
+        body: {
+            locale,
+        },
         initialMessages: [
             {
                 id: 'welcome',
                 role: 'assistant',
-                content: 'Greetings, Player. I am the RPG Master. I see your portfolio journey has begun. Shall we level up your career character today?',
+                content: locale === 'es'
+                    ? 'Saludos, Jugador. Soy el RPG Master. Veo que tu viaje de portfolio ha comenzado. ¿Subimos de nivel tu personaje de carrera hoy?'
+                    : 'Greetings, Player. I am the RPG Master. I see your portfolio journey has begun. Shall we level up your career character today?',
             },
         ],
         onResponse(response) {
@@ -60,14 +67,19 @@ export function AIChatContainer({ className }: AIChatContainerProps) {
         fetchLives();
     }, []);
 
-    // Decrement lives after each successful message
+    // Refetch lives after AI response completes
     useEffect(() => {
-        // Only decrement if messages actually increased (user sent a message)
-        if (messages.length > previousMessagesLength.current && previousMessagesLength.current > 0) {
-            setLives(prev => Math.max(0, prev - 1));
+        // When loading finishes and we have more messages than before, refetch lives
+        if (!isLoading && messages.length > previousMessagesLength.current && previousMessagesLength.current > 0) {
+            // Refetch lives from server after AI response completes
+            fetch('/api/ai/lives')
+                .then(res => res.json())
+                .then(data => setLives(data.remainingLives || 0))
+                .catch(err => console.error('Failed to refetch lives:', err));
+
+            previousMessagesLength.current = messages.length;
         }
-        previousMessagesLength.current = messages.length;
-    }, [messages.length]);
+    }, [isLoading, messages.length]);
 
     // Auto-scroll to bottom
     useEffect(() => {

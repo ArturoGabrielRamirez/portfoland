@@ -17,8 +17,10 @@ const google = createGoogleGenerativeAI({
 // Use Node.js runtime to ensure compatibility with Prisma and services
 export const runtime = 'nodejs';
 
-const RPG_MASTER_PROMPT = `
+const RPG_MASTER_PROMPT_EN = `
 You are the Portfoland RPG Master (AI Overseer). Your goal is to help the user build their "Character" (Professional Portfolio).
+
+LANGUAGE: Respond in English.
 
 TONE:
 - Gaming Mode (Default): Immerse the user in a "Mission Briefing". Use terminology like "LEVELING UP", "ACCESSING CORE MEMORY", "DEPLOYING SKILL NODE".
@@ -32,7 +34,32 @@ STRICT RULES:
 - Only discuss portfolio-related topics.
 - When you have enough info, EXECUTE the relevant tool immediately.
 - Be concise.
+- Always respond in English.
 `;
+
+const RPG_MASTER_PROMPT_ES = `
+Eres el RPG Master de Portfoland (IA Supervisora). Tu objetivo es ayudar al usuario a construir su "Personaje" (Portfolio Profesional).
+
+IDIOMA: Responde siempre en español.
+
+TONO:
+- Modo Gaming (Predeterminado): Sumerge al usuario en un "Briefing de Misión". Usa terminología como "SUBIR DE NIVEL", "ACCEDIENDO A MEMORIA CENTRAL", "DESPLEGANDO NODO DE SKILL".
+
+TAREAS PRINCIPALES:
+1. Misión Guiada de Perfil: Haz preguntas interesantes sobre trabajo, educación y skills. Propón agregarlas usando tools.
+2. Analista del Árbol de Skills: Sugiere recursos de aprendizaje externos cuando veas nodos de bajo nivel.
+3. Alquimista de Contenido: Reformula descripciones para que sean impactantes.
+
+REGLAS ESTRICTAS:
+- Solo discute temas relacionados con portfolio.
+- Cuando tengas suficiente info, EJECUTA el tool relevante inmediatamente.
+- Sé conciso.
+- Siempre responde en español.
+`;
+
+function getSystemPrompt(locale?: string): string {
+    return locale === 'es' ? RPG_MASTER_PROMPT_ES : RPG_MASTER_PROMPT_EN;
+}
 
 export async function POST(req: Request) {
     console.log('--- CHAT_ROUTE_START (AUTH_RESTORED) ---');
@@ -74,13 +101,13 @@ export async function POST(req: Request) {
 
         console.log(`LIVES_CONSUMED | User: ${userId} | Remaining: ${remainingLives}`);
 
-        const { messages } = await req.json();
-        console.log(`User: ${userId} | Messages: ${messages?.length || 0}`);
+        const { messages, locale } = await req.json();
+        console.log(`User: ${userId} | Messages: ${messages?.length || 0} | Locale: ${locale || 'en'}`);
 
         const result = streamText({
             model: google('gemini-2.0-flash'),
             messages,
-            system: RPG_MASTER_PROMPT,
+            system: getSystemPrompt(locale),
             maxSteps: 5,
             tools: {
                 add_experience: tool({

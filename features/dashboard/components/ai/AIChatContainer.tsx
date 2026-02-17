@@ -12,7 +12,10 @@ interface AIChatContainerProps {
 
 export function AIChatContainer({ className }: AIChatContainerProps) {
     const [mounted, setMounted] = React.useState(false);
+    const [lives, setLives] = React.useState<number>(3);
+    const [isLoadingLives, setIsLoadingLives] = React.useState(true);
     const scrollRef = useRef<HTMLDivElement>(null);
+    const previousMessagesLength = useRef<number>(0);
 
     const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat({
         api: '/api/chat',
@@ -25,6 +28,11 @@ export function AIChatContainer({ className }: AIChatContainerProps) {
         ],
         onResponse(response) {
             console.log('CLIENT_CHAT_RESPONSE_STATUS:', response.status);
+
+            // If 429 error, set lives to 0
+            if (response.status === 429) {
+                setLives(0);
+            }
         },
         onError(error) {
             console.error('CLIENT_CHAT_ERROR:', error);
@@ -34,6 +42,32 @@ export function AIChatContainer({ className }: AIChatContainerProps) {
     useEffect(() => {
         setMounted(true);
     }, []);
+
+    // Fetch initial lives on mount
+    useEffect(() => {
+        async function fetchLives() {
+            try {
+                const res = await fetch('/api/ai/lives');
+                const data = await res.json();
+                setLives(data.remainingLives || 0);
+            } catch (err) {
+                console.error('Failed to fetch lives:', err);
+                setLives(0);
+            } finally {
+                setIsLoadingLives(false);
+            }
+        }
+        fetchLives();
+    }, []);
+
+    // Decrement lives after each successful message
+    useEffect(() => {
+        // Only decrement if messages actually increased (user sent a message)
+        if (messages.length > previousMessagesLength.current && previousMessagesLength.current > 0) {
+            setLives(prev => Math.max(0, prev - 1));
+        }
+        previousMessagesLength.current = messages.length;
+    }, [messages.length]);
 
     // Auto-scroll to bottom
     useEffect(() => {
@@ -67,10 +101,23 @@ export function AIChatContainer({ className }: AIChatContainerProps) {
                 <div className="flex items-center gap-2">
                     <div className="flex gap-0.5">
                         {[1, 2, 3].map(i => (
-                            <div key={i} className="w-1.5 h-1.5 rounded-full bg-[#00D4FF]/40 border border-[#00D4FF]/20" />
+                            <div
+                                key={i}
+                                className={cn(
+                                    "w-1.5 h-1.5 rounded-full border transition-all duration-300",
+                                    i <= lives
+                                        ? "bg-[#00D4FF] border-[#00D4FF] shadow-[0_0_4px_rgba(0,212,255,0.5)]" // Active life
+                                        : "bg-gray-800 border-gray-700" // Depleted life
+                                )}
+                            />
                         ))}
                     </div>
-                    <span className="text-[8px] font-mono text-gray-500 uppercase">Energy: Recharging</span>
+                    <span className={cn(
+                        "text-[8px] font-mono uppercase transition-colors",
+                        lives === 0 ? "text-red-500" : "text-gray-500"
+                    )}>
+                        {isLoadingLives ? 'Loading...' : `Energy: ${lives}/3`}
+                    </span>
                 </div>
             </div>
 
@@ -135,6 +182,22 @@ export function AIChatContainer({ className }: AIChatContainerProps) {
                         <span>CRITICAL_FAIL: {error.message}</span>
                     </div>
                 )}
+
+                {/* Out of Lives Warning */}
+                {lives === 0 && !isLoadingLives && (
+                    <div className="p-3 rounded bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-mono space-y-2">
+                        <div className="flex items-center gap-2">
+                            <AlertCircle size={14} />
+                            <span className="font-bold">⚠️ ENERGY DEPLETED</span>
+                        </div>
+                        <p className="text-[11px] leading-relaxed">
+                            Your AI assistant energy has been exhausted. Recharge in 24 hours to continue your quest.
+                        </p>
+                        <div className="text-[10px] text-red-300/70">
+                            🔋 Lives reset daily at midnight
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Input Area */}
@@ -143,12 +206,18 @@ export function AIChatContainer({ className }: AIChatContainerProps) {
                     <input
                         value={input}
                         onChange={handleInputChange}
-                        placeholder="ACCESS TERMINAL..."
-                        className="w-full bg-[#070b14] border border-cyan-900/40 rounded px-3 py-2 text-xs font-mono text-cyan-50 placeholder:text-gray-700 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/20 transition-all pr-10"
+                        placeholder={lives === 0 ? "ENERGY DEPLETED - RECHARGE REQUIRED..." : "ACCESS TERMINAL..."}
+                        disabled={lives === 0 || isLoading}
+                        className={cn(
+                            "w-full bg-[#070b14] border rounded px-3 py-2 text-xs font-mono placeholder:text-gray-700 focus:outline-none transition-all pr-10",
+                            lives === 0
+                                ? "border-red-900/40 text-red-400/50 cursor-not-allowed"
+                                : "border-cyan-900/40 text-cyan-50 focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/20"
+                        )}
                     />
                     <button
                         type="submit"
-                        disabled={isLoading || !input?.trim()}
+                        disabled={isLoading || !input?.trim() || lives === 0}
                         className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-cyan-500 hover:text-cyan-400 disabled:text-gray-800 transition-colors"
                     >
                         <Send size={14} />

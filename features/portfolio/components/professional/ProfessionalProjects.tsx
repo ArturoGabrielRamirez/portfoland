@@ -65,6 +65,14 @@ export function ProfessionalProjects({ data, className }: PortfolioSectionProps)
 
   return (
     <section className={cn('py-6', className)}>
+      <div className="flex items-center gap-4 text-[10px] font-mono text-gray-400 mb-1 border-b border-gray-100 pb-1">
+        <span>drwxrwxr-x</span>
+        <span>1 {data.user.username || 'user'}</span>
+        <span>devs</span>
+        <span>12k</span>
+        <span>Feb 16 13:47</span>
+        <span className="text-green-500">projects/</span>
+      </div>
       <h2 className="mb-6 text-2xl font-bold text-gray-900">
         {t('sections.projects.professional.title')}
       </h2>

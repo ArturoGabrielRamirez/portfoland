@@ -17,9 +17,13 @@ export function ProfessionalTimeline({ data, className }: PortfolioSectionProps)
 
   return (
     <section className={cn('py-6', className)}>
-      <h2 className="mb-6 text-2xl font-bold text-gray-900">
+      <h2 className="mb-2 text-2xl font-bold text-gray-900">
         {t('sections.timeline.professional.title')}
       </h2>
+      <div className="flex items-center gap-2 text-[11px] font-mono text-gray-500 mb-6 bg-gray-50 p-2 rounded border border-gray-100 italic">
+        <span className="text-blue-500">$</span>
+        <span>git log --pretty=format:"%h - %an, %ar : %s"</span>
+      </div>
 
       {experiences.length === 0 ? (
         <p className="text-gray-400" data-testid="timeline-empty-state">

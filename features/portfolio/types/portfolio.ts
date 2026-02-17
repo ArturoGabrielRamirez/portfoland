@@ -30,6 +30,9 @@ export interface PortfolioUser {
   bio: string | null;
   portfolioMode: PortfolioMode;
   locale: string;
+  sectionOrder: string[];
+  contactLinks: Record<string, any>;
+  sectionVisibility: Record<string, boolean>;
 }
 
 /**
@@ -75,6 +78,8 @@ export interface PanelNavigationProps {
   onSectionChange: (section: string) => void;
   mode: PortfolioMode;
   className?: string;
+  sectionOrder?: string[];
+  sectionVisibility?: Record<string, boolean>;
 }
 
 /**

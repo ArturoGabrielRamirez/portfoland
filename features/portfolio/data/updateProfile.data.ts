@@ -19,6 +19,9 @@ export async function updateUserProfileData(
     name: string;
     bio?: string | null;
     image?: string | null;
+    sectionOrder?: string[];
+    contactLinks?: Record<string, any>;
+    sectionVisibility?: Record<string, any>;
   }
 ) {
   return await prisma.user.update({

@@ -29,9 +29,13 @@ model User {
   username      String?  @unique
   locale        String   @default("en")
   emailVerified Boolean  @default(false)
-  portfolioMode String   @default("professional")
-  bio           String?
-  createdAt     DateTime @default(now())
+  portfolioMode     String   @default("professional")
+  bio               String?
+  sectionOrder      String[] @default(["about", "experience", "skills", "projects"])
+  contactLinks      Json     @default("{}")
+  sectionVisibility Json     @default("{}")
+  meta              Json     @default("{}")
+  createdAt         DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   sessions        Session[]
@@ -40,6 +44,7 @@ model User {
   userSkills      UserSkill[]
   skillCategories SkillCategory[]
   projects        Project[]
+  conversations   Conversation[]
 
   @@map("users")
 }
@@ -237,4 +242,41 @@ model SkillSource {
   @@index([userSkillId])
   @@index([experienceId])
   @@map("skill_sources")
+}
+
+// =============================================================================
+// AI Assistant Models
+// =============================================================================
+
+model Conversation {
+  id        String    @id @default(cuid()) @map("_id")
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String?
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("conversations")
+}
+
+enum MessageRole {
+  user
+  assistant
+  system
+  tool
+}
+
+model Message {
+  id             String       @id @default(cuid()) @map("_id")
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           MessageRole
+  content        String
+  metadata       Json?
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId])
+  @@map("messages")
 }

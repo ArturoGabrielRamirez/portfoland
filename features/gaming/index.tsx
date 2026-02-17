@@ -52,7 +52,7 @@ const gamingButtonVariants = cva(
 
 export interface GamingButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof gamingButtonVariants> {}
+  VariantProps<typeof gamingButtonVariants> { }
 
 export const GamingButton = React.forwardRef<
   HTMLButtonElement,
@@ -88,12 +88,12 @@ export const GamingInput = React.forwardRef<HTMLInputElement, GamingInputProps>(
           'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0A0E1A]',
           'disabled:cursor-not-allowed disabled:opacity-50',
           error &&
-            'border-[#EF4444] focus:ring-[#EF4444] shadow-[0_0_10px_rgba(239,68,68,0.2)]',
+          'border-[#EF4444] focus:ring-[#EF4444] shadow-[0_0_10px_rgba(239,68,68,0.2)]',
           success &&
-            'border-[#22C55E] focus:ring-[#22C55E] shadow-[0_0_10px_rgba(34,197,94,0.2)]',
+          'border-[#22C55E] focus:ring-[#22C55E] shadow-[0_0_10px_rgba(34,197,94,0.2)]',
           !error &&
-            !success &&
-            'border-[#1E293B] hover:border-[#334155] focus:border-[#00D4FF] focus:ring-[#00D4FF]',
+          !success &&
+          'border-[#1E293B] hover:border-[#334155] focus:border-[#00D4FF] focus:ring-[#00D4FF]',
           className
         )}
         ref={ref}
@@ -132,16 +132,29 @@ const gamingCardVariants = cva(
 
 export interface GamingCardProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof gamingCardVariants> {}
+  VariantProps<typeof gamingCardVariants> { }
 
 export const GamingCard = React.forwardRef<HTMLDivElement, GamingCardProps>(
   ({ className, variant, ...props }, ref) => {
     return (
       <div
         ref={ref}
-        className={cn(gamingCardVariants({ variant, className }))}
+        className={cn(gamingCardVariants({ variant, className }), 'relative group')}
         {...props}
-      />
+      >
+        {/* Decorative corner markers */}
+        <div className="absolute top-0 right-0 p-1 opacity-20 group-hover:opacity-100 transition-opacity">
+          <span className="text-[8px] font-mono text-cyan-400 uppercase tracking-tighter">
+            STAT: OK
+          </span>
+        </div>
+        <div className="absolute bottom-0 left-0 p-1 opacity-10">
+          <span className="text-[6px] font-mono text-slate-500 uppercase">
+            SEC_AUTH_v2.1
+          </span>
+        </div>
+        {props.children}
+      </div>
     )
   }
 )

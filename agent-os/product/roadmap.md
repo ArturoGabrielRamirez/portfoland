@@ -38,11 +38,11 @@
 16. [x] Subdomain Routing — username.portfoland.com con proxy.ts rewrite `M`
 17. [x] Project Showcase — Cards de proyectos con imagenes, tech stack, links `M`
 18. [x] Portfolio SEO & Meta Tags — Open Graph, structured data dinamico `S`
-19. [ ] Portfolio Dashboard — Pagina unificada para gestionar portfolio: About/Bio, Contact info, modo visual, orden de secciones `M`
+19. [x] Portfolio Dashboard — Pagina unificada para gestionar portfolio: About/Bio, Contact info, modo visual, orden de secciones `M`
 
 ---
 
-## Phase 4: AI Assistant (v0.4.0)
+## Phase 4: AI Assistant (v0.4.0) ⏳ IN PROGRESS
 
 > **Referencia:** Ver `agent-os/product/ai-features-ideas.md` para la lista completa de ideas priorizadas.
 

@@ -16,23 +16,56 @@ export function AIChatContainer({ className }: AIChatContainerProps) {
     const [mounted, setMounted] = React.useState(false);
     const [lives, setLives] = React.useState<number>(3);
     const [isLoadingLives, setIsLoadingLives] = React.useState(true);
+    const [isLoadingHistory, setIsLoadingHistory] = React.useState(true);
+    const [historyMessages, setHistoryMessages] = React.useState<any[]>([]);
     const scrollRef = useRef<HTMLDivElement>(null);
     const previousMessagesLength = useRef<number>(0);
+
+    // Load chat history before rendering chat
+    useEffect(() => {
+        async function loadHistory() {
+            try {
+                const res = await fetch('/api/chat/history');
+                const data = await res.json();
+
+                if (data.messages && data.messages.length > 0) {
+                    console.log(`HISTORY_LOADED: ${data.messages.length} messages`);
+                    setHistoryMessages(data.messages);
+                } else {
+                    console.log('NO_HISTORY_FOUND: Using welcome message');
+                    setHistoryMessages([{
+                        id: 'welcome',
+                        role: 'assistant',
+                        content: locale === 'es'
+                            ? 'Saludos, Jugador. Soy el RPG Master. Veo que tu viaje de portfolio ha comenzado. ¿Subimos de nivel tu personaje de carrera hoy?'
+                            : 'Greetings, Player. I am the RPG Master. I see your portfolio journey has begun. Shall we level up your career character today?',
+                    }]);
+                }
+            } catch (err) {
+                console.error('FAILED_TO_LOAD_HISTORY:', err);
+                setHistoryMessages([{
+                    id: 'welcome',
+                    role: 'assistant',
+                    content: locale === 'es'
+                        ? 'Saludos, Jugador. Soy el RPG Master. Veo que tu viaje de portfolio ha comenzado. ¿Subimos de nivel tu personaje de carrera hoy?'
+                        : 'Greetings, Player. I am the RPG Master. I see your portfolio journey has begun. Shall we level up your career character today?',
+                }]);
+            } finally {
+                setIsLoadingHistory(false);
+            }
+        }
+
+        if (mounted) {
+            loadHistory();
+        }
+    }, [mounted, locale]);
 
     const { messages, input, handleInputChange, handleSubmit, isLoading, error } = useChat({
         api: '/api/chat',
         body: {
             locale,
         },
-        initialMessages: [
-            {
-                id: 'welcome',
-                role: 'assistant',
-                content: locale === 'es'
-                    ? 'Saludos, Jugador. Soy el RPG Master. Veo que tu viaje de portfolio ha comenzado. ¿Subimos de nivel tu personaje de carrera hoy?'
-                    : 'Greetings, Player. I am the RPG Master. I see your portfolio journey has begun. Shall we level up your career character today?',
-            },
-        ],
+        initialMessages: historyMessages,
         onResponse(response) {
             console.log('CLIENT_CHAT_RESPONSE_STATUS:', response.status);
 
@@ -67,14 +100,26 @@ export function AIChatContainer({ className }: AIChatContainerProps) {
         fetchLives();
     }, []);
 
+    // Initialize previousMessagesLength when history loads
+    useEffect(() => {
+        if (!isLoadingHistory && messages.length > 0) {
+            previousMessagesLength.current = messages.length;
+        }
+    }, [isLoadingHistory, messages.length]);
+
     // Refetch lives after AI response completes
     useEffect(() => {
         // When loading finishes and we have more messages than before, refetch lives
-        if (!isLoading && messages.length > previousMessagesLength.current && previousMessagesLength.current > 0) {
+        if (!isLoading && messages.length > previousMessagesLength.current) {
+            console.log(`REFETCHING_LIVES: prev=${previousMessagesLength.current}, current=${messages.length}`);
+
             // Refetch lives from server after AI response completes
             fetch('/api/ai/lives')
                 .then(res => res.json())
-                .then(data => setLives(data.remainingLives || 0))
+                .then(data => {
+                    console.log(`LIVES_UPDATED: ${data.remainingLives}`);
+                    setLives(data.remainingLives || 0);
+                })
                 .catch(err => console.error('Failed to refetch lives:', err));
 
             previousMessagesLength.current = messages.length;
@@ -88,7 +133,7 @@ export function AIChatContainer({ className }: AIChatContainerProps) {
         }
     }, [messages, isLoading]);
 
-    if (!mounted) {
+    if (!mounted || isLoadingHistory) {
         return (
             <div className={cn(
                 "flex flex-col h-[400px] border border-[hsl(174,100%,50%,0.2)] rounded bg-[rgba(13,25,48,0.95)] animate-pulse",

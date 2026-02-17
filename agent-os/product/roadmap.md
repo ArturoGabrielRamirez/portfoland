@@ -57,6 +57,29 @@
 
 ---
 
+## Phase 4.5: Multi-Industry Modes (v0.4.5) 📋 PLANNED
+
+> **Concepto:** Rebranding de Gaming vs Professional a **Digital vs Traditional Mode**
+> **Referencia:** Ver `TWO_MODE_STRATEGY.md` y `MULTI_INDUSTRY_SCALABILITY.md` en `agent-os/product/ideas/`
+
+**Digital/Connected Mode** — Para profesionales con presencia digital y APIs validables:
+- Desarrolladores (GitHub), Creadores (YouTube), Diseñadores (Behance), Analistas (Kaggle), Fotógrafos (Instagram)
+- Features: Integración con APIs externas, validación automática, sincronización de proyectos, métricas
+
+**Traditional/Physical Mode** — Para profesionales con trabajo físico o sin presencia digital:
+- Peluqueros, Arquitectos, Manicuras, Chefs, Personal trainers, Artesanos
+- Features: Upload manual de fotos, certificaciones, testimonios, portfolio visual
+
+**Tasks:**
+- [ ] User Schema: Agregar campo `portfolioMode` (`DIGITAL` | `TRADITIONAL`) `S`
+- [ ] AI Assistant: 4 system prompts (Digital-EN, Digital-ES, Traditional-EN, Traditional-ES) `M`
+- [ ] Onboarding: UI para selección de modo con preview de features `M`
+- [ ] API Integrations Hub: Sistema para conectar GitHub, YouTube, Behance, etc. (Digital Mode) `L`
+- [ ] Manual Upload System: Upload de imágenes/certificados con gallery (Traditional Mode) `M`
+- [ ] Portfolio Templates: Templates diferenciados por modo (más tech vs más visual) `M`
+
+---
+
 ## Phase 5: Styles & Polish (v0.5.0+)
 
 26. [ ] Pixelated Style Mode — Tercer modo visual con estetica pixel art (evaluar complejidad) `L`

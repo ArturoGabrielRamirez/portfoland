@@ -9,6 +9,7 @@ import { createSkillService } from '@/features/skills/services/skill.service';
 import { updateProfileService } from '@/features/portfolio/services/portfolio.service';
 import { checkAndConsumLives } from '@/lib/ai/lives';
 import { getUserSkillsData } from '@/features/skills/data/getUserSkills.data';
+import { prisma } from '@/lib/prisma';
 
 const google = createGoogleGenerativeAI({
     apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
@@ -100,6 +101,24 @@ export async function POST(req: Request) {
         }
 
         console.log(`LIVES_CONSUMED | User: ${userId} | Remaining: ${remainingLives}`);
+
+        // 🆕 Create or retrieve conversation for persistence
+        let conversation = await prisma.conversation.findFirst({
+            where: { userId },
+            orderBy: { updatedAt: 'desc' }
+        });
+
+        if (!conversation) {
+            conversation = await prisma.conversation.create({
+                data: {
+                    userId,
+                    title: 'Career Guidance Chat'
+                }
+            });
+            console.log(`CONVERSATION_CREATED | ID: ${conversation.id}`);
+        } else {
+            console.log(`CONVERSATION_FOUND | ID: ${conversation.id}`);
+        }
 
         const { messages, locale } = await req.json();
         console.log(`User: ${userId} | Messages: ${messages?.length || 0} | Locale: ${locale || 'en'}`);
@@ -218,8 +237,65 @@ export async function POST(req: Request) {
                     },
                 }),
             },
-            async onFinish({ text }) {
+            async onFinish({ text, response }) {
                 console.log(`AI_FINISHED | User: ${userId}`);
+
+                const finalMessages = response?.messages || [];
+                console.log(`FINAL_MESSAGES_LENGTH: ${finalMessages?.length || 0}`);
+
+                // 🆕 Save the last 2 messages (user + assistant) to DB
+                try {
+                    const lastTwoMessages = finalMessages.slice(-2);
+                    console.log(`LAST_TWO_MESSAGES (count: ${lastTwoMessages.length})`);
+
+                    if (lastTwoMessages.length > 0) {
+                        const messagesToSave = lastTwoMessages.map(m => {
+                            // Handle content: could be string, array, or object
+                            let content = '';
+                            if (typeof m.content === 'string') {
+                                content = m.content;
+                            } else if (Array.isArray(m.content)) {
+                                content = m.content
+                                    .map(c => {
+                                        if (typeof c === 'string') return c;
+                                        if (c.type === 'text') return c.text;
+                                        return JSON.stringify(c);
+                                    })
+                                    .join(' ');
+                            } else if (m.content && typeof m.content === 'object') {
+                                content = JSON.stringify(m.content);
+                            }
+
+                            return {
+                                conversationId: conversation.id,
+                                role: m.role, // Keep original: 'user', 'assistant', 'system', 'tool'
+                                content: content || '[empty]',
+                                metadata: null
+                            };
+                        });
+
+                        console.log(`MESSAGES_TO_SAVE (count: ${messagesToSave.length})`);
+                        messagesToSave.forEach((m, i) => {
+                            console.log(`  [${i}] ${m.role}: ${m.content.substring(0, 80)}...`);
+                        });
+
+                        await prisma.message.createMany({
+                            data: messagesToSave
+                        });
+
+                        // Update conversation timestamp
+                        await prisma.conversation.update({
+                            where: { id: conversation.id },
+                            data: { updatedAt: new Date() }
+                        });
+
+                        console.log(`MESSAGES_SAVED | Count: ${messagesToSave.length} | ConvID: ${conversation.id}`);
+                    } else {
+                        console.log(`NO_MESSAGES_TO_SAVE | finalMessages was empty`);
+                    }
+                } catch (err) {
+                    console.error('FAILED_TO_SAVE_MESSAGES:', err);
+                }
             },
         });
 

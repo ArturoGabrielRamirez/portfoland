@@ -17,16 +17,37 @@ Total Tasks: 12
 
 ---
 
+###- [x] **Phase 4: AI Assistant (v0.4.0) [x]**
+  - [x] Install AI SDK dependencies via Bun (`@ai-sdk/google`)
+  - [x] Implement `/api/chat` backend route with Tool Calling (Gemini 2.0 Flash)
+  - [x] Implement RPG Master Persona & Lives System logic
+  - [x] Sync database schema (Conversation/Message/Meta)
+  - [x] Create `AIChatContainer` UI component
+  - [x] Stability Fixes (Google AI initialization & Hydration fixes)
+  - [x] Integrate Skill Explorer and Narrator logic
+- [x] **Phase 8: Aesthetic Enhancements (Cyberpunk/Developer)**
+  - [x] Implement global CRT/Scanline effects for Gaming mode
+  - [x] Add glitch text animations to Gaming Hero
+  - [x] Implement terminal-style bio for Professional mode
+  - [x] Add "filesystem" metadata to Professional sections
+  - [x] Implement system-boot loading transition
+
 ### Layer 2: API & Logic
 
 #### Task Group 2: Vercel AI SDK Integration
 - [x] 3.0 Implement `/api/chat` route handler.
   - [x] 3.1 Setup OpenAI provider with edge runtime.
-  - [x] 3.2 Implement basic system prompt for "Guided Interview".
+  - [/] 3.2 Implement RPG Master system prompt (Dungeon Master persona).
   - [x] 3.3 Verify streaming responses via curl/Insomnia.
+- [ ] 3.4 Implement "Lives System" check in `/api/chat`.
+  - [ ] 3.4.1 Read `meta.remainingLives` and `meta.lastResetDate`.
+  - [ ] 3.4.2 Implement daily reset logic (3 lives/24h).
+  - [ ] 3.4.3 Handle "Out of Lives" response.
 - [ ] 4.0 Implement Tool Calling for Profile Updates.
-  - [ ] 4.1 Define `addSkill` and `addExperience` tools for the AI.
-  - [ ] 4.2 Link tools to existing `portfolio.service.ts` logic.
+  - [x] 4.1 Define `addSkill` and `addExperience` tools for the AI.
+  - [x] 4.2 Link tools to existing `portfolio.service.ts` logic.
+  - [ ] 4.3 Add `getSkillTreeData` tool to allow AI to see player progress.
+  - [ ] 4.4 Add `suggestLearningResource` tool for external links (v0.4.1).
 
 ---
 

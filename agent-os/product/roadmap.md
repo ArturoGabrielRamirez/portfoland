@@ -47,11 +47,13 @@
 > **Referencia:** Ver `agent-os/product/ai-features-ideas.md` para la lista completa de ideas priorizadas.
 
 20. [ ] Vercel AI SDK Integration — Streaming responses, conversation state `M`
-21. [ ] Guided CV Interview — AI conversacional para recopilar info de CV `L`
-22. [ ] AI Content Suggestions — Sugerencias para mejorar descripciones `M`
-23. [ ] CV Document Generator — Export PDF con templates profesionales `M`
-24. [ ] AI Skill Explorer — Consultas al árbol de skills: "¿Qué me falta para Senior?" `M`
-25. [ ] Career Timeline Narrator — IA que narra la historia profesional para recruiters `S`
+21. [ ] Guided CV Interview (RPG Master Persona) — AI conversacional para recopilar info de CV `L`
+22. [ ] AI Content Suggestions (Gaming vs. Prof. tones) — Sugerencias para mejorar descripciones `M`
+23. [ ] Daily Energy/Lives System (3 uses/day) `S`
+24. [ ] CV Document Generator — Export PDF con templates profesionales `M`
+25. [ ] AI Skill Explorer — Consultas al árbol de skills: "¿Qué me falta para Senior?" `M`
+26. [ ] Learning Path Suggester (Skill Explorer) `M`
+27. [ ] Career Timeline Narrator (Public AI Section) — IA que narra la historia profesional para recruiters `S`
 
 ---
 

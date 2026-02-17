@@ -141,6 +141,55 @@ export async function POST(req: Request) {
                         }
                     },
                 }),
+                get_skill_tree: tool({
+                    description: "Retrieves the user's complete skill tree with detailed information including levels, categories, XP, and validation status. Use this to analyze skill progression and suggest learning paths.",
+                    parameters: z.object({
+                        reason: z.string().describe('Why you need the skill tree data (e.g., to suggest next skills to learn)'),
+                    }),
+                    execute: async () => {
+                        console.log(`TOOL: get_skill_tree`);
+                        try {
+                            const userSkills = await getUserSkillsData(userId);
+
+                            if (!userSkills || userSkills.length === 0) {
+                                return {
+                                    message: 'No skills found. User should add skills to their profile.',
+                                    skills: []
+                                };
+                            }
+
+                            const skillTree = userSkills.map(us => ({
+                                name: us.skill.name,
+                                category: us.skill.category.name,
+                                selfAssessmentLevel: us.selfAssessmentLevel,
+                                totalXP: us.totalXP,
+                                githubValidated: us.githubValidated,
+                                manuallyAdded: us.sources.some(s => s.sourceType === 'MANUAL'),
+                                experienceBased: us.sources.some(s => s.sourceType === 'EXPERIENCE'),
+                                sourcesCount: us.sources.length,
+                            }));
+
+                            // Group by category for better analysis
+                            const byCategory = skillTree.reduce((acc, skill) => {
+                                if (!acc[skill.category]) {
+                                    acc[skill.category] = [];
+                                }
+                                acc[skill.category].push(skill);
+                                return acc;
+                            }, {} as Record<string, typeof skillTree>);
+
+                            return {
+                                totalSkills: skillTree.length,
+                                categories: Object.keys(byCategory),
+                                skillsByCategory: byCategory,
+                                skills: skillTree,
+                            };
+                        } catch (err: any) {
+                            console.error('TOOL_ERROR (get_skill_tree):', err);
+                            return { error: 'Failed to retrieve skill tree', details: err.message };
+                        }
+                    },
+                }),
             },
             async onFinish({ text }) {
                 console.log(`AI_FINISHED | User: ${userId}`);

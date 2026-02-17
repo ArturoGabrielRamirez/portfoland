@@ -8,22 +8,22 @@ Total Tasks: 12
 ### Layer 1: Database & Foundation
 
 #### Task Group 1: Chat Storage
-- [ ] 1.0 Update `prisma/schema.prisma` to include AI support.
-  - [ ] 1.1 Add `Conversation` and `Message` models.
-  - [ ] 1.2 Add `meta` JSON field to User for AI-specific personality settings.
-  - [ ] 1.3 Run `bunx prisma generate` and `prisma db push`.
-- [ ] 2.0 Install Dependencies.
-  - [ ] 2.1 Install AI SDK: `bun add ai @ai-sdk/openai zod`.
+- [x] 1.0 Update `prisma/schema.prisma` to include AI support.
+  - [x] 1.1 Add `Conversation` and `Message` models.
+  - [x] 1.2 Add `meta` JSON field to User for AI-specific personality settings.
+  - [x] 1.3 Run `bunx prisma generate` and `prisma db push`.
+- [x] 2.0 Install Dependencies.
+  - [x] 2.1 Install AI SDK: `bun add ai @ai-sdk/openai zod`.
 
 ---
 
 ### Layer 2: API & Logic
 
 #### Task Group 2: Vercel AI SDK Integration
-- [ ] 3.0 Implement `/api/chat` route handler.
-  - [ ] 3.1 Setup OpenAI provider with edge runtime.
-  - [ ] 3.2 Implement basic system prompt for "Guided Interview".
-  - [ ] 3.3 Verify streaming responses via curl/Insomnia.
+- [x] 3.0 Implement `/api/chat` route handler.
+  - [x] 3.1 Setup OpenAI provider with edge runtime.
+  - [x] 3.2 Implement basic system prompt for "Guided Interview".
+  - [x] 3.3 Verify streaming responses via curl/Insomnia.
 - [ ] 4.0 Implement Tool Calling for Profile Updates.
   - [ ] 4.1 Define `addSkill` and `addExperience` tools for the AI.
   - [ ] 4.2 Link tools to existing `portfolio.service.ts` logic.

@@ -57,6 +57,16 @@ export const auth = betterAuth({
         defaultValue: 'en',
         input: true,
       },
+      bio: {
+        type: 'string',
+        required: false,
+        input: true,
+      },
+      meta: {
+        type: 'string', // JSON is handled as string in Better Auth schema map if not specialized
+        required: false,
+        input: true,
+      },
     },
   },
 

@@ -11,6 +11,7 @@
     "test:run": "vitest run"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.44",
     "@ai-sdk/openai": "^3.0.29",
     "@ai-sdk/react": "^3.0.88",
     "@hookform/resolvers": "^5.2.2",
@@ -23,7 +24,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "@vercel/blob": "^2.2.0",
     "@vercel/og": "^0.8.6",
-    "ai": "^6.0.86",
+    "ai": "4.1.1",
     "animejs": "^4.3.5",
     "better-auth": "^1.4.10",
     "class-variance-authority": "^0.7.1",

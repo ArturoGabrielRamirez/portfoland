@@ -36,7 +36,7 @@ export const updateProfileSchema = yup.object({
   bio: yup
     .string()
     .nullable()
-    .max(500, 'Bio must be less than 500 characters'),
+    .max(1000, 'Bio must be less than 1000 characters'),
   image: yup
     .string()
     .nullable()

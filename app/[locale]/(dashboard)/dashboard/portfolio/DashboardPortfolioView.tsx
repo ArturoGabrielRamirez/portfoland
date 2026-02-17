@@ -16,7 +16,9 @@ import { PortfolioModeToggle } from '@/features/portfolio/components/PortfolioMo
 import { ProfileImageUpload } from '@/features/portfolio/components/ProfileImageUpload';
 import { HUDPanel } from '@/features/dashboard/components/HUDPanel';
 import { AIChatContainer } from '@/features/dashboard/components/ai/AIChatContainer';
+import { ImproveBioButton } from '@/features/ai/components/ImproveBioButton';
 import { updateProfile } from '@/features/portfolio/actions/updateProfile';
+import ReactMarkdown from 'react-markdown';
 import type { PortfolioMode } from '@/features/portfolio/types/portfolio';
 import {
   Github,
@@ -237,17 +239,49 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                         </div>
 
                         <div className="space-y-2">
-                          <label className="text-[10px] font-bold font-mono text-gray-300 uppercase tracking-widest flex justify-between">
-                            <span>Developer Bio (Markdown Supported)</span>
-                            <span className="text-[#00D4FF]/70">{bio.length}/500</span>
-                          </label>
+                          <div className="flex items-center justify-between">
+                            <label className="text-[10px] font-bold font-mono text-gray-300 uppercase tracking-widest">
+                              Developer Bio (Markdown Supported)
+                            </label>
+                            <div className="flex items-center gap-2">
+                              <ImproveBioButton
+                                currentBio={bio}
+                                onImproved={(improvedBio) => setBio(improvedBio)}
+                                mode="gaming"
+                                locale={locale}
+                              />
+                              <span className="text-[10px] text-[#00D4FF]/70 font-mono">{bio.length}/1000</span>
+                            </div>
+                          </div>
                           <textarea
                             value={bio}
                             onChange={(e) => setBio(e.target.value)}
-                            rows={6}
+                            rows={8}
+                            maxLength={1000}
                             className="w-full px-4 py-3 bg-[#0D1421] border border-[hsl(174,100%,50%,0.25)] rounded font-mono text-sm text-gray-100 placeholder:text-gray-600 focus:border-[#00D4FF] focus:ring-1 focus:ring-[#00D4FF]/30 focus:outline-none resize-none transition-all"
                             placeholder="Describe your capabilities and stack..."
                           />
+
+                          {/* Markdown Preview & Hint */}
+                          {bio && (
+                            <div className="mt-2 space-y-2">
+                              <div className="flex items-center gap-2">
+                                <span className="text-[9px] font-mono text-[#00D4FF]/60 uppercase tracking-wider">
+                                  💡 Tip: Usa **texto** para negrita, *texto* para cursiva
+                                </span>
+                              </div>
+                              <div className="p-3 bg-[#0A0E1A] border border-[hsl(174,100%,50%,0.15)] rounded">
+                                <div className="text-[9px] font-mono text-[#00D4FF]/50 uppercase tracking-wider mb-2">
+                                  Preview (Cómo se verá en tu portfolio):
+                                </div>
+                                <div className="text-sm text-gray-200 prose prose-invert prose-sm max-w-none prose-strong:text-[#00D4FF] prose-em:text-purple-400">
+                                  <ReactMarkdown>
+                                    {bio}
+                                  </ReactMarkdown>
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         </div>
 
                         <div className="space-y-2">

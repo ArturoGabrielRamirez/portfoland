@@ -82,11 +82,12 @@
 
 ## Phase 5: Styles & Polish (v0.5.0+)
 
-26. [ ] Pixelated Style Mode — Tercer modo visual con estetica pixel art (evaluar complejidad) `L`
-27. [ ] Geographic Map Expansion — Mapa de Argentina/mundo con regiones clickeables `L`
-28. [ ] Character Customization — Avatares personalizables con pixel art `M`
-29. [ ] Achievement System — Badges y logros desbloqueables `M`
-30. [ ] Social Share Cards — Imagenes dinamicas para compartir `M`
+26. [ ] WYSIWYG Editor System — Editor visual (Tiptap/Lexical) para bio, proyectos, experiencias con toolbar (negrita, cursiva, listas, links) `M`
+27. [ ] Pixelated Style Mode — Tercer modo visual con estetica pixel art (evaluar complejidad) `L`
+28. [ ] Geographic Map Expansion — Mapa de Argentina/mundo con regiones clickeables `L`
+29. [ ] Character Customization — Avatares personalizables con pixel art `M`
+30. [ ] Achievement System — Badges y logros desbloqueables `M`
+31. [ ] Social Share Cards — Imagenes dinamicas para compartir `M`
 
 ---
 

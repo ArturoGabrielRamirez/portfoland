@@ -634,7 +634,44 @@ export async function getUserSkillTreeData(userId: string) {
 
 ---
 
-### **TAREA 4.3: AI Edit Database (Experimento)** 🌟
+### **TAREA 4.3: Energy System (Freemium Mejorado)** 🌟
+
+**Objetivo:** Reemplazar sistema de "3 vidas/día" por sistema de energía más flexible.
+
+**Propuesta:**
+- Cada "vida" = 1 punto de energía
+- Pool de energía más grande (ej: 10-20 puntos)
+- Diferentes acciones consumen diferente energía:
+  - Chat simple: 1 punto
+  - Tool calls (add_skill, add_experience): 2 puntos
+  - Features premium (screenshot, vision AI): 3-5 puntos
+- Reset diario o recarga gradual (1 punto cada X horas)
+
+**Ventajas:**
+- Más flexible y "fair" para usuarios freemium
+- Se siente como IA moderna (ChatGPT, Claude)
+- Permite diferentes tiers (Free, Pro, Premium)
+
+**Implementación:**
+- Modificar `User.meta.aiEnergy` para almacenar:
+  ```json
+  {
+    "currentEnergy": 15,
+    "maxEnergy": 20,
+    "lastRechargeDate": "2026-02-17",
+    "tier": "free" // free, pro, premium
+  }
+  ```
+- Actualizar `lib/ai/lives.ts` → `lib/ai/energy.ts`
+- Modificar UI para mostrar barra de energía en lugar de orbs
+
+**Estimación:** 4-6 horas (requiere refactor del sistema de lives)
+
+**Estado:** 📝 Propuesta pendiente para v0.4.2+
+
+---
+
+### **TAREA 4.4: AI Edit Database (Experimento)** 🌟
 
 **Objetivo:** AI puede editar datos existentes (no solo crear).
 

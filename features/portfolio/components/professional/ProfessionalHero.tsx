@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Mail, Github, Linkedin } from 'lucide-react';
+import { Mail, Github, Linkedin, Link } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { PortfolioSectionProps } from '../../types/portfolio';
 
@@ -35,16 +35,38 @@ export function ProfessionalHero({ data, className }: PortfolioSectionProps) {
         </div>
       )}
 
-      {/* Name */}
-      <h1 className="text-3xl font-bold text-gray-900">{user.name}</h1>
+      {/* Name and Developer-centric Role */}
+      <div className="flex flex-col items-center gap-2">
+        <h1 className="text-3xl font-bold text-gray-900 tracking-tight">{user.name}</h1>
+        <div className="flex items-center gap-2 font-mono text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded border border-blue-100">
+          <span className="opacity-50">const</span>
+          <span className="font-semibold text-blue-700">ROLE</span>
+          <span className="opacity-50">=</span>
+          <span className="text-orange-600">'Fullstack Developer'</span>
+          <span className="opacity-50">;</span>
+        </div>
+      </div>
 
-      {/* Title/Role - using bio as subtitle when available */}
+      {/* Terminal-style Bio */}
       {user.bio && (
-        <p className="max-w-md text-center text-gray-600">{user.bio}</p>
+        <div className="w-full max-w-xl terminal-window mt-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div className="terminal-header">
+            <div className="terminal-dot bg-red-500/80" />
+            <div className="terminal-dot bg-yellow-500/80" />
+            <div className="terminal-dot bg-green-500/80" />
+            <span className="ml-2 text-[10px] text-slate-500 font-mono uppercase tracking-widest">bio.md — bash — 80x24</span>
+          </div>
+          <div className="terminal-content bg-[#0D1117] min-h-[100px] leading-relaxed">
+            <p className="text-slate-300 font-mono text-sm leading-relaxed whitespace-pre-wrap italic">
+              <span className="text-[#58a6ff] mr-2">➜</span>
+              {user.bio}
+            </p>
+          </div>
+        </div>
       )}
 
       {/* Social Links */}
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center justify-center gap-4">
         <a
           href={`mailto:${user.email}`}
           className="inline-flex items-center gap-1.5 text-sm text-blue-600 hover:underline"
@@ -52,22 +74,46 @@ export function ProfessionalHero({ data, className }: PortfolioSectionProps) {
           <Mail className="h-4 w-4" />
           {user.email}
         </a>
-        <a
-          href="#"
-          className="inline-flex items-center gap-1.5 text-sm text-blue-600 hover:underline"
-          aria-label="GitHub"
-        >
-          <Github className="h-4 w-4" />
-          GitHub
-        </a>
-        <a
-          href="#"
-          className="inline-flex items-center gap-1.5 text-sm text-blue-600 hover:underline"
-          aria-label="LinkedIn"
-        >
-          <Linkedin className="h-4 w-4" />
-          LinkedIn
-        </a>
+
+        {user.contactLinks?.github && (
+          <a
+            href={user.contactLinks.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm text-blue-600 hover:underline"
+            aria-label="GitHub"
+          >
+            <Github className="h-4 w-4" />
+            GitHub
+          </a>
+        )}
+
+        {user.contactLinks?.linkedin && (
+          <a
+            href={user.contactLinks.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm text-blue-600 hover:underline"
+            aria-label="LinkedIn"
+          >
+            <Linkedin className="h-4 w-4" />
+            LinkedIn
+          </a>
+        )}
+
+        {/* Custom Links */}
+        {user.contactLinks?.custom?.map((link: any, idx: number) => (
+          <a
+            key={idx}
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm text-blue-600 hover:underline"
+          >
+            <Link className="h-4 w-4" />
+            {link.label}
+          </a>
+        ))}
       </div>
     </header>
   );

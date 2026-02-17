@@ -41,6 +41,9 @@ export const updateProfileSchema = yup.object({
     .string()
     .nullable()
     .url('Image must be a valid URL'),
+  sectionOrder: yup.array().of(yup.string().required()).optional(),
+  contactLinks: yup.object().optional(),
+  sectionVisibility: yup.object().optional(),
 });
 
 /**

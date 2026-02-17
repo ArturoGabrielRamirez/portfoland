@@ -47,6 +47,9 @@ export async function updateProfileService(
     name: string;
     bio?: string | null;
     image?: string | null;
+    sectionOrder?: string[];
+    contactLinks?: Record<string, any>;
+    sectionVisibility?: Record<string, any>;
   }
 ) {
   return await updateUserProfileData(userId, data);

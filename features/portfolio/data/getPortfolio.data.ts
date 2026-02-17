@@ -32,6 +32,9 @@ export async function getPortfolioByUsername(
       bio: true,
       portfolioMode: true,
       locale: true,
+      sectionOrder: true,
+      contactLinks: true,
+      sectionVisibility: true,
     },
   });
 
@@ -56,6 +59,9 @@ export async function getPortfolioByUsername(
       bio: user.bio,
       portfolioMode: user.portfolioMode as PortfolioMode,
       locale: user.locale,
+      sectionOrder: user.sectionOrder,
+      contactLinks: user.contactLinks as Record<string, any>,
+      sectionVisibility: user.sectionVisibility as Record<string, boolean>,
     },
     experiences,
     skills,

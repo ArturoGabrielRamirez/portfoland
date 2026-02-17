@@ -54,6 +54,26 @@ export async function POST(req: Request) {
         }
         const userId = session.user.id;
 
+        // 🆕 Check and consume AI lives (3 per day limit)
+        const { hasLives, remainingLives, error } = await checkAndConsumLives(userId);
+
+        if (!hasLives) {
+            console.log(`LIVES_DEPLETED | User: ${userId} | Remaining: ${remainingLives}`);
+            return new Response(
+                JSON.stringify({
+                    error: error || 'No AI energy remaining. Recharge tomorrow!',
+                    remainingLives: 0,
+                    resetTime: 'tomorrow'
+                }),
+                {
+                    status: 429,
+                    headers: { 'Content-Type': 'application/json' }
+                }
+            );
+        }
+
+        console.log(`LIVES_CONSUMED | User: ${userId} | Remaining: ${remainingLives}`);
+
         const { messages } = await req.json();
         console.log(`User: ${userId} | Messages: ${messages?.length || 0}`);
 

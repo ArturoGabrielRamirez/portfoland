@@ -124,6 +124,8 @@ function ExperienceFormComponent({
   const formatDateForInput = (date: Date | null | undefined): string => {
     if (!date) return '';
     const d = new Date(date);
+    // Check if date is valid
+    if (isNaN(d.getTime())) return '';
     return d.toISOString().split('T')[0];
   };
 

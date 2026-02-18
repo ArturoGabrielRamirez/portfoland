@@ -8,7 +8,7 @@
 
 'use client'
 
-import { useTransition } from 'react'
+import React, { useTransition } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 import { Globe, Check, ChevronDown } from 'lucide-react'
 
@@ -66,6 +66,7 @@ export function LanguageSwitcher({
   isAuthenticated = false,
   variant = 'dropdown',
 }: LanguageSwitcherProps) {
+  const [mounted, setMounted] = React.useState(false)
   const locale = useLocale() as Locale
   const t = useTranslations('languageSwitcher')
   const tCommon = useTranslations('common')
@@ -73,9 +74,19 @@ export function LanguageSwitcher({
   const pathname = usePathname()
   const [isPending, startTransition] = useTransition()
 
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
   // Get current language option
   const currentLanguage =
     LANGUAGE_OPTIONS.find((lang) => lang.code === locale) ?? LANGUAGE_OPTIONS[0]
+
+  if (!mounted) {
+    return (
+      <div className={cn('h-9 w-[100px] animate-pulse rounded-md bg-[#1A2332]/50', className)} />
+    )
+  }
 
   /**
    * Handles locale change by updating the URL and optionally saving to database.

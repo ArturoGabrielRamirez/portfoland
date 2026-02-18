@@ -4,10 +4,9 @@
 Integrate the Vercel AI SDK into Portfoland to provide a "Guided CV Interview" experience that helps users populate their profiles and "AI Content Suggestions" to optimize their professional descriptions.
 
 ## User Stories
-- [NEW] As a new user, I want an AI assistant to interview me about my career so that I don't have to fill out complex forms manually. (Guided CV Interview)
-- [NEW] As a portfolio owner, I want the AI to suggest improvements to my project descriptions so that my portfolio sounds more professional and impactful. (AI Content Suggestions)
-- [NEW] As a visitor, I want to hear a narrative summary of the owner's career in the public portfolio AI section. (Career Timeline Narrator)
-- [NEW] As a portfolio owner, I want to ask the AI what skills I should learn next based on my current tree. (Skill Explorer)
+- [NEW] As a new user, I want an "RPG Master" AI to interview me about my career journey so that I feel like I'm building a character.
+- [NEW] As a system admin, I want to limit users to 3 AI interactions per day (Lives) to manage operational costs.
+- [NEW] As a user, I want the AI to "see" my current skill tree so it can suggest exactly which "nodes" to learn next and provide documentation links. (Learning Path Suggester)
 
 ## Specific Requirements
 
@@ -30,13 +29,20 @@ Integrate the Vercel AI SDK into Portfoland to provide a "Guided CV Interview" e
 
 ### 4. AI Public Portfolio Section (The Narrator)
 - **Public Assistant**: Move the AI section from a placeholder to a functional "Storyteller" component.
-- **Location**: This lives in the `AI` section of the public portfolio (`/[locale]/[username]`).
 - **Narrator Mode**: The public-facing AI summarizes the user's journey for recruiters. (Gaming: "AI Core Interface"; Professional: "Professional Assistant").
-- **Safety**: Implement strict system prompts to prevent the AI from hallucinating or going off-topic.
 
-### 5. Skill Explorer Integration (Idea #2)
-- **Concept**: The AI analyzes the user's `UserSkill` records.
-- **Advice**: Users can ask "What's next for my frontend path?" and the AI suggests nodes to unlock in the Skill Tree.
+### 5. Gamification: RPG Master Persona (Task 3.2 refined)
+- **Voice**: The AI speaks as a Dungeon Master or AI Overseer. "MISSION LOG DETECTED", "PROPOSING NEW SKILL ACQUISITION...".
+- **Interaction**: Questions should be framed as "Quest Objectives".
+
+### 6. Gamification: Lives System (Cost Protection)
+- **Quota**: Users get 3 "Lives" (interactions) per 24 hours.
+- **Tracking**: Store `remainingLives` and `lastResetDate` in the User's `meta` JSON field.
+- **Reset Logic**: A middleware or helper should reset lives if `lastResetDate` is not today.
+
+### 7. Skill Tree Reader & Suggester (Task 4.0 expanded)
+- **Tool CALLING**: Add `getSkillTreeData` tool so the AI can retrieve current levels.
+- **External Links**: AI suggests YouTube, MDN, or documentation links for low-level or missing nodes.
 
 ## Technical Architecure
 

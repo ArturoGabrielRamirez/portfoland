@@ -13,6 +13,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Loader2, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/features/shadcn/ui/button';
 import { Input } from '@/features/shadcn/ui/input';
@@ -34,6 +35,7 @@ import { createProject } from '../actions/createProject';
 import { updateProject } from '../actions/updateProject';
 import { ImageUpload } from './ImageUpload';
 import { LinksFieldArray } from './LinksFieldArray';
+import { ImproveDescriptionButton } from '@/features/ai/components/ImproveDescriptionButton';
 
 /**
  * Generate a URL-friendly slug from a title
@@ -68,6 +70,8 @@ function ProjectFormComponent({
   className,
 }: ProjectFormProps) {
   const t = useTranslations('projects');
+  const params = useParams();
+  const locale = params.locale as string || 'en';
   const [isPending, startTransition] = useTransition();
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>(
     'idle'
@@ -236,9 +240,18 @@ function ProjectFormComponent({
           name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-white">
-                {t('form.description')}
-              </FormLabel>
+              <div className="flex items-center justify-between mb-2">
+                <FormLabel className="text-white">
+                  {t('form.description')}
+                </FormLabel>
+                <ImproveDescriptionButton
+                  currentDescription={field.value}
+                  onImproved={(improved) => field.onChange(improved)}
+                  mode="gaming"
+                  locale={locale}
+                  context="project"
+                />
+              </div>
               <FormControl>
                 <textarea
                   {...field}

@@ -1,13 +1,109 @@
 # Portfoland - Product Strategy & Ideas
 
-**Última actualización:** 2026-02-15
-**Estado:** Documentación de diseño y estrategia de producto
+**Última actualización:** 2026-02-17
+**Estado:** Documentación de diseño y estrategia de producto + AI Features Sprint 1-3 COMPLETADOS ✅
+
+> **IMPORTANTE:** El roadmap activo es [ROADMAP_V2.md](./ROADMAP_V2.md) (post-auditoría Opus).
+> Cambios clave: **Tech Mode + Classic Mode** (reemplaza Gaming/Professional), bugs críticos como Phase 0, subdominios unificados.
+> TWO_MODE_STRATEGY.md queda como referencia histórica.
 
 ---
 
 ## 📚 Índice de Documentos
 
 Este directorio contiene toda la estrategia de producto, ideas de features, y referencias de diseño para Portfoland.
+
+---
+
+## ✅ **AI FEATURES IMPLEMENTADOS** (Sprint 1-3)
+
+### **Sprint 1: AI Assistant Core** ✅ COMPLETADO
+**Implementado:** 2026-02-16
+**Ubicación:** Dashboard → Chat Panel
+
+**Features:**
+- ✅ Chat conversacional con streaming (Vercel AI SDK + Gemini 2.0 Flash)
+- ✅ System prompts bilingües (ES/EN) adaptados al locale
+- ✅ Tool calling para sugerencias dinámicas
+- ✅ Persistencia de conversaciones en MongoDB
+- ✅ Lives system (3 vidas/día, reset a medianoche)
+- ✅ Refetch automático de vidas después de cada mensaje
+
+**Costo:** ~$0.001 per conversation turn
+**Archivos clave:**
+- [`app/api/chat/route.ts`](../../app/api/chat/route.ts)
+- [`features/dashboard/components/ai/AIChatContainer.tsx`](../../features/dashboard/components/ai/AIChatContainer.tsx)
+- [`lib/ai/lives.ts`](../../lib/ai/lives.ts)
+- [`lib/ai/prompts.ts`](../../lib/ai/prompts.ts)
+
+---
+
+### **Sprint 2: Content Improvement** ✅ COMPLETADO
+**Implementado:** 2026-02-16
+**Ubicación:** Dashboard → Bio, Projects, Experiences
+
+**Features:**
+- ✅ "Improve with AI" button en bio personal
+- ✅ "Improve with AI" button en project descriptions
+- ✅ "Improve with AI" button en experience descriptions
+- ✅ Personalización basada en skills del usuario (top 8)
+- ✅ Cálculo de años de experiencia desde DB (WORK → ANY → oldest skill)
+- ✅ Input opcional para contexto adicional del usuario
+- ✅ Markdown support con preview en vivo
+- ✅ Límite de bio aumentado a 1000 caracteres
+- ✅ Consume 1 vida por mejora
+
+**Costo:** ~$0.0005 per improvement
+**Archivos clave:**
+- [`app/api/ai/improve-bio/route.ts`](../../app/api/ai/improve-bio/route.ts)
+- [`app/api/ai/improve-description/route.ts`](../../app/api/ai/improve-description/route.ts)
+- [`features/ai/components/ImproveBioButton.tsx`](../../features/ai/components/ImproveBioButton.tsx)
+- [`features/ai/components/ImproveDescriptionButton.tsx`](../../features/ai/components/ImproveDescriptionButton.tsx)
+
+---
+
+### **Sprint 3: Public AI Narrator (Executive Summary)** ✅ COMPLETADO
+**Implementado:** 2026-02-17
+**Ubicación:** Public Portfolio → "AI Core" / "AI Summary" section
+
+**Features:**
+- ✅ Resumen ejecutivo AI-generated (120-150 palabras)
+- ✅ Analiza trayectoria completa (skills, experiences, projects)
+- ✅ NO repite bio verbatim - cuenta historia cohesiva
+- ✅ Identifica hilo conductor de carrera
+- ✅ **Quick Stats**: Años exp (< 1 si es 0), proyectos (total + completados), skills
+- ✅ **Featured Projects**: Top 3 con tech stack + links (GitHub/Demo)
+- ✅ **Quick Access**: GitHub, LinkedIn, Email, Website
+- ✅ Cache 24h en `User.meta` para reducir costos
+- ✅ Prompt unificado para Gaming y Professional modes
+- ✅ Bilingüe (ES/EN)
+
+**Costo:** ~$0.0003 per narrative (cacheable 24h)
+**Archivos clave:**
+- [`app/api/ai/narrate-portfolio/route.ts`](../../app/api/ai/narrate-portfolio/route.ts)
+- [`features/portfolio/components/gaming/GamingAI.tsx`](../../features/portfolio/components/gaming/GamingAI.tsx)
+- [`features/portfolio/components/professional/ProfessionalAI.tsx`](../../features/portfolio/components/professional/ProfessionalAI.tsx)
+
+---
+
+## 🎨 **UI FEATURES IMPLEMENTADOS**
+
+### **Toast Border Effects (Cyberpunk Notifications)** ✅ COMPLETADO
+**Implementado:** 2026-02-16
+**Ubicación:** Global (todas las páginas)
+
+**Features:**
+- ✅ Borde pulsante global con color según tipo de notificación
+- ✅ Hexágonos en esquinas con animación
+- ✅ Efecto de scanline flash
+- ✅ Auto-trigger con `useCyberpunkToast()` hook
+- ✅ Color-coded: Error (rojo), Success (verde), Warning (amarillo), Info (cyan)
+- ✅ Integrado globalmente en `app/[locale]/layout.tsx`
+
+**Documentación:** [`features/ui/README.md`](../../features/ui/README.md)
+**Ideas futuras:** [`features/ui/IDEAS.md`](../../features/ui/IDEAS.md) - Screen shake, glitch effects, particle systems
+
+---
 
 ### 🎯 Estrategia Core
 
@@ -95,7 +191,22 @@ Este directorio contiene toda la estrategia de producto, ideas de features, y re
    - Gaming Mode: desde GitHub activity
    - Effort: 3 días | Impact: Medio
 
-**Cost estimation:** ~$0.14/user/month (~$140/mes para 1000 users)
+**Cost estimation (original):** ~$0.14/user/month (~$140/mes para 1000 users)
+
+**Cost tracking (implementado - Gemini 2.0 Flash):**
+- Chat conversation turn: ~$0.001
+- Bio improvement: ~$0.0005
+- Description improvement: ~$0.0005
+- Public narrator (cacheable 24h): ~$0.0003
+
+**Ejemplo de uso promedio/user/month:**
+- 10 chat messages: $0.01
+- 2 bio improvements: $0.001
+- 5 description improvements: $0.0025
+- 1 narrator generation (cache): $0.0003
+- **Total:** ~$0.014/user/month (10x más barato que estimación original)
+
+**Para 1000 usuarios activos:** ~$14/mes (vs $140 estimado)
 
 **Principio:** IA asiste, el usuario decide. No reemplaza autenticidad.
 
@@ -119,17 +230,127 @@ Este directorio contiene toda la estrategia de producto, ideas de features, y re
 - Weekly challenges
 - Anti-cheating measures
 
+**EXTENDED FEATURES (Documentadas en AI_SKILL_ASSESSMENT_GAME.md):**
+
+**A. Mock Interviews 🎭**
+- **Technical Interviews:** Preguntas conceptuales + coding challenges + system design
+- **Behavioral Interviews:** STAR method evaluation con feedback estructurado
+- **System Design Interviews:** Para roles senior/lead con evaluación de arquitectura
+- **Cost:** ~$0.15-$0.25 per interview (30 min, ~15 exchanges)
+- **Freemium:** 1 interview/mes gratis, 5 con Pro ($9/mes), unlimited con Premium ($29/mes)
+
+**B. Career Coaching & Tips 💡**
+- **Skill Gap Analysis:** Identifica gaps entre nivel actual y target (e.g., Mid-level → Senior)
+- **Action Plan:** Roadmap personalizado con timeline (3-6 meses)
+- **Resource Recommendations:** Cursos, proyectos sugeridos, frecuencia de práctica
+- **Salary Projection:** Estimación de salary range con improvements
+- **Cost:** ~$0.01 per coaching session (relativamente económico)
+
+**C. Learning Resources Recommendations 📚**
+- **Videos:** YouTube, Udemy, cursos online con ratings y relevance score
+- **Articles:** GitHub repos, blog posts, documentation
+- **Books:** Industry standards recomendados por relevancia
+- **Practice Platforms:** LeetCode, HackerRank, coding challenges
+- **Personalization:** Basado en skill gaps + learning style (visual/reading/hands-on)
+- **Progress Tracking:** Marca recursos como completados, % completion
+- **Cost:** Gratis (web scraping/APIs) + ~$0.01 para AI recommendations
+
+**D. Interview Preparation Checklist ✅**
+- **Technical Prep:** Review patterns, practice algorithms, mock interviews
+- **Behavioral Prep:** STAR stories, company research, questions for interviewer
+- **Portfolio Prep:** Update projects, add metrics, practice walkthrough
+- **Day Before:** Tech check (camera/mic), background setup, print resume
+- **Personalized:** Adaptado a company/role si se especifica
+
+**Timing:** Phase 2 (v1.3) para Career Coaching, Phase 3 (v1.4) para Mock Interviews
+
+---
+
+### 🌟 AI FEATURES - PHASE 4+ (Ideas Futuras)
+
+Documentadas en [../ai-features-ideas.md](../ai-features-ideas.md) - Ideas exploratorias post-MVP
+
+#### **Ideas de Alto Valor:**
+
+**1. Portfolio Adaptativo al Visitante** 🎯
+- **Concepto:** Portfolio se reordena según quien lo mira (Recruiter / Tech Lead / Founder / Cliente)
+- **Capacidades:** Reordena skills, resalta proyectos relevantes, ajusta timeline, genera mini pitch
+- **Ejemplo:** "Para un Tech Lead, este perfil destaca arquitectura, escalabilidad y liderazgo técnico"
+- **Complejidad:** L (Large) | **Impact:** Muy Alto (wow factor)
+
+**2. Explorador Inteligente de Skills (Árbol Vivo)** 🌳
+- **Concepto:** Skill tree conversacional con IA
+- **Preguntas:** "¿Qué skills me faltan para ser Senior Frontend?" / "Comparame con Backend Dev"
+- **Visual:** IA resalta nodos relevantes, sugiere caminos: "Si reforzás X → Y → Z, en 3-6 meses estás listo para SSR"
+- **Complejidad:** M (Medium) | **Impact:** Alto (integra con Phase 3)
+
+**3. Timeline Narrador (IA Cuenta Tu Historia)** 📖
+- **Concepto:** IA como narrador de carrera profesional
+- **Capacidades:** "Contame la historia", "¿Qué decisiones fueron clave?", "¿Dónde hubo cambios de rumbo?"
+- **Ejemplo output:** "En 2023 hay un punto de inflexión: pasa de ejecutar tareas a liderar decisiones técnicas"
+- **Valor:** Oro para recruiters que quieren entender el journey
+- **Complejidad:** S (Small) | **Impact:** Medio (diferenciador único)
+
+**4. CV Dinámico Generado en Tiempo Real** 📄
+- **Concepto:** CV optimizado para cada job description
+- **Flujo:** User pega job description → IA genera CV optimizado, ajusta bullets, reordena skills, marca gaps
+- **Extra:** "Este CV tiene 82% de match con la posición"
+- **Complejidad:** M (Medium) | **Impact:** Alto (uso práctico inmediato)
+
+**5. Storytelling Automático** ✍️
+- **Concepto:** Botón "Contá esta carrera como historia"
+- **Outputs:** LinkedIn About section, Pitch de 30 segundos, Bio para web
+- **Complejidad:** S (Small) | **Impact:** Medio (quick win)
+
+**6. Modo Comparación** 🔄
+- **Concepto:** Comparar dos timelines, dos skill trees
+- **Capacidades:** IA explica diferencias, gaps, fortalezas
+- **Complejidad:** M (Medium) | **Impact:** Bajo (nicho)
+
+#### **Priorización Sugerida Phase 4:**
+
+| Prioridad | Feature | Complejidad | Impact | Timing |
+|-----------|---------|-------------|--------|--------|
+| 1 | CV Dinámico (#4) | M | Alto | v1.5 |
+| 2 | Explorador de Skills (#2) | M | Alto | v1.6 |
+| 3 | Timeline Narrador (#3) | S | Medio | v1.6 |
+| 4 | Career Coach (extended) | S | Medio | v1.7 |
+| 5 | Portfolio Adaptativo (#1) | L | Muy Alto | v2.0 |
+| 6 | Mock Interviews (extended) | L | Alto | v2.0 |
+| 7 | Storytelling (#5) | S | Medio | v1.7 |
+| 8 | Modo Comparación (#6) | M | Bajo | v2.1+ |
+
+**Nota:** Requiere Vercel AI SDK (ya implementado en v1.2), streaming responses para UX fluida, data model de skills preparado
+
 ---
 
 ### 🎨 Referencias de Diseño
 
 #### 6. [UI_LIBRARIES_REFERENCE.md](./UI_LIBRARIES_REFERENCE.md)
-**Bibliotecas de componentes cyberpunk/gaming**
+**Bibliotecas de componentes cyberpunk/gaming para futuras mejoras**
 
-- **The Gridcn** (Tron-inspired) - 50+ componentes, 3D effects
-- **Glitchcn** (Terminal-styled) - 12 componentes, lightweight
-- Comparación y casos de uso
-- Consideración para futuro tema "Tron/Cyberpunk" (además de Gaming y Professional)
+**The Gridcn** ([thegridcn.com](https://thegridcn.com/))
+- 50+ componentes Tron-inspired con Three.js
+- HUD elements, terminal aesthetics, cyberpunk cards
+- 6 temas de color configurables
+- Componentes 3D: Scanner, Hologram, Particle effects
+- Animaciones avanzadas: Glitch, Scan, Data flow
+- **Uso propuesto:** Gaming Mode v2.0 (reemplazo/complemento de componentes actuales)
+- **Ventaja:** Ahorra semanas de desarrollo de efectos visuales
+
+**Glitchcn** ([glitchcn-ui.vercel.app](https://glitchcn-ui.vercel.app/))
+- 12 componentes terminal-styled lightweight
+- Aesthetic minimalista cyberpunk sin dependencias pesadas
+- Command line interface, ASCII art, retro terminal
+- **Uso propuesto:** Complemento para console/terminal elements en Gaming Mode
+- **Ventaja:** Ligero, no requiere Three.js, fácil integración
+
+**Estrategia de adopción:**
+- **Fase 1 (actual):** Shadcn UI base + componentes gaming custom
+- **Fase 2 (v2.0):** Migración gradual a The Gridcn + Glitchcn para Gaming Mode
+- **Fase 3:** Tercer tema "Tron/Cyberpunk" como opción premium
+
+**Decisión:** Explorar post-MVP para reducir tiempo de desarrollo de efectos visuales
 
 ---
 
@@ -155,6 +376,29 @@ Este directorio contiene toda la estrategia de producto, ideas de features, y re
 - Timeline con Google Maps + hexágonos
 - Sistema gaming naming (Developer → Code Wizard)
 - Colores establecidos, componentes gaming disponibles
+
+#### 9. [CV_IMPROVEMENT_PROMPTS.md](./CV_IMPROVEMENT_PROMPTS.md) 📄 **PROMPTS CURRADOS**
+**6 prompts específicos para CV optimization con IA**
+
+**Prompts incluidos:**
+1. **Reality Check del Reclutador** - Por qué el CV no genera entrevistas
+2. **Optimización para ATS** - Pasar sistemas de tracking (crítico, 75% empresas usan ATS)
+3. **Mejora de Impacto y Resultados** - Logros medibles vs responsabilidades
+4. **Detector de Brechas de Keywords** - Gap analysis vs job description
+5. **Detector de Debilidades** - Red flags, inconsistencias, vacíos
+6. **Diferenciación Competitiva** - Ventaja única vs otros candidatos
+
+**Por qué son valiosos:**
+- **Ultra-específicos** (no genéricos)
+- **Accionables** (output estructurado)
+- **Costo-efectivos** (~$0.016 por análisis)
+- **Críticos para Professional Mode** (ATS optimization = must-have)
+
+**Feature relacionado:** CV Dinámico (Phase 4, Prioridad #1)
+**Timing:** v1.5-1.6 (2-3 semanas implementación)
+**Freemium:** 1 análisis/mes gratis, 5 con Pro ($9/mes)
+
+**Ventaja competitiva:** Portfoland = Portfolio + CV + Validation + AI Optimization (todo integrado, nadie más tiene esto)
 
 ---
 
@@ -207,15 +451,29 @@ Week 4: Integration
   - Public portfolio templates
 ```
 
-### v1.2 - AI Features (+2 semanas)
+### v1.2 - AI Features ✅ COMPLETADO (3 Sprints - 5 días)
 ```
-Sprint 1: Quick Wins
-  - Auto-suggest skills
-  - Bio generator
-  - Portfolio health check
+✅ Sprint 1 (Feb 16): AI Assistant Core
+  - Chat conversacional con Gemini 2.0 Flash
+  - Lives system (3/día, reset medianoche)
+  - Persistencia de conversaciones
+  - System prompts bilingües
 
-Sprint 2: Enhanced (opcional)
-  - Project descriptions
+✅ Sprint 2 (Feb 16): Content Improvement
+  - Improve bio with AI
+  - Improve project descriptions
+  - Improve experience descriptions
+  - Markdown support + preview
+
+✅ Sprint 3 (Feb 17): Public AI Narrator
+  - Executive Summary en portfolios públicos
+  - Quick Stats + Featured Projects + Quick Access
+  - Cache 24h, prompt personalizado
+  - NO repite bio
+
+⏳ Sprint 4 (Futuro): Advanced Features
+  - Auto-suggest skills desde GitHub
+  - Portfolio health check
   - SEO meta generator
 ```
 
@@ -282,7 +540,7 @@ Basado en feedback:
 
 ## 💡 Decisiones Clave
 
-### ✅ Decidido
+### ✅ Decidido - Product Strategy
 1. **Two-Mode Strategy** (Gaming + Professional) vs Multi-Career
 2. **GitHub validation** como diferenciador (Gaming Mode)
 3. **Moderada customización** en Professional Mode (no súper dinámica en v1)
@@ -290,12 +548,45 @@ Basado en feedback:
 5. **Mobile-first**, responsive design
 6. **Feature-based architecture** (features/{name}/)
 
+### ✅ Decidido - Technical Architecture
+1. **Three-layer pattern** (action → service → data)
+   - Actions: Server actions con `actionWrapper` + Yup validation
+   - Services: Business logic reutilizable
+   - Data: Pure Prisma queries
+2. **Vercel AI SDK + Gemini 2.0 Flash**
+   - Costo: ~10x más barato que GPT-4
+   - Streaming support para chat
+   - Tool calling para features dinámicas
+3. **Lives system en `User.meta` JSON**
+   - 3 vidas/día por usuario
+   - Reset a medianoche (timezone del usuario)
+   - Almacenado en MongoDB como JSON flexible
+4. **Caching strategy para AI narratives**
+   - 24h cache en `User.meta`
+   - Keys: `aiNarrative_${mode}_${locale}`
+   - Invalidación manual con script
+5. **No global state library** (Redux/Zustand)
+   - Server state via Server Actions
+   - URL state via searchParams
+   - Local state via useState
+6. **i18n con next-intl**
+   - Route-based locale (`/[locale]/`)
+   - System prompts bilingües en endpoints
+7. **Prisma + MongoDB**
+   - Flexible schema (JSON fields: meta, contactLinks, sectionVisibility)
+   - Sin migraciones complejas
+8. **Barrel exports** para features
+   - `features/gaming/index.tsx` - Gaming UI components
+   - `features/shadcn/ui/` - Shadcn components
+   - Clean imports: `import { HUDPanel } from '@/features/gaming'`
+
 ### ⏳ Por Decidir
 1. Pricing model (freemium? premium features?)
 2. Portfolio analytics (mostrar views/clicks?)
 3. Social features (follow users? like portfolios?)
 4. Integración con job boards?
 5. White-label option para empresas?
+6. The Gridcn/Glitchcn adoption timeline
 
 ---
 
@@ -316,10 +607,27 @@ Basado en feedback:
 - Dribbble API: https://developer.dribbble.com/
 - Claude API: https://docs.anthropic.com/
 
-### Internal Docs
-- Memoria: `C:\Users\user\.claude\projects\...\memory\MEMORY.md`
-- Agent-OS specs: `agent-os/specs/`
-- Design backups: `backups/design-idea-v1/`, `backups/design-idea-v2/`
+### Internal Docs & Key Files
+- **Memoria del proyecto:** [`C:\Users\user\.claude\projects\C--Users-user-code-nextjs-portfoland\memory\MEMORY.md`](C:\Users\user\.claude\projects\C--Users-user-code-nextjs-portfoland\memory\MEMORY.md)
+  - Patrones del proyecto, convenciones, decisiones arquitectónicas
+  - Key Patterns, Toast Border Effects, Completed Specs
+- **Specs de implementación:** `agent-os/specs/`
+  - [`2026-02-16-ai-assistant/`](../specs/2026-02-16-ai-assistant/) - AI Assistant (Sprint 1-3)
+  - [`2026-02-04-portfolio-template-system/`](../specs/2026-02-04-portfolio-template-system/) - Portfolio System
+- **Design backups/references:**
+  - `backups/design-idea-v1/` - Full app structure con shadcn UI
+  - `backups/design-idea-v2/` - CRT monitor, hex-badge, login-page
+- **Feature implementations:**
+  - [`features/ai/`](../../features/ai/) - AI components (ImproveBioButton, ImproveDescriptionButton)
+  - [`features/dashboard/components/ai/`](../../features/dashboard/components/ai/) - AI Chat Container
+  - [`features/portfolio/components/gaming/GamingAI.tsx`](../../features/portfolio/components/gaming/GamingAI.tsx) - Public narrator
+  - [`features/ui/`](../../features/ui/) - Toast effects, form indicators
+  - [`lib/ai/`](../../lib/ai/) - Lives system, prompts
+- **API endpoints:**
+  - [`app/api/chat/route.ts`](../../app/api/chat/route.ts) - Chat streaming
+  - [`app/api/ai/improve-bio/route.ts`](../../app/api/ai/improve-bio/route.ts) - Bio improvement
+  - [`app/api/ai/improve-description/route.ts`](../../app/api/ai/improve-description/route.ts) - Description improvement
+  - [`app/api/ai/narrate-portfolio/route.ts`](../../app/api/ai/narrate-portfolio/route.ts) - Public narrator
 
 ---
 
@@ -370,6 +678,97 @@ PROFESSIONAL MODE AESTHETIC:
 
 ---
 
+---
+
+## ⚙️ **Consideraciones Técnicas AI Features**
+
+### Rate Limiting & Abuse Prevention
+**Implementación recomendada (no implementado aún):**
+```typescript
+// Upstash Redis + Ratelimit
+- 10 requests/hour per user para AI features
+- Sliding window algorithm
+- Graceful degradation (mostrar mensaje claro vs error)
+```
+
+### Caching Strategy (✅ Implementado)
+```typescript
+// Cache AI responses para reducir costos
+- Bio improvements: No cache (user puede editar input)
+- Narrator: 24h cache en User.meta (minimal changes)
+- Chat conversations: Persist en DB para history
+- Key pattern: `aiNarrative_${mode}_${locale}`
+```
+
+### Cost Monitoring
+**Tracking necesario:**
+- Logs de API calls por usuario
+- Costos diarios/mensuales agregados
+- Alertas si costo/user > threshold ($0.10/mes)
+- Dashboard interno para monitoring
+
+### Quality Assurance
+**Best practices:**
+1. **Transparencia:** Siempre mostrar que el contenido es AI-generated
+2. **Editabilidad:** Permitir edición fácil post-generación
+3. **Regenerate:** Botón para probar otra versión
+4. **Optional:** No forzar uso de AI features
+5. **Fallbacks:** Si AI falla, degradar gracefully (no romper UX)
+
+### Anti-Cheating (Skill Assessment)
+**Cuando se implemente:**
+- Time limits por pregunta
+- Question randomization (orden opciones + orden preguntas)
+- Cooldown periods (24h retry si falla)
+- Browser tab detection (3 strikes)
+- AI detection de copy-paste answers
+
+---
+
+## 📊 **Estado Actual del Proyecto** (2026-02-17)
+
+### ✅ **Completado**
+- Core portfolio system (Gaming/Professional modes)
+- Dashboard con profile management
+- Timeline con Google Maps + hexágonos
+- Skills con XP system
+- Projects showcase
+- **AI Features (Sprint 1-3):**
+  - ✅ AI Chat Assistant (Gemini 2.0 Flash)
+  - ✅ Lives system (3/día)
+  - ✅ Content improvement (bio, descriptions)
+  - ✅ Public AI Narrator (Executive Summary)
+  - ✅ Toast border effects (cyberpunk)
+- Better Auth (email/password)
+- i18n (ES/EN) con next-intl
+- Markdown support + preview
+- Responsive design
+
+### 🚧 **En Progreso / Próximo**
+- GitHub validation (diferenciador clave)
+- Real XP calculation
+- Dynamic goals
+- Skill credibility scores
+- Feature unlocks
+
+### 📋 **Roadmap Futuro**
+- **v1.1:** Professional Mode enhancements (4 semanas)
+- **v1.2+:** AI Skill Assessment Game (GAME-CHANGER)
+- **v2.0:** The Gridcn/Glitchcn integration
+- **v2.0+:** Multi-industry expansion
+
+### 💰 **Cost Analysis (Actualizado)**
+- **Desarrollo AI:** ~$0.014/user/mes (10x más barato que estimado)
+- **Gemini 2.0 Flash:** Costo-efectivo vs GPT-4
+- **Cache strategy:** Reduce costos significativamente (narrativas 24h)
+
+---
+
 **Última palabra:** Este conjunto de documentos representa ~6 horas de análisis de producto, diseño de arquitectura, y estrategia. Todo está pensado para ser **pragmático** (quick to market) mientras mantiene **escalabilidad futura**.
 
-**Next step:** Implementar Two-Mode Strategy siguiendo roadmap de 4 semanas.
+**Los AI Features (Sprint 1-3) se completaron en 5 días**, demostrando la viabilidad de la estrategia de IA asistida. El siguiente paso crítico es **GitHub validation** para consolidar el diferenciador en Gaming Mode.
+
+**Next step:**
+1. Implementar GitHub API validation (diferenciador clave)
+2. Preparar Two-Mode Strategy (Professional Mode enhancements)
+3. Comenzar diseño de AI Skill Assessment Game

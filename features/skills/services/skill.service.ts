@@ -18,6 +18,7 @@ import {
   removeUnlinkedSkillSourcesData,
   getDefaultCategoryForExperienceData,
 } from '../data';
+import { invalidateNarrativeCache } from '@/lib/ai/cache';
 
 // =============================================================================
 // Input Types
@@ -102,6 +103,7 @@ export async function createSkillService(
     dateStarted,
   });
 
+  invalidateNarrativeCache(userId).catch(() => {});
   return userSkill;
 }
 
@@ -138,6 +140,7 @@ export async function updateSkillService(
     learningSources: learningSources?.trim(),
   });
 
+  invalidateNarrativeCache(userId).catch(() => {});
   return updatedSkill;
 }
 
@@ -166,6 +169,7 @@ export async function deleteSkillService(
     throw new Error(result.error || SKILL_MESSAGES_EN.skillNotFound);
   }
 
+  invalidateNarrativeCache(userId).catch(() => {});
   return result;
 }
 

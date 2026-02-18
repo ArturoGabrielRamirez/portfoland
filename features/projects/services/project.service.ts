@@ -15,6 +15,7 @@ import {
   getProjectsByUserIdData,
 } from '../data';
 import { PROJECT_MESSAGES } from '../constants/messages';
+import { invalidateNarrativeCache } from '@/lib/ai/cache';
 
 /**
  * Input for creating a project via service
@@ -97,6 +98,7 @@ export async function createProjectService(
     order: input.order ?? null,
   });
 
+  invalidateNarrativeCache(input.userId).catch(() => {});
   return project;
 }
 
@@ -143,6 +145,7 @@ export async function updateProjectService(
     updateData as unknown as Parameters<typeof updateProjectData>[0]
   );
 
+  invalidateNarrativeCache(userId).catch(() => {});
   return project;
 }
 
@@ -179,6 +182,7 @@ export async function deleteProjectService(
   }
 
   const project = await deleteProjectData(id);
+  invalidateNarrativeCache(userId).catch(() => {});
   return project;
 }
 

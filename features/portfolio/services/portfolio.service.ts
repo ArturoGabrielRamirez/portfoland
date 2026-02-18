@@ -8,6 +8,7 @@
 import { PORTFOLIO_MODES, PORTFOLIO_MESSAGES } from '../constants/messages';
 import { updatePortfolioModeData } from '../data/updatePortfolioMode.data';
 import { updateUserProfileData } from '../data/updateProfile.data';
+import { invalidateNarrativeCache } from '@/lib/ai/cache';
 
 const VALID_MODES = [PORTFOLIO_MODES.PROFESSIONAL, PORTFOLIO_MODES.GAMING];
 
@@ -52,5 +53,7 @@ export async function updateProfileService(
     sectionVisibility?: Record<string, any>;
   }
 ) {
-  return await updateUserProfileData(userId, data);
+  const result = await updateUserProfileData(userId, data);
+  invalidateNarrativeCache(userId).catch(() => {});
+  return result;
 }

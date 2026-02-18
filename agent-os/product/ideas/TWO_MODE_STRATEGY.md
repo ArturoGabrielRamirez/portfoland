@@ -40,6 +40,97 @@ En lugar de múltiples "Career Paths", tener **DOS modos complementarios:**
 
 ---
 
+## 🧠 Evolución del Concepto: Digital vs Presencial
+
+**Fecha agregado:** 2026-02-17
+**Idea:** Refinar el eje de separación entre los dos modos, de "developers vs todos" a **"profesiones digitales vs profesiones presenciales"**.
+
+### El eje real de diferenciación
+
+```
+GAMING MODE 🎮 → Profesiones DIGITALES
+─────────────────────────────────────────────────────
+Trabajan en pantalla, crean assets digitales,
+su portfolio SE PUEDE VER en internet.
+
+  • Software Developers     → Validación: GitHub
+  • UI/UX Designers         → Validación: Behance, Dribbble
+  • Content Creators        → Validación: YouTube, Substack
+  • Fotógrafos (digitales)  → Validación: Instagram, 500px
+  • Motion Designers        → Validación: Behance, Vimeo
+  • Data Scientists         → Validación: Kaggle, GitHub
+
+PROFESSIONAL MODE 💼 → Profesiones PRESENCIALES / DE SERVICIO
+─────────────────────────────────────────────────────
+Trabajan con el cuerpo, el espacio o el cliente físico.
+Su trabajo es difícil de "linkear" → necesitan showcase visual.
+
+  • Peluqueros / Barberos   → Antes/después, Google Reviews
+  • Manicuras               → Foto de trabajos, reseñas
+  • Arquitectos             → Renders, fotos de obra
+  • Chefs / Pasteleros      → Fotos de platos, eventos
+  • Personal Trainers       → Transformaciones, testimonials
+  • Psicólogos / Coaches    → Servicios, metodología, contacto
+  • Maquilladores           → Portfolio fotográfico, editoriales
+```
+
+### Por qué este eje es más claro
+
+| Criterio | "Developers vs todos" (original) | "Digital vs Presencial" (nuevo) |
+|----------|-----------------------------------|---------------------------------|
+| **Claridad al usuario** | 🟡 Un designer no sabe si es Gaming | 🟢 Muy claro dónde encaja |
+| **Validación externa** | 🟡 Ambigua para no-devs | 🟢 APIs para digitales, manual para presenciales |
+| **Gamification fit** | 🟡 Raro gamificar a un fotógrafo | 🟢 Natural para cualquier digital |
+| **Marketing message** | 🟡 "Para devs" (limita) | 🟢 "Para los que trabajan en pantalla" |
+| **Escalabilidad** | 🟡 Gaming = solo tech | 🟢 Gaming puede crecer a todo lo digital |
+
+### Implicaciones en Gaming Mode
+
+Si Gaming Mode = "Profesiones Digitales", entonces:
+
+```typescript
+// Gaming Mode se expande, pero mantiene la ESTÉTICA común
+// Todos los digitales comparten: portafolio online, validación por plataforma, skill tree
+
+GAMING_MODE_CAREERS = {
+  developer:  { validation: 'github',   skills: 'tech stack' },
+  designer:   { validation: 'behance',  skills: 'design tools' },
+  creator:    { validation: 'youtube',  skills: 'content skills' },
+  photo:      { validation: 'instagram', skills: 'photo genres' },
+}
+// Todos con cyberpunk aesthetic, XP system, skill tree
+// Diferencia: qué plataforma se conecta y qué skills se sugieren
+```
+
+### Implicaciones en Professional Mode
+
+Si Professional Mode = "Profesiones Presenciales", entonces:
+
+```typescript
+// Professional Mode se enfoca: no es "cualquier profesión" sino "trabajo físico/de servicio"
+// La UX se diseña para showcase fotográfico, testimonials, servicios y reservas
+
+PROFESSIONAL_MODE_FOCUS = {
+  showcase:    'fotos de trabajos (antes/después, galería)',
+  validation:  'Google Reviews, testimonials de clientes',
+  cta:         'Reservar turno / Contactar / Ver precios',
+  noNeed:      'GitHub, Behance, link a repos',
+}
+```
+
+### ¿Qué pasa con los "borderline"? (fotógrafos, diseñadores freelance)
+
+Un fotógrafo podría ir en cualquier modo:
+- **Gaming** → Si es content creator digital (Instagram, YouTube)
+- **Professional** → Si trabaja de forma presencial (bodas, eventos, estudios)
+
+**Solución:** El onboarding hace 1 pregunta clave:
+> "¿Tu trabajo vive principalmente online o trabajás de forma presencial con clientes?"
+> → Online (Digital) → Gaming Mode
+> → Presencial / Servicio → Professional Mode
+
+---
+
 ## ✅ Por qué ESTO es mejor que Multi-Career Paths
 
 ### Ventajas

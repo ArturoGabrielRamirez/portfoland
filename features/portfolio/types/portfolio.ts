@@ -16,7 +16,7 @@ import type { Project } from '@/features/projects/types/project';
 /**
  * Portfolio visual mode
  */
-export type PortfolioMode = 'professional' | 'gaming';
+export type PortfolioMode = 'classic' | 'tech';
 
 /**
  * User data for portfolio display

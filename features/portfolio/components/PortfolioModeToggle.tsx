@@ -7,7 +7,7 @@
 
 'use client'
 
-import { useTransition } from 'react'
+import React, { useTransition } from 'react'
 import { useTranslations } from 'next-intl'
 import { toast } from 'sonner'
 import { Briefcase, Gamepad2, LoaderCircle } from 'lucide-react'
@@ -31,9 +31,20 @@ import { Button } from '@/features/shadcn/ui/button'
  * and provides toast feedback on completion.
  */
 export function PortfolioModeToggle({ currentMode }: PortfolioModeToggleProps) {
+  const [mounted, setMounted] = React.useState(false)
   const t = useTranslations('dashboard')
   const tCommon = useTranslations('common')
   const [isPending, startTransition] = useTransition()
+
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <div className="h-9 w-24 animate-pulse rounded-lg bg-slate-800/50" />
+    )
+  }
 
   const isProfessional = currentMode === PORTFOLIO_MODES.PROFESSIONAL
   const nextMode = isProfessional

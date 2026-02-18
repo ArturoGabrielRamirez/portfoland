@@ -47,21 +47,47 @@
 > **Referencia:** Ver `agent-os/product/ai-features-ideas.md` para la lista completa de ideas priorizadas.
 
 20. [ ] Vercel AI SDK Integration — Streaming responses, conversation state `M`
-21. [ ] Guided CV Interview — AI conversacional para recopilar info de CV `L`
-22. [ ] AI Content Suggestions — Sugerencias para mejorar descripciones `M`
-23. [ ] CV Document Generator — Export PDF con templates profesionales `M`
-24. [ ] AI Skill Explorer — Consultas al árbol de skills: "¿Qué me falta para Senior?" `M`
-25. [ ] Career Timeline Narrator — IA que narra la historia profesional para recruiters `S`
+21. [ ] Guided CV Interview (RPG Master Persona) — AI conversacional para recopilar info de CV `L`
+22. [ ] AI Content Suggestions (Gaming vs. Prof. tones) — Sugerencias para mejorar descripciones `M`
+23. [ ] Daily Energy/Lives System (3 uses/day) `S`
+24. [ ] CV Document Generator — Export PDF con templates profesionales `M`
+25. [ ] AI Skill Explorer — Consultas al árbol de skills: "¿Qué me falta para Senior?" `M`
+26. [ ] Learning Path Suggester (Skill Explorer) `M`
+27. [ ] Career Timeline Narrator (Public AI Section) — IA que narra la historia profesional para recruiters `S`
+
+---
+
+## Phase 4.5: Multi-Industry Modes (v0.4.5) 📋 PLANNED
+
+> **Concepto:** Rebranding de Gaming vs Professional a **Digital vs Traditional Mode**
+> **Referencia:** Ver `TWO_MODE_STRATEGY.md` y `MULTI_INDUSTRY_SCALABILITY.md` en `agent-os/product/ideas/`
+
+**Digital/Connected Mode** — Para profesionales con presencia digital y APIs validables:
+- Desarrolladores (GitHub), Creadores (YouTube), Diseñadores (Behance), Analistas (Kaggle), Fotógrafos (Instagram)
+- Features: Integración con APIs externas, validación automática, sincronización de proyectos, métricas
+
+**Traditional/Physical Mode** — Para profesionales con trabajo físico o sin presencia digital:
+- Peluqueros, Arquitectos, Manicuras, Chefs, Personal trainers, Artesanos
+- Features: Upload manual de fotos, certificaciones, testimonios, portfolio visual
+
+**Tasks:**
+- [ ] User Schema: Agregar campo `portfolioMode` (`DIGITAL` | `TRADITIONAL`) `S`
+- [ ] AI Assistant: 4 system prompts (Digital-EN, Digital-ES, Traditional-EN, Traditional-ES) `M`
+- [ ] Onboarding: UI para selección de modo con preview de features `M`
+- [ ] API Integrations Hub: Sistema para conectar GitHub, YouTube, Behance, etc. (Digital Mode) `L`
+- [ ] Manual Upload System: Upload de imágenes/certificados con gallery (Traditional Mode) `M`
+- [ ] Portfolio Templates: Templates diferenciados por modo (más tech vs más visual) `M`
 
 ---
 
 ## Phase 5: Styles & Polish (v0.5.0+)
 
-26. [ ] Pixelated Style Mode — Tercer modo visual con estetica pixel art (evaluar complejidad) `L`
-27. [ ] Geographic Map Expansion — Mapa de Argentina/mundo con regiones clickeables `L`
-28. [ ] Character Customization — Avatares personalizables con pixel art `M`
-29. [ ] Achievement System — Badges y logros desbloqueables `M`
-30. [ ] Social Share Cards — Imagenes dinamicas para compartir `M`
+26. [ ] WYSIWYG Editor System — Editor visual (Tiptap/Lexical) para bio, proyectos, experiencias con toolbar (negrita, cursiva, listas, links) `M`
+27. [ ] Pixelated Style Mode — Tercer modo visual con estetica pixel art (evaluar complejidad) `L`
+28. [ ] Geographic Map Expansion — Mapa de Argentina/mundo con regiones clickeables `L`
+29. [ ] Character Customization — Avatares personalizables con pixel art `M`
+30. [ ] Achievement System — Badges y logros desbloqueables `M`
+31. [ ] Social Share Cards — Imagenes dinamicas para compartir `M`
 
 ---
 

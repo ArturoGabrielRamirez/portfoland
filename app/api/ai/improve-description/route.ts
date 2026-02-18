@@ -8,7 +8,7 @@ import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { generateText } from 'ai';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
-import { checkAndConsumLives } from '@/lib/ai/lives';
+import { checkAndConsumeLives } from '@/lib/ai/lives';
 import { getUserSkillsData } from '@/features/skills/data/getUserSkills.data';
 
 const google = createGoogleGenerativeAI({
@@ -119,8 +119,11 @@ export async function POST(req: Request) {
 
         const userId = session.user.id;
 
+        // Parse body before lives check so locale is available for error messages
+        const { description, mode, locale, context, additionalNotes } = await req.json();
+
         // Check and consume AI lives
-        const { hasLives, remainingLives, error } = await checkAndConsumLives(userId);
+        const { hasLives, remainingLives, error } = await checkAndConsumeLives(userId, locale || 'en');
 
         if (!hasLives) {
             return new Response(
@@ -134,8 +137,6 @@ export async function POST(req: Request) {
                 }
             );
         }
-
-        const { description, mode, locale, context, additionalNotes } = await req.json();
 
         if (!description || typeof description !== 'string') {
             return new Response(
@@ -169,7 +170,7 @@ export async function POST(req: Request) {
         return new Response(
             JSON.stringify({
                 improvedDescription,
-                remainingLives: remainingLives - 1
+                remainingLives: remainingLives
             }),
             {
                 status: 200,

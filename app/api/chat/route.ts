@@ -7,9 +7,10 @@ import { z } from 'zod';
 import { createExperienceService } from '@/features/timeline/services/experience.service';
 import { createSkillService } from '@/features/skills/services/skill.service';
 import { updateProfileService } from '@/features/portfolio/services/portfolio.service';
-import { checkAndConsumLives } from '@/lib/ai/lives';
+import { checkAndConsumeLives } from '@/lib/ai/lives';
 import { getUserSkillsData } from '@/features/skills/data/getUserSkills.data';
 import { prisma } from '@/lib/prisma';
+import { logger } from '@/lib/logger';
 
 const google = createGoogleGenerativeAI({
     apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
@@ -63,10 +64,10 @@ function getSystemPrompt(locale?: string): string {
 }
 
 export async function POST(req: Request) {
-    console.log('--- CHAT_ROUTE_START (AUTH_RESTORED) ---');
+    logger.debug('--- CHAT_ROUTE_START ---');
     try {
         if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
-            console.error('CRITICAL: GOOGLE_GENERATIVE_AI_API_KEY is missing');
+            logger.error('CRITICAL: GOOGLE_GENERATIVE_AI_API_KEY is missing');
             return new Response(JSON.stringify({ error: 'AI Configuration Missing' }), {
                 status: 500,
                 headers: { 'Content-Type': 'application/json' }
@@ -82,11 +83,15 @@ export async function POST(req: Request) {
         }
         const userId = session.user.id;
 
-        // 🆕 Check and consume AI lives (3 per day limit)
-        const { hasLives, remainingLives, error } = await checkAndConsumLives(userId);
+        // Parse body BEFORE lives check so locale is available for error messages
+        const { messages, locale } = await req.json();
+        logger.debug(`User: ${userId} | Messages: ${messages?.length || 0} | Locale: ${locale || 'en'}`);
+
+        // Check and consume AI lives (3 per day limit)
+        const { hasLives, remainingLives, error } = await checkAndConsumeLives(userId, locale || 'en');
 
         if (!hasLives) {
-            console.log(`LIVES_DEPLETED | User: ${userId} | Remaining: ${remainingLives}`);
+            logger.debug(`LIVES_DEPLETED | User: ${userId} | Remaining: ${remainingLives}`);
             return new Response(
                 JSON.stringify({
                     error: error || 'No AI energy remaining. Recharge tomorrow!',
@@ -100,9 +105,9 @@ export async function POST(req: Request) {
             );
         }
 
-        console.log(`LIVES_CONSUMED | User: ${userId} | Remaining: ${remainingLives}`);
+        logger.debug(`LIVES_CONSUMED | User: ${userId} | Remaining: ${remainingLives}`);
 
-        // 🆕 Create or retrieve conversation for persistence
+        // Create or retrieve conversation for persistence
         let conversation = await prisma.conversation.findFirst({
             where: { userId },
             orderBy: { updatedAt: 'desc' }
@@ -115,13 +120,10 @@ export async function POST(req: Request) {
                     title: 'Career Guidance Chat'
                 }
             });
-            console.log(`CONVERSATION_CREATED | ID: ${conversation.id}`);
+            logger.debug(`CONVERSATION_CREATED | ID: ${conversation.id}`);
         } else {
-            console.log(`CONVERSATION_FOUND | ID: ${conversation.id}`);
+            logger.debug(`CONVERSATION_FOUND | ID: ${conversation.id}`);
         }
-
-        const { messages, locale } = await req.json();
-        console.log(`User: ${userId} | Messages: ${messages?.length || 0} | Locale: ${locale || 'en'}`);
 
         const result = streamText({
             model: google('gemini-2.0-flash'),
@@ -141,7 +143,7 @@ export async function POST(req: Request) {
                         description: z.string(),
                     }),
                     execute: async (params) => {
-                        console.log(`TOOL: add_experience`, params);
+                        logger.debug(`TOOL: add_experience`, params);
                         return await createExperienceService({
                             userId,
                             ...params,
@@ -159,7 +161,7 @@ export async function POST(req: Request) {
                         level: z.number().min(1).max(5),
                     }),
                     execute: async ({ name, level }) => {
-                        console.log(`TOOL: add_skill`, { name, level });
+                        logger.debug(`TOOL: add_skill`, { name, level });
                         return await createSkillService({
                             userId,
                             name,
@@ -173,7 +175,7 @@ export async function POST(req: Request) {
                         reason: z.string().describe('Reason for fetching data'),
                     }),
                     execute: async () => {
-                        console.log(`TOOL: get_portfolio_data`);
+                        logger.debug(`TOOL: get_portfolio_data`);
                         try {
                             const skills = await getUserSkillsData(userId);
                             return (skills || []).map(s => ({
@@ -182,7 +184,7 @@ export async function POST(req: Request) {
                                 category: s?.skill?.category?.name || 'General',
                             }));
                         } catch (err: any) {
-                            console.error('TOOL_ERROR:', err);
+                            logger.error('TOOL_ERROR:', err);
                             return { error: 'Failed' };
                         }
                     },
@@ -193,7 +195,7 @@ export async function POST(req: Request) {
                         reason: z.string().describe('Why you need the skill tree data (e.g., to suggest next skills to learn)'),
                     }),
                     execute: async () => {
-                        console.log(`TOOL: get_skill_tree`);
+                        logger.debug(`TOOL: get_skill_tree`);
                         try {
                             const userSkills = await getUserSkillsData(userId);
 
@@ -231,22 +233,22 @@ export async function POST(req: Request) {
                                 skills: skillTree,
                             };
                         } catch (err: any) {
-                            console.error('TOOL_ERROR (get_skill_tree):', err);
+                            logger.error('TOOL_ERROR (get_skill_tree):', err);
                             return { error: 'Failed to retrieve skill tree', details: err.message };
                         }
                     },
                 }),
             },
             async onFinish({ text, response }) {
-                console.log(`AI_FINISHED | User: ${userId}`);
+                logger.debug(`AI_FINISHED | User: ${userId}`);
 
                 const finalMessages = response?.messages || [];
-                console.log(`FINAL_MESSAGES_LENGTH: ${finalMessages?.length || 0}`);
+                logger.debug(`FINAL_MESSAGES_LENGTH: ${finalMessages?.length || 0}`);
 
-                // 🆕 Save the last 2 messages (user + assistant) to DB
+                // Save the last 2 messages (user + assistant) to DB
                 try {
                     const lastTwoMessages = finalMessages.slice(-2);
-                    console.log(`LAST_TWO_MESSAGES (count: ${lastTwoMessages.length})`);
+                    logger.debug(`LAST_TWO_MESSAGES (count: ${lastTwoMessages.length})`);
 
                     if (lastTwoMessages.length > 0) {
                         const messagesToSave = lastTwoMessages.map(m => {
@@ -268,16 +270,13 @@ export async function POST(req: Request) {
 
                             return {
                                 conversationId: conversation.id,
-                                role: m.role, // Keep original: 'user', 'assistant', 'system', 'tool'
+                                role: m.role,
                                 content: content || '[empty]',
                                 metadata: null
                             };
                         });
 
-                        console.log(`MESSAGES_TO_SAVE (count: ${messagesToSave.length})`);
-                        messagesToSave.forEach((m, i) => {
-                            console.log(`  [${i}] ${m.role}: ${m.content.substring(0, 80)}...`);
-                        });
+                        logger.debug(`MESSAGES_TO_SAVE (count: ${messagesToSave.length})`);
 
                         await prisma.message.createMany({
                             data: messagesToSave
@@ -289,19 +288,19 @@ export async function POST(req: Request) {
                             data: { updatedAt: new Date() }
                         });
 
-                        console.log(`MESSAGES_SAVED | Count: ${messagesToSave.length} | ConvID: ${conversation.id}`);
+                        logger.debug(`MESSAGES_SAVED | Count: ${messagesToSave.length} | ConvID: ${conversation.id}`);
                     } else {
-                        console.log(`NO_MESSAGES_TO_SAVE | finalMessages was empty`);
+                        logger.debug(`NO_MESSAGES_TO_SAVE | finalMessages was empty`);
                     }
                 } catch (err) {
-                    console.error('FAILED_TO_SAVE_MESSAGES:', err);
+                    logger.error('FAILED_TO_SAVE_MESSAGES:', err);
                 }
             },
         });
 
         return result.toDataStreamResponse();
     } catch (error: any) {
-        console.error('CHAT_ROUTE_ERROR:', error);
+        logger.error('CHAT_ROUTE_ERROR:', error);
         return new Response(JSON.stringify({ error: error.message }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' },

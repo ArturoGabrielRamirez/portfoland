@@ -141,41 +141,21 @@ After completing this group, run `npx tsc --noEmit` to get a full list of compil
 **Dependencies:** Task Group 3 (so component i18n key references match the new keys)
 **Spec Reference:** Req 4A, 4B, 4C
 
-- [ ] 4.0 Complete i18n key and label renaming
-  - [ ] 4.1 Rename keys in `messages/en.json`
-    - Rename all `"gaming"` keys --> `"tech"` and all `"professional"` keys --> `"classic"` in these namespaces:
-      - `auth.login`: `gaming` --> `tech`
-      - `auth.register`: `gaming` --> `tech`
-      - `dashboard.modeToggle`: `professional` --> `classic`, `gaming` --> `tech`
-      - `dashboard`: `gaming` --> `tech` (entire sub-object)
-      - `portfolio.modes`: `professional` --> `classic`, `gaming` --> `tech`
-      - `portfolio.sections.hero`: `professional` --> `classic`, `gaming` --> `tech`
-      - `portfolio.sections.about`: same pattern
-      - `portfolio.sections.timeline`: same pattern
-      - `portfolio.sections.skills`: same pattern
-      - `portfolio.sections.projects`: same pattern
-      - `portfolio.sections.contact`: same pattern
-      - `portfolio.sections.ai`: same pattern
-      - `landing.modes`: `professional` --> `classic`, `gaming` --> `tech`
-      - `Seo.modes`: `gaming` --> `tech`, `professional` --> `classic`
-  - [ ] 4.2 Update display label VALUES in `messages/en.json`
-    - `"Gaming"` --> `"Tech"` / `"Tech Mode"`
-    - `"Professional"` --> `"Classic"` / `"Classic Mode"`
-    - `"Gaming Mode"` --> `"Tech Mode"`
-    - `"Professional Mode"` --> `"Classic Mode"`
-    - `"Choose Gaming"` --> `"Choose Tech Mode"`
-    - `"Choose Professional"` --> `"Choose Classic Mode"`
-    - `"CREATE CHARACTER"` (auth register) --> `"CREATE PROFILE"`
-    - `"Cyborg Profile"` (SEO) --> `"Tech Profile"`
-    - `"Player"` --> `"Developer"` (in context-appropriate places)
-  - [ ] 4.3 Apply same key renames in `messages/es.json`
-    - Same key structure renames as 4.1
-    - Spanish display labels: `"Gaming"` --> `"Tech"`, `"Profesional"` --> `"Clasico"` / `"Modo Clasico"`, `"Modo Gaming"` --> `"Modo Tech"`
-    - `"CREAR PERSONAJE"` --> `"CREAR PERFIL"`
-    - `"Jugador"` --> `"Desarrollador"` (where appropriate)
-  - [ ] 4.4 Verify i18n keys match component references
-    - Spot-check 3-4 components to confirm their `t()` calls match the new key paths
-    - Run the dev server briefly (`npx next dev`) and check console for missing translation warnings
+- [x] 4.0 Complete i18n key and label renaming
+  - [x] 4.1 Rename keys in `messages/en.json`
+    - Renamed all `"gaming"` keys --> `"tech"` and all `"professional"` keys --> `"classic"` in all namespaces
+  - [x] 4.2 Update display label VALUES in `messages/en.json`
+    - `"Gaming"` --> `"Tech"`, `"Gaming Mode"` --> `"Tech Mode"`, `"Choose Gaming"` --> `"Choose Tech Mode"`
+    - `"Professional"` --> `"Classic"`, `"Professional Mode"` --> `"Classic Mode"`, `"Choose Professional"` --> `"Choose Classic Mode"`
+    - `"CREATE CHARACTER"` --> `"CREATE PROFILE"`, `"Cyborg Profile"` --> `"Tech Profile"`
+    - `"PLAYER PROFILE"` --> `"TECH PROFILE"`, `"QUEST LOG"` --> `"WORK LOG"`, `"MISSIONS"` --> `"PROJECTS"`
+    - auth.login.tech: heroTitle "INITIALIZE YOUR PROFILE", submitButton "LAUNCH SESSION"
+    - auth.register.tech: heroTitle "BEGIN YOUR MISSION"
+    - landing.modes.tech: subtitle "For developers and tech professionals", feature1 "Visual career timeline"
+  - [x] 4.3 Apply same key renames in `messages/es.json`
+    - All key renames applied, Spanish labels updated: `"Clasico"`, `"Modo Clasico"`, `"Modo Tech"`, `"CREAR PERFIL"`, `"PERFIL TECH"`, `"REGISTRO DE TRABAJO"`, `"PROYECTOS"`
+  - [x] 4.4 Verify i18n keys match component references
+    - Grep confirms zero remaining `gaming.|professional.` key references in component t() calls
 
 **Acceptance Criteria:**
 - All i18n keys renamed from gaming/professional to tech/classic

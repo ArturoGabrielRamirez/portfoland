@@ -122,6 +122,9 @@ const mockUser = {
   bio: null,
   portfolioMode: 'classic' as const,
   locale: 'en',
+  sectionOrder: [],
+  contactLinks: {},
+  sectionVisibility: {},
 };
 
 const mockProject = {

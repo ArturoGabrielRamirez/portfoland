@@ -73,6 +73,9 @@ const mockUser = {
   bio: 'A developer',
   portfolioMode: 'tech' as const,
   locale: 'en',
+  sectionOrder: [],
+  contactLinks: {},
+  sectionVisibility: {},
 };
 
 const mockExperiences = {

@@ -21,8 +21,11 @@ describe('generatePortfolioMetadata', () => {
             email: 'john@example.com',
             image: 'https://example.com/avatar.jpg',
             bio: 'A great developer.',
-            portfolioMode: 'classic',
+            portfolioMode: 'classic' as const,
             locale: 'en',
+            sectionOrder: [],
+            contactLinks: {},
+            sectionVisibility: {},
         },
         skills: {
             user: { id: '1', name: 'John Doe', username: 'johndoe', image: null },
@@ -67,7 +70,7 @@ describe('generatePortfolioMetadata', () => {
         expect(og?.locale).toBe('en');
 
         // OG Image
-        const ogImage = og?.images?.[0];
+        const ogImage = (og?.images as any[])?.[0];
         // We verify the URL construction
         expect(ogImage?.url).toContain('/api/og');
         expect(ogImage?.url).toContain('username=johndoe');
@@ -83,7 +86,7 @@ describe('generatePortfolioMetadata', () => {
 
         const metadata = generatePortfolioMetadata(techData, mockT, 'en');
 
-        const ogImage = metadata.openGraph?.images?.[0];
+        const ogImage = (metadata.openGraph?.images as any[])?.[0];
         expect(ogImage?.url).toContain('mode=tech');
     });
 });

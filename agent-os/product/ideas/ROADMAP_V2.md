@@ -39,7 +39,7 @@
 
 ## Fases
 
-### Phase 0: Critical Bug Fixes
+### Phase 0: Critical Bug Fixes ✅ COMPLETED
 **Tiempo estimado:** 2-3 días
 **Delegable a Sonnet:** Sí (con spec detallada)
 
@@ -58,31 +58,29 @@
 
 ---
 
-### Phase 1: Rebrand & Unificación
+### Phase 1: Rebrand & Unificación ✅ COMPLETED
 **Tiempo estimado:** 3-5 días
-**Delegable a Sonnet:** Sí
+**Completado:** 2026-02-19
+**Spec:** `agent-os/specs/2026-02-18-phase1-rebrand-unification/`
 
 **Tasks:**
-1. **Renaming en código:**
+1. **Renaming en código:** ✅
    - `portfolioMode: "gaming"` → `"tech"` en DB y schema
    - `portfolioMode: "professional"` → `"classic"` en DB y schema
    - Todos los condicionales, prompts, cache keys, tipos
-   - Migration script para usuarios existentes
+   - Migration script para usuarios existentes (`scripts/migrate-portfolio-modes.ts`)
 
-2. **Unificar routing a subdominios:**
-   - Eliminar ruta `/[locale]/[username]` (o redirect a subdominio)
-   - Verificar que proxy/middleware de subdominios funcione para todos los casos
-   - Redirect `portfoland.com/user` → `user.portfoland.com`
+2. **Unificar routing a subdominios:** ✅
+   - Rutas `/[locale]/[username]` y `/[locale]/timeline/[username]` convertidas a redirects
+   - Layouts y sub-rutas eliminados via git rm
 
-3. **Actualizar docs de estrategia:**
-   - README.md → reflejar Tech Mode / Classic Mode
-   - TWO_MODE_STRATEGY.md → marcar como superseded, link a este doc
-   - MEMORY.md → actualizar naming y estrategia
+3. **Actualizar docs de estrategia:** ✅ (parcial)
+   - MEMORY.md → actualizado con naming y estrategia
 
-4. **Ajustar system prompts de IA:**
-   - `chat/route.ts`: RPG_MASTER_PROMPT → reescribir sin terminología "gaming"
-   - Tono: "Mission Briefing" tech-futurista, no "arcade RPG"
-   - `narrate-portfolio`: diferenciar prompts Tech vs Classic (hoy son idénticos)
+4. **Ajustar system prompts de IA:** ✅
+   - `chat/route.ts`: `RPG_MASTER_PROMPT` → `TECH_SYSTEM_PROMPT_EN/ES`
+   - Tono: "Mission Briefing" tech-futurista, sin terminología arcade
+   - `improve-bio/route.ts`: `getTechPrompt`/`getClassicPrompt`
 
 ---
 
@@ -184,8 +182,8 @@ Candidatos (no ordenados — depende de feedback):
 ## Must-Have vs Nice-to-Have
 
 ### Must-Have (sin esto no se lanza)
-- [ ] Phase 0 completa (bugs críticos)
-- [ ] Phase 1 completa (rebrand + subdomain unification)
+- [x] Phase 0 completa (bugs críticos)
+- [x] Phase 1 completa (rebrand + subdomain unification)
 - [ ] Phase 2A + 2B (Classic Mode template funcional)
 - [ ] Onboarding básico con selección de modo
 
@@ -277,4 +275,4 @@ Candidatos (no ordenados — depende de feedback):
 2. Feedback de usuarios reales cambia prioridades
 3. Se descubre deuda técnica nueva
 
-**Próximo paso:** Crear spec detallada para Phase 0 (Critical Bug Fixes).
+**Próximo paso:** Crear spec detallada para Phase 2 (Classic Mode MVP).

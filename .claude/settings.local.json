@@ -27,7 +27,9 @@
       "Bash(echo:*)",
       "Bash(set +e)",
       "Bash(npx tsc:*)",
-      "Bash(npx --yes tsc:*)"
+      "Bash(npx --yes tsc:*)",
+      "Bash(npx vitest:*)",
+      "Bash(tr:*)"
     ]
   }
 }

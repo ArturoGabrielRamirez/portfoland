@@ -78,7 +78,7 @@ export default async function OptimizedDashboardPage({ params }: DashboardPagePr
     {
       id: 'xp',
       value: '2,450',
-      label: t('gaming.stats.experience'),
+      label: t('tech.stats.experience'),
       color: 'yellow',
       icon: (
         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -91,7 +91,7 @@ export default async function OptimizedDashboardPage({ params }: DashboardPagePr
     {
       id: 'level',
       value: '18',
-      label: t('gaming.stats.level'),
+      label: t('tech.stats.level'),
       color: 'magenta',
       icon: (
         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -104,7 +104,7 @@ export default async function OptimizedDashboardPage({ params }: DashboardPagePr
     {
       id: 'achievements',
       value: '18/42',
-      label: t('gaming.stats.achievements'),
+      label: t('tech.stats.achievements'),
       color: 'cyan',
       icon: (
         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -117,7 +117,7 @@ export default async function OptimizedDashboardPage({ params }: DashboardPagePr
     {
       id: 'skills',
       value: '24',
-      label: t('gaming.stats.skills'),
+      label: t('tech.stats.skills'),
       color: 'green',
       icon: (
         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -160,8 +160,8 @@ export default async function OptimizedDashboardPage({ params }: DashboardPagePr
   const quickActions = [
     {
       href: `/${locale}/dashboard/timeline`,
-      title: t('gaming.quickActions.addExperience'),
-      description: t('gaming.quickActions.addExperienceDesc'),
+      title: t('tech.quickActions.addExperience'),
+      description: t('tech.quickActions.addExperienceDesc'),
       icon: (
         <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -171,8 +171,8 @@ export default async function OptimizedDashboardPage({ params }: DashboardPagePr
     },
     {
       href: `/${locale}/dashboard/skills`,
-      title: t('gaming.quickActions.editSkills'),
-      description: t('gaming.quickActions.editSkillsDesc'),
+      title: t('tech.quickActions.editSkills'),
+      description: t('tech.quickActions.editSkillsDesc'),
       icon: (
         <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -182,8 +182,8 @@ export default async function OptimizedDashboardPage({ params }: DashboardPagePr
     },
     {
       href: `/${locale}/dashboard/my-cv`,
-      title: t('gaming.quickActions.generateCV'),
-      description: t('gaming.quickActions.generateCVDesc'),
+      title: t('tech.quickActions.generateCV'),
+      description: t('tech.quickActions.generateCVDesc'),
       icon: (
         <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -193,8 +193,8 @@ export default async function OptimizedDashboardPage({ params }: DashboardPagePr
     },
     {
       href: `/${locale}/portfolio/${user.id}`,
-      title: t('gaming.quickActions.sharePortfolio'),
-      description: t('gaming.quickActions.sharePortfolioDesc'),
+      title: t('tech.quickActions.sharePortfolio'),
+      description: t('tech.quickActions.sharePortfolioDesc'),
       icon: (
         <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />

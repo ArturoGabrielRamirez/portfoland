@@ -10,7 +10,7 @@ interface ImproveBioButtonProps {
     currentBio: string;
     onImproved: (newBio: string) => void;
     className?: string;
-    mode?: 'gaming' | 'professional';
+    mode?: 'tech' | 'classic';
     locale?: string;
 }
 

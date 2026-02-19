@@ -363,7 +363,7 @@ export function ProjectDetailModal({
 }: ProjectDetailProps) {
   const t = useTranslations('portfolio');
 
-  if (mode === 'professional') {
+  if (mode === 'classic') {
     return (
       <ProfessionalModal
         project={project}

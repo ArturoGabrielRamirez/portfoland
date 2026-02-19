@@ -68,7 +68,7 @@ export default async function ProtectedLayout({
     name: dbUser?.name ?? session.user.name,
     email: dbUser?.email ?? session.user.email,
     image: dbUser?.image ?? session.user.image ?? null,
-    portfolioMode: dbUser?.portfolioMode ?? 'professional',
+    portfolioMode: dbUser?.portfolioMode ?? 'classic',
   }
 
   return (

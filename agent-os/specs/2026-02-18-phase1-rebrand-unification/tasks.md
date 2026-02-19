@@ -91,39 +91,40 @@ After completing this group, run `npx tsc --noEmit` to get a full list of compil
 **Dependencies:** Task Groups 1 and 2
 **Spec Reference:** Req 3A, 3B, 3C, 3D, 3E, 3F, 3G
 
-- [ ] 3.0 Complete all conditional logic updates
-  - [ ] 3.1 Update dashboard page type casts
+- [x] 3.0 Complete all conditional logic updates
+  - [x] 3.1 Update dashboard page type casts
     - Change `as 'professional' | 'gaming'` --> `as 'classic' | 'tech'` in:
       - `app/[locale]/(protected)/dashboard/page.tsx` line 103
       - `app/[locale]/(dashboard)/dashboard/portfolio/page.tsx` line 61
       - `app/[locale]/(dashboard)/dashboard/projects/page.tsx` line 47
       - `app/[locale]/(dashboard)/dashboard/timeline/page.tsx` line 50
       - `app/[locale]/(dashboard)/dashboard/skills/page.tsx` line 71
-  - [ ] 3.2 Update protected layout fallback
+  - [x] 3.2 Update protected layout fallback
     - File: `app/[locale]/(protected)/layout.tsx` line 71
     - Change: `portfolioMode: dbUser?.portfolioMode ?? 'professional'` --> `?? 'classic'`
-  - [ ] 3.3 Update `PortfolioModeToggle` component
+  - [x] 3.3 Update `PortfolioModeToggle` component
     - File: `features/portfolio/components/PortfolioModeToggle.tsx`
     - Line 13: Change `Gamepad2` icon import to `Terminal` (from lucide-react)
     - Line 49+: `isProfessional` --> `isClassic`, reference new constant keys
     - Lines 71-72: Update i18n keys `t('modeToggle.professional')` / `t('modeToggle.gaming')` --> `t('modeToggle.classic')` / `t('modeToggle.tech')`
     - Line 94: Replace `<Gamepad2>` with `<Terminal>` icon
-  - [ ] 3.4 Update `togglePortfolioMode` action
+  - [x] 3.4 Update `togglePortfolioMode` action
     - File: `features/portfolio/actions/togglePortfolioMode.ts`
     - Line 19: Update JSDoc comment to say "tech and classic" instead of "professional and gaming"
     - Lines 48-49: Replace `revalidatePath('/en/${username}')` and `revalidatePath('/es/${username}')` with `revalidatePath('/', 'layout')` (subdomain routing means path is always `/`)
-  - [ ] 3.5 Update `ProjectDetailModal` mode comparison
+  - [x] 3.5 Update `ProjectDetailModal` mode comparison
     - File: `features/projects/components/ProjectDetailModal.tsx` line 366
     - Change: `mode === 'professional'` --> `mode === 'classic'`
-  - [ ] 3.6 Update hardcoded mode props
+  - [x] 3.6 Update hardcoded mode props
     - `features/projects/components/ProjectForm.tsx` line 250: `mode="gaming"` --> `mode="tech"`
     - `app/[locale]/(dashboard)/dashboard/portfolio/DashboardPortfolioView.tsx` line 250: `mode="gaming"` --> `mode="tech"`
-  - [ ] 3.7 Update dashboard components using `t('gaming.*')` i18n keys
+    - Also fixed: `features/ai/components/ImproveDescriptionButton.tsx` and `ImproveBioButton.tsx` mode prop types (`'gaming' | 'professional'` --> `'tech' | 'classic'`)
+  - [x] 3.7 Update dashboard components using `t('gaming.*')` i18n keys
     - `features/dashboard/components/optimized/OptimizedDashboardLayout.tsx` lines 81, 94, 107, 120, 163-197: Change all `t('gaming.stats.*')` and `t('gaming.quickActions.*')` --> `t('tech.stats.*')` and `t('tech.quickActions.*')`
     - `features/dashboard/components/CyberpunkScreen.tsx` lines 254, 265, 276, 287: Same pattern
-  - [ ] 3.8 Run TypeScript compiler to verify
+  - [x] 3.8 Run TypeScript compiler to verify
     - Run: `npx tsc --noEmit 2>&1 | head -50`
-    - Remaining errors should only be from i18n runtime (not detectable by tsc) or test files
+    - Remaining errors: only test files (TG7) and pre-existing bugs (selfAssessmentLevel, proxy-subdomain._type, Prisma scripts) — no production code errors from this rebrand
 
 **Acceptance Criteria:**
 - All `'professional'` comparisons changed to `'classic'`

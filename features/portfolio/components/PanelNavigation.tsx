@@ -51,7 +51,7 @@ export function PanelNavigation({
 }: PanelNavigationProps) {
   const t = useTranslations('portfolio');
 
-  const isProfessional = mode === 'professional';
+  const isClassic = mode === 'classic';
 
   return (
     <>
@@ -60,7 +60,7 @@ export function PanelNavigation({
         className={cn(
           'hidden md:flex md:flex-col md:gap-1 md:py-4 md:px-2',
           'md:w-48 md:shrink-0',
-          isProfessional
+          isClassic
             ? 'bg-white border-r border-gray-200'
             : 'bg-[#0D1117] border-r border-[#1E293B]',
           className
@@ -105,13 +105,13 @@ export function PanelNavigation({
                   className={cn(
                     'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all',
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
-                    isProfessional && [
+                    isClassic && [
                       'focus-visible:ring-blue-500',
                       isActive
                         ? 'bg-blue-50 text-blue-700'
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
                     ],
-                    !isProfessional && [
+                    !isClassic && [
                       'focus-visible:ring-[#00D4FF]',
                       isActive
                         ? 'bg-[#00D4FF]/10 text-[#00D4FF]'
@@ -133,7 +133,7 @@ export function PanelNavigation({
           'fixed bottom-0 left-0 right-0 z-50 md:hidden',
           'flex items-center justify-around',
           'border-t',
-          isProfessional
+          isClassic
             ? 'bg-white/95 border-gray-200 backdrop-blur-lg'
             : 'bg-[#0A0E1A]/95 border-[#1E293B] backdrop-blur-lg'
         )}
@@ -168,13 +168,13 @@ export function PanelNavigation({
                   className={cn(
                     'flex min-h-[44px] min-w-[44px] flex-col items-center justify-center gap-0.5 px-1 py-2 text-[10px] font-medium transition-colors',
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset',
-                    isProfessional && [
+                    isClassic && [
                       'focus-visible:ring-blue-500',
                       isActive
                         ? 'text-blue-600'
                         : 'text-gray-400 hover:text-gray-600',
                     ],
-                    !isProfessional && [
+                    !isClassic && [
                       'focus-visible:ring-[#00D4FF]',
                       isActive
                         ? 'text-[#00D4FF]'

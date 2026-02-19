@@ -16,7 +16,7 @@ import { updatePortfolioModeService } from '../services/portfolio.service';
 import { PORTFOLIO_MESSAGES } from '../constants/messages';
 
 /**
- * Toggle the user's portfolio mode between professional and gaming
+ * Toggle the user's portfolio mode between tech and classic
  *
  * @param input - Object with mode field
  * @returns ActionResponse with updated user data
@@ -43,11 +43,8 @@ export async function togglePortfolioMode(
       data.mode
     );
 
-    // Revalidate the public portfolio path for all locales
-    if (session.user.username) {
-      revalidatePath(`/en/${session.user.username}`);
-      revalidatePath(`/es/${session.user.username}`);
-    }
+    // Revalidate the public portfolio (subdomain routing: path is always /)
+    revalidatePath('/', 'layout');
 
     return {
       payload: updatedUser,

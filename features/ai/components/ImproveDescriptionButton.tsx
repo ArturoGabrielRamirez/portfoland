@@ -10,7 +10,7 @@ interface ImproveDescriptionButtonProps {
     currentDescription: string;
     onImproved: (newDescription: string) => void;
     className?: string;
-    mode?: 'gaming' | 'professional';
+    mode?: 'tech' | 'classic';
     locale?: string;
     context?: 'project' | 'experience';
 }

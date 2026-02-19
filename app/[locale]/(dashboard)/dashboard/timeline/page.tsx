@@ -47,7 +47,7 @@ export default async function DashboardTimelinePage() {
         email: dbUser?.email ?? session.user.email,
         username: dbUser?.username || null,
         image: dbUser?.image ?? session.user.image ?? null,
-        portfolioMode: (dbUser?.portfolioMode ?? 'professional') as 'professional' | 'gaming',
+        portfolioMode: (dbUser?.portfolioMode ?? 'classic') as 'classic' | 'tech',
       }}
     />
   );

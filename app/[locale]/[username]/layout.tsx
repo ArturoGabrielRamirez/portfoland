@@ -38,7 +38,7 @@ export default async function PublicPortfolioLayout({
   setRequestLocale(locale);
 
   const portfolioData = await getPortfolioByUsername(username);
-  const isProfessional = portfolioData?.user.portfolioMode === 'professional';
+  const isClassic = portfolioData?.user.portfolioMode === 'classic';
 
   // Detect subdomain context via header set by the proxy during rewrites
   const requestHeaders = await headers();
@@ -60,7 +60,7 @@ export default async function PublicPortfolioLayout({
         'md:flex md:h-screen md:flex-col md:overflow-hidden',
         // Mobile: natural document flow
         'min-h-screen',
-        isProfessional ? 'bg-white text-gray-900' : 'bg-[#0A0E1A] text-white'
+        isClassic ? 'bg-white text-gray-900' : 'bg-[#0A0E1A] text-white'
       )}
     >
       {/* Minimal header */}
@@ -69,7 +69,7 @@ export default async function PublicPortfolioLayout({
           'shrink-0 border-b backdrop-blur-lg',
           // Mobile: sticky top header
           'sticky top-0 z-50 md:static',
-          isProfessional
+          isClassic
             ? 'bg-white/95 border-gray-200'
             : 'bg-[#0A0E1A]/95 border-[#334155]/50'
         )}
@@ -80,13 +80,13 @@ export default async function PublicPortfolioLayout({
             href={homeHref}
             className={cn(
               'flex items-center gap-2 text-lg font-bold tracking-tight transition-opacity hover:opacity-80',
-              isProfessional ? 'text-gray-900' : 'text-white'
+              isClassic ? 'text-gray-900' : 'text-white'
             )}
           >
             <div
               className={cn(
                 'flex h-7 w-7 items-center justify-center rounded-lg',
-                isProfessional
+                isClassic
                   ? 'bg-blue-600'
                   : 'bg-gradient-to-br from-[#00D4FF] to-[#8B5CF6]'
               )}
@@ -113,7 +113,7 @@ export default async function PublicPortfolioLayout({
             href={ctaHref}
             className={cn(
               'rounded-lg px-4 py-2 text-sm font-medium transition-opacity hover:opacity-90',
-              isProfessional
+              isClassic
                 ? 'bg-blue-600 text-white'
                 : 'bg-gradient-to-r from-[#00D4FF] to-[#8B5CF6] text-white'
             )}

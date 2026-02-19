@@ -100,7 +100,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
     name: dbUser?.name ?? user.name ?? 'User',
     email: dbUser?.email ?? user.email,
     image: dbUser?.image ?? user.image ?? null,
-    portfolioMode: (dbUser?.portfolioMode ?? 'professional') as 'professional' | 'gaming',
+    portfolioMode: (dbUser?.portfolioMode ?? 'classic') as 'classic' | 'tech',
   }
 
   const displayName = getDisplayName(userData.name, userData.email)

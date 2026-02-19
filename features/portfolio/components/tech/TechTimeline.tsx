@@ -14,16 +14,16 @@ export function TechTimeline({ data, className }: PortfolioSectionProps) {
 
   if (experiences.length === 0) {
     return (
-      <HUDPanel title={t('sections.timeline.gaming.title')} className={className}>
+      <HUDPanel title={t('sections.timeline.tech.title')} className={className}>
         <p className="font-mono text-sm text-[#64748B]">
-          {'>'} {t('sections.timeline.gaming.emptyState')}
+          {'>'} {t('sections.timeline.tech.emptyState')}
         </p>
       </HUDPanel>
     );
   }
 
   return (
-    <div className={cn('h-full', className)} data-testid="gaming-timeline">
+    <div className={cn('h-full', className)} data-testid="tech-timeline">
       <TimelineMap
         experiences={experiences}
         selectedExperience={selectedExperience}

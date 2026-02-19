@@ -64,7 +64,7 @@ export function TechProjects({ data, className }: PortfolioSectionProps) {
     return (
       <div className={cn('p-6', className)}>
         <p className="font-mono text-sm text-[#64748B]">
-          {'>'} {t('sections.projects.gaming.emptyState')}
+          {'>'} {t('sections.projects.tech.emptyState')}
         </p>
       </div>
     );
@@ -75,7 +75,7 @@ export function TechProjects({ data, className }: PortfolioSectionProps) {
       {/* Stat */}
       <StatCard
         value={projects.length}
-        label="Missions"
+        label="Projects"
         icon={<FolderOpen className="h-5 w-5" />}
         color="cyan"
       />
@@ -89,7 +89,7 @@ export function TechProjects({ data, className }: PortfolioSectionProps) {
             <TechCard
               key={project.id}
               variant={project.featured ? 'featured' : 'glow'}
-              data-testid="gaming-project-card"
+              data-testid="tech-project-card"
               className="cursor-pointer"
               onClick={() => handleCardClick(project)}
             >

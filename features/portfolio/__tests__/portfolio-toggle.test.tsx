@@ -39,25 +39,25 @@ describe('PortfolioModeToggle Component', () => {
     });
   });
 
-  it('renders briefcase icon for professional mode and gamepad icon for gaming mode', async () => {
+  it('renders briefcase icon for classic mode and tech icon for tech mode', async () => {
     const { PortfolioModeToggle } = await import(
       '../components/PortfolioModeToggle'
     );
 
-    // Render with professional mode
+    // Render with classic mode
     const { unmount } = render(
-      <PortfolioModeToggle currentMode="professional" />
+      <PortfolioModeToggle currentMode="classic" />
     );
 
     expect(screen.getByTestId('icon-briefcase')).toBeInTheDocument();
-    expect(screen.queryByTestId('icon-gamepad')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('icon-terminal')).not.toBeInTheDocument();
 
     unmount();
 
-    // Render with gaming mode
-    render(<PortfolioModeToggle currentMode="gaming" />);
+    // Render with tech mode
+    render(<PortfolioModeToggle currentMode="tech" />);
 
-    expect(screen.getByTestId('icon-gamepad')).toBeInTheDocument();
+    expect(screen.getByTestId('icon-terminal')).toBeInTheDocument();
     expect(screen.queryByTestId('icon-briefcase')).not.toBeInTheDocument();
   });
 
@@ -66,14 +66,14 @@ describe('PortfolioModeToggle Component', () => {
       '../components/PortfolioModeToggle'
     );
 
-    render(<PortfolioModeToggle currentMode="professional" />);
+    render(<PortfolioModeToggle currentMode="classic" />);
 
     const button = screen.getByRole('button');
     fireEvent.click(button);
 
     await waitFor(() => {
       expect(mockTogglePortfolioMode).toHaveBeenCalledWith({
-        mode: 'gaming',
+        mode: 'tech',
       });
     });
   });
@@ -86,7 +86,7 @@ describe('PortfolioModeToggle Component', () => {
       '../components/PortfolioModeToggle'
     );
 
-    render(<PortfolioModeToggle currentMode="professional" />);
+    render(<PortfolioModeToggle currentMode="classic" />);
 
     // Before click: should show briefcase icon
     expect(screen.getByTestId('icon-briefcase')).toBeInTheDocument();

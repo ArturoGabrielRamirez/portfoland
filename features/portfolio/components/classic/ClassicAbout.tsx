@@ -20,7 +20,7 @@ export function ClassicAbout({ data, className }: PortfolioSectionProps) {
         <span className="text-blue-500">about.md</span>
       </div>
       <h2 className="mb-4 text-2xl font-bold text-gray-900">
-        {t('sections.about.professional.title')}
+        {t('sections.about.classic.title')}
       </h2>
 
       {user.bio ? (
@@ -29,7 +29,7 @@ export function ClassicAbout({ data, className }: PortfolioSectionProps) {
         </div>
       ) : (
         <p className="text-gray-400" data-testid="about-empty-state">
-          {t('sections.about.professional.emptyState')}
+          {t('sections.about.classic.emptyState')}
         </p>
       )}
     </section>

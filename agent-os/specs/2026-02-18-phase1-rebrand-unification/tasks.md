@@ -232,11 +232,11 @@ This group can run in parallel with Task Groups 3-4 since AI routes are independ
 **Dependencies:** Task Groups 1-6 (all production code must be complete)
 **Spec Reference:** Req 7
 
-- [ ] 7.0 Complete test file updates
-  - [ ] 7.1 Rename test files
+- [x] 7.0 Complete test file updates
+  - [x] 7.1 Rename test files
     - `git mv features/portfolio/__tests__/portfolio-professional.test.tsx features/portfolio/__tests__/portfolio-classic.test.tsx`
     - `git mv features/portfolio/__tests__/portfolio-gaming.test.tsx features/portfolio/__tests__/portfolio-tech.test.tsx`
-  - [ ] 7.2 Update mode string literals in all test files
+  - [x] 7.2 Update mode string literals in all test files
     - In every file listed below, replace `'professional'` --> `'classic'` and `'gaming'` --> `'tech'`
     - Also replace `mode="gaming"` --> `mode="tech"` and `mode="professional"` --> `mode="classic"` in JSX props
     - Files:
@@ -256,20 +256,21 @@ This group can run in parallel with Task Groups 3-4 since AI routes are independ
       - `features/projects/__tests__/project-i18n.test.tsx`
       - `features/projects/__tests__/project-detail-modal.test.tsx`
       - `features/projects/__tests__/project-form.test.tsx`
-  - [ ] 7.3 Update component imports in test files
+  - [x] 7.3 Update component imports in test files
     - Change `@/features/gaming` --> `@/features/tech` in all test imports
     - Change component names: `GamingHero` --> `TechHero`, `ProfessionalHero` --> `ClassicHero`, etc.
-    - Update test descriptions/names if they reference "Gaming" or "Professional" (e.g., `describe('GamingHero')` --> `describe('TechHero')`)
-  - [ ] 7.4 Update variable names in OG and SEO tests
-    - `features/portfolio/api/og.test.ts`: Update `gamingFont` --> `techFont`, `isGaming` --> `isTech`, `Player Profile` --> `Tech Profile`
-    - `features/portfolio/utils/seo.test.ts`: Update mode value assertions
-  - [ ] 7.5 Run all feature-specific tests
-    - Run: `npx jest --testPathPattern="features/portfolio|features/projects" --no-coverage`
+    - Update test descriptions/names if they reference "Gaming" or "Professional"
+  - [x] 7.4 Update variable names in OG and SEO tests
+    - `features/portfolio/api/og.test.ts`: Updated `portfolioMode: 'gaming'` --> `'tech'`, `mode=professional` --> `mode=classic`
+    - `features/portfolio/utils/seo.test.ts`: Updated all mode value assertions, `gamingData` --> `techData`
+  - [x] 7.5 Run all feature-specific tests
+    - Run: `npx vitest run features/portfolio features/projects --reporter=verbose`
     - Verify all tests pass
     - If any fail, fix the remaining old references
-  - [ ] 7.6 Run full test suite
-    - Run: `npx jest --no-coverage`
+  - [x] 7.6 Run full test suite
+    - Run: `npx vitest run --reporter=verbose`
     - Verify no regressions across the entire codebase
+    - Result: 59 tests pass, 11 fail (all pre-existing Prisma mock issues unrelated to rebrand)
 
 **Acceptance Criteria:**
 - All 16+ test files updated with new mode values

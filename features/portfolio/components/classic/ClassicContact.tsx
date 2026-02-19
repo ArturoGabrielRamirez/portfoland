@@ -13,7 +13,7 @@ export function ClassicContact({ data, className }: PortfolioSectionProps) {
   return (
     <section className={cn('py-6', className)}>
       <h2 className="mb-6 text-2xl font-bold text-gray-900">
-        {t('sections.contact.professional.title')}
+        {t('sections.contact.classic.title')}
       </h2>
 
       <address className="not-italic">

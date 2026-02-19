@@ -1,12 +1,12 @@
 /**
- * Professional Mode Section Tests
+ * Classic Mode Section Tests
  *
- * Tests for the 7 Professional mode components:
- * - ProfessionalHero renders user name in h1, avatar with initials fallback
- * - ProfessionalTimeline renders as semantic ordered list with time elements
- * - ProfessionalSkills renders skills grouped by category with progress bars
- * - ProfessionalProjects renders project cards using shadcn Card
- * - ProfessionalAbout shows empty state when bio is empty
+ * Tests for the 7 Classic mode components:
+ * - ClassicHero renders user name in h1, avatar with initials fallback
+ * - ClassicTimeline renders as semantic ordered list with time elements
+ * - ClassicSkills renders skills grouped by category with progress bars
+ * - ClassicProjects renders project cards using shadcn Card
+ * - ClassicAbout shows empty state when bio is empty
  */
 
 import { describe, it, expect, vi } from 'vitest';
@@ -19,19 +19,19 @@ import type { PortfolioData } from '../types/portfolio';
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => {
     const translations: Record<string, string> = {
-      'sections.about.professional.title': 'About',
-      'sections.about.professional.emptyState': 'No summary provided',
-      'sections.timeline.professional.title': 'Experience',
-      'sections.timeline.professional.emptyState': 'No experience added yet',
-      'sections.skills.professional.title': 'Skills',
-      'sections.skills.professional.emptyState': 'No skills listed yet',
-      'sections.projects.professional.title': 'Projects',
-      'sections.projects.professional.emptyState': 'No projects yet',
-      'sections.projects.professional.featured': 'Featured',
-      'sections.contact.professional.title': 'Contact',
-      'sections.ai.professional.title': 'AI-Powered Insights',
-      'sections.ai.professional.description': 'Intelligent analysis powered by AI.',
-      'sections.ai.professional.comingSoon': 'Coming Soon',
+      'sections.about.classic.title': 'About',
+      'sections.about.classic.emptyState': 'No summary provided',
+      'sections.timeline.classic.title': 'Experience',
+      'sections.timeline.classic.emptyState': 'No experience added yet',
+      'sections.skills.classic.title': 'Skills',
+      'sections.skills.classic.emptyState': 'No skills listed yet',
+      'sections.projects.classic.title': 'Projects',
+      'sections.projects.classic.emptyState': 'No projects yet',
+      'sections.projects.classic.featured': 'Featured',
+      'sections.contact.classic.title': 'Contact',
+      'sections.ai.classic.title': 'AI-Powered Insights',
+      'sections.ai.classic.description': 'Intelligent analysis powered by AI.',
+      'sections.ai.classic.comingSoon': 'Coming Soon',
     };
     return translations[key] ?? key;
   },
@@ -53,7 +53,7 @@ const mockUser = {
   email: 'john@example.com',
   image: null,
   bio: null,
-  portfolioMode: 'professional' as const,
+  portfolioMode: 'classic' as const,
   locale: 'en',
 };
 
@@ -88,7 +88,8 @@ const mockExperiences = {
 };
 
 const mockSkills = {
-  userSkills: [
+  user: { id: 'user-1', name: 'John Doe', username: 'johndoe', image: null },
+  skills: [
     {
       id: 'us-1',
       level: 4,
@@ -123,6 +124,8 @@ const mockSkills = {
     },
   ],
   categories: [],
+  groupedByCategory: [],
+  stats: { totalSkills: 2, totalXP: 1300, masterSkills: 0, categoriesUsed: 2 },
 };
 
 const mockProjects = [
@@ -164,13 +167,13 @@ const emptyData: PortfolioData = {
 // Tests
 // =============================================================================
 
-describe('Professional Mode Section Components', () => {
-  it('ProfessionalHero renders user name in h1 and avatar with initials fallback', async () => {
-    const { ProfessionalHero } = await import(
-      '../components/professional/ProfessionalHero'
+describe('Classic Mode Section Components', () => {
+  it('ClassicHero renders user name in h1 and avatar with initials fallback', async () => {
+    const { ClassicHero } = await import(
+      '../components/classic/ClassicHero'
     );
 
-    render(<ProfessionalHero data={mockData} />);
+    render(<ClassicHero data={mockData} />);
 
     // Name in h1
     const heading = screen.getByRole('heading', { level: 1 });
@@ -181,12 +184,12 @@ describe('Professional Mode Section Components', () => {
     expect(initials).toHaveTextContent('JD');
   });
 
-  it('ProfessionalTimeline renders experiences as semantic ordered list with time elements', async () => {
-    const { ProfessionalTimeline } = await import(
-      '../components/professional/ProfessionalTimeline'
+  it('ClassicTimeline renders experiences as semantic ordered list with time elements', async () => {
+    const { ClassicTimeline } = await import(
+      '../components/classic/ClassicTimeline'
     );
 
-    render(<ProfessionalTimeline data={mockData} />);
+    render(<ClassicTimeline data={mockData} />);
 
     // Semantic ordered list
     const list = screen.getByRole('list');
@@ -205,12 +208,12 @@ describe('Professional Mode Section Components', () => {
     expect(h3).toHaveTextContent('Senior Developer');
   });
 
-  it('ProfessionalSkills renders skills grouped by category with progress bars', async () => {
-    const { ProfessionalSkills } = await import(
-      '../components/professional/ProfessionalSkills'
+  it('ClassicSkills renders skills grouped by category with progress bars', async () => {
+    const { ClassicSkills } = await import(
+      '../components/classic/ClassicSkills'
     );
 
-    render(<ProfessionalSkills data={mockData} />);
+    render(<ClassicSkills data={mockData} />);
 
     // Skills grid exists
     expect(screen.getByTestId('skills-grid')).toBeInTheDocument();
@@ -228,12 +231,12 @@ describe('Professional Mode Section Components', () => {
     expect(screen.getByText('Node.js')).toBeInTheDocument();
   });
 
-  it('ProfessionalProjects renders project cards using shadcn Card', async () => {
-    const { ProfessionalProjects } = await import(
-      '../components/professional/ProfessionalProjects'
+  it('ClassicProjects renders project cards using shadcn Card', async () => {
+    const { ClassicProjects } = await import(
+      '../components/classic/ClassicProjects'
     );
 
-    render(<ProfessionalProjects data={mockData} />);
+    render(<ClassicProjects data={mockData} />);
 
     // Project cards (using data-slot="card" from shadcn)
     const cards = screen.getAllByTestId('project-card');
@@ -247,12 +250,12 @@ describe('Professional Mode Section Components', () => {
     expect(screen.getByText('Tailwind')).toBeInTheDocument();
   });
 
-  it('ProfessionalAbout shows empty state message when bio is empty', async () => {
-    const { ProfessionalAbout } = await import(
-      '../components/professional/ProfessionalAbout'
+  it('ClassicAbout shows empty state message when bio is empty', async () => {
+    const { ClassicAbout } = await import(
+      '../components/classic/ClassicAbout'
     );
 
-    render(<ProfessionalAbout data={emptyData} />);
+    render(<ClassicAbout data={emptyData} />);
 
     // Empty state message
     const emptyState = screen.getByTestId('about-empty-state');

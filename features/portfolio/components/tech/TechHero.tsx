@@ -23,7 +23,7 @@ export function TechHero({ data, className }: PortfolioSectionProps) {
   const { user } = data;
 
   return (
-    <TechCard variant="featured" className={cn('p-6', className)} data-testid="gaming-hero-card">
+    <TechCard variant="featured" className={cn('p-6', className)} data-testid="tech-hero-card">
       <div className="flex flex-col items-center gap-4">
         {/* Avatar with legendary frame and noise overlay */}
         <div className="relative holographic-noise rounded-full p-1">

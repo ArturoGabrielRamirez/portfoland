@@ -1,12 +1,12 @@
 /**
- * Gaming Mode Section Tests
+ * Tech Mode Section Tests
  *
- * Tests for the 7 Gaming mode components:
- * - GamingHero renders GamingCard with variant="featured" and GamingAvatar with frame="legendary"
- * - GamingTimeline embeds TimelineMap with isEditable={false}
- * - GamingSkills embeds SkillTreeView with isEditable={false}
- * - GamingProjects renders GamingCard with variant="glow" for each project
- * - GamingAI renders pulsing dot animation and "SYSTEM INITIALIZING..." text
+ * Tests for the 7 Tech mode components:
+ * - TechHero renders TechCard with variant="featured" and TechAvatar with frame="legendary"
+ * - TechTimeline embeds TimelineMap with isEditable={false}
+ * - TechSkills embeds SkillTreeView with isEditable={false}
+ * - TechProjects renders TechCard with variant="glow" for each project
+ * - TechAI renders pulsing dot animation and "SYSTEM INITIALIZING..." text
  */
 
 import { describe, it, expect, vi } from 'vitest';
@@ -19,21 +19,22 @@ import type { PortfolioData } from '../types/portfolio';
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => {
     const translations: Record<string, string> = {
-      'sections.about.gaming.title': 'BIOGRAPHY',
-      'sections.about.gaming.emptyState': 'BIOGRAPHY DATA NOT FOUND',
-      'sections.timeline.gaming.title': 'QUEST LOG',
-      'sections.timeline.gaming.emptyState': 'NO MISSIONS LOGGED',
-      'sections.skills.gaming.title': 'SKILL TREE',
-      'sections.skills.gaming.emptyState': 'NO SKILLS UNLOCKED',
-      'sections.projects.gaming.title': 'MISSIONS',
-      'sections.projects.gaming.emptyState': 'NO MISSIONS DEPLOYED',
-      'sections.contact.gaming.title': 'COMM LINK',
-      'sections.ai.gaming.title': 'AI CORE',
-      'sections.ai.gaming.description': 'Advanced neural interface.',
-      'sections.ai.gaming.status': 'SYSTEM INITIALIZING...',
+      'sections.about.tech.title': 'BIOGRAPHY',
+      'sections.about.tech.emptyState': 'BIOGRAPHY DATA NOT FOUND',
+      'sections.timeline.tech.title': 'WORK LOG',
+      'sections.timeline.tech.emptyState': 'NO EXPERIENCE LOGGED',
+      'sections.skills.tech.title': 'SKILL TREE',
+      'sections.skills.tech.emptyState': 'NO SKILLS UNLOCKED',
+      'sections.projects.tech.title': 'PROJECTS',
+      'sections.projects.tech.emptyState': 'NO PROJECTS DEPLOYED',
+      'sections.contact.tech.title': 'COMM LINK',
+      'sections.ai.tech.title': 'AI CORE',
+      'sections.ai.tech.description': 'Advanced neural interface.',
+      'sections.ai.tech.status': 'SYSTEM INITIALIZING...',
     };
     return translations[key] ?? key;
   },
+  useLocale: () => 'en',
 }));
 
 // Mock next/image
@@ -70,7 +71,7 @@ const mockUser = {
   email: 'john@example.com',
   image: null,
   bio: 'A developer',
-  portfolioMode: 'gaming' as const,
+  portfolioMode: 'tech' as const,
   locale: 'en',
 };
 
@@ -105,7 +106,8 @@ const mockExperiences = {
 };
 
 const mockSkills = {
-  userSkills: [
+  user: { id: 'user-1', name: 'John Doe', username: 'johndoe', image: null },
+  skills: [
     {
       id: 'us-1',
       level: 4,
@@ -124,6 +126,8 @@ const mockSkills = {
     },
   ],
   categories: [{ id: 'cat-1', name: 'Frontend', color: '#00D4FF' }],
+  groupedByCategory: [],
+  stats: { totalSkills: 1, totalXP: 800, masterSkills: 0, categoriesUsed: 1 },
 };
 
 const mockProjects = [
@@ -158,18 +162,18 @@ const mockData: PortfolioData = {
 // Tests
 // =============================================================================
 
-describe('Gaming Mode Section Components', () => {
-  it('GamingHero renders GamingCard with variant="featured" and GamingAvatar with frame="legendary"', async () => {
-    const { GamingHero } = await import('../components/gaming/GamingHero');
+describe('Tech Mode Section Components', () => {
+  it('TechHero renders TechCard with variant="featured" and TechAvatar with frame="legendary"', async () => {
+    const { TechHero } = await import('../components/tech/TechHero');
 
-    const { container } = render(<GamingHero data={mockData} />);
+    const { container } = render(<TechHero data={mockData} />);
 
-    // GamingCard with featured variant (CVA resolves to gradient bg)
-    const heroCard = screen.getByTestId('gaming-hero-card');
+    // TechCard with featured variant (CVA resolves to gradient bg)
+    const heroCard = screen.getByTestId('tech-hero-card');
     expect(heroCard).toBeInTheDocument();
     expect(heroCard.className).toContain('bg-gradient-to-br');
 
-    // GamingAvatar with legendary frame (gold border from CVA resolution)
+    // TechAvatar with legendary frame (gold border from CVA resolution)
     const avatar = container.querySelector('[class*="ring-2"]');
     expect(avatar).toBeInTheDocument();
 
@@ -177,32 +181,32 @@ describe('Gaming Mode Section Components', () => {
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('John Doe');
   });
 
-  it('GamingTimeline embeds TimelineMap with isEditable={false}', async () => {
-    const { GamingTimeline } = await import('../components/gaming/GamingTimeline');
+  it('TechTimeline embeds TimelineMap with isEditable={false}', async () => {
+    const { TechTimeline } = await import('../components/tech/TechTimeline');
 
-    render(<GamingTimeline data={mockData} />);
+    render(<TechTimeline data={mockData} />);
 
     const timelineMap = screen.getByTestId('timeline-map');
     expect(timelineMap).toBeInTheDocument();
     expect(timelineMap).toHaveAttribute('data-editable', 'false');
   });
 
-  it('GamingSkills embeds SkillTreeView with isEditable={false}', async () => {
-    const { GamingSkills } = await import('../components/gaming/GamingSkills');
+  it('TechSkills embeds SkillTreeView with isEditable={false}', async () => {
+    const { TechSkills } = await import('../components/tech/TechSkills');
 
-    render(<GamingSkills data={mockData} />);
+    render(<TechSkills data={mockData} />);
 
     const skillTree = screen.getByTestId('skill-tree-view');
     expect(skillTree).toBeInTheDocument();
     expect(skillTree).toHaveAttribute('data-editable', 'false');
   });
 
-  it('GamingProjects renders GamingCard with variant="glow" for each project', async () => {
-    const { GamingProjects } = await import('../components/gaming/GamingProjects');
+  it('TechProjects renders TechCard with variant="glow" for each project', async () => {
+    const { TechProjects } = await import('../components/tech/TechProjects');
 
-    render(<GamingProjects data={mockData} />);
+    render(<TechProjects data={mockData} />);
 
-    const projectCards = screen.getAllByTestId('gaming-project-card');
+    const projectCards = screen.getAllByTestId('tech-project-card');
     expect(projectCards.length).toBe(1);
 
     // Check glow variant class (CVA resolves to actual CSS classes with cyan border)
@@ -212,10 +216,10 @@ describe('Gaming Mode Section Components', () => {
     expect(screen.getByText('Cyber Mission')).toBeInTheDocument();
   });
 
-  it('GamingAI renders pulsing dot animation and "SYSTEM INITIALIZING..." text', async () => {
-    const { GamingAI } = await import('../components/gaming/GamingAI');
+  it('TechAI renders pulsing dot animation and "Initializing AI system..." text', async () => {
+    const { TechAI } = await import('../components/tech/TechAI');
 
-    render(<GamingAI data={mockData} />);
+    render(<TechAI data={mockData} />);
 
     // Pulsing dot
     const pulsingDot = screen.getByTestId('pulsing-dot');
@@ -224,6 +228,6 @@ describe('Gaming Mode Section Components', () => {
 
     // System initializing text
     const statusText = screen.getByTestId('system-initializing');
-    expect(statusText).toHaveTextContent('SYSTEM INITIALIZING...');
+    expect(statusText).toHaveTextContent('Initializing AI system...');
   });
 });

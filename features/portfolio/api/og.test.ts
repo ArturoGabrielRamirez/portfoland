@@ -24,7 +24,7 @@ describe('GET /api/og', () => {
     const mockUser = {
         user: {
             name: 'Test User',
-            portfolioMode: 'gaming',
+            portfolioMode: 'tech',
         },
         skills: [],
     };
@@ -63,7 +63,7 @@ describe('GET /api/og', () => {
     it('should respect mode parameter', async () => {
         (getPortfolioByUsername as any).mockResolvedValue(mockUser);
 
-        const request = new Request('http://localhost:3000/api/og?username=testuser&mode=professional');
+        const request = new Request('http://localhost:3000/api/og?username=testuser&mode=classic');
         await GET(request);
 
         // In a real integration test we'd check the image content, 

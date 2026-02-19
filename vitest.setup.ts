@@ -34,4 +34,22 @@ vi.mock('next/navigation', () => ({
   }),
   usePathname: () => '/en/login',
   useSearchParams: () => new URLSearchParams(),
+  useParams: () => ({ locale: 'en' }),
+  notFound: vi.fn(),
+  redirect: vi.fn(),
+}));
+
+// Mock @/i18n/navigation (next-intl locale-aware navigation)
+// Required because features/tech/index.tsx → DashboardNav → LanguageSwitcher →
+// @/i18n/navigation → next-intl/navigation → next/navigation (not available in test env)
+vi.mock('@/i18n/navigation', () => ({
+  Link: vi.fn(({ href, children }: any) => children),
+  redirect: vi.fn(),
+  usePathname: () => '/en/testuser',
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    back: vi.fn(),
+  }),
+  getPathname: vi.fn(() => '/en/testuser'),
 }));

@@ -11,7 +11,7 @@ export function TechContact({ data, className }: PortfolioSectionProps) {
   const { user } = data;
 
   return (
-    <HUDPanel title={t('sections.contact.gaming.title')} className={className}>
+    <HUDPanel title={t('sections.contact.tech.title')} className={className}>
       <div className="flex flex-col gap-3">
         {/* Email */}
         {(user.contactLinks?.email || user.email) && (

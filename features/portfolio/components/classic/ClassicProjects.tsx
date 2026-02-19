@@ -74,12 +74,12 @@ export function ClassicProjects({ data, className }: PortfolioSectionProps) {
         <span className="text-green-500">projects/</span>
       </div>
       <h2 className="mb-6 text-2xl font-bold text-gray-900">
-        {t('sections.projects.professional.title')}
+        {t('sections.projects.classic.title')}
       </h2>
 
       {projects.length === 0 ? (
         <p className="text-gray-400" data-testid="projects-empty-state">
-          {t('sections.projects.professional.emptyState')}
+          {t('sections.projects.classic.emptyState')}
         </p>
       ) : (
         <div className="grid gap-4 md:grid-cols-2" data-testid="projects-grid">
@@ -117,7 +117,7 @@ export function ClassicProjects({ data, className }: PortfolioSectionProps) {
                         className="shrink-0 rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-600"
                         data-testid="featured-indicator"
                       >
-                        {t('sections.projects.professional.featured')}
+                        {t('sections.projects.classic.featured')}
                       </span>
                     )}
                   </div>

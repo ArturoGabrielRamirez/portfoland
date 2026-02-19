@@ -4,7 +4,7 @@
  * Tests for responsive behavior and cross-mode integration:
  * - Desktop viewport (>=768px) renders portfolio in single viewport with no vertical scrollbar
  * - Mobile viewport (<768px) renders stacked sections with sticky bottom navigation
- * - PortfolioLayout correctly switches between Professional and Gaming component sets based on portfolioMode prop
+ * - PortfolioLayout correctly switches between Classic and Tech component sets based on portfolioMode prop
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
@@ -43,15 +43,15 @@ vi.mock('framer-motion', () => ({
   },
 }));
 
-// Mock gaming components
-vi.mock('@/features/gaming', () => ({
-  GamingCard: ({ children, variant, className, ...props }: any) => (
-    <div data-testid={props['data-testid'] || 'gaming-card'} data-variant={variant} className={className}>
+// Mock tech components
+vi.mock('@/features/tech', () => ({
+  TechCard: ({ children, variant, className, ...props }: any) => (
+    <div data-testid={props['data-testid'] || 'tech-card'} data-variant={variant} className={className}>
       {children}
     </div>
   ),
-  GamingAvatar: (props: any) => <div data-testid="gaming-avatar" data-frame={props.frame} />,
-  GamingBadge: ({ children }: any) => <span data-testid="gaming-badge">{children}</span>,
+  TechAvatar: (props: any) => <div data-testid="tech-avatar" data-frame={props.frame} />,
+  TechBadge: ({ children }: any) => <span data-testid="tech-badge">{children}</span>,
   LevelBadge: (props: any) => <span data-testid="level-badge">Lv.{props.level}</span>,
   HUDPanel: ({ children, title, className }: any) => (
     <div data-testid="hud-panel" className={className}>
@@ -59,7 +59,7 @@ vi.mock('@/features/gaming', () => ({
       {children}
     </div>
   ),
-  GamingButton: ({ children }: any) => <button data-testid="gaming-button">{children}</button>,
+  TechButton: ({ children }: any) => <button data-testid="tech-button">{children}</button>,
   StatCard: (props: any) => <div data-testid="stat-card">{props.value}</div>,
 }));
 
@@ -93,7 +93,7 @@ const mockPortfolioData: PortfolioData = {
     email: 'test@example.com',
     image: null,
     bio: 'A test biography for the portfolio.',
-    portfolioMode: 'professional',
+    portfolioMode: 'classic',
   },
   experiences: null,
   skills: null,
@@ -113,7 +113,7 @@ describe('Portfolio Responsive Layout', () => {
     const { PortfolioLayout } = await import('../components/PortfolioLayout');
 
     const { container } = render(
-      <PortfolioLayout data={mockPortfolioData} mode="professional" />
+      <PortfolioLayout data={mockPortfolioData} mode="classic" />
     );
 
     const layoutWrapper = screen.getByTestId('portfolio-layout');
@@ -144,7 +144,7 @@ describe('Portfolio Responsive Layout', () => {
     const { PortfolioLayout } = await import('../components/PortfolioLayout');
 
     render(
-      <PortfolioLayout data={mockPortfolioData} mode="professional" />
+      <PortfolioLayout data={mockPortfolioData} mode="classic" />
     );
 
     // Mobile bottom navigation has fixed positioning
@@ -179,53 +179,53 @@ describe('Portfolio Responsive Layout', () => {
     expect(layoutWrapper).toHaveClass('min-h-screen');
   });
 
-  it('PortfolioLayout correctly switches between Professional and Gaming component sets based on portfolioMode prop', async () => {
+  it('PortfolioLayout correctly switches between Classic and Tech component sets based on portfolioMode prop', async () => {
     const { PortfolioLayout } = await import('../components/PortfolioLayout');
 
-    // Render in professional mode
+    // Render in classic mode
     const { unmount } = render(
-      <PortfolioLayout data={mockPortfolioData} mode="professional" />
+      <PortfolioLayout data={mockPortfolioData} mode="classic" />
     );
 
-    const layoutProfessional = screen.getByTestId('portfolio-layout');
+    const layoutClassic = screen.getByTestId('portfolio-layout');
 
-    // Professional mode: white background, gray text
-    expect(layoutProfessional).toHaveClass('bg-white');
-    expect(layoutProfessional).toHaveClass('text-gray-900');
+    // Classic mode: white background, gray text
+    expect(layoutClassic).toHaveClass('bg-white');
+    expect(layoutClassic).toHaveClass('text-gray-900');
 
-    // Should render professional hero content (h1 with user name in desktop panel)
+    // Should render classic hero content (h1 with user name in desktop panel)
     const desktopContent = screen.getByTestId('desktop-content');
     const heading = within(desktopContent).getByRole('heading', { level: 1 });
     expect(heading).toHaveTextContent('Test User');
 
-    // No gaming components should be present
-    expect(screen.queryByTestId('gaming-hero-card')).not.toBeInTheDocument();
+    // No tech components should be present
+    expect(screen.queryByTestId('tech-hero-card')).not.toBeInTheDocument();
 
     unmount();
 
-    // Render in gaming mode
-    const gamingData: PortfolioData = {
+    // Render in tech mode
+    const techData: PortfolioData = {
       ...mockPortfolioData,
-      user: { ...mockPortfolioData.user, portfolioMode: 'gaming' },
+      user: { ...mockPortfolioData.user, portfolioMode: 'tech' },
     };
 
     render(
-      <PortfolioLayout data={gamingData} mode="gaming" />
+      <PortfolioLayout data={techData} mode="tech" />
     );
 
-    const layoutGaming = screen.getByTestId('portfolio-layout');
+    const layoutTech = screen.getByTestId('portfolio-layout');
 
-    // Gaming mode: dark background, white text
-    expect(layoutGaming).toHaveClass('bg-[#0A0E1A]');
-    expect(layoutGaming).toHaveClass('text-white');
+    // Tech mode: dark background, white text
+    expect(layoutTech).toHaveClass('bg-[#0A0E1A]');
+    expect(layoutTech).toHaveClass('text-white');
 
-    // Should render gaming hero content (GamingCard is present via mock)
-    const gamingCards = screen.getAllByTestId('gaming-hero-card');
-    expect(gamingCards.length).toBeGreaterThan(0);
+    // Should render tech hero content (TechCard is present via mock)
+    const techCards = screen.getAllByTestId('tech-hero-card');
+    expect(techCards.length).toBeGreaterThan(0);
 
-    // Gaming desktop also renders the heading
-    const gamingDesktop = screen.getByTestId('desktop-content');
-    const gamingHeading = within(gamingDesktop).getByRole('heading', { level: 1 });
-    expect(gamingHeading).toHaveTextContent('Test User');
+    // Tech desktop also renders the heading
+    const techDesktop = screen.getByTestId('desktop-content');
+    const techHeading = within(techDesktop).getByRole('heading', { level: 1 });
+    expect(techHeading).toHaveTextContent('Test User');
   });
 });

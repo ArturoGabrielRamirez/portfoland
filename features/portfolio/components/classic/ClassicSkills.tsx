@@ -34,12 +34,12 @@ export function ClassicSkills({ data, className }: PortfolioSectionProps) {
         <span className="text-purple-500">skills.bin</span>
       </div>
       <h2 className="mb-6 text-2xl font-bold text-gray-900">
-        {t('sections.skills.professional.title')}
+        {t('sections.skills.classic.title')}
       </h2>
 
       {userSkills.length === 0 ? (
         <p className="text-gray-400" data-testid="skills-empty-state">
-          {t('sections.skills.professional.emptyState')}
+          {t('sections.skills.classic.emptyState')}
         </p>
       ) : (
         <div className="grid gap-8 md:grid-cols-2" data-testid="skills-grid">

@@ -17,7 +17,7 @@ export function ClassicAI({ data, className }: PortfolioSectionProps) {
     <section className={cn('py-6', className)}>
       <div className="flex items-center gap-3 mb-4">
         <h2 className="text-2xl font-bold text-gray-900">
-          {t('sections.ai.professional.title')}
+          {t('sections.ai.classic.title')}
         </h2>
       </div>
 

@@ -35,7 +35,7 @@ describe('getPortfolioByUsername', () => {
         email: 'test@example.com',
         image: 'https://example.com/image.jpg',
         bio: 'Test Bio',
-        portfolioMode: 'gaming',
+        portfolioMode: 'tech',
         locale: 'en',
     };
 
@@ -78,7 +78,7 @@ describe('getPortfolioByUsername', () => {
         expect(result).toEqual({
             user: {
                 ...mockUser,
-                portfolioMode: 'gaming', // casting check
+                portfolioMode: 'tech', // casting check
             },
             experiences: mockExperiences,
             skills: mockSkills,

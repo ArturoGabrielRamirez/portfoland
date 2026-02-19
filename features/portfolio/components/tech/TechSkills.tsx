@@ -13,16 +13,16 @@ export function TechSkills({ data, className }: PortfolioSectionProps) {
 
   if (userSkills.length === 0) {
     return (
-      <HUDPanel title={t('sections.skills.gaming.title')} className={className}>
+      <HUDPanel title={t('sections.skills.tech.title')} className={className}>
         <p className="font-mono text-sm text-[#64748B]">
-          {'>'} {t('sections.skills.gaming.emptyState')}
+          {'>'} {t('sections.skills.tech.emptyState')}
         </p>
       </HUDPanel>
     );
   }
 
   return (
-    <div className={cn('h-full', className)} data-testid="gaming-skills">
+    <div className={cn('h-full', className)} data-testid="tech-skills">
       <SkillTreeView
         userSkills={userSkills}
         categories={categories}

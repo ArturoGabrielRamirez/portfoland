@@ -21,7 +21,7 @@ export function TechAI({ data, className }: PortfolioSectionProps) {
           className="text-2xl font-bold text-[#00D4FF] text-center"
           style={{ textShadow: '0 0 10px #00D4FF, 0 0 20px #00D4FF' }}
         >
-          {t('sections.ai.gaming.title')}
+          {t('sections.ai.tech.title')}
         </h2>
 
         {/* Loading State */}

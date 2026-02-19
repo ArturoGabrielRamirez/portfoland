@@ -11,7 +11,7 @@ export function TechAbout({ data, className }: PortfolioSectionProps) {
   const { user } = data;
 
   return (
-    <HUDPanel title={t('sections.about.gaming.title')} className={className}>
+    <HUDPanel title={t('sections.about.tech.title')} className={className}>
       {user.bio ? (
         <div
           className="text-slate-300 leading-relaxed font-mono prose prose-invert prose-sm max-w-none"
@@ -20,8 +20,8 @@ export function TechAbout({ data, className }: PortfolioSectionProps) {
           <ReactMarkdown>{user.bio}</ReactMarkdown>
         </div>
       ) : (
-        <p className="font-mono text-sm text-[#64748B]" data-testid="gaming-about-empty">
-          {'>'} {t('sections.about.gaming.emptyState')}
+        <p className="font-mono text-sm text-[#64748B]" data-testid="tech-about-empty">
+          {'>'} {t('sections.about.tech.emptyState')}
         </p>
       )}
     </HUDPanel>

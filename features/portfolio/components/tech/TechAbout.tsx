@@ -2,11 +2,11 @@
 
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
-import { HUDPanel } from '@/features/gaming';
+import { HUDPanel } from '@/features/tech';
 import ReactMarkdown from 'react-markdown';
 import type { PortfolioSectionProps } from '../../types/portfolio';
 
-export function GamingAbout({ data, className }: PortfolioSectionProps) {
+export function TechAbout({ data, className }: PortfolioSectionProps) {
   const t = useTranslations('portfolio');
   const { user } = data;
 

@@ -18,46 +18,46 @@ import { DEFAULT_SECTION, PORTFOLIO_SECTIONS } from '../constants/sections';
 import type { PortfolioLayoutProps, PortfolioSectionProps } from '../types/portfolio';
 import type { PortfolioSectionKey } from '../constants/sections';
 
-// Professional mode components
-import { ProfessionalHero } from './professional/ProfessionalHero';
-import { ProfessionalAbout } from './professional/ProfessionalAbout';
-import { ProfessionalTimeline } from './professional/ProfessionalTimeline';
-import { ProfessionalSkills } from './professional/ProfessionalSkills';
-import { ProfessionalProjects } from './professional/ProfessionalProjects';
-import { ProfessionalContact } from './professional/ProfessionalContact';
-import { ProfessionalAI } from './professional/ProfessionalAI';
+// Classic mode components
+import { ClassicHero } from './classic/ClassicHero';
+import { ClassicAbout } from './classic/ClassicAbout';
+import { ClassicTimeline } from './classic/ClassicTimeline';
+import { ClassicSkills } from './classic/ClassicSkills';
+import { ClassicProjects } from './classic/ClassicProjects';
+import { ClassicContact } from './classic/ClassicContact';
+import { ClassicAI } from './classic/ClassicAI';
 
-// Gaming mode components
-import { GamingHero } from './gaming/GamingHero';
-import { GamingAbout } from './gaming/GamingAbout';
-import { GamingTimeline } from './gaming/GamingTimeline';
-import { GamingSkills } from './gaming/GamingSkills';
-import { GamingProjects } from './gaming/GamingProjects';
-import { GamingContact } from './gaming/GamingContact';
-import { GamingAI } from './gaming/GamingAI';
+// Tech mode components
+import { TechHero } from './tech/TechHero';
+import { TechAbout } from './tech/TechAbout';
+import { TechTimeline } from './tech/TechTimeline';
+import { TechSkills } from './tech/TechSkills';
+import { TechProjects } from './tech/TechProjects';
+import { TechContact } from './tech/TechContact';
+import { TechAI } from './tech/TechAI';
 
 // =============================================================================
 // Section Component Maps
 // =============================================================================
 
-const professionalSections: Record<PortfolioSectionKey, React.ComponentType<PortfolioSectionProps>> = {
-  hero: ProfessionalHero,
-  about: ProfessionalAbout,
-  timeline: ProfessionalTimeline,
-  skills: ProfessionalSkills,
-  projects: ProfessionalProjects,
-  contact: ProfessionalContact,
-  ai: ProfessionalAI,
+const classicSections: Record<PortfolioSectionKey, React.ComponentType<PortfolioSectionProps>> = {
+  hero: ClassicHero,
+  about: ClassicAbout,
+  timeline: ClassicTimeline,
+  skills: ClassicSkills,
+  projects: ClassicProjects,
+  contact: ClassicContact,
+  ai: ClassicAI,
 };
 
-const gamingSections: Record<PortfolioSectionKey, React.ComponentType<PortfolioSectionProps>> = {
-  hero: GamingHero,
-  about: GamingAbout,
-  timeline: GamingTimeline,
-  skills: GamingSkills,
-  projects: GamingProjects,
-  contact: GamingContact,
-  ai: GamingAI,
+const techSections: Record<PortfolioSectionKey, React.ComponentType<PortfolioSectionProps>> = {
+  hero: TechHero,
+  about: TechAbout,
+  timeline: TechTimeline,
+  skills: TechSkills,
+  projects: TechProjects,
+  contact: TechContact,
+  ai: TechAI,
 };
 
 // =============================================================================
@@ -100,8 +100,8 @@ export function PortfolioLayout({ data, mode }: PortfolioLayoutProps) {
     return () => clearTimeout(timer);
   }, []);
 
-  const isProfessional = mode === 'professional';
-  const sections = isProfessional ? professionalSections : gamingSections;
+  const isClassic = mode === 'classic';
+  const sections = isClassic ? classicSections : techSections;
 
   const handleSectionChange = useCallback((section: string) => {
     setActiveSection(section as PortfolioSectionKey);
@@ -121,12 +121,12 @@ export function PortfolioLayout({ data, mode }: PortfolioLayoutProps) {
         // Mobile: natural flow with scroll, add padding for bottom nav
         'min-h-screen pb-16 md:pb-0',
         // Mode-based background
-        isProfessional ? 'bg-white text-gray-900' : 'bg-[#0A0E1A] text-white overflow-hidden'
+        isClassic ? 'bg-white text-gray-900' : 'bg-[#0A0E1A] text-white overflow-hidden'
       )}
       data-testid="portfolio-layout"
     >
       {/* CRT Overlay (Gaming Mode only) */}
-      {!isProfessional && (
+      {!isClassic && (
         <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden">
           <div className="crt-lines absolute inset-0 opacity-[0.03]" />
           <div className="crt-scanner" />

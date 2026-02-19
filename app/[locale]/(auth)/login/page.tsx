@@ -21,13 +21,13 @@ import { loginSchema, type LoginInput } from '@/features/auth/schemas'
 import { cn } from '@/lib/utils'
 
 import {
-  GamingButton,
-  GamingInput,
+  TechButton,
+  TechInput,
   GoogleIcon,
   EyeIcon,
   EyeOffIcon,
   Spinner,
-} from '@/features/gaming'
+} from '@/features/tech'
 
 // =============================================================================
 // Login Page Component
@@ -219,7 +219,7 @@ export default function LoginPage() {
               <label className="block text-[10px] font-mono uppercase tracking-[0.2em] text-[#64748B] mb-2">
                 {t('emailLabel')} *
               </label>
-              <GamingInput
+              <TechInput
                 type="email"
                 placeholder={t('emailPlaceholder')}
                 autoComplete="email"
@@ -238,7 +238,7 @@ export default function LoginPage() {
                 {t('passwordLabel')}
               </label>
               <div className="relative">
-                <GamingInput
+                <TechInput
                   type={showPassword ? 'text' : 'password'}
                   placeholder={t('passwordPlaceholder')}
                   autoComplete="current-password"
@@ -277,7 +277,7 @@ export default function LoginPage() {
             </div>
 
             {/* Submit Button */}
-            <GamingButton
+            <TechButton
               type="submit"
               variant="primary"
               className="w-full uppercase tracking-[0.2em]"
@@ -291,7 +291,7 @@ export default function LoginPage() {
               ) : (
                 t('gaming.submitButton')
               )}
-            </GamingButton>
+            </TechButton>
 
             {/* Divider */}
             <div className="flex items-center gap-3">
@@ -303,7 +303,7 @@ export default function LoginPage() {
             </div>
 
             {/* Social Login */}
-            <GamingButton
+            <TechButton
               type="button"
               variant="outline"
               className="w-full"
@@ -316,7 +316,7 @@ export default function LoginPage() {
                 <GoogleIcon className="w-5 h-5" />
               )}
               <span>{t('googleButton')}</span>
-            </GamingButton>
+            </TechButton>
           </form>
 
           {/* Register Link */}

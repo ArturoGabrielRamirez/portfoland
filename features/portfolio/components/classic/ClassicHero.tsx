@@ -13,7 +13,7 @@ function getInitials(name: string | null): string {
     : name[0].toUpperCase();
 }
 
-export function ProfessionalHero({ data, className }: PortfolioSectionProps) {
+export function ClassicHero({ data, className }: PortfolioSectionProps) {
   const t = useTranslations('portfolio');
   const { user } = data;
 

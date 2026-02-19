@@ -2,11 +2,11 @@
 
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
-import { HUDPanel } from '@/features/gaming';
+import { HUDPanel } from '@/features/tech';
 import { SkillTreeView } from '@/features/skills/components';
 import type { PortfolioSectionProps } from '../../types/portfolio';
 
-export function GamingSkills({ data, className }: PortfolioSectionProps) {
+export function TechSkills({ data, className }: PortfolioSectionProps) {
   const t = useTranslations('portfolio');
   const userSkills = data.skills?.skills ?? [];
   const categories = data.skills?.categories ?? [];

@@ -53,67 +53,28 @@ After completing this group, run `npx tsc --noEmit` to get a full list of compil
 
 **IMPORTANT:** Use `git mv` for all renames to preserve git history.
 
-- [ ] 2.0 Complete all file and folder renames
-  - [ ] 2.1 Rename `features/gaming/` folder to `features/tech/`
+- [x] 2.0 Complete all file and folder renames
+  - [x] 2.1 Rename `features/gaming/` folder to `features/tech/`
     - Run: `git mv features/gaming features/tech`
     - Update barrel file `features/tech/index.tsx`:
       - Update file header comment from "Cyberpunk/gaming-themed" to "Tech Mode UI components"
       - Rename all exported components: `GamingButton` --> `TechButton`, `GamingInput` --> `TechInput`, `GamingCard` --> `TechCard`, `GamingCardHeader` --> `TechCardHeader`, `GamingCardTitle` --> `TechCardTitle`, `GamingCardContent` --> `TechCardContent`, `GamingAvatar` --> `TechAvatar`, `GamingBadge` --> `TechBadge`
-  - [ ] 2.2 Rename `features/portfolio/components/gaming/` folder to `features/portfolio/components/tech/`
+  - [x] 2.2 Rename `features/portfolio/components/gaming/` folder to `features/portfolio/components/tech/`
     - Run: `git mv features/portfolio/components/gaming features/portfolio/components/tech`
-    - Then rename each file inside:
-      - `git mv features/portfolio/components/tech/GamingHero.tsx features/portfolio/components/tech/TechHero.tsx`
-      - `git mv features/portfolio/components/tech/GamingAbout.tsx features/portfolio/components/tech/TechAbout.tsx`
-      - `git mv features/portfolio/components/tech/GamingTimeline.tsx features/portfolio/components/tech/TechTimeline.tsx`
-      - `git mv features/portfolio/components/tech/GamingSkills.tsx features/portfolio/components/tech/TechSkills.tsx`
-      - `git mv features/portfolio/components/tech/GamingProjects.tsx features/portfolio/components/tech/TechProjects.tsx`
-      - `git mv features/portfolio/components/tech/GamingContact.tsx features/portfolio/components/tech/TechContact.tsx`
-      - `git mv features/portfolio/components/tech/GamingAI.tsx features/portfolio/components/tech/TechAI.tsx`
-    - Inside each renamed file: update export name (e.g., `export function GamingHero` --> `export function TechHero`)
-    - Inside each renamed file: update `mode` prop values (`'gaming'` --> `'tech'`)
-    - Inside each renamed file: update imports from `@/features/gaming` --> `@/features/tech` and component names (`GamingCard` --> `TechCard`, etc.)
-  - [ ] 2.3 Rename `features/portfolio/components/professional/` folder to `features/portfolio/components/classic/`
+    - Then rename each file inside (7 files renamed)
+    - Inside each renamed file: update export name, mode prop, imports
+  - [x] 2.3 Rename `features/portfolio/components/professional/` folder to `features/portfolio/components/classic/`
     - Run: `git mv features/portfolio/components/professional features/portfolio/components/classic`
-    - Then rename each file inside:
-      - `git mv features/portfolio/components/classic/ProfessionalHero.tsx features/portfolio/components/classic/ClassicHero.tsx`
-      - `git mv features/portfolio/components/classic/ProfessionalAbout.tsx features/portfolio/components/classic/ClassicAbout.tsx`
-      - `git mv features/portfolio/components/classic/ProfessionalTimeline.tsx features/portfolio/components/classic/ClassicTimeline.tsx`
-      - `git mv features/portfolio/components/classic/ProfessionalSkills.tsx features/portfolio/components/classic/ClassicSkills.tsx`
-      - `git mv features/portfolio/components/classic/ProfessionalProjects.tsx features/portfolio/components/classic/ClassicProjects.tsx`
-      - `git mv features/portfolio/components/classic/ProfessionalContact.tsx features/portfolio/components/classic/ClassicContact.tsx`
-      - `git mv features/portfolio/components/classic/ProfessionalAI.tsx features/portfolio/components/classic/ClassicAI.tsx`
-    - Inside each renamed file: update export name (e.g., `export function ProfessionalHero` --> `export function ClassicHero`)
-    - Inside each renamed file: update `mode` prop values (`'professional'` --> `'classic'`)
-  - [ ] 2.4 Update barrel exports in `features/portfolio/index.ts`
-    - Lines 36-52: Update all export paths and names:
-      - `./components/professional/ProfessionalHero` --> `./components/classic/ClassicHero`
-      - `./components/gaming/GamingHero` --> `./components/tech/TechHero`
-      - Apply same pattern for all 14 components (7 Classic + 7 Tech)
-  - [ ] 2.5 Update `PortfolioLayout.tsx` imports and logic
-    - File: `features/portfolio/components/PortfolioLayout.tsx`
-    - Lines 21-37: Update all imports to use new paths and component names
-    - Lines 43-61: Rename `professionalSections` --> `classicSections`, `gamingSections` --> `techSections`
-    - Line 103: `const isProfessional = mode === 'professional';` --> `const isClassic = mode === 'classic';`
-    - Line 104: `const sections = isProfessional ? professionalSections : gamingSections;` --> `const sections = isClassic ? classicSections : techSections;`
-    - Lines 124, 129: Update all `isProfessional` references to `isClassic`
-  - [ ] 2.6 Update all ~18 consumer files that import from `@/features/gaming`
-    - Change `@/features/gaming` --> `@/features/tech` in every file listed below
-    - Also update component names in the import statements (e.g., `GamingButton` --> `TechButton`)
-    - Files to update:
-      - `features/projects/components/ProjectDetailModal.tsx`
-      - `features/dashboard/components/ConsolePanelCard.tsx`
-      - `features/dashboard/components/GiantFlipCard.tsx`
-      - `features/dashboard/components/optimized/OptimizedDashboardLayout.tsx`
-      - `app/[locale]/(auth)/register/page.tsx`
-      - `app/[locale]/(auth)/login/page.tsx`
-      - `app/[locale]/(protected)/dashboard/page.tsx`
-      - `app/[locale]/(dashboard)/dashboard/projects/DashboardProjectsView.tsx`
-      - `app/[locale]/(dashboard)/dashboard/timeline/DashboardTimelineView.tsx`
-      - `app/[locale]/(dashboard)/dashboard/skills/DashboardSkillsView.tsx`
-      - `app/[locale]/(dashboard)/dashboard/portfolio/DashboardPortfolioView.tsx`
-  - [ ] 2.7 Run TypeScript compiler to verify renames resolved errors
-    - Run: `npx tsc --noEmit 2>&1 | head -100`
-    - Remaining errors should only be from conditional logic and i18n (Task Groups 3-4)
+    - Then rename each file inside (7 files renamed)
+    - Inside each renamed file: update export name and mode prop values
+  - [x] 2.4 Update barrel exports in `features/portfolio/index.ts`
+    - Updated all 14 export paths and names (7 Classic + 7 Tech)
+  - [x] 2.5 Update `PortfolioLayout.tsx` imports and logic
+    - Updated all imports, renamed sections vars, `isProfessional` --> `isClassic`
+  - [x] 2.6 Update all consumer files that import from `@/features/gaming`
+    - Updated 19 files total (11 listed + 6 extra in features/skills + app/[locale]/page.tsx + app/[locale]/[username] area)
+  - [x] 2.7 Run TypeScript compiler to verify renames resolved errors
+    - Remaining errors are TG3 (type casts), TG7 (tests), and pre-existing unrelated bugs
 
 **Acceptance Criteria:**
 - All folders and files renamed using `git mv`

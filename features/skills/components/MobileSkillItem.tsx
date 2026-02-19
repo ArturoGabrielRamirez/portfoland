@@ -12,7 +12,7 @@ import { memo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Briefcase, BookOpen, ChevronRight, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { LevelBadge } from '@/features/gaming';
+import { LevelBadge } from '@/features/tech';
 import type { MobileSkillItemProps } from '../types/skill';
 import { SKILL_LEVEL_NAMES, LEVEL_THRESHOLDS_ARRAY } from '../constants/xp';
 

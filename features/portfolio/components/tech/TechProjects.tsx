@@ -14,14 +14,14 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
-  GamingCard,
-  GamingCardHeader,
-  GamingCardTitle,
-  GamingCardContent,
-  GamingBadge,
-  GamingButton,
+  TechCard,
+  TechCardHeader,
+  TechCardTitle,
+  TechCardContent,
+  TechBadge,
+  TechButton,
   StatCard,
-} from '@/features/gaming';
+} from '@/features/tech';
 import { ProjectDetailModal } from '@/features/projects/components/ProjectDetailModal';
 import type { PortfolioSectionProps, ProjectData } from '../../types/portfolio';
 import type { ProjectLink } from '@/features/projects/types/project';
@@ -43,7 +43,7 @@ const LINK_TYPE_ICONS: Record<string, React.ReactNode> = {
 // Component
 // =============================================================================
 
-export function GamingProjects({ data, className }: PortfolioSectionProps) {
+export function TechProjects({ data, className }: PortfolioSectionProps) {
   const t = useTranslations('portfolio');
   const { projects } = data;
 
@@ -86,7 +86,7 @@ export function GamingProjects({ data, className }: PortfolioSectionProps) {
           const links = (project.links ?? []) as unknown as ProjectLink[];
 
           return (
-            <GamingCard
+            <TechCard
               key={project.id}
               variant={project.featured ? 'featured' : 'glow'}
               data-testid="gaming-project-card"
@@ -107,11 +107,11 @@ export function GamingProjects({ data, className }: PortfolioSectionProps) {
                 </div>
               )}
 
-              <GamingCardHeader>
-                <GamingCardTitle>{project.title}</GamingCardTitle>
-              </GamingCardHeader>
+              <TechCardHeader>
+                <TechCardTitle>{project.title}</TechCardTitle>
+              </TechCardHeader>
 
-              <GamingCardContent>
+              <TechCardContent>
                 {/* Short description */}
                 {(project.shortDescription || project.description) && (
                   <p className="mb-3 line-clamp-2 text-sm text-slate-400">
@@ -123,9 +123,9 @@ export function GamingProjects({ data, className }: PortfolioSectionProps) {
                 {project.technologies && project.technologies.length > 0 && (
                   <div className="mb-3 flex flex-wrap gap-1.5">
                     {project.technologies.map((tech: string) => (
-                      <GamingBadge key={tech} color="cyan">
+                      <TechBadge key={tech} color="cyan">
                         {tech}
-                      </GamingBadge>
+                      </TechBadge>
                     ))}
                   </div>
                 )}
@@ -134,7 +134,7 @@ export function GamingProjects({ data, className }: PortfolioSectionProps) {
                 {links.length > 0 && (
                   <div className="flex flex-wrap gap-2">
                     {links.map((link, index) => (
-                      <GamingButton
+                      <TechButton
                         key={index}
                         variant="outline"
                         size="sm"
@@ -145,12 +145,12 @@ export function GamingProjects({ data, className }: PortfolioSectionProps) {
                       >
                         {LINK_TYPE_ICONS[link.type] || LINK_TYPE_ICONS.OTHER}
                         <span>{link.label}</span>
-                      </GamingButton>
+                      </TechButton>
                     ))}
                   </div>
                 )}
-              </GamingCardContent>
-            </GamingCard>
+              </TechCardContent>
+            </TechCard>
           );
         })}
       </div>
@@ -159,7 +159,7 @@ export function GamingProjects({ data, className }: PortfolioSectionProps) {
       {selectedProject && (
         <ProjectDetailModal
           project={selectedProject}
-          mode="gaming"
+          mode="tech"
           isOpen={isModalOpen}
           onClose={handleModalClose}
         />

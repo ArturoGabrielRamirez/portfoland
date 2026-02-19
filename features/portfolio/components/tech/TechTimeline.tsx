@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
-import { HUDPanel } from '@/features/gaming';
+import { HUDPanel } from '@/features/tech';
 import { TimelineMap } from '@/features/timeline/components';
 import type { PortfolioSectionProps } from '../../types/portfolio';
 
-export function GamingTimeline({ data, className }: PortfolioSectionProps) {
+export function TechTimeline({ data, className }: PortfolioSectionProps) {
   const t = useTranslations('portfolio');
   const experiences = data.experiences?.experiences ?? [];
   const [selectedExperience, setSelectedExperience] = useState(null);

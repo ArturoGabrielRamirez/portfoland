@@ -13,7 +13,7 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
-import { HexBadge, DashboardNav } from '@/features/gaming';
+import { HexBadge, DashboardNav } from '@/features/tech';
 import {
   SkillTreeView,
   ManualSkillModal

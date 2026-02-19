@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import type { PortfolioSectionProps } from '../../types/portfolio';
 
-export function ProfessionalSkills({ data, className }: PortfolioSectionProps) {
+export function ClassicSkills({ data, className }: PortfolioSectionProps) {
   const t = useTranslations('portfolio');
   const userSkills = data.skills?.skills ?? [];
 

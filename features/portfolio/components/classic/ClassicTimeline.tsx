@@ -11,7 +11,7 @@ function formatDate(date: Date | string): string {
   });
 }
 
-export function ProfessionalTimeline({ data, className }: PortfolioSectionProps) {
+export function ClassicTimeline({ data, className }: PortfolioSectionProps) {
   const t = useTranslations('portfolio');
   const experiences = data.experiences?.experiences ?? [];
 

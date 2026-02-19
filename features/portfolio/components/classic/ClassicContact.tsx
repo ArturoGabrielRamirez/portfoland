@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/features/shadcn/ui/button';
 import type { PortfolioSectionProps } from '../../types/portfolio';
 
-export function ProfessionalContact({ data, className }: PortfolioSectionProps) {
+export function ClassicContact({ data, className }: PortfolioSectionProps) {
   const t = useTranslations('portfolio');
   const { user } = data;
 

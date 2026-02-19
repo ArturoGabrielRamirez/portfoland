@@ -12,7 +12,7 @@ import Image from 'next/image';
 import { toast } from 'sonner';
 import { useParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { DashboardNav } from '@/features/gaming';
+import { DashboardNav } from '@/features/tech';
 import { ProjectForm } from '@/features/projects/components/ProjectForm';
 import { deleteProject } from '@/features/projects/actions/deleteProject';
 import type { Project } from '@/features/projects/types/project';

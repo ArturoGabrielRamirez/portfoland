@@ -3,15 +3,15 @@
 import { useTranslations, useLocale } from 'next-intl';
 import ReactMarkdown from 'react-markdown';
 import { ExternalLink, Github, Mail, Linkedin, Globe } from 'lucide-react';
-import { HUDPanel } from '@/features/gaming';
+import { HUDPanel } from '@/features/tech';
 import type { PortfolioSectionProps } from '../../types/portfolio';
 import { usePortfolioNarrative } from '../../hooks/usePortfolioNarrative';
 
-export function GamingAI({ data, className }: PortfolioSectionProps) {
+export function TechAI({ data, className }: PortfolioSectionProps) {
   const t = useTranslations('portfolio');
   const locale = useLocale();
   const { narrative, isLoading, error, stats, featuredProjects, contactLinks } =
-    usePortfolioNarrative({ data, mode: 'gaming' });
+    usePortfolioNarrative({ data, mode: 'tech' });
 
   return (
     <HUDPanel className={className}>

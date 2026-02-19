@@ -46,7 +46,7 @@ const LINK_TYPE_ICONS: Record<string, React.ReactNode> = {
 // Component
 // =============================================================================
 
-export function ProfessionalProjects({ data, className }: PortfolioSectionProps) {
+export function ClassicProjects({ data, className }: PortfolioSectionProps) {
   const t = useTranslations('portfolio');
   const { projects } = data;
 
@@ -179,7 +179,7 @@ export function ProfessionalProjects({ data, className }: PortfolioSectionProps)
       {selectedProject && (
         <ProjectDetailModal
           project={selectedProject}
-          mode="professional"
+          mode="classic"
           isOpen={isModalOpen}
           onClose={handleModalClose}
         />

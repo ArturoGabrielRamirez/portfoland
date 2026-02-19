@@ -14,9 +14,9 @@ import {
   HUDPanel,
   XPBar,
   LevelBadge,
-  GamingCard,
-  GamingBadge,
-} from '@/features/gaming'
+  TechCard,
+  TechBadge,
+} from '@/features/tech'
 import { 
   HexagonAvatar, 
   HexagonStatCard, 

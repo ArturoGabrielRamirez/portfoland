@@ -10,7 +10,7 @@ import { memo, useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { GamingButton, GamingInput, GamingCard, Spinner } from '@/features/gaming';
+import { TechButton, TechInput, TechCard, Spinner } from '@/features/tech';
 import type { CreateCategoryInput } from '../types/skill';
 
 /**
@@ -166,7 +166,7 @@ function CreateCategoryModalComponent({
             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
             className="w-full max-w-md"
           >
-            <GamingCard variant="glow" className="overflow-hidden">
+            <TechCard variant="glow" className="overflow-hidden">
               {/* Header */}
               <div className="flex items-center justify-between p-4 border-b border-[#1E293B]">
                 <h2 className="text-lg font-bold text-white">
@@ -195,7 +195,7 @@ function CreateCategoryModalComponent({
                   <label htmlFor="category-name" className="text-sm font-medium text-white">
                     Category Name <span className="text-[#EF4444]">*</span>
                   </label>
-                  <GamingInput
+                  <TechInput
                     ref={inputRef}
                     id="category-name"
                     value={name}
@@ -253,7 +253,7 @@ function CreateCategoryModalComponent({
                         className="w-8 h-8 rounded cursor-pointer border-0 bg-transparent"
                         disabled={isLoading}
                       />
-                      <GamingInput
+                      <TechInput
                         value={customColor}
                         onChange={(e) => handleCustomColorChange(e.target.value)}
                         placeholder="#000000"
@@ -283,15 +283,15 @@ function CreateCategoryModalComponent({
 
                 {/* Actions */}
                 <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#1E293B]">
-                  <GamingButton
+                  <TechButton
                     type="button"
                     variant="outline"
                     onClick={onClose}
                     disabled={isLoading}
                   >
                     Cancel
-                  </GamingButton>
-                  <GamingButton
+                  </TechButton>
+                  <TechButton
                     type="submit"
                     variant="primary"
                     disabled={isLoading}
@@ -304,10 +304,10 @@ function CreateCategoryModalComponent({
                     ) : (
                       'Create Category'
                     )}
-                  </GamingButton>
+                  </TechButton>
                 </div>
               </form>
-            </GamingCard>
+            </TechCard>
           </motion.div>
         </motion.div>
       )}

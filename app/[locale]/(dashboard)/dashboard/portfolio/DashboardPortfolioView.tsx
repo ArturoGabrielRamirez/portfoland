@@ -11,7 +11,7 @@ import { useParams } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { cn } from '@/lib/utils';
-import { DashboardNav } from '@/features/gaming';
+import { DashboardNav } from '@/features/tech';
 import { PortfolioModeToggle } from '@/features/portfolio/components/PortfolioModeToggle';
 import { ProfileImageUpload } from '@/features/portfolio/components/ProfileImageUpload';
 import { HUDPanel } from '@/features/dashboard/components/HUDPanel';

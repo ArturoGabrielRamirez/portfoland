@@ -1,9 +1,9 @@
 // =============================================================================
-// Gaming UI Components
+// Tech Mode UI Components
 // =============================================================================
-// Cyberpunk/gaming-themed UI components with glow effects, neon colors, and
-// futuristic styling. These components provide the visual foundation for the
-// gamified portfolio experience.
+// Tech-futurista UI components with glow effects, neon colors, and
+// terminal-inspired styling. These components provide the visual foundation for
+// the Tech Mode portfolio experience.
 // =============================================================================
 
 'use client'
@@ -50,13 +50,13 @@ const gamingButtonVariants = cva(
   }
 )
 
-export interface GamingButtonProps
+export interface TechButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
   VariantProps<typeof gamingButtonVariants> { }
 
-export const GamingButton = React.forwardRef<
+export const TechButton = React.forwardRef<
   HTMLButtonElement,
-  GamingButtonProps
+  TechButtonProps
 >(({ className, variant, size, ...props }, ref) => {
   return (
     <button
@@ -66,19 +66,19 @@ export const GamingButton = React.forwardRef<
     />
   )
 })
-GamingButton.displayName = 'GamingButton'
+TechButton.displayName = 'TechButton'
 
 // =============================================================================
 // GAMING INPUT
 // =============================================================================
 
-export interface GamingInputProps
+export interface TechInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: boolean
   success?: boolean
 }
 
-export const GamingInput = React.forwardRef<HTMLInputElement, GamingInputProps>(
+export const TechInput = React.forwardRef<HTMLInputElement, TechInputProps>(
   ({ className, error, success, type, ...props }, ref) => {
     return (
       <input
@@ -102,7 +102,7 @@ export const GamingInput = React.forwardRef<HTMLInputElement, GamingInputProps>(
     )
   }
 )
-GamingInput.displayName = 'GamingInput'
+TechInput.displayName = 'TechInput'
 
 // =============================================================================
 // GAMING CARD
@@ -130,11 +130,11 @@ const gamingCardVariants = cva(
   }
 )
 
-export interface GamingCardProps
+export interface TechCardProps
   extends React.HTMLAttributes<HTMLDivElement>,
   VariantProps<typeof gamingCardVariants> { }
 
-export const GamingCard = React.forwardRef<HTMLDivElement, GamingCardProps>(
+export const TechCard = React.forwardRef<HTMLDivElement, TechCardProps>(
   ({ className, variant, ...props }, ref) => {
     return (
       <div
@@ -158,9 +158,9 @@ export const GamingCard = React.forwardRef<HTMLDivElement, GamingCardProps>(
     )
   }
 )
-GamingCard.displayName = 'GamingCard'
+TechCard.displayName = 'TechCard'
 
-export const GamingCardHeader = React.forwardRef<
+export const TechCardHeader = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
@@ -170,9 +170,9 @@ export const GamingCardHeader = React.forwardRef<
     {...props}
   />
 ))
-GamingCardHeader.displayName = 'GamingCardHeader'
+TechCardHeader.displayName = 'TechCardHeader'
 
-export const GamingCardTitle = React.forwardRef<
+export const TechCardTitle = React.forwardRef<
   HTMLHeadingElement,
   React.HTMLAttributes<HTMLHeadingElement>
 >(({ className, ...props }, ref) => (
@@ -185,15 +185,15 @@ export const GamingCardTitle = React.forwardRef<
     {...props}
   />
 ))
-GamingCardTitle.displayName = 'GamingCardTitle'
+TechCardTitle.displayName = 'TechCardTitle'
 
-export const GamingCardContent = React.forwardRef<
+export const TechCardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
   <div ref={ref} className={cn('p-5 pt-0', className)} {...props} />
 ))
-GamingCardContent.displayName = 'GamingCardContent'
+TechCardContent.displayName = 'TechCardContent'
 
 // =============================================================================
 // CHARACTER SELECT
@@ -458,7 +458,7 @@ export function LevelBadge({ level, size = 'md', className }: LevelBadgeProps) {
 // GAMING AVATAR
 // =============================================================================
 
-interface GamingAvatarProps {
+interface TechAvatarProps {
   src?: string
   alt?: string
   fallback: string
@@ -468,7 +468,7 @@ interface GamingAvatarProps {
   className?: string
 }
 
-export function GamingAvatar({
+export function TechAvatar({
   src,
   alt,
   fallback,
@@ -476,7 +476,7 @@ export function GamingAvatar({
   frame = 'cyan',
   shape = 'circle',
   className,
-}: GamingAvatarProps) {
+}: TechAvatarProps) {
   const sizeClasses = {
     sm: 'w-10 h-10 text-sm',
     md: 'w-16 h-16 text-lg',
@@ -522,17 +522,17 @@ export function GamingAvatar({
 // GAMING BADGE
 // =============================================================================
 
-interface GamingBadgeProps {
+interface TechBadgeProps {
   children: React.ReactNode
   color?: 'cyan' | 'magenta' | 'green' | 'yellow' | 'purple' | 'gray'
   className?: string
 }
 
-export function GamingBadge({
+export function TechBadge({
   children,
   color = 'cyan',
   className,
-}: GamingBadgeProps) {
+}: TechBadgeProps) {
   const colorClasses = {
     cyan: 'bg-[#00D4FF]/20 text-[#00D4FF] border-[#00D4FF]/30',
     magenta: 'bg-[#D946EF]/20 text-[#D946EF] border-[#D946EF]/30',

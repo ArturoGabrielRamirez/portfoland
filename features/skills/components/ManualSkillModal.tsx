@@ -12,7 +12,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
-import { GamingCard } from '@/features/gaming';
+import { TechCard } from '@/features/tech';
 import { FormWithIndicator, useFormIndicator } from '@/features/ui';
 import type { CreateSkillInput, SkillCategory, UserSkillWithDetails } from '../types/skill';
 import { ManualSkillForm } from './ManualSkillForm';
@@ -186,7 +186,7 @@ function ManualSkillModalComponent({
               transition={{ type: 'spring', stiffness: 400, damping: 30 }}
               className="w-full max-w-md max-h-[90vh] overflow-hidden"
             >
-              <GamingCard variant="glow" className="overflow-hidden">
+              <TechCard variant="glow" className="overflow-hidden">
                 {/* Header with Indicator */}
                 <div className="relative flex items-center justify-between p-4 border-b border-[#1E293B]">
                   <div className="flex items-center gap-2">
@@ -237,7 +237,7 @@ function ManualSkillModalComponent({
                     isEditMode={isEditMode}
                   />
                 </div>
-              </GamingCard>
+              </TechCard>
             </motion.div>
           </motion.div>
         )}

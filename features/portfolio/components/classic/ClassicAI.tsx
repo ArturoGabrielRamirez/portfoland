@@ -7,11 +7,11 @@ import { cn } from '@/lib/utils';
 import type { PortfolioSectionProps } from '../../types/portfolio';
 import { usePortfolioNarrative } from '../../hooks/usePortfolioNarrative';
 
-export function ProfessionalAI({ data, className }: PortfolioSectionProps) {
+export function ClassicAI({ data, className }: PortfolioSectionProps) {
   const t = useTranslations('portfolio');
   const locale = useLocale();
   const { narrative, isLoading, error, stats, featuredProjects, contactLinks } =
-    usePortfolioNarrative({ data, mode: 'professional' });
+    usePortfolioNarrative({ data, mode: 'classic' });
 
   return (
     <section className={cn('py-6', className)}>

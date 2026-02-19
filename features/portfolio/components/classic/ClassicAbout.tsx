@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import ReactMarkdown from 'react-markdown';
 import type { PortfolioSectionProps } from '../../types/portfolio';
 
-export function ProfessionalAbout({ data, className }: PortfolioSectionProps) {
+export function ClassicAbout({ data, className }: PortfolioSectionProps) {
   const t = useTranslations('portfolio');
   const { user } = data;
 

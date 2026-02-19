@@ -10,7 +10,7 @@ import { useState, useCallback, useMemo, useTransition } from 'react';
 import { Plus, MapPin, ExternalLink, Zap, Flag, Star, Trophy } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
-import { HexBadge, DashboardNav } from '@/features/gaming';
+import { HexBadge, DashboardNav } from '@/features/tech';
 import { useParams } from 'next/navigation';
 import type {
   TimelineData,

@@ -16,7 +16,7 @@ import {
   CRTMonitor,
   HexBadge,
   DashboardNav,
-} from '@/features/gaming'
+} from '@/features/tech'
 import type { DashboardPageProps } from '@/features/dashboard/types/dashboard'
 
 // =============================================================================

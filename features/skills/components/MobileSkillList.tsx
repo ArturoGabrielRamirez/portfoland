@@ -11,7 +11,7 @@ import { memo, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Briefcase, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { XPBar, LevelBadge, GamingBadge } from '@/features/gaming';
+import { XPBar, LevelBadge, TechBadge } from '@/features/tech';
 import type { MobileSkillListProps, UserSkillWithDetails, SkillCategory, SkillsByCategory } from '../types/skill';
 import { SKILL_LEVEL_NAMES, calculateLevelProgress, LEVEL_THRESHOLDS_ARRAY } from '../constants/xp';
 import { getCategoryColor, type CategorySlug } from '../constants/categories';
@@ -204,7 +204,7 @@ function CategorySection({
             style={{ backgroundColor: categoryColor }}
           />
           <span className="text-white font-medium">{group.category.name}</span>
-          <GamingBadge color="cyan">{group.skills.length}</GamingBadge>
+          <TechBadge color="cyan">{group.skills.length}</TechBadge>
         </div>
 
         <div className="flex items-center gap-3">

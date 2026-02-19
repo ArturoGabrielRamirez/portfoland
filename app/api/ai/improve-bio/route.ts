@@ -62,7 +62,7 @@ async function calculateExperienceYears(userId: string): Promise<number> {
     return 0; // No work experience and no skills
 }
 
-function getGamingPrompt(bio: string, skills: string[], years: number, locale: string, notes?: string): string {
+function getTechPrompt(bio: string, skills: string[], years: number, locale: string, notes?: string): string {
     const skillsList = skills.length > 0 ? skills.slice(0, 8).join(', ') : 'web development';
     const experienceText = years > 0 ? (locale === 'es' ? `${years}+ años de experiencia` : `${years}+ years of experience`) : '';
     const notesSection = notes ? (locale === 'es' ? `\n\nDetalles adicionales del usuario:\n"${notes}"` : `\n\nAdditional user details:\n"${notes}"`) : '';
@@ -112,7 +112,7 @@ ${notes ? `- CRITICAL: Naturally incorporate these personal details from the use
 Return ONLY the improved bio in plain text, no explanation or formatting.`;
 }
 
-function getProfessionalPrompt(bio: string, skills: string[], years: number, locale: string, notes?: string): string {
+function getClassicPrompt(bio: string, skills: string[], years: number, locale: string, notes?: string): string {
     const skillsList = skills.length > 0 ? skills.slice(0, 8).join(', ') : 'professional skills';
     const experienceText = years > 0 ? (locale === 'es' ? `${years}+ años de experiencia` : `${years}+ years of experience`) : '';
     const notesSection = notes ? (locale === 'es' ? `\n\nDetalles adicionales del usuario:\n"${notes}"` : `\n\nAdditional user details:\n"${notes}"`) : '';
@@ -214,9 +214,9 @@ export async function POST(req: Request) {
         console.log(`IMPROVE_BIO | User: ${userId} | Mode: ${mode} | Locale: ${locale} | Skills: ${skillNames.length} | Experience: ${experienceYears}y | BioLength: ${bio.length} | Notes: ${additionalNotes ? 'Yes' : 'No'}`);
 
         // Generate prompt with user's actual skills, experience, notes, and locale
-        const prompt = mode === 'gaming'
-            ? getGamingPrompt(bio, skillNames, experienceYears, locale || 'en', additionalNotes)
-            : getProfessionalPrompt(bio, skillNames, experienceYears, locale || 'en', additionalNotes);
+        const prompt = mode === 'tech'
+            ? getTechPrompt(bio, skillNames, experienceYears, locale || 'en', additionalNotes)
+            : getClassicPrompt(bio, skillNames, experienceYears, locale || 'en', additionalNotes);
 
         // Generate improved bio
         const result = await generateText({

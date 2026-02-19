@@ -173,34 +173,21 @@ After completing this group, run `npx tsc --noEmit` to get a full list of compil
 
 This group can run in parallel with Task Groups 3-4 since AI routes are independent of UI components.
 
-- [ ] 5.0 Complete AI prompt and API route updates
-  - [ ] 5.1 Rewrite chat route system prompts
-    - File: `app/api/chat/route.ts` lines 22-60
-    - Rename constants: `RPG_MASTER_PROMPT_EN` --> `TECH_SYSTEM_PROMPT_EN`, `RPG_MASTER_PROMPT_ES` --> `TECH_SYSTEM_PROMPT_ES`
-    - Replace "RPG Master" with "Mission Commander" or "AI Overseer"
-    - Replace "Gaming Mode (Default)" with "Tech Mode"
-    - Remove RPG terminology ("Character", "Quest", "Alchemist")
-    - Use tech-futurista terminology: "DEPLOYING", "INITIALIZING", "SYSTEM SCAN", "NODE ACTIVATION"
-    - Keep the same CORE TASKS and STRICT RULES -- only change the wrapper language
-  - [ ] 5.2 Update improve-bio route prompt functions
-    - File: `app/api/ai/improve-bio/route.ts`
-    - Line 65: Rename `function getGamingPrompt(...)` --> `function getTechPrompt(...)`
-    - Line 115: Rename `function getProfessionalPrompt(...)` --> `function getClassicPrompt(...)`
-    - Line 217: Change `mode === 'gaming'` --> `mode === 'tech'`
-  - [ ] 5.3 Update narrate-portfolio route
-    - File: `app/api/ai/narrate-portfolio/route.ts`
-    - Line 177: Change default fallback `'gaming'` --> `'tech'`
-  - [ ] 5.4 Update OG image route
-    - File: `app/api/og/route.tsx`
-    - Line 26: Fallback `'professional'` --> `'classic'`
-    - Line 27: `const isGaming = mode === 'gaming'` --> `const isTech = mode === 'tech'`
-    - Line 28: `isGaming ? 'Player' : 'Professional'` --> `isTech ? 'Developer' : 'Professional'`
-    - Line 37: `gamingFont` --> `techFont`
-    - Line 57: `isGaming` --> `isTech`
-    - Line 61: Comment `GAMING TEMPLATE` --> `TECH TEMPLATE`
-    - Line 102: Hardcoded `Player Profile` --> `Tech Profile`
-    - Line 134: Comment `PROFESSIONAL TEMPLATE` --> `CLASSIC TEMPLATE`
-    - Line 211: `name: 'GamingFont'` --> `name: 'TechFont'`
+- [x] 5.0 Complete AI prompt and API route updates
+  - [x] 5.1 Rewrite chat route system prompts
+    - `RPG_MASTER_PROMPT_EN/ES` --> `TECH_SYSTEM_PROMPT_EN/ES`
+    - "RPG Master" --> "Mission Commander", "Gaming Mode" --> "Tech Mode"
+    - RPG terms removed: "Alchemist" --> "Optimizer", "Quest" --> "Mission", "Character" removed
+    - Tech-futurista: "DEPLOYING", "INITIALIZING", "SYSTEM SCAN", "NODE ACTIVATION", "SKILL UNLOCKED"
+  - [x] 5.2 Update improve-bio route prompt functions
+    - `getGamingPrompt` --> `getTechPrompt`, `getProfessionalPrompt` --> `getClassicPrompt`
+    - `mode === 'gaming'` --> `mode === 'tech'`
+  - [x] 5.3 Update narrate-portfolio route
+    - Default fallback `'gaming'` --> `'tech'`
+  - [x] 5.4 Update OG image route
+    - Fallback `'professional'` --> `'classic'`, `isGaming` --> `isTech` (all occurrences)
+    - `gamingFont` --> `techFont`, `'Player' --> 'Developer'`, `'Player Profile'` --> `'Tech Profile'`
+    - `GamingFont` --> `TechFont`, comments updated (GAMING/PROFESSIONAL TEMPLATE --> TECH/CLASSIC)
 
 **Acceptance Criteria:**
 - All AI prompts use tech-futurista language instead of RPG/arcade language

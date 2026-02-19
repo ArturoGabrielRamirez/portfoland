@@ -203,38 +203,20 @@ This group can run in parallel with Task Groups 3-4 since AI routes are independ
 **Dependencies:** Task Groups 1-5 (all code changes should be complete before migration script is finalized)
 **Spec Reference:** Req 1F, 6A, 6B, 8
 
-- [ ] 6.0 Complete subdomain routing and migration script
-  - [ ] 6.1 Convert `[username]` page route to redirect
-    - File: `app/[locale]/[username]/page.tsx`
-    - Replace entire content with redirect logic:
-      ```tsx
-      import { redirect } from 'next/navigation';
-      export default async function UsernameRedirect({ params }) {
-        const { username } = await params;
-        const domain = process.env.NEXT_PUBLIC_APP_DOMAIN || 'portfoland.com';
-        redirect(`https://${username}.${domain}`);
-      }
-      ```
-  - [ ] 6.2 Delete `[username]` layout and sub-routes
-    - Delete: `app/[locale]/[username]/layout.tsx`
-    - Delete: `app/[locale]/[username]/skills/` directory (entire folder)
-  - [ ] 6.3 Convert timeline username route to redirect
-    - File: `app/[locale]/timeline/[username]/page.tsx`
-    - Replace with redirect to `username.portfoland.com/timeline`
-    - Delete: `app/[locale]/timeline/[username]/layout.tsx`
-    - Delete: any `PublicTimelineView.tsx` in that directory
-  - [ ] 6.4 Create MongoDB migration script
-    - Create file: `scripts/migrate-portfolio-modes.ts`
-    - Use Prisma's `$runCommandRaw` to run bulk `updateMany` operations:
-      - `portfolioMode: "professional"` --> `portfolioMode: "classic"`
-      - `portfolioMode: "gaming"` --> `portfolioMode: "tech"`
-      - `$unset` all `meta.aiNarrative_gaming_*` and `meta.aiNarrative_professional_*` keys (stale narrative cache)
-    - Script must be idempotent (safe to run multiple times)
-    - Print count of updated documents
-    - Import prisma from `@/features/core` (per project standards)
-  - [ ] 6.5 Verify TypeScript compiles cleanly
-    - Run: `npx tsc --noEmit`
-    - Should have zero errors (excluding test files if tests are in a separate tsconfig)
+- [x] 6.0 Complete subdomain routing and migration script
+  - [x] 6.1 Convert `[username]` page route to redirect
+    - `app/[locale]/[username]/page.tsx` → redirects to `https://{username}.{domain}`
+  - [x] 6.2 Delete `[username]` layout and sub-routes
+    - Deleted via git rm: `layout.tsx`, `skills/layout.tsx`, `skills/page.tsx`, `skills/PublicSkillsView.tsx`
+  - [x] 6.3 Convert timeline username route to redirect
+    - `app/[locale]/timeline/[username]/page.tsx` → redirects to `https://{username}.{domain}/timeline`
+    - Deleted via git rm: `layout.tsx`, `PublicTimelineView.tsx`
+  - [x] 6.4 Create MongoDB migration script
+    - `scripts/migrate-portfolio-modes.ts` — idempotent, updates gaming→tech, professional→classic, clears stale narrative cache keys, verifies zero remaining old values
+  - [x] 6.5 Verify TypeScript compiles cleanly
+    - Remaining errors: only pre-existing bugs (selfAssessmentLevel/githubValidated Prisma types, proxy-subdomain test ._type, scripts/check_user stale PrismaClient import) and test files (TG7)
+    - All production rebrand code compiles clean
+    - Also fixed in this pass: ImproveBioButton/ImproveDescriptionButton internal `'gaming'`/`'professional'` literals → `'tech'`/`'classic'`
 
 **Acceptance Criteria:**
 - `/[locale]/[username]` routes redirect to subdomain URLs

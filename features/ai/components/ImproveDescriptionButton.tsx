@@ -19,7 +19,7 @@ export function ImproveDescriptionButton({
     currentDescription,
     onImproved,
     className,
-    mode = 'professional',
+    mode = 'classic',
     locale = 'en',
     context = 'project'
 }: ImproveDescriptionButtonProps) {
@@ -84,7 +84,7 @@ export function ImproveDescriptionButton({
                     disabled={isImproving || !currentDescription?.trim()}
                     className={cn(
                         "gap-2 text-xs",
-                        mode === 'gaming' && "border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10",
+                        mode === 'tech' && "border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10",
                         className
                     )}
                 >
@@ -106,7 +106,7 @@ export function ImproveDescriptionButton({
                     onClick={() => setShowNotes(!showNotes)}
                     className={cn(
                         "text-[9px] font-mono uppercase tracking-wider transition-colors",
-                        mode === 'gaming' ? "text-cyan-500/60 hover:text-cyan-400" : "text-gray-500 hover:text-gray-400"
+                        mode === 'tech' ? "text-cyan-500/60 hover:text-cyan-400" : "text-gray-500 hover:text-gray-400"
                     )}
                 >
                     {showNotes
@@ -128,7 +128,7 @@ export function ImproveDescriptionButton({
                     }
                     className={cn(
                         "w-full px-3 py-2 text-xs font-mono rounded border resize-none transition-all",
-                        mode === 'gaming'
+                        mode === 'tech'
                             ? "bg-[#0D1421] border-cyan-500/20 text-gray-200 placeholder:text-gray-600 focus:border-cyan-500/50"
                             : "bg-gray-50 border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-gray-400"
                     )}

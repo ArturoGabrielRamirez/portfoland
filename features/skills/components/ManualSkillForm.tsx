@@ -11,7 +11,7 @@ import { memo } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { cn } from '@/lib/utils';
-import { GamingButton, GamingInput, Spinner } from '@/features/gaming';
+import { TechButton, TechInput, Spinner } from '@/features/tech';
 import {
   Form,
   FormField,
@@ -103,7 +103,7 @@ function ManualSkillFormComponent({
                 Skill Name {!isEditMode && <span className="text-[#EF4444]">*</span>}
               </FormLabel>
               <FormControl>
-                <GamingInput
+                <TechInput
                   {...field}
                   placeholder="e.g., TypeScript, React, Docker"
                   error={!!errors.name}
@@ -246,7 +246,7 @@ function ManualSkillFormComponent({
               <FormItem>
                 <FormLabel className="text-white">Date Started</FormLabel>
                 <FormControl>
-                  <GamingInput
+                  <TechInput
                     type="date"
                     value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
                     onChange={(e) => field.onChange(e.target.value ? new Date(e.target.value) : undefined)}
@@ -266,16 +266,16 @@ function ManualSkillFormComponent({
         {/* Actions */}
         <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#1E293B]">
           {onCancel && (
-            <GamingButton
+            <TechButton
               type="button"
               variant="outline"
               onClick={onCancel}
               disabled={isLoading}
             >
               Cancel
-            </GamingButton>
+            </TechButton>
           )}
-          <GamingButton
+          <TechButton
             type="submit"
             variant="primary"
             disabled={isLoading}
@@ -288,7 +288,7 @@ function ManualSkillFormComponent({
             ) : (
               isEditMode ? 'Save Changes' : 'Add Skill'
             )}
-          </GamingButton>
+          </TechButton>
         </div>
       </form>
     </Form>

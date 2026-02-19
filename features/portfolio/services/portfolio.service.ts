@@ -10,7 +10,7 @@ import { updatePortfolioModeData } from '../data/updatePortfolioMode.data';
 import { updateUserProfileData } from '../data/updateProfile.data';
 import { invalidateNarrativeCache } from '@/lib/ai/cache';
 
-const VALID_MODES = [PORTFOLIO_MODES.PROFESSIONAL, PORTFOLIO_MODES.GAMING];
+const VALID_MODES = [PORTFOLIO_MODES.CLASSIC, PORTFOLIO_MODES.TECH];
 
 /**
  * Update a user's portfolio mode
@@ -24,7 +24,7 @@ const VALID_MODES = [PORTFOLIO_MODES.PROFESSIONAL, PORTFOLIO_MODES.GAMING];
  */
 export async function updatePortfolioModeService(
   userId: string,
-  mode: "gaming" | "professional"
+  mode: "tech" | "classic"
 ) {
   if (!VALID_MODES.includes(mode)) {
     throw new Error(PORTFOLIO_MESSAGES.INVALID_MODE);

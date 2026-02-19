@@ -21,13 +21,13 @@ import { registerSchema, type RegisterInput } from '@/features/auth/schemas'
 import { cn } from '@/lib/utils'
 
 import {
-  GamingButton,
-  GamingInput,
+  TechButton,
+  TechInput,
   GoogleIcon,
   EyeIcon,
   EyeOffIcon,
   Spinner,
-} from '@/features/gaming'
+} from '@/features/tech'
 
 // =============================================================================
 // Registration Page Component
@@ -197,7 +197,7 @@ export default function RegisterPage() {
               <label className="text-sm font-medium text-white uppercase tracking-wider">
                 {t('nameLabel')}
               </label>
-              <GamingInput
+              <TechInput
                 type="text"
                 placeholder={t('namePlaceholder')}
                 autoComplete="name"
@@ -215,7 +215,7 @@ export default function RegisterPage() {
               <label className="text-sm font-medium text-white uppercase tracking-wider">
                 {t('emailLabel')}
               </label>
-              <GamingInput
+              <TechInput
                 type="email"
                 placeholder={t('emailPlaceholder')}
                 autoComplete="email"
@@ -234,7 +234,7 @@ export default function RegisterPage() {
                 {t('passwordLabel')}
               </label>
               <div className="relative">
-                <GamingInput
+                <TechInput
                   type={showPassword ? 'text' : 'password'}
                   placeholder={t('passwordPlaceholder')}
                   autoComplete="new-password"
@@ -269,7 +269,7 @@ export default function RegisterPage() {
                 {t('confirmPasswordLabel')}
               </label>
               <div className="relative">
-                <GamingInput
+                <TechInput
                   type={showConfirmPassword ? 'text' : 'password'}
                   placeholder={t('confirmPasswordPlaceholder')}
                   autoComplete="new-password"
@@ -299,7 +299,7 @@ export default function RegisterPage() {
             </div>
 
             {/* Submit Button */}
-            <GamingButton
+            <TechButton
               type="submit"
               variant="primary"
               className="w-full"
@@ -313,7 +313,7 @@ export default function RegisterPage() {
               ) : (
                 t('gaming.submitButton')
               )}
-            </GamingButton>
+            </TechButton>
 
             {/* Divider */}
             <div className="relative">
@@ -328,7 +328,7 @@ export default function RegisterPage() {
             </div>
 
             {/* Social Login */}
-            <GamingButton
+            <TechButton
               type="button"
               variant="outline"
               className="w-full"
@@ -341,7 +341,7 @@ export default function RegisterPage() {
                 <GoogleIcon className="w-5 h-5" />
               )}
               <span>{t('googleButton')}</span>
-            </GamingButton>
+            </TechButton>
           </form>
 
           {/* Login Link */}

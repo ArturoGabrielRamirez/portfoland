@@ -11,7 +11,7 @@ import { useParams } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { cn } from '@/lib/utils';
-import { DashboardNav } from '@/features/gaming';
+import { DashboardNav } from '@/features/tech';
 import { PortfolioModeToggle } from '@/features/portfolio/components/PortfolioModeToggle';
 import { ProfileImageUpload } from '@/features/portfolio/components/ProfileImageUpload';
 import { HUDPanel } from '@/features/dashboard/components/HUDPanel';
@@ -247,7 +247,7 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                               <ImproveBioButton
                                 currentBio={bio}
                                 onImproved={(improvedBio) => setBio(improvedBio)}
-                                mode="gaming"
+                                mode="tech"
                                 locale={locale}
                               />
                               <span className="text-[10px] text-[#00D4FF]/70 font-mono">{bio.length}/1000</span>

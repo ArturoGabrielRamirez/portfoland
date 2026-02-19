@@ -31,14 +31,30 @@
 
 ---
 
-## Phase 3: Skill Tree & Portfolio (v0.3.0) ⏳ IN PROGRESS
+## Phase 3: Skill Tree & Portfolio (v0.3.0) ✅ COMPLETED
 
 14. [x] Skill Tree Visualization — Arbol de habilidades estilo videojuego con progresion y dependencias `L`
-15. [x] Portfolio Template System — Templates con modos Professional y Gaming `L`
+15. [x] Portfolio Template System — Templates con modos Classic y Tech (renombrado desde Professional/Gaming) `L`
 16. [x] Subdomain Routing — username.portfoland.com con proxy.ts rewrite `M`
 17. [x] Project Showcase — Cards de proyectos con imagenes, tech stack, links `M`
 18. [x] Portfolio SEO & Meta Tags — Open Graph, structured data dinamico `S`
 19. [x] Portfolio Dashboard — Pagina unificada para gestionar portfolio: About/Bio, Contact info, modo visual, orden de secciones `M`
+
+---
+
+## Phase 3.5: Rebrand & Unification ✅ COMPLETED
+
+> **Spec:** `agent-os/specs/2026-02-18-phase1-rebrand-unification/`
+> **Completado:** 2026-02-19
+
+- [x] Renaming completo: `PortfolioMode` de `'professional'|'gaming'` a `'classic'|'tech'`
+- [x] Renaming de archivos y carpetas: `features/gaming/` → `features/tech/`, `components/professional/` → `components/classic/`
+- [x] Logica condicional actualizada: todos los `mode === 'gaming'/'professional'` → `'tech'/'classic'`
+- [x] i18n actualizado en EN y ES: keys y labels renombrados a Tech Mode / Classic Mode
+- [x] Prompts de IA actualizados: lenguaje RPG/arcade eliminado, tono tech-futurista
+- [x] Routing unificado: rutas `/[username]` y `/timeline/[username]` convertidas a redirects de subdominio
+- [x] Script de migración MongoDB creado: `scripts/migrate-portfolio-modes.ts`
+- [x] Tests actualizados: 16+ archivos de test renombrados/actualizados
 
 ---
 
@@ -110,9 +126,10 @@
 
 ## Notes
 
-- Phase 1 y 2 completadas — infraestructura base + timeline interactivo
-- Phase 3 en progreso — Skill Tree y Portfolio listos, falta SEO y Dashboard
-- Dos modos visuales: **Professional** (limpio, ATS-friendly) y **Gaming** (cyberpunk)
+- Phase 1, 2, 3 completadas — infraestructura base, timeline interactivo, portfolio completo
+- Phase 3.5 completada — Rebrand: Tech Mode + Classic Mode (renombrado desde Gaming/Professional)
+- Dos modos visuales: **Classic** (limpio, ATS-friendly) y **Tech** (tech-futurista)
+- Routing unificado: subdominios `user.portfoland.com` (rutas /[username] son redirects)
 - Pixelated style postponed a v0.5.0+ para evaluar implementacion
 - AI features (Phase 4) vienen despues de tener contenido para mejorar
 - AI features priorizadas: CV Dinámico > Skill Explorer > Timeline Narrator

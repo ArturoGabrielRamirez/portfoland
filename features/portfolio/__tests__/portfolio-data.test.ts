@@ -53,7 +53,7 @@ const mockUser = {
   email: 'test@example.com',
   image: null,
   bio: 'A test bio',
-  portfolioMode: 'professional',
+  portfolioMode: 'classic',
   locale: 'en',
 };
 
@@ -117,7 +117,7 @@ describe('Portfolio Data Layer', () => {
       expect(result).not.toBeNull();
       expect(result?.user.username).toBe('testuser');
       expect(result?.user.bio).toBe('A test bio');
-      expect(result?.user.portfolioMode).toBe('professional');
+      expect(result?.user.portfolioMode).toBe('classic');
       expect(result?.experiences).toEqual(mockTimelineData);
       expect(result?.skills).toEqual(mockSkillsData);
     });
@@ -161,16 +161,16 @@ describe('Portfolio Data Layer', () => {
 
   describe('updatePortfolioModeData', () => {
     it('correctly updates the portfolioMode field on the User model', async () => {
-      const updatedUser = { ...mockUser, portfolioMode: 'gaming' };
+      const updatedUser = { ...mockUser, portfolioMode: 'tech' };
       vi.mocked(prisma.user.update).mockResolvedValue(updatedUser as any);
 
-      const result = await updatePortfolioModeData(mockUserId, 'gaming');
+      const result = await updatePortfolioModeData(mockUserId, 'tech');
 
       expect(prisma.user.update).toHaveBeenCalledWith({
         where: { id: mockUserId },
-        data: { portfolioMode: 'gaming' },
+        data: { portfolioMode: 'tech' },
       });
-      expect(result.portfolioMode).toBe('gaming');
+      expect(result.portfolioMode).toBe('tech');
     });
   });
 });

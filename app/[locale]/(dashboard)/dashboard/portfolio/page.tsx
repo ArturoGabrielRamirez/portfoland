@@ -58,7 +58,7 @@ export default async function DashboardPortfolioPage() {
           username: dbUser.username || null,
           image: cleanImage,
           bio: dbUser.bio ?? null,
-          portfolioMode: (dbUser.portfolioMode ?? 'professional') as 'professional' | 'gaming',
+          portfolioMode: (dbUser.portfolioMode ?? 'classic') as 'classic' | 'tech',
         }}
         oauthImage={oauthImage}
       />

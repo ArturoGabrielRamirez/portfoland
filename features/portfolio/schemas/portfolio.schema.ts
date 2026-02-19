@@ -7,7 +7,7 @@
 import * as yup from 'yup';
 import { PORTFOLIO_MODES } from '../constants/messages';
 
-const validModes = [PORTFOLIO_MODES.PROFESSIONAL, PORTFOLIO_MODES.GAMING] as const;
+const validModes = [PORTFOLIO_MODES.CLASSIC, PORTFOLIO_MODES.TECH] as const;
 
 /**
  * Schema for updating portfolio mode

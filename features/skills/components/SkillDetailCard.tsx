@@ -11,7 +11,7 @@ import { memo, useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, RotateCcw, Edit, Trash2, Crown, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { GamingCard, XPBar, LevelBadge, GamingBadge } from '@/features/gaming';
+import { TechCard, XPBar, LevelBadge, TechBadge } from '@/features/tech';
 import type { SkillDetailCardProps } from '../types/skill';
 import {
   SKILL_LEVEL_NAMES,
@@ -171,7 +171,7 @@ function SkillDetailCardComponent({
                 className="absolute inset-0 backface-hidden"
                 style={{ backfaceVisibility: 'hidden' }}
               >
-                <GamingCard
+                <TechCard
                   variant={isLegendary ? 'featured' : 'glow'}
                   className={cn(
                     'w-full overflow-hidden relative rounded-sm',
@@ -200,9 +200,9 @@ function SkillDetailCardComponent({
                     </button>
 
                     {/* Category badge */}
-                    <GamingBadge color="gray" className="mb-3">
+                    <TechBadge color="gray" className="mb-3">
                       {categoryName}
-                    </GamingBadge>
+                    </TechBadge>
 
                     {/* Skill Icon/Letter */}
                     <div className="flex items-center gap-4">
@@ -293,7 +293,7 @@ function SkillDetailCardComponent({
                       </div>
                     )}
                   </div>
-                </GamingCard>
+                </TechCard>
               </div>
 
               {/* Back Side */}
@@ -304,7 +304,7 @@ function SkillDetailCardComponent({
                   transform: 'rotateY(180deg)',
                 }}
               >
-                <GamingCard
+                <TechCard
                   variant="default"
                   className="w-full overflow-hidden"
                 >
@@ -349,7 +349,7 @@ function SkillDetailCardComponent({
                       })}
                     </p>
                   </div>
-                </GamingCard>
+                </TechCard>
               </div>
             </motion.div>
           </motion.div>

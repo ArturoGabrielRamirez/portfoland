@@ -13,8 +13,8 @@ export const PORTFOLIO_MESSAGES = {
 } as const;
 
 export const PORTFOLIO_MODES = {
-  PROFESSIONAL: 'professional',
-  GAMING: 'gaming',
+  CLASSIC: 'classic',
+  TECH: 'tech',
 } as const;
 
 export type PortfolioMessageKey = keyof typeof PORTFOLIO_MESSAGES;

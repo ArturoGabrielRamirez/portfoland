@@ -21,8 +21,11 @@ describe('generatePortfolioMetadata', () => {
             email: 'john@example.com',
             image: 'https://example.com/avatar.jpg',
             bio: 'A great developer.',
-            portfolioMode: 'professional',
+            portfolioMode: 'classic' as const,
             locale: 'en',
+            sectionOrder: [],
+            contactLinks: {},
+            sectionVisibility: {},
         },
         skills: {
             user: { id: '1', name: 'John Doe', username: 'johndoe', image: null },
@@ -67,23 +70,23 @@ describe('generatePortfolioMetadata', () => {
         expect(og?.locale).toBe('en');
 
         // OG Image
-        const ogImage = og?.images?.[0];
+        const ogImage = (og?.images as any[])?.[0];
         // We verify the URL construction
         expect(ogImage?.url).toContain('/api/og');
         expect(ogImage?.url).toContain('username=johndoe');
-        expect(ogImage?.url).toContain('mode=professional');
+        expect(ogImage?.url).toContain('mode=classic');
         expect(ogImage?.url).toContain('locale=en');
     });
 
-    it('should use gaming parameters when mode is gaming', () => {
-        const gamingData: PortfolioData = {
+    it('should use tech parameters when mode is tech', () => {
+        const techData: PortfolioData = {
             ...mockData,
-            user: { ...mockData.user, portfolioMode: 'gaming' },
+            user: { ...mockData.user, portfolioMode: 'tech' },
         };
 
-        const metadata = generatePortfolioMetadata(gamingData, mockT, 'en');
+        const metadata = generatePortfolioMetadata(techData, mockT, 'en');
 
-        const ogImage = metadata.openGraph?.images?.[0];
-        expect(ogImage?.url).toContain('mode=gaming');
+        const ogImage = (metadata.openGraph?.images as any[])?.[0];
+        expect(ogImage?.url).toContain('mode=tech');
     });
 });

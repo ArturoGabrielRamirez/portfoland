@@ -23,9 +23,9 @@ export async function GET(request: NextRequest) {
         }
 
         const { user, skills } = portfolio;
-        const mode = modeOverride || user.portfolioMode || 'professional';
-        const isGaming = mode === 'gaming';
-        const userTitle = isGaming ? 'Player' : 'Professional';
+        const mode = modeOverride || user.portfolioMode || 'classic';
+        const isTech = mode === 'tech';
+        const userTitle = isTech ? 'Developer' : 'Professional';
 
         // Font loading - using standard fetch for Google Fonts
         const interSemiBold = await fetch('https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYMZs.woff')
@@ -34,9 +34,9 @@ export async function GET(request: NextRequest) {
                 return res.arrayBuffer();
             });
 
-        const gamingFont = await fetch('https://raw.githubusercontent.com/google/fonts/main/ofl/vt323/VT323-Regular.ttf')
+        const techFont = await fetch('https://raw.githubusercontent.com/google/fonts/main/ofl/vt323/VT323-Regular.ttf')
             .then(res => {
-                if (!res.ok) throw new Error(`Failed to load Gaming font: ${res.status}`);
+                if (!res.ok) throw new Error(`Failed to load Tech font: ${res.status}`);
                 return res.arrayBuffer();
             });
 
@@ -50,15 +50,15 @@ export async function GET(request: NextRequest) {
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        backgroundColor: isGaming ? '#0A0E1A' : '#F8FAFC',
-                        backgroundImage: isGaming
+                        backgroundColor: isTech ? '#0A0E1A' : '#F8FAFC',
+                        backgroundImage: isTech
                             ? 'radial-gradient(circle at 25% 25%, #1a1f2e 0%, #0A0E1A 50%)'
                             : 'radial-gradient(circle at 25% 25%, #ffffff 0%, #f1f5f9 100%)',
-                        fontFamily: isGaming ? '"GamingFont"' : '"Inter"',
+                        fontFamily: isTech ? '"TechFont"' : '"Inter"',
                     }}
                 >
-                    {isGaming ? (
-                        // GAMING TEMPLATE
+                    {isTech ? (
+                        // TECH TEMPLATE
                         <div
                             style={{
                                 display: 'flex',
@@ -99,7 +99,7 @@ export async function GET(request: NextRequest) {
                                     textTransform: 'uppercase',
                                     letterSpacing: '2px'
                                 }}>
-                                    Player Profile
+                                    Tech Profile
                                 </div>
                                 <div style={{ fontSize: 60, fontWeight: 'bold', color: 'white', lineHeight: 1 }}>
                                     {user.name}
@@ -131,7 +131,7 @@ export async function GET(request: NextRequest) {
                             </div>
                         </div>
                     ) : (
-                        // PROFESSIONAL TEMPLATE
+                        // CLASSIC TEMPLATE
                         <div
                             style={{
                                 display: 'flex',
@@ -208,8 +208,8 @@ export async function GET(request: NextRequest) {
                         weight: 600,
                     },
                     {
-                        name: 'GamingFont',
-                        data: gamingFont,
+                        name: 'TechFont',
+                        data: techFont,
                         style: 'normal',
                         weight: 400,
                     }

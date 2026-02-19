@@ -24,9 +24,9 @@ import {
 } from '@/features/shadcn/ui/dialog';
 import {
   HUDPanel,
-  GamingBadge,
-  GamingButton,
-} from '@/features/gaming';
+  TechBadge,
+  TechButton,
+} from '@/features/tech';
 import type { ProjectDetailProps } from '../types/project';
 import type { ProjectLink } from '../types/project';
 
@@ -266,15 +266,15 @@ function GamingModal({
                   {project.title}
                 </h2>
                 {project.featured && (
-                  <GamingBadge color="yellow">
+                  <TechBadge color="yellow">
                     {t('ui.featured')}
-                  </GamingBadge>
+                  </TechBadge>
                 )}
               </div>
 
               {/* Status and dates */}
               <div className="mb-4 flex flex-wrap items-center gap-3">
-                <GamingBadge
+                <TechBadge
                   color={
                     project.status === 'COMPLETED'
                       ? 'green'
@@ -284,7 +284,7 @@ function GamingModal({
                   }
                 >
                   {t(`ui.statusLabels.${project.status}`)}
-                </GamingBadge>
+                </TechBadge>
                 <span className="flex items-center gap-1.5 text-xs text-[#64748B]">
                   <Calendar className="h-3 w-3" />
                   {formatDate(project.startDate)}
@@ -307,9 +307,9 @@ function GamingModal({
                     </h4>
                     <div className="flex flex-wrap gap-1.5">
                       {project.technologies.map((tech: string) => (
-                        <GamingBadge key={tech} color="cyan">
+                        <TechBadge key={tech} color="cyan">
                           {tech}
-                        </GamingBadge>
+                        </TechBadge>
                       ))}
                     </div>
                   </div>
@@ -323,7 +323,7 @@ function GamingModal({
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {links.map((link, index) => (
-                      <GamingButton
+                      <TechButton
                         key={index}
                         variant="outline"
                         size="sm"
@@ -338,7 +338,7 @@ function GamingModal({
                         {LINK_TYPE_ICONS[link.type] ||
                           LINK_TYPE_ICONS.OTHER}
                         <span>{link.label}</span>
-                      </GamingButton>
+                      </TechButton>
                     ))}
                   </div>
                 </div>
@@ -363,7 +363,7 @@ export function ProjectDetailModal({
 }: ProjectDetailProps) {
   const t = useTranslations('portfolio');
 
-  if (mode === 'professional') {
+  if (mode === 'classic') {
     return (
       <ProfessionalModal
         project={project}

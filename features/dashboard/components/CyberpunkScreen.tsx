@@ -251,7 +251,7 @@ export function CyberpunkScreen({ stats, className }: CyberpunkScreenProps) {
           <div className="flex-shrink-0 relative z-10 transform hover:scale-105 transition-transform duration-300">
             <HexagonStatCard
               value={stats.xp.toLocaleString()}
-              label={t('gaming.stats.experience')}
+              label={t('tech.stats.experience')}
               color="yellow"
               icon={<BoltIcon className="h-5 w-5 lg:h-6 lg:w-6" />}
               size="md"
@@ -262,7 +262,7 @@ export function CyberpunkScreen({ stats, className }: CyberpunkScreenProps) {
           <div className="flex-shrink-0 relative z-10 transform hover:scale-105 transition-transform duration-300">
             <HexagonStatCard
               value={`Lv.${stats.level}`}
-              label={t('gaming.currentLevel')}
+              label={t('tech.currentLevel')}
               color="cyan"
               icon={<LevelIcon className="h-4 w-4 lg:h-5 lg:w-5" />}
               size="md"
@@ -273,7 +273,7 @@ export function CyberpunkScreen({ stats, className }: CyberpunkScreenProps) {
           <div className="flex-shrink-0 relative z-10 transform hover:scale-105 transition-transform duration-300">
             <HexagonStatCard
               value={`${stats.achievements.unlocked}/${stats.achievements.total}`}
-              label={t('gaming.stats.achievements')}
+              label={t('tech.stats.achievements')}
               color="magenta"
               icon={<TrophyIcon className="h-4 w-4 lg:h-5 lg:w-5" />}
               size="md"
@@ -284,7 +284,7 @@ export function CyberpunkScreen({ stats, className }: CyberpunkScreenProps) {
           <div className="flex-shrink-0 relative z-10 transform hover:scale-105 transition-transform duration-300">
             <HexagonStatCard
               value={stats.skills.toString()}
-              label={t('gaming.stats.skills')}
+              label={t('tech.stats.skills')}
               color="green"
               icon={<LightbulbIcon className="h-4 w-4 lg:h-5 lg:w-5" />}
               size="md"

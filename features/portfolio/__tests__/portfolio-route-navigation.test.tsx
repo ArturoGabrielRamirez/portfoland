@@ -1,12 +1,13 @@
 /**
  * Portfolio Route and Navigation Tests
  *
- * Tests for the public portfolio route and panel-based navigation:
- * - Portfolio page server component returns notFound() for non-existent username
- * - Portfolio page fetches and passes correct portfolioMode to client layout
+ * Tests for the public portfolio panel-based navigation:
  * - PanelNavigation renders all 7 section tabs with translated labels
  * - PanelNavigation switches active panel on tab click with Framer Motion animation
  * - Mobile layout renders sticky bottom tab bar at <768px viewport
+ *
+ * Note: The [username]/page.tsx is now a redirect page (UsernameRedirect),
+ * so the server component tests that tested PortfolioPage have been removed.
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
@@ -17,19 +18,9 @@ import '@testing-library/jest-dom';
 // Mocks
 // =============================================================================
 
-// Mock getPortfolioByUsername
-const mockGetPortfolioByUsername = vi.fn();
-vi.mock('@/features/portfolio/data', () => ({
-  getPortfolioByUsername: (...args: any[]) => mockGetPortfolioByUsername(...args),
-}));
-
 // Mock next/navigation
-const mockNotFound = vi.fn();
 vi.mock('next/navigation', () => ({
-  notFound: () => {
-    mockNotFound();
-    throw new Error('NEXT_NOT_FOUND');
-  },
+  notFound: vi.fn(),
   useRouter: () => ({
     push: vi.fn(),
     replace: vi.fn(),
@@ -37,6 +28,7 @@ vi.mock('next/navigation', () => ({
   }),
   usePathname: () => '/en/testuser',
   useSearchParams: () => new URLSearchParams(),
+  redirect: vi.fn(),
 }));
 
 // Mock framer-motion to render without actual animations
@@ -66,76 +58,12 @@ vi.mock('framer-motion', () => ({
 }));
 
 // =============================================================================
-// Test Data
-// =============================================================================
-
-const mockPortfolioData = {
-  user: {
-    id: 'test-user-id',
-    name: 'Test User',
-    username: 'testuser',
-    email: 'test@example.com',
-    image: null,
-    bio: 'A test bio',
-    portfolioMode: 'professional' as const,
-  },
-  experiences: null,
-  skills: null,
-  projects: [],
-};
-
-const mockGamingPortfolioData = {
-  ...mockPortfolioData,
-  user: {
-    ...mockPortfolioData.user,
-    portfolioMode: 'gaming' as const,
-  },
-};
-
-// =============================================================================
 // Tests
 // =============================================================================
 
 describe('Portfolio Route and Navigation', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-  });
-
-  describe('Portfolio Page Server Component', () => {
-    it('returns notFound() for non-existent username', async () => {
-      mockGetPortfolioByUsername.mockResolvedValue(null);
-
-      // Dynamically import the page after mocks are set up
-      const { default: PortfolioPage } = await import(
-        '@/app/[locale]/[username]/page'
-      );
-
-      await expect(
-        PortfolioPage({
-          params: Promise.resolve({ locale: 'en', username: 'nonexistent' }),
-        })
-      ).rejects.toThrow('NEXT_NOT_FOUND');
-
-      expect(mockNotFound).toHaveBeenCalled();
-      expect(mockGetPortfolioByUsername).toHaveBeenCalledWith('nonexistent');
-    });
-
-    it('fetches and passes correct portfolioMode to client layout', async () => {
-      mockGetPortfolioByUsername.mockResolvedValue(mockPortfolioData);
-
-      const { default: PortfolioPage } = await import(
-        '@/app/[locale]/[username]/page'
-      );
-
-      const result = await PortfolioPage({
-        params: Promise.resolve({ locale: 'en', username: 'testuser' }),
-      });
-
-      // Verify the PortfolioLayout receives the correct mode prop
-      expect(result).toBeDefined();
-      expect(result.props.mode).toBe('professional');
-      expect(result.props.data).toEqual(mockPortfolioData);
-    });
   });
 
   describe('PanelNavigation Component', () => {
@@ -148,7 +76,7 @@ describe('Portfolio Route and Navigation', () => {
         <PanelNavigation
           activeSection="hero"
           onSectionChange={vi.fn()}
-          mode="professional"
+          mode="classic"
         />
       );
 
@@ -184,7 +112,7 @@ describe('Portfolio Route and Navigation', () => {
         <PanelNavigation
           activeSection="hero"
           onSectionChange={mockOnSectionChange}
-          mode="professional"
+          mode="classic"
         />
       );
 
@@ -212,7 +140,7 @@ describe('Portfolio Route and Navigation', () => {
         <PanelNavigation
           activeSection="hero"
           onSectionChange={vi.fn()}
-          mode="gaming"
+          mode="tech"
         />
       );
 

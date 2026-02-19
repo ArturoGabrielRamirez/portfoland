@@ -1,50 +1,18 @@
 /**
- * Public Timeline Page
+ * Public Timeline Route — Redirect to Subdomain
  *
- * Displays a user's public timeline with experiences on a map.
- * Read-only view accessible without authentication.
+ * This path (/[locale]/timeline/[username]) is kept only as a redirect.
+ * All timeline traffic is served via subdomains: username.portfoland.com/timeline
  */
 
-import { notFound } from 'next/navigation';
-import { getPublicTimelineByUsername } from '@/features/timeline/data';
-import { PublicTimelineView } from './PublicTimelineView';
+import { redirect } from 'next/navigation';
 
-interface PublicTimelinePageProps {
-  params: Promise<{
-    locale: string;
-    username: string;
-  }>;
+interface TimelineRedirectProps {
+  params: Promise<{ username: string }>;
 }
 
-export default async function PublicTimelinePage({ params }: PublicTimelinePageProps) {
+export default async function TimelineRedirect({ params }: TimelineRedirectProps) {
   const { username } = await params;
-
-  // Fetch public timeline data
-  const timelineData = await getPublicTimelineByUsername(username);
-
-  // 404 if user not found
-  if (!timelineData) {
-    notFound();
-  }
-
-  return <PublicTimelineView data={timelineData} />;
-}
-
-/**
- * Generate metadata for SEO
- */
-export async function generateMetadata({ params }: PublicTimelinePageProps) {
-  const { username } = await params;
-  const timelineData = await getPublicTimelineByUsername(username);
-
-  if (!timelineData) {
-    return {
-      title: 'Timeline Not Found',
-    };
-  }
-
-  return {
-    title: `${timelineData.user.name}'s Timeline | Portfoland`,
-    description: `View ${timelineData.user.name}'s professional journey with ${timelineData.stats.totalExperiences} experiences and ${timelineData.stats.totalXP} XP.`,
-  };
+  const domain = process.env.NEXT_PUBLIC_APP_DOMAIN || 'portfoland.com';
+  redirect(`https://${username}.${domain}/timeline`);
 }

@@ -1,7 +1,7 @@
 /**
  * Portfolio Feature
  *
- * Public portfolio page with Professional and Gaming visual modes.
+ * Public portfolio page with Classic and Tech visual modes.
  */
 
 // =============================================================================
@@ -33,23 +33,23 @@ export { PortfolioModeToggle } from './components/PortfolioModeToggle';
 export { PanelNavigation } from './components/PanelNavigation';
 export { PortfolioLayout } from './components/PortfolioLayout';
 
-// Professional Mode Components
-export { ProfessionalHero } from './components/professional/ProfessionalHero';
-export { ProfessionalAbout } from './components/professional/ProfessionalAbout';
-export { ProfessionalTimeline } from './components/professional/ProfessionalTimeline';
-export { ProfessionalSkills } from './components/professional/ProfessionalSkills';
-export { ProfessionalProjects } from './components/professional/ProfessionalProjects';
-export { ProfessionalContact } from './components/professional/ProfessionalContact';
-export { ProfessionalAI } from './components/professional/ProfessionalAI';
+// Classic Mode Components
+export { ClassicHero } from './components/classic/ClassicHero';
+export { ClassicAbout } from './components/classic/ClassicAbout';
+export { ClassicTimeline } from './components/classic/ClassicTimeline';
+export { ClassicSkills } from './components/classic/ClassicSkills';
+export { ClassicProjects } from './components/classic/ClassicProjects';
+export { ClassicContact } from './components/classic/ClassicContact';
+export { ClassicAI } from './components/classic/ClassicAI';
 
-// Gaming Mode Components
-export { GamingHero } from './components/gaming/GamingHero';
-export { GamingAbout } from './components/gaming/GamingAbout';
-export { GamingTimeline } from './components/gaming/GamingTimeline';
-export { GamingSkills } from './components/gaming/GamingSkills';
-export { GamingProjects } from './components/gaming/GamingProjects';
-export { GamingContact } from './components/gaming/GamingContact';
-export { GamingAI } from './components/gaming/GamingAI';
+// Tech Mode Components
+export { TechHero } from './components/tech/TechHero';
+export { TechAbout } from './components/tech/TechAbout';
+export { TechTimeline } from './components/tech/TechTimeline';
+export { TechSkills } from './components/tech/TechSkills';
+export { TechProjects } from './components/tech/TechProjects';
+export { TechContact } from './components/tech/TechContact';
+export { TechAI } from './components/tech/TechAI';
 
 // =============================================================================
 // Constants

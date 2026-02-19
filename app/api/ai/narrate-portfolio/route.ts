@@ -174,7 +174,7 @@ export async function GET(req: Request) {
     try {
         const { searchParams } = new URL(req.url);
         const username = searchParams.get('username');
-        const mode = searchParams.get('mode') || 'gaming';
+        const mode = searchParams.get('mode') || 'tech';
         const locale = searchParams.get('locale') || 'en';
 
         if (!username) {

@@ -53,7 +53,7 @@ const mockUser = {
   email: 'test@example.com',
   image: null,
   bio: 'A test bio',
-  portfolioMode: 'professional',
+  portfolioMode: 'classic',
 };
 
 // =============================================================================
@@ -65,7 +65,7 @@ describe('togglePortfolioMode Server Action', () => {
     vi.clearAllMocks();
   });
 
-  it('successfully updates mode from professional to gaming', async () => {
+  it('successfully updates mode from classic to tech', async () => {
     const { togglePortfolioMode } = await import(
       '../actions/togglePortfolioMode'
     );
@@ -77,16 +77,15 @@ describe('togglePortfolioMode Server Action', () => {
     } as any);
 
     // Mock successful update
-    const updatedUser = { ...mockUser, portfolioMode: 'gaming' };
+    const updatedUser = { ...mockUser, portfolioMode: 'tech' };
     vi.mocked(prisma.user.update).mockResolvedValue(updatedUser as any);
 
-    const result = await togglePortfolioMode({ mode: 'gaming' });
+    const result = await togglePortfolioMode({ mode: 'tech' });
 
     expect(result.hasError).toBe(false);
     expect(result.message).toBe('Portfolio mode updated successfully');
-    expect(result.payload.portfolioMode).toBe('gaming');
-    expect(revalidatePath).toHaveBeenCalledWith('/en/testuser');
-    expect(revalidatePath).toHaveBeenCalledWith('/es/testuser');
+    expect(result.payload.portfolioMode).toBe('tech');
+    expect(revalidatePath).toHaveBeenCalledWith('/', 'layout');
   });
 
   it('rejects invalid mode values', async () => {
@@ -114,7 +113,7 @@ describe('togglePortfolioMode Server Action', () => {
     // Mock no session
     vi.mocked(auth.api.getSession).mockResolvedValue(null);
 
-    const result = await togglePortfolioMode({ mode: 'gaming' });
+    const result = await togglePortfolioMode({ mode: 'tech' });
 
     expect(result.hasError).toBe(true);
     expect(result.message).toBe('Please log in to continue');

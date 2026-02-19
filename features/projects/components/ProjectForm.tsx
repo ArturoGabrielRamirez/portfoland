@@ -247,7 +247,7 @@ function ProjectFormComponent({
                 <ImproveDescriptionButton
                   currentDescription={field.value}
                   onImproved={(improved) => field.onChange(improved)}
-                  mode="gaming"
+                  mode="tech"
                   locale={locale}
                   context="project"
                 />

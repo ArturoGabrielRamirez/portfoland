@@ -1,7 +1,7 @@
 /**
  * Portfolio Project Card Tests (TG6)
  *
- * Tests for Professional and Gaming project card components
+ * Tests for Classic and Tech project card components
  * with the new Project model data shape.
  */
 
@@ -15,11 +15,11 @@ import type { PortfolioData } from '../types/portfolio';
 vi.mock('next-intl', () => ({
   useTranslations: () => (key: string) => {
     const translations: Record<string, string> = {
-      'sections.projects.professional.title': 'Projects',
-      'sections.projects.professional.emptyState': 'No projects yet',
-      'sections.projects.professional.featured': 'Featured',
-      'sections.projects.gaming.title': 'MISSIONS',
-      'sections.projects.gaming.emptyState': 'NO MISSIONS DEPLOYED',
+      'sections.projects.classic.title': 'Projects',
+      'sections.projects.classic.emptyState': 'No projects yet',
+      'sections.projects.classic.featured': 'Featured',
+      'sections.projects.tech.title': 'PROJECTS',
+      'sections.projects.tech.emptyState': 'NO PROJECTS DEPLOYED',
     };
     return translations[key] ?? key;
   },
@@ -41,8 +41,11 @@ const mockUser = {
   email: 'john@example.com',
   image: null,
   bio: null,
-  portfolioMode: 'professional' as const,
+  portfolioMode: 'classic' as const,
   locale: 'en',
+  sectionOrder: [],
+  contactLinks: {},
+  sectionVisibility: {},
 };
 
 const mockFeaturedProject = {
@@ -102,12 +105,12 @@ const mockData: PortfolioData = {
 // =============================================================================
 
 describe('Portfolio Project Card Components (TG6)', () => {
-  it('ProfessionalProjects renders project cards with title, description, and technology badges', async () => {
-    const { ProfessionalProjects } = await import(
-      '../components/professional/ProfessionalProjects'
+  it('ClassicProjects renders project cards with title, description, and technology badges', async () => {
+    const { ClassicProjects } = await import(
+      '../components/classic/ClassicProjects'
     );
 
-    render(<ProfessionalProjects data={mockData} />);
+    render(<ClassicProjects data={mockData} />);
 
     // Project cards rendered
     const cards = screen.getAllByTestId('project-card');
@@ -128,12 +131,12 @@ describe('Portfolio Project Card Components (TG6)', () => {
     expect(screen.getByText('Tailwind')).toBeInTheDocument();
   });
 
-  it('ProfessionalProjects renders featured projects first with featured indicator', async () => {
-    const { ProfessionalProjects } = await import(
-      '../components/professional/ProfessionalProjects'
+  it('ClassicProjects renders featured projects first with featured indicator', async () => {
+    const { ClassicProjects } = await import(
+      '../components/classic/ClassicProjects'
     );
 
-    render(<ProfessionalProjects data={mockData} />);
+    render(<ClassicProjects data={mockData} />);
 
     // Featured indicator present
     const featuredBadge = screen.getByTestId('featured-indicator');
@@ -145,14 +148,14 @@ describe('Portfolio Project Card Components (TG6)', () => {
     expect(cards[0].className).toContain('border-blue-600');
   });
 
-  it('GamingProjects renders GamingCard with variant="featured" for featured projects', async () => {
-    const { GamingProjects } = await import(
-      '../components/gaming/GamingProjects'
+  it('TechProjects renders TechCard with variant="featured" for featured projects', async () => {
+    const { TechProjects } = await import(
+      '../components/tech/TechProjects'
     );
 
-    render(<GamingProjects data={mockData} />);
+    render(<TechProjects data={mockData} />);
 
-    const projectCards = screen.getAllByTestId('gaming-project-card');
+    const projectCards = screen.getAllByTestId('tech-project-card');
     expect(projectCards.length).toBe(2);
 
     // Featured card uses variant="featured" (CVA resolves to gradient bg)
@@ -162,15 +165,15 @@ describe('Portfolio Project Card Components (TG6)', () => {
     expect(projectCards[1].className).toContain('border-[#00D4FF]');
   });
 
-  it('GamingProjects renders StatCard with correct project count', async () => {
-    const { GamingProjects } = await import(
-      '../components/gaming/GamingProjects'
+  it('TechProjects renders StatCard with correct project count', async () => {
+    const { TechProjects } = await import(
+      '../components/tech/TechProjects'
     );
 
-    render(<GamingProjects data={mockData} />);
+    render(<TechProjects data={mockData} />);
 
     // StatCard shows project count
     expect(screen.getByText('2')).toBeInTheDocument();
-    expect(screen.getByText('Missions')).toBeInTheDocument();
+    expect(screen.getByText('Projects')).toBeInTheDocument();
   });
 });

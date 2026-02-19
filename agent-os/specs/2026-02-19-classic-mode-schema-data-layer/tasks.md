@@ -18,36 +18,36 @@ This is a **DATA LAYER ONLY** spec. No UI components, no pages. The work covers 
 #### Task Group 1: Prisma Models, Enum, and Relations
 **Dependencies:** None
 
-- [ ] 1.0 Complete Prisma schema changes and type generation
-  - [ ] 1.1 Add `PriceType` enum to `prisma/schema.prisma`
+- [x] 1.0 Complete Prisma schema changes and type generation
+  - [x] 1.1 Add `PriceType` enum to `prisma/schema.prisma`
     - Values: `FIXED`, `RANGE`, `STARTING_FROM`, `CONTACT`
     - Place above the Service model definition
-  - [ ] 1.2 Add `Service` model to `prisma/schema.prisma`
+  - [x] 1.2 Add `Service` model to `prisma/schema.prisma`
     - Fields: `id` (String @id @default(cuid()) @map("_id")), `userId` (String), `title` (String), `description` (String), `priceType` (PriceType), `priceMin` (Float?), `priceMax` (Float?), `currency` (String @default("USD")), `durationMinutes` (Int?), `order` (Int @default(0)), `published` (Boolean @default(true)), `imageUrl` (String?), `createdAt` (DateTime @default(now())), `updatedAt` (DateTime @updatedAt)
     - Relation: `user User @relation(fields: [userId], references: [id], onDelete: Cascade)`
     - Indexes: `@@index([userId])`, `@@map("services")`
-  - [ ] 1.3 Add `Testimonial` model to `prisma/schema.prisma`
+  - [x] 1.3 Add `Testimonial` model to `prisma/schema.prisma`
     - Fields: `id`, `userId`, `clientName` (String), `clientTitle` (String?), `content` (String), `rating` (Int), `imageUrl` (String?), `source` (String?), `externalId` (String?), `order` (Int @default(0)), `published` (Boolean @default(true)), `createdAt`, `updatedAt`
     - Relation: `user User @relation(fields: [userId], references: [id], onDelete: Cascade)`
     - Indexes: `@@index([userId])`, `@@map("testimonials")`
-  - [ ] 1.4 Add `GalleryItem` model to `prisma/schema.prisma`
+  - [x] 1.4 Add `GalleryItem` model to `prisma/schema.prisma`
     - Fields: `id`, `userId`, `imageUrl` (String, required), `caption` (String?), `altText` (String?), `category` (String?), `order` (Int @default(0)), `published` (Boolean @default(true)), `createdAt`, `updatedAt`
     - Relation: `user User @relation(fields: [userId], references: [id], onDelete: Cascade)`
     - Indexes: `@@index([userId])`, `@@map("gallery_items")`
-  - [ ] 1.5 Add `PortfolioSettings` model to `prisma/schema.prisma`
+  - [x] 1.5 Add `PortfolioSettings` model to `prisma/schema.prisma`
     - Fields: `id`, `userId` (String @unique), `theme` (String @default("default")), `layoutVariant` (String @default("bento")), `accentColor` (String?), `fontFamily` (String?), `heroStyle` (String @default("standard")), `showBranding` (Boolean @default(true)), `createdAt`, `updatedAt`
     - Relation: `user User @relation(fields: [userId], references: [id], onDelete: Cascade)`
     - Index: `@@map("portfolio_settings")`
     - Note: `userId` is `@unique` (1:1 relation, no `@@index` needed -- unique constraint implies index)
-  - [ ] 1.6 Add new relation fields to User model
+  - [x] 1.6 Add new relation fields to User model
     - Add `services Service[]` to User model relations block
     - Add `testimonials Testimonial[]` to User model relations block
     - Add `galleryItems GalleryItem[]` to User model relations block
     - Add `portfolioSettings PortfolioSettings?` to User model relations block
-  - [ ] 1.7 Run `npx prisma generate` to produce TypeScript types
+  - [x] 1.7 Run `npx prisma generate` to produce TypeScript types
     - This MUST succeed before any subsequent task group can begin
     - Verify that `@/app/generated/prisma` exports `Service`, `Testimonial`, `GalleryItem`, `PortfolioSettings`, and `PriceType`
-  - [ ] 1.8 Run `npx prisma db push` to sync schema with MongoDB
+  - [x] 1.8 Run `npx prisma db push` to sync schema with MongoDB
     - Verify no errors from the push operation
 
 **Acceptance Criteria:**

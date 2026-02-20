@@ -364,8 +364,8 @@ This is a **DATA LAYER ONLY** spec. No UI components, no pages. The work covers 
 #### Task Group 8: Test Review and Gap Analysis
 **Dependencies:** Task Groups 1-7
 
-- [ ] 8.0 Review existing tests and fill critical gaps only
-  - [ ] 8.1 Review tests from Task Groups 2-7
+- [x] 8.0 Review existing tests and fill critical gaps only
+  - [x] 8.1 Review tests from Task Groups 2-7
     - Review the 4-6 tests from Services (Task 2.1)
     - Review the 4-6 tests from Testimonials (Task 3.1)
     - Review the 4-6 tests from Gallery (Task 4.1)
@@ -373,19 +373,19 @@ This is a **DATA LAYER ONLY** spec. No UI components, no pages. The work covers 
     - Review the 3-4 tests from Sections (Task 6.1)
     - Review the 2-4 tests from Aggregation (Task 7.1)
     - Total existing tests: approximately 20-30 tests
-  - [ ] 8.2 Analyze test coverage gaps for THIS feature only
+  - [x] 8.2 Analyze test coverage gaps for THIS feature only
     - Identify critical workflows that lack coverage
     - Focus on integration between features (e.g., does aggregation correctly fetch from all features)
     - Check cross-feature ownership validation patterns
     - Do NOT assess entire application test coverage
-  - [ ] 8.3 Write up to 10 additional strategic tests maximum
+  - [x] 8.3 Write up to 10 additional strategic tests maximum
     - Focus on integration points:
       - End-to-end: action -> service -> data -> database for at least one feature
       - Cross-feature: aggregation query returns correct data from all four new features
       - Edge cases: lazy creation of PortfolioSettings when called from aggregation
       - Conditional validation: Service price validation across all PriceType values
     - Do NOT write comprehensive coverage for all scenarios
-  - [ ] 8.4 Run all feature-specific tests
+  - [x] 8.4 Run all feature-specific tests
     - Run ONLY tests related to this spec's features (from 2.1, 3.1, 4.1, 5.1, 6.1, 7.1, and 8.3)
     - Expected total: approximately 30-40 tests maximum
     - Do NOT run the entire application test suite

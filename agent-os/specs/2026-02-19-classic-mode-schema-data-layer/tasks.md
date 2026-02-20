@@ -227,47 +227,47 @@ This is a **DATA LAYER ONLY** spec. No UI components, no pages. The work covers 
 #### Task Group 5: PortfolioSettings Feature — Types, Themes, Data, Services, Actions
 **Dependencies:** Task Group 1 (Prisma types must be generated)
 
-- [ ] 5.0 Complete the `features/portfolio-settings/` feature directory
-  - [ ] 5.1 Write 3-4 focused tests for PortfolioSettings feature
+- [x] 5.0 Complete the `features/portfolio-settings/` feature directory
+  - [x] 5.1 Write 3-4 focused tests for PortfolioSettings feature
     - Test getPortfolioSettings lazy-creates default settings on first access
     - Test updatePortfolioSettings validates theme ID exists in THEME_PRESETS
     - Test updatePortfolioSettings validates layoutVariant is one of ["bento", "stacked", "sidebar"]
     - Test updatePortfolioSettings validates heroStyle is one of ["standard", "minimal", "cover"]
-  - [ ] 5.2 Create `features/portfolio-settings/types/portfolioSettings.ts`
+  - [x] 5.2 Create `features/portfolio-settings/types/portfolioSettings.ts`
     - Re-export `PortfolioSettings as PortfolioSettingsModel` from `@/app/generated/prisma`
     - Define `ThemePreset` interface: `{ id: string, name: string, backgroundColor: string, textColor: string, accentColor: string, borderColor: string, cardBackground: string, fontFamily: string }`
     - Define `UpdatePortfolioSettingsInput` interface
     - Define `PortfolioSettingsData` as a Pick of the model with theme-relevant fields (for public portfolio use)
-  - [ ] 5.3 Create `features/portfolio-settings/constants/themes.ts`
+  - [x] 5.3 Create `features/portfolio-settings/constants/themes.ts`
     - Export `THEME_PRESETS` as `Record<string, ThemePreset>` with four presets:
       - `"default"`: Clean White -- white bg, gray-900 text, blue-600 accent
       - `"warm"`: Warm Cream -- cream bg, brown-900 text, amber-600 accent
       - `"dark-elegant"`: Dark Elegant -- gray-950 bg, gray-100 text, gold accent
       - `"ocean"`: Ocean Blue -- slate-50 bg, slate-900 text, teal-600 accent
     - Each preset defines: backgroundColor, textColor, accentColor, borderColor, cardBackground, fontFamily
-  - [ ] 5.4 Create `features/portfolio-settings/constants/messages.ts`
+  - [x] 5.4 Create `features/portfolio-settings/constants/messages.ts`
     - Export `PORTFOLIO_SETTINGS_MESSAGES` with keys: UPDATE_SUCCESS, INVALID_THEME, INVALID_LAYOUT, INVALID_HERO_STYLE
-  - [ ] 5.5 Create `features/portfolio-settings/schemas/portfolioSettings.schema.ts`
+  - [x] 5.5 Create `features/portfolio-settings/schemas/portfolioSettings.schema.ts`
     - `updatePortfolioSettingsSchema`: theme optional string, layoutVariant optional oneOf ["bento", "stacked", "sidebar"], accentColor optional hex color regex `/^#[0-9A-Fa-f]{6}$/`, fontFamily optional max 100, heroStyle optional oneOf ["standard", "minimal", "cover"], showBranding optional boolean
     - Export inferred type
-  - [ ] 5.6 Create `features/portfolio-settings/data/getPortfolioSettings.data.ts`
+  - [x] 5.6 Create `features/portfolio-settings/data/getPortfolioSettings.data.ts`
     - `getPortfolioSettingsData(userId): Promise<PortfolioSettingsModel>`
     - Use `prisma.portfolioSettings.upsert` for lazy creation pattern
     - `where: { userId }`, `create: { userId }` (Prisma @default values handle initial state), `update: {}`
     - This ensures settings always exist after first access
-  - [ ] 5.7 Create `features/portfolio-settings/data/updatePortfolioSettings.data.ts`
+  - [x] 5.7 Create `features/portfolio-settings/data/updatePortfolioSettings.data.ts`
     - `updatePortfolioSettingsData(userId, input): Promise<PortfolioSettingsModel>`
     - Use `prisma.portfolioSettings.update` with `where: { userId }`
-  - [ ] 5.8 Create `features/portfolio-settings/data/index.ts` barrel file
-  - [ ] 5.9 Create `features/portfolio-settings/services/portfolioSettings.service.ts`
+  - [x] 5.8 Create `features/portfolio-settings/data/index.ts` barrel file
+  - [x] 5.9 Create `features/portfolio-settings/services/portfolioSettings.service.ts`
     - `getPortfolioSettingsService(userId)` -- delegates to data layer
     - `updatePortfolioSettingsService(userId, input)` -- validates theme ID exists in `THEME_PRESETS`, validates layoutVariant in allowed list, validates heroStyle in allowed list, then calls updatePortfolioSettingsData
     - Throws descriptive errors from PORTFOLIO_SETTINGS_MESSAGES for invalid values
-  - [ ] 5.10 Create `features/portfolio-settings/actions/portfolioSettingsActions.ts`
+  - [x] 5.10 Create `features/portfolio-settings/actions/portfolioSettingsActions.ts`
     - `"use server"` directive
     - `updatePortfolioSettingsAction` -- actionWrapper, validate with updatePortfolioSettingsSchema, get userId from session, call updatePortfolioSettingsService, revalidatePath
-  - [ ] 5.11 Create `features/portfolio-settings/index.ts` barrel file
-  - [ ] 5.12 Ensure PortfolioSettings feature tests pass
+  - [x] 5.11 Create `features/portfolio-settings/index.ts` barrel file
+  - [x] 5.12 Ensure PortfolioSettings feature tests pass
     - Run ONLY the 3-4 tests written in 5.1
 
 **Acceptance Criteria:**

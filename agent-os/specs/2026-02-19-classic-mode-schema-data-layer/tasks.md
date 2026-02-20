@@ -284,13 +284,13 @@ This is a **DATA LAYER ONLY** spec. No UI components, no pages. The work covers 
 #### Task Group 6: Section Constants and Content Helpers
 **Dependencies:** Task Groups 2, 3, 4 (new features must exist for content helpers to query)
 
-- [ ] 6.0 Complete section system updates
-  - [ ] 6.1 Write 3-4 focused tests for section system
+- [x] 6.0 Complete section system updates
+  - [x] 6.1 Write 3-4 focused tests for section system
     - Test hasServicesData returns true when published services exist, false when none
     - Test hasGalleryItemsData returns true/false correctly
     - Test hasTestimonialsData returns true/false correctly
     - Test CLASSIC_DEFAULT_SECTIONS and TECH_DEFAULT_SECTIONS contain expected keys
-  - [ ] 6.2 Update `features/portfolio/constants/sections.ts`
+  - [x] 6.2 Update `features/portfolio/constants/sections.ts`
     - Add three new entries to `PORTFOLIO_SECTIONS` array:
       - `{ key: 'services', icon: 'Briefcase', labelKey: 'nav.services' }`
       - `{ key: 'testimonials', icon: 'MessageSquare', labelKey: 'nav.testimonials' }`
@@ -298,12 +298,12 @@ This is a **DATA LAYER ONLY** spec. No UI components, no pages. The work covers 
     - Add exported constant: `TECH_DEFAULT_SECTIONS = ['hero', 'about', 'timeline', 'skills', 'projects', 'ai', 'contact'] as const`
     - Add exported constant: `CLASSIC_DEFAULT_SECTIONS = ['hero', 'about', 'gallery', 'services', 'skills', 'testimonials', 'contact'] as const`
     - Update `PortfolioSectionKey` type to include new keys
-  - [ ] 6.3 Create `features/portfolio/data/hasClassicContent.data.ts`
+  - [x] 6.3 Create `features/portfolio/data/hasClassicContent.data.ts`
     - `hasServicesData(userId: string): Promise<boolean>` -- `prisma.service.count({ where: { userId, published: true } }) > 0`
     - `hasGalleryItemsData(userId: string): Promise<boolean>` -- same pattern with galleryItem
     - `hasTestimonialsData(userId: string): Promise<boolean>` -- same pattern with testimonial
     - Import `prisma` from `@/lib/prisma`
-  - [ ] 6.4 Ensure section system tests pass
+  - [x] 6.4 Ensure section system tests pass
     - Run ONLY the 3-4 tests written in 6.1
 
 **Acceptance Criteria:**

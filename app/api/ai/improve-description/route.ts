@@ -10,6 +10,7 @@
 import { improveDescription } from '@/features/ai-content';
 import { headers } from 'next/headers';
 import { auth } from '@/lib/auth';
+import { getLocaleFromRequest } from '@/features/i18n/utils/detectLocale';
 
 export const runtime = 'nodejs';
 
@@ -26,7 +27,7 @@ export async function POST(req: Request) {
     }
 
     const userId = session.user.id;
-    const { description, mode, locale, context, additionalNotes } = await req.json();
+    const { description, mode, locale: bodyLocale, context, additionalNotes } = await req.json();
 
     if (!description || typeof description !== 'string') {
       return new Response(
@@ -35,11 +36,14 @@ export async function POST(req: Request) {
       );
     }
 
+    // Use body locale or detect from cookie/header
+    const locale = bodyLocale || await getLocaleFromRequest(req);
+
     const result = await improveDescription(
       userId,
       description,
       context || 'project',
-      locale || 'en',
+      locale,
       additionalNotes
     );
 

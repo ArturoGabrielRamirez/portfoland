@@ -10,6 +10,8 @@
  */
 
 import { getNarrative } from '@/features/ai-narrator';
+import { getLocaleFromRequest } from '@/features/i18n/utils/detectLocale';
+import type { Locale } from '@/i18n/config';
 
 export const runtime = 'nodejs';
 
@@ -18,7 +20,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const username = searchParams.get('username');
     const mode = searchParams.get('mode') || 'tech';
-    const locale = searchParams.get('locale') || 'en';
+    const locale = searchParams.get('locale') as Locale || await getLocaleFromRequest(req);
 
     if (!username) {
       return new Response(

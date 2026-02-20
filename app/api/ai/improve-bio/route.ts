@@ -10,6 +10,8 @@
 import { improveBio } from '@/features/ai-content';
 import { headers } from 'next/headers';
 import { auth } from '@/lib/auth';
+import { getLocaleFromRequest } from '@/features/i18n/utils/detectLocale';
+import type { Locale } from '@/i18n/config';
 
 export const runtime = 'nodejs';
 
@@ -26,7 +28,7 @@ export async function POST(req: Request) {
     }
 
     const userId = session.user.id;
-    const { bio, mode, locale, additionalNotes } = await req.json();
+    const { bio, mode, locale: bodyLocale, additionalNotes } = await req.json();
 
     if (!bio || typeof bio !== 'string') {
       return new Response(
@@ -35,11 +37,14 @@ export async function POST(req: Request) {
       );
     }
 
+    // Use body locale or detect from cookie/header
+    const locale = bodyLocale || await getLocaleFromRequest(req);
+
     const result = await improveBio(
       userId,
       bio,
       mode || 'tech',
-      locale || 'en',
+      locale,
       additionalNotes
     );
 

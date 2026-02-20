@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { createExperienceService } from '@/features/timeline/services/experience.service';
 import { createSkillService } from '@/features/skills/services/skill.service';
 import { updateProfileService } from '@/features/portfolio/services/portfolio.service';
-import { checkAndConsumeLives } from '@/lib/ai/lives';
+import { consumeLifeService } from '@/features/ai-quota';
 import { getUserSkillsData } from '@/features/skills/data/getUserSkills.data';
 import { getSelfAssessmentLevel, hasGitHubValidation } from '@/features/skills/types/skill';
 import { prisma } from '@/lib/prisma';
@@ -89,7 +89,7 @@ export async function POST(req: Request) {
         logger.debug(`User: ${userId} | Messages: ${messages?.length || 0} | Locale: ${locale || 'en'}`);
 
         // Check and consume AI lives (3 per day limit)
-        const { hasLives, remainingLives, error } = await checkAndConsumeLives(userId, locale || 'en');
+        const { hasLives, remainingLives, error } = await consumeLifeService(userId, locale || 'en');
 
         if (!hasLives) {
             logger.debug(`LIVES_DEPLETED | User: ${userId} | Remaining: ${remainingLives}`);

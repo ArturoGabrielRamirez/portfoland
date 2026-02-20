@@ -6,7 +6,7 @@
 
 import { headers } from 'next/headers';
 import { auth } from '@/lib/auth';
-import { getUserAIConfig } from '@/lib/ai/lives';
+import { getUserAIConfigData } from '@/features/ai-quota';
 
 export const runtime = 'nodejs';
 
@@ -19,7 +19,6 @@ export const runtime = 'nodejs';
  */
 export async function GET() {
     try {
-        // Check authentication
         const session = await auth.api.getSession({
             headers: await headers()
         });
@@ -32,11 +31,8 @@ export async function GET() {
         }
 
         const userId = session.user.id;
+        const config = await getUserAIConfigData(userId);
 
-        // Get user's AI config (with automatic reset if needed)
-        const config = await getUserAIConfig(userId);
-
-        // Check if reset is needed (if lastResetDate is not today)
         const today = new Date().toISOString().split('T')[0];
         const needsReset = config.lastResetDate !== today;
 
@@ -53,8 +49,9 @@ export async function GET() {
                 headers: { 'Content-Type': 'application/json' }
             }
         );
-    } catch (error: any) {
-        console.error('AI_LIVES_ROUTE_ERROR:', error);
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        console.error('AI_LIVES_ROUTE_ERROR:', errorMessage);
         return new Response(
             JSON.stringify({ error: 'Failed to retrieve AI lives' }),
             {

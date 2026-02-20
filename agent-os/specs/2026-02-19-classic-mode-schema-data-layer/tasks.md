@@ -178,39 +178,39 @@ This is a **DATA LAYER ONLY** spec. No UI components, no pages. The work covers 
 #### Task Group 4: Gallery Feature — Types, Schemas, Data, Services, Actions
 **Dependencies:** Task Group 1 (Prisma types must be generated)
 
-- [ ] 4.0 Complete the `features/gallery/` feature directory
-  - [ ] 4.1 Write 4-6 focused tests for Gallery feature
+- [x] 4.0 Complete the `features/gallery/` feature directory
+  - [x] 4.1 Write 4-6 focused tests for Gallery feature
     - Test create gallery item with valid data (imageUrl required)
     - Test create gallery item fails without imageUrl
     - Test update gallery item with ownership check
     - Test getPublicGallery returns only published items ordered by `order`
     - Test getPublicGallery returns distinct categories list
-  - [ ] 4.2 Create `features/gallery/types/galleryItem.ts`
+  - [x] 4.2 Create `features/gallery/types/galleryItem.ts`
     - Re-export `GalleryItem as GalleryItemModel` from `@/app/generated/prisma`
     - Define `CreateGalleryItemInput` and `UpdateGalleryItemInput` interfaces
     - Define `PublicGalleryData` type: `{ items: GalleryItemModel[], categories: string[] }`
-  - [ ] 4.3 Create `features/gallery/schemas/galleryItem.schema.ts`
+  - [x] 4.3 Create `features/gallery/schemas/galleryItem.schema.ts`
     - `createGalleryItemSchema`: imageUrl required valid URL, caption optional max 500, altText optional max 255, category optional max 50, order integer >= 0, published optional boolean
     - `updateGalleryItemSchema`: same fields all optional + id required
     - `deleteGalleryItemSchema`: id required
     - Export inferred types
-  - [ ] 4.4 Create `features/gallery/constants/messages.ts`
+  - [x] 4.4 Create `features/gallery/constants/messages.ts`
     - Export `GALLERY_MESSAGES` with keys: CREATE_SUCCESS, UPDATE_SUCCESS, DELETE_SUCCESS, NOT_FOUND, UNAUTHORIZED
-  - [ ] 4.5 Create `features/gallery/constants/limits.ts`
+  - [x] 4.5 Create `features/gallery/constants/limits.ts`
     - Export `MAX_GALLERY_ITEMS_PER_USER = 50`
-  - [ ] 4.6 Create data layer files in `features/gallery/data/`
+  - [x] 4.6 Create data layer files in `features/gallery/data/`
     - `createGalleryItem.data.ts`, `updateGalleryItem.data.ts`, `deleteGalleryItem.data.ts`
     - `getGalleryItemById.data.ts`, `getGalleryItemsByUserId.data.ts`
     - `getPublicGallery.data.ts` -- filter `published: true`, order by `order asc`, return `{ items, categories }` where `categories` is distinct non-null category values
     - `index.ts` barrel file
-  - [ ] 4.7 Create `features/gallery/services/galleryItem.service.ts`
+  - [x] 4.7 Create `features/gallery/services/galleryItem.service.ts`
     - Same pattern: create (with limit check), update (ownership), delete (ownership), get
     - Call `invalidateNarrativeCache` after mutations
-  - [ ] 4.8 Create `features/gallery/actions/galleryItemActions.ts`
+  - [x] 4.8 Create `features/gallery/actions/galleryItemActions.ts`
     - `"use server"` directive, actionWrapper, Yup validation, revalidatePath
     - `createGalleryItemAction`, `updateGalleryItemAction`, `deleteGalleryItemAction`
-  - [ ] 4.9 Create `features/gallery/index.ts` barrel file
-  - [ ] 4.10 Ensure Gallery feature tests pass
+  - [x] 4.9 Create `features/gallery/index.ts` barrel file
+  - [x] 4.10 Ensure Gallery feature tests pass
     - Run ONLY the 4-6 tests written in 4.1
 
 **Acceptance Criteria:**

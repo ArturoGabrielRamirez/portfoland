@@ -129,39 +129,39 @@ This is a **DATA LAYER ONLY** spec. No UI components, no pages. The work covers 
 #### Task Group 3: Testimonials Feature — Types, Schemas, Data, Services, Actions
 **Dependencies:** Task Group 1 (Prisma types must be generated)
 
-- [ ] 3.0 Complete the `features/testimonials/` feature directory
-  - [ ] 3.1 Write 4-6 focused tests for Testimonials feature
+- [x] 3.0 Complete the `features/testimonials/` feature directory
+  - [x] 3.1 Write 4-6 focused tests for Testimonials feature
     - Test create testimonial with valid data (including rating 1-5)
     - Test create testimonial fails with rating outside 1-5 range
     - Test update testimonial with ownership check
     - Test delete testimonial with ownership check
     - Test getPublicTestimonials returns only published items ordered by `order`
-  - [ ] 3.2 Create `features/testimonials/types/testimonial.ts`
+  - [x] 3.2 Create `features/testimonials/types/testimonial.ts`
     - Re-export `Testimonial as TestimonialModel` from `@/app/generated/prisma`
     - Define `CreateTestimonialInput` and `UpdateTestimonialInput` interfaces
     - Follow same Omit/Partial pattern as Services types
-  - [ ] 3.3 Create `features/testimonials/schemas/testimonial.schema.ts`
+  - [x] 3.3 Create `features/testimonials/schemas/testimonial.schema.ts`
     - `createTestimonialSchema`: clientName required max 100, clientTitle optional max 100, content required max 1000, rating required integer min 1 max 5, source optional oneOf ["manual", "google_maps"], externalId optional max 255, order integer >= 0, published optional boolean, imageUrl optional string
     - `updateTestimonialSchema`: same fields all optional + id required
     - `deleteTestimonialSchema`: id required
     - Export inferred types
-  - [ ] 3.4 Create `features/testimonials/constants/messages.ts`
+  - [x] 3.4 Create `features/testimonials/constants/messages.ts`
     - Export `TESTIMONIAL_MESSAGES` with keys: CREATE_SUCCESS, UPDATE_SUCCESS, DELETE_SUCCESS, NOT_FOUND, UNAUTHORIZED
-  - [ ] 3.5 Create `features/testimonials/constants/limits.ts`
+  - [x] 3.5 Create `features/testimonials/constants/limits.ts`
     - Export `MAX_TESTIMONIALS_PER_USER = 30`
-  - [ ] 3.6 Create data layer files in `features/testimonials/data/`
+  - [x] 3.6 Create data layer files in `features/testimonials/data/`
     - `createTestimonial.data.ts`, `updateTestimonial.data.ts`, `deleteTestimonial.data.ts`
     - `getTestimonialById.data.ts`, `getTestimonialsByUserId.data.ts`
     - `getPublicTestimonials.data.ts` -- filter `published: true`, order by `order asc`
     - `index.ts` barrel file
-  - [ ] 3.7 Create `features/testimonials/services/testimonial.service.ts`
+  - [x] 3.7 Create `features/testimonials/services/testimonial.service.ts`
     - Same pattern as Services: create (with limit check), update (ownership), delete (ownership), get
     - Call `invalidateNarrativeCache` after mutations
-  - [ ] 3.8 Create `features/testimonials/actions/testimonialActions.ts`
+  - [x] 3.8 Create `features/testimonials/actions/testimonialActions.ts`
     - `"use server"` directive, actionWrapper, Yup validation, revalidatePath
     - `createTestimonialAction`, `updateTestimonialAction`, `deleteTestimonialAction`
-  - [ ] 3.9 Create `features/testimonials/index.ts` barrel file
-  - [ ] 3.10 Ensure Testimonials feature tests pass
+  - [x] 3.9 Create `features/testimonials/index.ts` barrel file
+  - [x] 3.10 Ensure Testimonials feature tests pass
     - Run ONLY the 4-6 tests written in 3.1
 
 **Acceptance Criteria:**

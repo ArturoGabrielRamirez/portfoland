@@ -92,11 +92,16 @@
 
 **Tasks por spec:**
 
-**Spec 2A: Schema & Data Layer**
-- Modelo `Service` (título, descripción, precio, duración, orden)
-- Modelo `Testimonial` (cliente, contenido, rating, foto)
-- `PortfolioSettings` en `User` (secciones visibles, layouts, colores custom)
-- Migration script
+**Spec 2A: Schema & Data Layer** ✅ COMPLETED
+**Completado:** 2026-02-20
+**Spec:** `agent-os/specs/2026-02-19-classic-mode-schema-data-layer/`
+- [x] Modelo `Service` (título, descripción, precio, duración, orden)
+- [x] Modelo `Testimonial` (cliente, contenido, rating, foto)
+- [x] Modelo `GalleryItem` (imagen, caption, categoría, orden)
+- [x] `PortfolioSettings` (theme, layoutVariant, heroStyle, showBranding)
+- [x] Section system: TECH_DEFAULT_SECTIONS + CLASSIC_DEFAULT_SECTIONS
+- [x] Portfolio data aggregation extendida con servicios, testimonials, galería y settings
+- [x] 73 tests — todos pasan
 
 **Spec 2B: Classic Mode Template (Portfolio Público)**
 - Template limpio: white bg, gray-900 text, blue-600 accents
@@ -184,7 +189,8 @@ Candidatos (no ordenados — depende de feedback):
 ### Must-Have (sin esto no se lanza)
 - [x] Phase 0 completa (bugs críticos)
 - [x] Phase 1 completa (rebrand + subdomain unification)
-- [ ] Phase 2A + 2B (Classic Mode template funcional)
+- [x] Phase 2A completa (Classic Mode data layer — Spec 2026-02-19)
+- [ ] Phase 2B (Classic Mode template funcional)
 - [ ] Onboarding básico con selección de modo
 
 ### Nice-to-Have (mejora el producto pero no bloquea)
@@ -275,4 +281,4 @@ Candidatos (no ordenados — depende de feedback):
 2. Feedback de usuarios reales cambia prioridades
 3. Se descubre deuda técnica nueva
 
-**Próximo paso:** Crear spec detallada para Phase 2 (Classic Mode MVP).
+**Próximo paso:** Crear spec detallada para Phase 2B (Classic Mode Template).

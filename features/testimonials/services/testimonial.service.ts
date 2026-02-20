@@ -15,7 +15,7 @@ import {
 } from '../data';
 import { TESTIMONIAL_MESSAGES } from '../constants/messages';
 import { MAX_TESTIMONIALS_PER_USER } from '../constants/limits';
-import { invalidateNarrativeCache } from '@/lib/ai/cache';
+import { invalidateNarrativeCache } from '@/features/ai-narrator';
 import { prisma } from '@/lib/prisma';
 
 /**

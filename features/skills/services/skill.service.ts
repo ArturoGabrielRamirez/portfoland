@@ -18,7 +18,7 @@ import {
   removeUnlinkedSkillSourcesData,
   getDefaultCategoryForExperienceData,
 } from '../data';
-import { invalidateNarrativeCache } from '@/lib/ai/cache';
+import { invalidateNarrativeCache } from '@/features/ai-narrator';
 
 // =============================================================================
 // Input Types

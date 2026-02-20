@@ -8,7 +8,7 @@
 import { PORTFOLIO_MODES, PORTFOLIO_MESSAGES } from '../constants/messages';
 import { updatePortfolioModeData } from '../data/updatePortfolioMode.data';
 import { updateUserProfileData } from '../data/updateProfile.data';
-import { invalidateNarrativeCache } from '@/lib/ai/cache';
+import { invalidateNarrativeCache } from '@/features/ai-narrator';
 
 const VALID_MODES = [PORTFOLIO_MODES.CLASSIC, PORTFOLIO_MODES.TECH];
 

@@ -30,7 +30,7 @@ vi.mock('@/lib/prisma', () => ({
   },
 }));
 
-vi.mock('@/lib/ai/cache', () => ({
+vi.mock('@/features/ai-narrator', () => ({
   invalidateNarrativeCache: vi.fn().mockResolvedValue(undefined),
 }));
 
@@ -56,7 +56,7 @@ vi.mock('next/cache', () => ({
 
 import { prisma } from '@/lib/prisma';
 import { auth } from '@/lib/auth';
-import { invalidateNarrativeCache } from '@/lib/ai/cache';
+import { invalidateNarrativeCache } from '@/features/ai-narrator';
 
 import {
   createServiceService,

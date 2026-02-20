@@ -9,6 +9,7 @@ import { createSkillService } from '@/features/skills/services/skill.service';
 import { updateProfileService } from '@/features/portfolio/services/portfolio.service';
 import { checkAndConsumeLives } from '@/lib/ai/lives';
 import { getUserSkillsData } from '@/features/skills/data/getUserSkills.data';
+import { getSelfAssessmentLevel, hasGitHubValidation } from '@/features/skills/types/skill';
 import { prisma } from '@/lib/prisma';
 import { logger } from '@/lib/logger';
 
@@ -209,9 +210,9 @@ export async function POST(req: Request) {
                             const skillTree = userSkills.map(us => ({
                                 name: us.skill.name,
                                 category: us.skill.category.name,
-                                selfAssessmentLevel: us.selfAssessmentLevel,
+                                selfAssessmentLevel: getSelfAssessmentLevel(us.sources),
                                 totalXP: us.totalXP,
-                                githubValidated: us.githubValidated,
+                                githubValidated: hasGitHubValidation(us.sources),
                                 manuallyAdded: us.sources.some(s => s.sourceType === 'MANUAL'),
                                 experienceBased: us.sources.some(s => s.sourceType === 'EXPERIENCE'),
                                 sourcesCount: us.sources.length,

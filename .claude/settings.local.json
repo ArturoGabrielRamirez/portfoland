@@ -21,7 +21,16 @@
       "Bash(ls:*)",
       "Bash(bun vitest run:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git -C \"C:/Users/user/code/nextjs/portfoland\" ls-tree HEAD:*)",
+      "Bash(git -C:*)",
+      "Bash(echo:*)",
+      "Bash(set +e)",
+      "Bash(npx tsc:*)",
+      "Bash(npx --yes tsc:*)",
+      "Bash(npx vitest:*)",
+      "Bash(tr:*)",
+      "Bash(npx jest --testPathPattern=\"features/\\(services|testimonials|gallery|portfolio-settings|portfolio\\)\" --no-coverage)"
     ]
   }
 }

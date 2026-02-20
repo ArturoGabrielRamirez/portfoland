@@ -22,6 +22,7 @@ import {
   type SyncSkillsFromExperienceServiceInput,
 } from '@/features/skills/services/skill.service';
 import { removeSourcesByExperienceData } from '@/features/skills/data';
+import { invalidateNarrativeCache } from '@/lib/ai/cache';
 
 /**
  * Input for creating an experience via service
@@ -104,6 +105,7 @@ export async function createExperienceService(
     });
   }
 
+  invalidateNarrativeCache(input.userId).catch(() => {});
   return experience;
 }
 
@@ -172,6 +174,7 @@ export async function updateExperienceService(
     });
   }
 
+  invalidateNarrativeCache(userId).catch(() => {});
   return experience;
 }
 
@@ -200,6 +203,7 @@ export async function deleteExperienceService(
   await removeSourcesByExperienceData(id);
 
   const experience = await deleteExperienceData(id);
+  invalidateNarrativeCache(userId).catch(() => {});
   return experience;
 }
 

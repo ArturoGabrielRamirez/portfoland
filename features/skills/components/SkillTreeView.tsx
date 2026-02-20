@@ -12,7 +12,7 @@ import { memo, useState, useCallback, useEffect, useTransition } from 'react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import type { SkillTreeViewProps, UserSkillWithDetails } from '../types/skill';
-import { GalaxyCanvas } from './GalaxyCanvas';
+import { CRTSkillCanvas } from './CRTSkillCanvas';
 import { MobileSkillList } from './MobileSkillList';
 import { SkillDetailCard } from './SkillDetailCard';
 import { ManualSkillModal } from './ManualSkillModal';
@@ -63,6 +63,7 @@ function SkillTreeViewComponent({
 }: SkillTreeViewProps) {
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const [selectedSkill, setSelectedSkill] = useState<UserSkillWithDetails | null>(null);
+  const [selectedSkillPosition, setSelectedSkillPosition] = useState<{ x: number; y: number; color?: string } | null>(null);
   const [isDetailCardOpen, setIsDetailCardOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -71,8 +72,9 @@ function SkillTreeViewComponent({
   const [isDeleting, startDeleteTransition] = useTransition();
 
   // Handle skill click
-  const handleSkillClick = useCallback((skill: UserSkillWithDetails) => {
+  const handleSkillClick = useCallback((skill: UserSkillWithDetails, position?: { x: number; y: number; color?: string }) => {
     setSelectedSkill(skill);
+    setSelectedSkillPosition(position || null);
     setIsDetailCardOpen(true);
   }, []);
 
@@ -154,17 +156,19 @@ function SkillTreeViewComponent({
   return (
     <div
       data-testid="skill-tree-view"
-      className={cn('relative w-full h-full min-h-[400px]', className)}
+      className={cn('relative w-full h-full', className)}
     >
-      {/* Desktop: Galaxy Canvas */}
+      {/* Desktop: CRT Skill Canvas */}
       {isDesktop ? (
-        <GalaxyCanvas
-          userSkills={userSkills}
-          categories={categories}
-          onSkillClick={handleSkillClick}
-          onAddSkill={handleAddSkill}
-          className="w-full h-full"
-        />
+        <div className="w-full h-full">
+          <CRTSkillCanvas
+            userSkills={userSkills}
+            categories={categories}
+            onSkillClick={handleSkillClick}
+            onAddSkill={handleAddSkill}
+            className="w-full h-full"
+          />
+        </div>
       ) : (
         /* Mobile: Skill List */
         <div className="w-full h-full overflow-y-auto p-4 pb-20">
@@ -175,6 +179,82 @@ function SkillTreeViewComponent({
           />
         </div>
       )}
+
+      {/* Indicator Line (from selected node to detail card) */}
+      {selectedSkill && isDetailCardOpen && selectedSkillPosition && isDesktop && (() => {
+        const lineColor = selectedSkillPosition.color || 'hsl(174,100%,50%)';
+        return (
+          <svg className="fixed inset-0 pointer-events-none z-40" style={{ width: '100vw', height: '100vh' }}>
+            <defs>
+              <filter id="indicator-glow">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                <feMerge>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            {/* Curved path from node to card (top-right) */}
+            <path
+              d={`M ${selectedSkillPosition.x} ${selectedSkillPosition.y} Q ${selectedSkillPosition.x + 100} ${selectedSkillPosition.y - 50} ${typeof window !== 'undefined' ? window.innerWidth - 200 : 800} ${80}`}
+              stroke={lineColor}
+              strokeWidth="2"
+              fill="none"
+              strokeDasharray="8,4"
+              opacity="0.7"
+              filter="url(#indicator-glow)"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                from="0"
+                to="12"
+                dur="1s"
+                repeatCount="indefinite"
+              />
+            </path>
+            {/* Pulse at node position */}
+            <circle
+              cx={selectedSkillPosition.x}
+              cy={selectedSkillPosition.y}
+              r="8"
+              fill="none"
+              stroke={lineColor}
+              strokeWidth="2"
+              opacity="0.8"
+            >
+              <animate
+                attributeName="r"
+                from="8"
+                to="16"
+                dur="1.5s"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="opacity"
+                from="0.8"
+                to="0"
+                dur="1.5s"
+                repeatCount="indefinite"
+              />
+            </circle>
+            {/* Arrow head at card position */}
+            <circle
+              cx={typeof window !== 'undefined' ? window.innerWidth - 200 : 800}
+              cy={80}
+              r="4"
+              fill={lineColor}
+              opacity="0.8"
+            >
+              <animate
+                attributeName="opacity"
+                values="0.5;1;0.5"
+                dur="2s"
+                repeatCount="indefinite"
+              />
+            </circle>
+          </svg>
+        );
+      })()}
 
       {/* Skill Detail Card (shown when skill is selected) */}
       {selectedSkill && (

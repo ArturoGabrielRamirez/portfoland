@@ -26,7 +26,6 @@
 
 # local reference/backup files
 /backups
-/agent-os
 /designs
 /.claude
 
@@ -54,3 +53,10 @@ yarn-error.log*
 next-env.d.ts
 
 /app/generated/prisma
+
+# IDEs & Agents
+.cursor/
+.kiro/
+.windsurf/
+.agent/
+.agents/

@@ -21,13 +21,13 @@ import { loginSchema, type LoginInput } from '@/features/auth/schemas'
 import { cn } from '@/lib/utils'
 
 import {
-  GamingButton,
-  GamingInput,
+  TechButton,
+  TechInput,
   GoogleIcon,
   EyeIcon,
   EyeOffIcon,
   Spinner,
-} from '@/features/gaming'
+} from '@/features/tech'
 
 // =============================================================================
 // Login Page Component
@@ -104,76 +104,107 @@ export default function LoginPage() {
   const isSubmitting = isPending || isGooglePending
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A] flex">
+    <div className="min-h-screen bg-[#0A0E1A] flex font-mono relative overflow-hidden">
+      {/* Hex grid background SVG */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="hexGrid" width="30" height="30" patternUnits="userSpaceOnUse">
+            <path d="M15 0 L30 7.5 L30 22.5 L15 30 L0 22.5 L0 7.5 Z" fill="none" stroke="#00D4FF" strokeWidth="0.3" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#hexGrid)" />
+      </svg>
+
       {/* Left Panel - Branding */}
-      <div className="hidden lg:flex lg:w-1/2 bg-[#0D1421] border-r border-[#1E293B] flex-col justify-between p-12">
+      <div className="hidden lg:flex lg:w-1/2 bg-[#0D1421] border-r border-[#1E293B] flex-col justify-between p-12 relative z-10">
         <div>
-          {/* Logo */}
-          <Link href={`/${locale}`} className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-lg bg-[#00D4FF] flex items-center justify-center shadow-[0_0_15px_rgba(0,212,255,0.4)]">
-              <span className="font-bold text-[#0A0E1A] text-lg">P</span>
-            </div>
-            <span className="font-bold text-xl text-white">
-              {tCommon('appName').toUpperCase()}
+          {/* Logo - Hexagon */}
+          <Link href={`/${locale}`} className="flex items-center gap-3">
+            <svg width="40" height="40" viewBox="0 0 100 100">
+              <path d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z" fill="hsl(174,100%,50%)" fillOpacity="0.3" stroke="hsl(174,100%,50%)" strokeWidth="2.5" />
+              <text x="50" y="62" textAnchor="middle" fill="hsl(174,100%,50%)" fontSize="44" fontWeight="bold" fontFamily="monospace">P</text>
+            </svg>
+            <span className="font-mono font-bold text-lg tracking-[0.15em] text-foreground uppercase">
+              {tCommon('appName')}
             </span>
           </Link>
         </div>
 
-        <div className="space-y-8">
-          <h1 className="text-4xl font-bold text-white leading-tight">
-            {t('gaming.heroTitle')}
+        <div className="space-y-8 max-w-md">
+          <h1 className="text-4xl lg:text-5xl font-mono font-black uppercase tracking-tight text-foreground leading-tight">
+            {t('gaming.heroTitle').split(' ').slice(0, 2).join(' ')}
+            <br />
+            <span className="text-[#00D4FF]">
+              {t('gaming.heroTitle').split(' ').slice(2).join(' ')}
+            </span>
           </h1>
-          <p className="text-[#94A3B8] text-lg">{t('gaming.heroSubtitle')}</p>
+          <p className="text-sm font-mono text-[#94A3B8] leading-relaxed">
+            {t('gaming.heroSubtitle')}
+          </p>
 
           {/* Feature List */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-[#00D4FF] shadow-[0_0_8px_rgba(0,212,255,0.6)]" />
-              <span className="text-white">{t('gaming.feature1')}</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-[#D946EF] shadow-[0_0_8px_rgba(217,70,239,0.6)]" />
-              <span className="text-white">{t('gaming.feature2')}</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-[#22C55E] shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
-              <span className="text-white">{t('gaming.feature3')}</span>
-            </div>
+          <div className="flex flex-col gap-2">
+            {[
+              { text: t('gaming.feature1'), color: 'hsl(174,100%,50%)' },
+              { text: t('gaming.feature2'), color: 'hsl(330,100%,65%)' },
+              { text: t('gaming.feature3'), color: 'hsl(150,100%,45%)' },
+            ].map((feature) => (
+              <div key={feature.text} className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: feature.color }} />
+                <span className="text-sm font-mono" style={{ color: feature.color }}>
+                  {feature.text}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="text-sm text-[#64748B]">
-          &copy; {new Date().getFullYear()} {tCommon('appName')}
+        <div className="text-[10px] font-mono text-[#64748B]">
+          &copy; {new Date().getFullYear()} {tCommon('appName')}. All rights reserved.
         </div>
       </div>
 
       {/* Right Panel - Auth Form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-12">
-        <div className="w-full max-w-md">
+      <div className="flex-1 flex items-center justify-center p-6 lg:p-12 relative z-10">
+        {/* Hex border decoration */}
+        <div className="absolute top-0 left-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-[hsl(174,100%,50%,0.2)] to-transparent hidden lg:block" />
+
+        {/* Decorative corner hexagons */}
+        {[
+          { top: '8%', right: '8%' },
+          { bottom: '8%', left: '8%' },
+        ].map((pos, i) => (
+          <svg key={i} className="absolute w-3 h-3 text-[#00D4FF] opacity-30" style={pos} viewBox="0 0 100 100">
+            <path d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z" fill="none" stroke="currentColor" strokeWidth="4" />
+          </svg>
+        ))}
+
+        <div className="w-full max-w-sm">
           {/* Mobile Logo */}
           <div className="lg:hidden mb-8 text-center">
             <Link
               href={`/${locale}`}
-              className="inline-flex items-center gap-2"
+              className="inline-flex items-center gap-3"
             >
-              <div className="w-10 h-10 rounded-lg bg-[#00D4FF] flex items-center justify-center shadow-[0_0_15px_rgba(0,212,255,0.4)]">
-                <span className="font-bold text-[#0A0E1A] text-lg">P</span>
-              </div>
-              <span className="font-bold text-xl text-white">
-                {tCommon('appName').toUpperCase()}
+              <svg width="40" height="40" viewBox="0 0 100 100">
+                <path d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z" fill="hsl(174,100%,50%)" fillOpacity="0.3" stroke="hsl(174,100%,50%)" strokeWidth="2.5" />
+                <text x="50" y="62" textAnchor="middle" fill="hsl(174,100%,50%)" fontSize="44" fontWeight="bold" fontFamily="monospace">P</text>
+              </svg>
+              <span className="font-mono font-bold text-lg tracking-[0.15em] text-foreground uppercase">
+                {tCommon('appName')}
               </span>
             </Link>
           </div>
 
           {/* Auth Tabs */}
-          <div className="flex rounded-lg border border-[#1E293B] bg-[#0D1421] p-1 mb-8">
-            <div className="flex-1 py-2.5 px-4 rounded-md text-sm font-medium bg-[#00D4FF] text-[#0A0E1A] shadow-[0_0_15px_rgba(0,212,255,0.3)] text-center">
+          <div className="flex border border-[hsl(174,100%,50%,0.2)] mb-8">
+            <div className="flex-1 py-2.5 text-xs font-mono uppercase tracking-[0.2em] font-bold bg-[#00D4FF] text-[#0A0E1A] text-center">
               {t('gaming.tabLogin')}
             </div>
             <Link
               href={`/${locale}/register`}
               className={cn(
-                'flex-1 py-2.5 px-4 rounded-md text-sm font-medium text-[#94A3B8] hover:text-white transition-colors text-center',
+                'flex-1 py-2.5 text-xs font-mono uppercase tracking-[0.2em] font-bold text-[#64748B] hover:text-foreground transition-colors text-center',
                 isSubmitting && 'pointer-events-none opacity-50'
               )}
             >
@@ -182,13 +213,13 @@ export default function LoginPage() {
           </div>
 
           {/* Auth Form */}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
             {/* Email */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-white uppercase tracking-wider">
-                {t('emailLabel')}
+            <div>
+              <label className="block text-[10px] font-mono uppercase tracking-[0.2em] text-[#64748B] mb-2">
+                {t('emailLabel')} *
               </label>
-              <GamingInput
+              <TechInput
                 type="email"
                 placeholder={t('emailPlaceholder')}
                 autoComplete="email"
@@ -197,17 +228,17 @@ export default function LoginPage() {
                 {...register('email')}
               />
               {errors.email && (
-                <p className="text-sm text-[#EF4444]">{errors.email.message}</p>
+                <p className="text-xs font-mono text-[#EF4444] mt-1">{errors.email.message}</p>
               )}
             </div>
 
             {/* Password */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-white uppercase tracking-wider">
+            <div>
+              <label className="block text-[10px] font-mono uppercase tracking-[0.2em] text-[#64748B] mb-2">
                 {t('passwordLabel')}
               </label>
               <div className="relative">
-                <GamingInput
+                <TechInput
                   type={showPassword ? 'text' : 'password'}
                   placeholder={t('passwordPlaceholder')}
                   autoComplete="current-password"
@@ -230,28 +261,26 @@ export default function LoginPage() {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-sm text-[#EF4444]">
+                <p className="text-xs font-mono text-[#EF4444] mt-1">
                   {errors.password.message}
                 </p>
               )}
+              <Link
+                href={`/${locale}/forgot-password`}
+                className={cn(
+                  'block text-[10px] font-mono text-[#00D4FF] mt-2 hover:underline',
+                  isSubmitting && 'pointer-events-none opacity-50'
+                )}
+              >
+                {t('forgotPassword')}
+              </Link>
             </div>
 
-            {/* Forgot Password */}
-            <Link
-              href={`/${locale}/forgot-password`}
-              className={cn(
-                'block text-sm text-[#00D4FF] hover:underline',
-                isSubmitting && 'pointer-events-none opacity-50'
-              )}
-            >
-              {t('forgotPassword')}
-            </Link>
-
             {/* Submit Button */}
-            <GamingButton
+            <TechButton
               type="submit"
               variant="primary"
-              className="w-full"
+              className="w-full uppercase tracking-[0.2em]"
               disabled={isSubmitting}
             >
               {isPending ? (
@@ -262,22 +291,19 @@ export default function LoginPage() {
               ) : (
                 t('gaming.submitButton')
               )}
-            </GamingButton>
+            </TechButton>
 
             {/* Divider */}
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-[#1E293B]" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-[#0A0E1A] text-[#64748B] uppercase tracking-wider">
-                  {t('gaming.orContinueWith')}
-                </span>
-              </div>
+            <div className="flex items-center gap-3">
+              <div className="flex-1 h-[1px] bg-[hsl(174,100%,50%,0.15)]" />
+              <span className="text-[9px] font-mono uppercase tracking-wider text-[#64748B]">
+                {t('gaming.orContinueWith')}
+              </span>
+              <div className="flex-1 h-[1px] bg-[hsl(174,100%,50%,0.15)]" />
             </div>
 
             {/* Social Login */}
-            <GamingButton
+            <TechButton
               type="button"
               variant="outline"
               className="w-full"
@@ -290,16 +316,16 @@ export default function LoginPage() {
                 <GoogleIcon className="w-5 h-5" />
               )}
               <span>{t('googleButton')}</span>
-            </GamingButton>
+            </TechButton>
           </form>
 
           {/* Register Link */}
-          <p className="mt-8 text-center text-sm text-[#94A3B8]">
+          <p className="mt-6 text-center text-xs font-mono text-[#94A3B8]">
             {t('noAccount')}{' '}
             <Link
               href={`/${locale}/register`}
               className={cn(
-                'font-medium text-[#00D4FF] hover:underline',
+                'text-[#00D4FF] hover:underline',
                 isSubmitting && 'pointer-events-none opacity-50'
               )}
             >

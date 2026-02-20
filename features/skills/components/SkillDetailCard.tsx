@@ -11,7 +11,7 @@ import { memo, useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, RotateCcw, Edit, Trash2, Crown, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { GamingCard, XPBar, LevelBadge, GamingBadge } from '@/features/gaming';
+import { TechCard, XPBar, LevelBadge, TechBadge } from '@/features/tech';
 import type { SkillDetailCardProps } from '../types/skill';
 import {
   SKILL_LEVEL_NAMES,
@@ -143,16 +143,16 @@ function SkillDetailCardComponent({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-start justify-end p-4 bg-black/20 backdrop-blur-[2px]"
         >
           <motion.div
             ref={cardRef}
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+            initial={{ x: 400, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 400, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             className={cn(
-              'relative w-full max-w-sm perspective-1000',
+              'relative w-full max-w-sm perspective-1000 mt-4',
               className
             )}
             style={{ perspective: 1000 }}
@@ -171,16 +171,18 @@ function SkillDetailCardComponent({
                 className="absolute inset-0 backface-hidden"
                 style={{ backfaceVisibility: 'hidden' }}
               >
-                <GamingCard
+                <TechCard
                   variant={isLegendary ? 'featured' : 'glow'}
                   className={cn(
-                    'w-full overflow-hidden',
+                    'w-full overflow-hidden relative rounded-sm',
                     isLegendary && 'ring-2 ring-[#F59E0B]'
                   )}
                   style={{
                     boxShadow: `0 0 30px ${categoryColor}40`,
                   }}
                 >
+                  {/* CRT effect overlay */}
+                  <div className="absolute inset-0 pointer-events-none crt-lines opacity-10 z-10" />
                   {/* Header */}
                   <div
                     className="relative p-4 border-b border-[#1E293B]"
@@ -191,23 +193,23 @@ function SkillDetailCardComponent({
                     {/* Close button */}
                     <button
                       onClick={onClose}
-                      className="absolute top-3 right-3 p-1.5 rounded-lg text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
+                      className="absolute top-3 right-3 p-1.5 rounded-sm text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
                       aria-label="Close"
                     >
                       <X className="w-4 h-4" />
                     </button>
 
                     {/* Category badge */}
-                    <GamingBadge color="gray" className="mb-3">
+                    <TechBadge color="gray" className="mb-3">
                       {categoryName}
-                    </GamingBadge>
+                    </TechBadge>
 
                     {/* Skill Icon/Letter */}
                     <div className="flex items-center gap-4">
                       <div
                         className={cn(
-                          'w-16 h-16 rounded-xl flex items-center justify-center',
-                          'text-2xl font-bold',
+                          'w-16 h-16 clip-hexagon flex items-center justify-center relative',
+                          'text-2xl font-bold font-mono',
                           isLegendary ? 'text-[#0A0E1A]' : 'text-white'
                         )}
                         style={{
@@ -261,7 +263,7 @@ function SkillDetailCardComponent({
                   <div className="p-4 pt-0 flex items-center justify-between">
                     <button
                       onClick={handleFlip}
-                      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-[#00D4FF] hover:bg-[#00D4FF]/10 transition-colors"
+                      className="flex items-center gap-2 px-3 py-2 rounded-sm text-sm text-[#00D4FF] hover:bg-[#00D4FF]/10 transition-colors"
                       aria-label="Flip card to see XP breakdown"
                     >
                       <RotateCcw className="w-4 h-4" />
@@ -273,7 +275,7 @@ function SkillDetailCardComponent({
                         {onEdit && (
                           <button
                             onClick={onEdit}
-                            className="p-2 rounded-lg text-[#64748B] hover:text-[#00D4FF] hover:bg-[#1E293B] transition-colors"
+                            className="p-2 rounded-sm text-[#64748B] hover:text-[#00D4FF] hover:bg-[#1E293B] transition-colors"
                             aria-label="Edit skill"
                           >
                             <Edit className="w-4 h-4" />
@@ -282,7 +284,7 @@ function SkillDetailCardComponent({
                         {onDelete && canDelete && (
                           <button
                             onClick={onDelete}
-                            className="p-2 rounded-lg text-[#64748B] hover:text-[#EF4444] hover:bg-[#1E293B] transition-colors"
+                            className="p-2 rounded-sm text-[#64748B] hover:text-[#EF4444] hover:bg-[#1E293B] transition-colors"
                             aria-label="Delete skill"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -291,7 +293,7 @@ function SkillDetailCardComponent({
                       </div>
                     )}
                   </div>
-                </GamingCard>
+                </TechCard>
               </div>
 
               {/* Back Side */}
@@ -302,7 +304,7 @@ function SkillDetailCardComponent({
                   transform: 'rotateY(180deg)',
                 }}
               >
-                <GamingCard
+                <TechCard
                   variant="default"
                   className="w-full overflow-hidden"
                 >
@@ -314,14 +316,14 @@ function SkillDetailCardComponent({
                     <div className="flex items-center gap-2">
                       <button
                         onClick={handleFlip}
-                        className="p-1.5 rounded-lg text-[#64748B] hover:text-[#00D4FF] hover:bg-[#1E293B] transition-colors"
+                        className="p-1.5 rounded-sm text-[#64748B] hover:text-[#00D4FF] hover:bg-[#1E293B] transition-colors"
                         aria-label="Flip card back"
                       >
                         <RotateCcw className="w-4 h-4" />
                       </button>
                       <button
                         onClick={onClose}
-                        className="p-1.5 rounded-lg text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
+                        className="p-1.5 rounded-sm text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
                         aria-label="Close"
                       >
                         <X className="w-4 h-4" />
@@ -347,7 +349,7 @@ function SkillDetailCardComponent({
                       })}
                     </p>
                   </div>
-                </GamingCard>
+                </TechCard>
               </div>
             </motion.div>
           </motion.div>

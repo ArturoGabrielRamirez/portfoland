@@ -71,7 +71,7 @@ function ExperienceCardComponent({
         exit={{ opacity: 0, y: 20, scale: 0.95 }}
         transition={{ type: 'spring', stiffness: 400, damping: 30 }}
         className={cn(
-          'relative w-80 bg-[#0D1421] border border-[#1E293B] rounded-lg overflow-hidden',
+          'relative w-80 bg-[hsl(200,30%,8%)] border border-[hsl(174,100%,50%,0.15)] rounded-sm overflow-hidden font-mono',
           'shadow-xl',
           className
         )}
@@ -80,10 +80,10 @@ function ExperienceCardComponent({
         }}
       >
         {/* Header with type badge and close button */}
-        <div className="flex items-center justify-between p-4 border-b border-[#1E293B]">
+        <div className="flex items-center justify-between p-4 border-b border-[hsl(174,100%,50%,0.1)]">
           <div
             className={cn(
-              'flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium',
+              'flex items-center gap-2 px-3 py-1.5 rounded-sm text-sm font-medium',
               'bg-opacity-20'
             )}
             style={{ backgroundColor: `${color}20`, color }}
@@ -98,7 +98,7 @@ function ExperienceCardComponent({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8 text-slate-400 hover:text-white"
+                  className="h-8 w-8 text-muted-foreground hover:text-foreground"
                   onClick={() => onEdit?.(experience)}
                 >
                   <Pencil className="w-4 h-4" />
@@ -106,7 +106,7 @@ function ExperienceCardComponent({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8 text-slate-400 hover:text-red-400"
+                  className="h-8 w-8 text-muted-foreground hover:text-[hsl(0,100%,60%)]"
                   onClick={() => onDelete?.(experience.id)}
                 >
                   <Trash2 className="w-4 h-4" />
@@ -116,7 +116,7 @@ function ExperienceCardComponent({
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 text-slate-400 hover:text-white"
+              className="h-8 w-8 text-muted-foreground hover:text-foreground"
               onClick={onClose}
             >
               <X className="w-4 h-4" />
@@ -128,12 +128,12 @@ function ExperienceCardComponent({
         <div className="p-4 space-y-3">
           {/* Title and Company */}
           <div>
-            <h3 className="text-lg font-semibold text-white">{experience.title}</h3>
-            <p className="text-slate-400">{experience.company}</p>
+            <h3 className="text-lg font-semibold text-foreground">{experience.title}</h3>
+            <p className="text-muted-foreground">{experience.company}</p>
           </div>
 
           {/* Date and Location */}
-          <div className="flex flex-col gap-1.5 text-sm text-slate-500">
+          <div className="flex flex-col gap-1.5 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4" />
               <span>{formatDateRange(experience.startDate, experience.endDate)}</span>
@@ -145,7 +145,7 @@ function ExperienceCardComponent({
           </div>
 
           {/* Description */}
-          <p className="text-sm text-slate-300 line-clamp-3">{experience.description}</p>
+          <p className="text-sm text-foreground line-clamp-3">{experience.description}</p>
 
           {/* Skills */}
           {experience.skills && experience.skills.length > 0 && (
@@ -153,13 +153,13 @@ function ExperienceCardComponent({
               {experience.skills.slice(0, 5).map((skill) => (
                 <span
                   key={skill}
-                  className="px-2 py-0.5 text-xs rounded-full bg-slate-800 text-slate-300"
+                  className="px-2 py-0.5 text-xs rounded-sm bg-[hsl(174,100%,50%,0.1)] text-[hsl(174,100%,50%)] border border-[hsl(174,100%,50%,0.2)]"
                 >
                   {skill}
                 </span>
               ))}
               {experience.skills.length > 5 && (
-                <span className="px-2 py-0.5 text-xs rounded-full bg-slate-800 text-slate-400">
+                <span className="px-2 py-0.5 text-xs rounded-sm bg-[hsl(200,30%,8%)] text-muted-foreground">
                   +{experience.skills.length - 5}
                 </span>
               )}
@@ -169,10 +169,10 @@ function ExperienceCardComponent({
 
         {/* Footer with XP */}
         <div
-          className="flex items-center justify-between px-4 py-3 border-t border-[#1E293B]"
+          className="flex items-center justify-between px-4 py-3 border-t border-[hsl(174,100%,50%,0.1)]"
           style={{ backgroundColor: `${color}10` }}
         >
-          <span className="text-sm text-slate-400">Experience Points</span>
+          <span className="text-sm text-muted-foreground">Experience Points</span>
           <div className="flex items-center gap-1">
             <span className="text-lg font-bold" style={{ color }}>
               +{experience.xp}

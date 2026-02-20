@@ -15,39 +15,50 @@
 |----------|------------|---------|---------|
 | UI Library | React | 19.2.3 | Component-based UI development |
 | CSS Framework | Tailwind CSS | 4.x | Utility-first CSS styling |
-| UI Components | shadcn/ui | Latest | Accessible, customizable component library |
-| Form Handling | react-hook-form | Latest | Performant form state management |
-| Form Validation | Yup | Latest | Schema-based form validation |
-| Internationalization | next-intl | Latest | English/Spanish localization |
+| UI Components | shadcn/ui + Radix UI | Latest | Accessible, customizable component library |
+| Gaming Components | Custom Library | - | GamingCard, HUDPanel, XPBar, LevelBadge, etc. |
+| Form Handling | react-hook-form | ^7.71.1 | Performant form state management |
+| Form Validation | Yup + Zod | ^1.7.1 / ^4.3.6 | Schema-based form validation |
+| Internationalization | next-intl | ^4.7.0 | English/Spanish localization |
+| Animations | Framer Motion | ^12.30.0 | Smooth UI animations and transitions |
+| Animations (Gaming) | anime.js | ^4.3.5 | Advanced gaming-style animations |
+| Maps | @react-google-maps/api | ^2.20.8 | Google Maps for timeline feature |
+| Themes | next-themes | ^0.4.6 | Dark/light theme switching |
+| Icons | Lucide React | ^0.563.0 | Consistent icon library |
+| Images | @vercel/blob | ^2.2.0 | Image storage and serving |
 
 ## Database & Storage
 
 | Category | Technology | Version | Purpose |
 |----------|------------|---------|---------|
 | Database | MongoDB Atlas | Latest | Cloud-hosted document database |
-| ORM | Prisma | Latest | Type-safe database client and migrations |
+| ORM | Prisma | 6.19 | Type-safe database client and migrations |
 
 ## Authentication
 
 | Category | Technology | Version | Purpose |
 |----------|------------|---------|---------|
-| Auth Library | NextAuth.js | 5.x (Auth.js) | Authentication with OAuth providers |
+| Auth Library | Better Auth | ^1.4.10 | TypeScript-first authentication framework |
 | Primary Provider | Google OAuth | - | Google account login (primary method) |
 | Additional Providers | GitHub, LinkedIn | - | Alternative social login options |
 
-Google OAuth is the confirmed primary authentication method. NextAuth.js handles the OAuth flow, session management, and integrates with Prisma for user storage.
+Better Auth is the authentication layer, providing OAuth flow, session management, and integration with Prisma for user storage. Migrated from NextAuth.js for better TypeScript support and plugin architecture.
 
 ## AI & Machine Learning
 
 | Category | Technology | Version | Purpose |
 |----------|------------|---------|---------|
-| AI SDK | Vercel AI SDK | Latest | Streaming AI responses, conversation management |
-| LLM Provider | OpenAI / Anthropic | - | Language model for CV generation and guidance |
+| AI SDK | Vercel AI SDK | ^3.0.29 / ^6.0.0 | Core SDK installed (ai, @ai-sdk/openai, @ai-sdk/react) |
+| LLM Provider | OpenAI / Anthropic | - | Provider packages installed, ready for API keys |
 
 ## Testing & Quality
 
 | Category | Technology | Version | Purpose |
 |----------|------------|---------|---------|
+| Test Runner | Vitest | ^4.0.18 | Fast unit/integration testing |
+| Testing Library | @testing-library/react | ^16.3.2 | Component testing utilities |
+| DOM Testing | @testing-library/dom | ^10.4.1 | DOM interaction testing |
+| User Events | @testing-library/user-event | ^14.6.1 | Simulated user interactions |
 | Linting | ESLint | 9.x | Code quality and style enforcement |
 | Type Checking | TypeScript | 5.x | Static type analysis |
 
@@ -59,23 +70,15 @@ Google OAuth is the confirmed primary authentication method. NextAuth.js handles
 | CDN | Vercel Edge Network | - | Global content delivery |
 | Domain Management | Vercel Domains | - | Subdomain routing (username.portfoland.com) |
 
-## Key Libraries & Utilities
-
-| Category | Technology | Purpose |
-|----------|------------|---------|
-| Image Generation | Satori / @vercel/og | Server-side image generation for social cards |
-| Date Handling | date-fns | Date manipulation and formatting |
-| Icons | Lucide React | Consistent icon library |
-| Animations | Framer Motion | Smooth UI animations and transitions |
-
 ## Development Tools
 
 | Category | Technology | Purpose |
 |----------|------------|---------|
 | Version Control | Git | Source code management |
 | Repository | GitHub | Code hosting and collaboration |
-| IDE | VS Code | Primary development environment |
-| API Testing | Postman / Thunder Client | API endpoint testing |
+| IDE | VS Code / Cursor | Primary development environment |
+| AI Coding | Antigravity + Claude Code | AI-assisted development |
+| Skills | agent-os + 27 skills | Workflow automation and best practices |
 
 ## Versioning
 
@@ -94,49 +97,23 @@ Portfoland follows [Semantic Versioning](https://semver.org/) (SemVer) with the 
 | Version | Phase | Milestone |
 |---------|-------|-----------|
 | v0.1.0 | Phase 1: Foundation | Database, auth, UI components, i18n, dashboard |
-| v0.2.0 | Phase 2: Interactive Timeline | Pixelated map, characters, skill tree, achievements |
-| v0.3.0 | Phase 3: Portfolio Generator | Templates, editor, subdomain routing, analytics |
+| v0.2.0 | Phase 2: Interactive Timeline | Google Maps + hexagons, experience cards, zoom |
+| v0.3.0 | Phase 3: Skill Tree & Portfolio | Templates, editor, subdomain routing, SEO |
 | v0.4.0 | Phase 4: AI Assistant | Vercel AI SDK, guided CV interview, document generation |
-| v0.5.0 | Phase 5: Social & Sharing | Public profiles, social cards, recruiter view |
-| v1.0.0 | Phase 6: Polish & Scale | Production-ready release |
+| v0.5.0 | Phase 5: Styles & Polish | Pixel art mode, character customization, achievements |
+| v1.0.0 | Phase 6: Scale & Launch | Production-ready release |
 
 ### Version Tracking Approach
 
-1. **package.json**: The `version` field in package.json is the source of truth
+1. **package.json**: The `version` field in package.json is the source of truth (currently `0.3.0`)
 2. **Git Tags**: Each minor version release is tagged (e.g., `git tag v0.1.0`)
 3. **GitHub Releases**: Major milestones are documented as GitHub releases
 
 ### Changelog Strategy
 
-Maintain a `CHANGELOG.md` file in the repository root following [Keep a Changelog](https://keepachangelog.com/) format:
+Maintain a `CHANGELOG.md` file in the repository root following [Keep a Changelog](https://keepachangelog.com/) format.
 
-```markdown
-# Changelog
-
-## [Unreleased]
-### Added
-- New features in development
-
-## [0.1.0] - YYYY-MM-DD
-### Added
-- Database schema with Prisma and MongoDB Atlas
-- Authentication with NextAuth.js and Google OAuth
-- shadcn/ui component library with custom themes
-- next-intl internationalization (EN/ES)
-- User dashboard
-```
-
-Categories used in changelog:
-- **Added**: New features
-- **Changed**: Changes to existing functionality
-- **Deprecated**: Features to be removed in future
-- **Removed**: Removed features
-- **Fixed**: Bug fixes
-- **Security**: Security-related changes
-
-### Pre-release Versions
-
-During development (v0.x.x), breaking changes may occur between minor versions. The v1.0.0 release marks the first stable, production-ready version with API stability guarantees.
+Categories: Added, Changed, Deprecated, Removed, Fixed, Security.
 
 ## Architecture Decisions
 
@@ -145,12 +122,13 @@ During development (v0.x.x), breaking changes may occur between minor versions. 
 - Prisma provides type-safe queries and easy schema management
 - MongoDB Atlas offers free tier for development and easy scaling
 
-### Why NextAuth.js with Google OAuth?
-- First-party integration with Next.js App Router
-- Google OAuth provides familiar, trusted login for users
-- Built-in support for multiple OAuth providers for future expansion
+### Why Better Auth?
+- TypeScript-first authentication framework with excellent type safety
+- Plugin architecture for extending auth (2FA, organizations, etc.)
+- Better integration with modern Next.js App Router patterns
 - Session management handled automatically
 - Works well with Prisma adapter for user storage
+- Migrated from NextAuth.js for better DX and extensibility
 
 ### Why Vercel AI SDK?
 - Native integration with Next.js and Vercel deployment
@@ -158,14 +136,19 @@ During development (v0.x.x), breaking changes may occur between minor versions. 
 - Provider-agnostic (can switch between OpenAI, Anthropic, etc.)
 - Built-in conversation state management
 
-### Why shadcn/ui?
+### Why shadcn/ui + Custom Gaming Components?
 - Unstyled, accessible components that can be fully customized
-- Perfect for creating unique retro/pixel/comic themes
+- Perfect for creating unique gaming/cyberpunk themes
 - Copy-paste approach means full ownership of component code
-- Works seamlessly with Tailwind CSS
+- Custom gaming library (GamingCard, HUDPanel, XPBar) extends shadcn/ui
 
 ### Subdomain Strategy
 - Vercel handles wildcard subdomains natively
 - Next.js middleware parses subdomain for routing
 - Each user gets username.portfoland.com
 - Main app lives at portfoland.com or app.portfoland.com
+
+### Two Visual Modes
+- **Professional Mode:** Clean, ATS-friendly, corporate aesthetic
+- **Gaming Mode:** Cyberpunk, neon colors, HUD elements, gamified
+- Both modes share the same data, different presentation

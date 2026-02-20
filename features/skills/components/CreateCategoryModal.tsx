@@ -10,7 +10,7 @@ import { memo, useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { GamingButton, GamingInput, GamingCard, Spinner } from '@/features/gaming';
+import { TechButton, TechInput, TechCard, Spinner } from '@/features/tech';
 import type { CreateCategoryInput } from '../types/skill';
 
 /**
@@ -166,7 +166,7 @@ function CreateCategoryModalComponent({
             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
             className="w-full max-w-md"
           >
-            <GamingCard variant="glow" className="overflow-hidden">
+            <TechCard variant="glow" className="overflow-hidden">
               {/* Header */}
               <div className="flex items-center justify-between p-4 border-b border-[#1E293B]">
                 <h2 className="text-lg font-bold text-white">
@@ -174,7 +174,7 @@ function CreateCategoryModalComponent({
                 </h2>
                 <button
                   onClick={onClose}
-                  className="p-1.5 rounded-lg text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
+                  className="p-1.5 rounded-sm text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
                   aria-label="Close"
                 >
                   <X className="w-4 h-4" />
@@ -185,7 +185,7 @@ function CreateCategoryModalComponent({
               <form onSubmit={handleSubmit} className="p-4 space-y-5">
                 {/* Error Message */}
                 {error && (
-                  <div className="p-3 rounded-lg bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] text-sm">
+                  <div className="p-3 rounded-sm bg-[#EF4444]/10 border border-[#EF4444]/30 text-[#EF4444] text-sm">
                     {error}
                   </div>
                 )}
@@ -195,7 +195,7 @@ function CreateCategoryModalComponent({
                   <label htmlFor="category-name" className="text-sm font-medium text-white">
                     Category Name <span className="text-[#EF4444]">*</span>
                   </label>
-                  <GamingInput
+                  <TechInput
                     ref={inputRef}
                     id="category-name"
                     value={name}
@@ -221,7 +221,7 @@ function CreateCategoryModalComponent({
                         type="button"
                         onClick={() => setColor(swatch.color)}
                         className={cn(
-                          'w-full aspect-square rounded-lg transition-all duration-200',
+                          'w-full aspect-square rounded-sm transition-all duration-200',
                           'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0A0E1A] focus:ring-[#00D4FF]',
                           color === swatch.color
                             ? 'ring-2 ring-white ring-offset-2 ring-offset-[#0A0E1A] scale-110'
@@ -253,7 +253,7 @@ function CreateCategoryModalComponent({
                         className="w-8 h-8 rounded cursor-pointer border-0 bg-transparent"
                         disabled={isLoading}
                       />
-                      <GamingInput
+                      <TechInput
                         value={customColor}
                         onChange={(e) => handleCustomColorChange(e.target.value)}
                         placeholder="#000000"
@@ -264,9 +264,9 @@ function CreateCategoryModalComponent({
                   </div>
 
                   {/* Preview */}
-                  <div className="flex items-center gap-3 p-3 rounded-lg bg-[#1E293B]/50">
+                  <div className="flex items-center gap-3 p-3 rounded-sm bg-[#1E293B]/50">
                     <div
-                      className="w-8 h-8 rounded-lg"
+                      className="w-8 h-8 rounded-sm"
                       style={{
                         backgroundColor: color,
                         boxShadow: `0 0 15px ${color}60`,
@@ -283,15 +283,15 @@ function CreateCategoryModalComponent({
 
                 {/* Actions */}
                 <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#1E293B]">
-                  <GamingButton
+                  <TechButton
                     type="button"
                     variant="outline"
                     onClick={onClose}
                     disabled={isLoading}
                   >
                     Cancel
-                  </GamingButton>
-                  <GamingButton
+                  </TechButton>
+                  <TechButton
                     type="submit"
                     variant="primary"
                     disabled={isLoading}
@@ -304,10 +304,10 @@ function CreateCategoryModalComponent({
                     ) : (
                       'Create Category'
                     )}
-                  </GamingButton>
+                  </TechButton>
                 </div>
               </form>
-            </GamingCard>
+            </TechCard>
           </motion.div>
         </motion.div>
       )}

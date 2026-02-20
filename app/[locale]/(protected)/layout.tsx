@@ -12,7 +12,6 @@ import { setRequestLocale } from 'next-intl/server'
 
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { DashboardHeader } from '@/features/dashboard/components'
 import type { ProtectedLayoutProps } from '@/features/dashboard/types/dashboard'
 
 // =============================================================================
@@ -69,18 +68,13 @@ export default async function ProtectedLayout({
     name: dbUser?.name ?? session.user.name,
     email: dbUser?.email ?? session.user.email,
     image: dbUser?.image ?? session.user.image ?? null,
-    portfolioMode: dbUser?.portfolioMode ?? 'professional',
+    portfolioMode: dbUser?.portfolioMode ?? 'classic',
   }
 
   return (
-    <div className="dark min-h-screen bg-[#0A0F1A] text-white">
-      {/* Dashboard Header */}
-      <DashboardHeader user={user} locale={locale} />
-
-      {/* Main Content Area */}
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {children}
-      </main>
+    <div className="dark min-h-screen bg-[#0A0E1A] text-white">
+      {/* No header here - pages include CyberpunkNav themselves */}
+      {children}
     </div>
   )
 }

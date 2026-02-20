@@ -24,9 +24,9 @@ import {
 } from '@/features/shadcn/ui/dialog';
 import {
   HUDPanel,
-  GamingBadge,
-  GamingButton,
-} from '@/features/gaming';
+  TechBadge,
+  TechButton,
+} from '@/features/tech';
 import type { ProjectDetailProps } from '../types/project';
 import type { ProjectLink } from '../types/project';
 
@@ -64,7 +64,7 @@ function ProfessionalModal({
   onClose,
   t,
 }: ProjectDetailProps & { t: (key: string) => string }) {
-  const links = (project.links ?? []) as ProjectLink[];
+  const links = (project.links ?? []) as unknown as ProjectLink[];
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -181,7 +181,7 @@ function GamingModal({
   onClose,
   t,
 }: ProjectDetailProps & { t: (key: string) => string }) {
-  const links = (project.links ?? []) as ProjectLink[];
+  const links = (project.links ?? []) as unknown as ProjectLink[];
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Close on Escape key
@@ -240,7 +240,7 @@ function GamingModal({
               <button
                 onClick={onClose}
                 data-testid="modal-close-button"
-                className="absolute right-4 top-4 z-10 rounded-lg border border-[#1E293B] bg-[#0D1421] p-1.5 text-[#94A3B8] transition-colors hover:border-[#00D4FF] hover:text-[#00D4FF]"
+                className="absolute right-4 top-4 z-10 rounded-sm border border-[#1E293B] bg-[#0D1421] p-1.5 text-[#94A3B8] transition-colors hover:border-[#00D4FF] hover:text-[#00D4FF]"
                 aria-label={t('ui.closeModal')}
               >
                 <X className="h-4 w-4" />
@@ -266,15 +266,15 @@ function GamingModal({
                   {project.title}
                 </h2>
                 {project.featured && (
-                  <GamingBadge color="yellow">
+                  <TechBadge color="yellow">
                     {t('ui.featured')}
-                  </GamingBadge>
+                  </TechBadge>
                 )}
               </div>
 
               {/* Status and dates */}
               <div className="mb-4 flex flex-wrap items-center gap-3">
-                <GamingBadge
+                <TechBadge
                   color={
                     project.status === 'COMPLETED'
                       ? 'green'
@@ -284,7 +284,7 @@ function GamingModal({
                   }
                 >
                   {t(`ui.statusLabels.${project.status}`)}
-                </GamingBadge>
+                </TechBadge>
                 <span className="flex items-center gap-1.5 text-xs text-[#64748B]">
                   <Calendar className="h-3 w-3" />
                   {formatDate(project.startDate)}
@@ -307,9 +307,9 @@ function GamingModal({
                     </h4>
                     <div className="flex flex-wrap gap-1.5">
                       {project.technologies.map((tech: string) => (
-                        <GamingBadge key={tech} color="cyan">
+                        <TechBadge key={tech} color="cyan">
                           {tech}
-                        </GamingBadge>
+                        </TechBadge>
                       ))}
                     </div>
                   </div>
@@ -323,7 +323,7 @@ function GamingModal({
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {links.map((link, index) => (
-                      <GamingButton
+                      <TechButton
                         key={index}
                         variant="outline"
                         size="sm"
@@ -338,7 +338,7 @@ function GamingModal({
                         {LINK_TYPE_ICONS[link.type] ||
                           LINK_TYPE_ICONS.OTHER}
                         <span>{link.label}</span>
-                      </GamingButton>
+                      </TechButton>
                     ))}
                   </div>
                 </div>
@@ -363,7 +363,7 @@ export function ProjectDetailModal({
 }: ProjectDetailProps) {
   const t = useTranslations('portfolio');
 
-  if (mode === 'professional') {
+  if (mode === 'classic') {
     return (
       <ProfessionalModal
         project={project}

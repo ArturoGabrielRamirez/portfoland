@@ -25,20 +25,30 @@ model User {
   email         String   @unique
   name          String
   image         String?
+  oauthImage    String?
   username      String?  @unique
   locale        String   @default("en")
   emailVerified Boolean  @default(false)
-  portfolioMode String   @default("professional")
-  bio           String?
-  createdAt     DateTime @default(now())
+  portfolioMode     String   @default("classic")
+  bio               String?
+  sectionOrder      String[] @default(["about", "experience", "skills", "projects"])
+  contactLinks      Json     @default("{}")
+  sectionVisibility Json     @default("{}")
+  meta              Json     @default("{}")
+  createdAt         DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  sessions        Session[]
-  accounts        Account[]
-  experiences     Experience[]
-  userSkills      UserSkill[]
-  skillCategories SkillCategory[]
-  projects        Project[]
+  sessions          Session[]
+  accounts          Account[]
+  experiences       Experience[]
+  userSkills        UserSkill[]
+  skillCategories   SkillCategory[]
+  projects          Project[]
+  conversations     Conversation[]
+  services          Service[]
+  testimonials      Testimonial[]
+  galleryItems      GalleryItem[]
+  portfolioSettings PortfolioSettings?
 
   @@map("users")
 }
@@ -236,4 +246,127 @@ model SkillSource {
   @@index([userSkillId])
   @@index([experienceId])
   @@map("skill_sources")
+}
+
+// =============================================================================
+// AI Assistant Models
+// =============================================================================
+
+model Conversation {
+  id        String    @id @default(cuid()) @map("_id")
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String?
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("conversations")
+}
+
+enum MessageRole {
+  user
+  assistant
+  system
+  tool
+}
+
+model Message {
+  id             String       @id @default(cuid()) @map("_id")
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           MessageRole
+  content        String
+  metadata       Json?
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId])
+  @@map("messages")
+}
+
+// =============================================================================
+// Classic Mode Feature Models
+// =============================================================================
+
+// PriceType enum for Service model pricing options
+enum PriceType {
+  FIXED
+  RANGE
+  STARTING_FROM
+  CONTACT
+}
+
+model Service {
+  id              String    @id @default(cuid()) @map("_id")
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title           String
+  description     String
+  priceType       PriceType
+  priceMin        Float?
+  priceMax        Float?
+  currency        String    @default("USD")
+  durationMinutes Int?
+  order           Int       @default(0)
+  published       Boolean   @default(true)
+  imageUrl        String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("services")
+}
+
+model Testimonial {
+  id          String   @id @default(cuid()) @map("_id")
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clientName  String
+  clientTitle String?
+  content     String
+  rating      Int
+  imageUrl    String?
+  source      String?
+  externalId  String?
+  order       Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@map("testimonials")
+}
+
+model GalleryItem {
+  id        String   @id @default(cuid()) @map("_id")
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  imageUrl  String
+  caption   String?
+  altText   String?
+  category  String?
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("gallery_items")
+}
+
+model PortfolioSettings {
+  id            String   @id @default(cuid()) @map("_id")
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  theme         String   @default("default")
+  layoutVariant String   @default("bento")
+  accentColor   String?
+  fontFamily    String?
+  heroStyle     String   @default("standard")
+  showBranding  Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("portfolio_settings")
 }

@@ -155,7 +155,7 @@ describe('ProjectDetailModal (TG7)', () => {
     render(
       <ProjectDetailModal
         project={mockProject as any}
-        mode="professional"
+        mode="classic"
         isOpen={true}
         onClose={() => {}}
       />
@@ -185,7 +185,7 @@ describe('ProjectDetailModal (TG7)', () => {
     render(
       <ProjectDetailModal
         project={mockProject as any}
-        mode="professional"
+        mode="classic"
         isOpen={true}
         onClose={() => {}}
       />
@@ -206,7 +206,7 @@ describe('ProjectDetailModal (TG7)', () => {
     render(
       <ProjectDetailModal
         project={mockProject as any}
-        mode="gaming"
+        mode="tech"
         isOpen={true}
         onClose={onClose}
       />
@@ -227,7 +227,7 @@ describe('ProjectDetailModal (TG7)', () => {
     render(
       <ProjectDetailModal
         project={mockProject as any}
-        mode="gaming"
+        mode="tech"
         isOpen={true}
         onClose={() => {}}
       />

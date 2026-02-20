@@ -7,8 +7,10 @@
 
 import { PORTFOLIO_MODES, PORTFOLIO_MESSAGES } from '../constants/messages';
 import { updatePortfolioModeData } from '../data/updatePortfolioMode.data';
+import { updateUserProfileData } from '../data/updateProfile.data';
+import { invalidateNarrativeCache } from '@/lib/ai/cache';
 
-const VALID_MODES = [PORTFOLIO_MODES.PROFESSIONAL, PORTFOLIO_MODES.GAMING];
+const VALID_MODES = [PORTFOLIO_MODES.CLASSIC, PORTFOLIO_MODES.TECH];
 
 /**
  * Update a user's portfolio mode
@@ -22,11 +24,36 @@ const VALID_MODES = [PORTFOLIO_MODES.PROFESSIONAL, PORTFOLIO_MODES.GAMING];
  */
 export async function updatePortfolioModeService(
   userId: string,
-  mode: "gaming" | "professional"
+  mode: "tech" | "classic"
 ) {
   if (!VALID_MODES.includes(mode)) {
     throw new Error(PORTFOLIO_MESSAGES.INVALID_MODE);
   }
 
   return await updatePortfolioModeData(userId, mode);
+}
+
+/**
+ * Update a user's profile information
+ *
+ * Validates and delegates to the data layer.
+ *
+ * @param userId - The user's ID
+ * @param data - Profile data to update (name, bio, image)
+ * @returns Updated user record
+ */
+export async function updateProfileService(
+  userId: string,
+  data: {
+    name: string;
+    bio?: string | null;
+    image?: string | null;
+    sectionOrder?: string[];
+    contactLinks?: Record<string, any>;
+    sectionVisibility?: Record<string, any>;
+  }
+) {
+  const result = await updateUserProfileData(userId, data);
+  invalidateNarrativeCache(userId).catch(() => {});
+  return result;
 }

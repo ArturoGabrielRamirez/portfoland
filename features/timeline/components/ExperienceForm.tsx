@@ -124,6 +124,8 @@ function ExperienceFormComponent({
   const formatDateForInput = (date: Date | null | undefined): string => {
     if (!date) return '';
     const d = new Date(date);
+    // Check if date is valid
+    if (isNaN(d.getTime())) return '';
     return d.toISOString().split('T')[0];
   };
 
@@ -155,7 +157,7 @@ function ExperienceFormComponent({
                         type="button"
                         onClick={() => field.onChange(type)}
                         className={cn(
-                          'flex items-center gap-2 p-3 rounded-lg border transition-all',
+                          'flex items-center gap-2 p-3 rounded-sm border transition-all',
                           isSelected
                             ? 'border-transparent'
                             : 'border-slate-700 hover:border-slate-600'
@@ -196,7 +198,7 @@ function ExperienceFormComponent({
                 <Input
                   {...field}
                   placeholder="e.g., Senior Software Engineer"
-                  className="bg-slate-900 border-slate-700 text-white"
+                  className="bg-[#0D1421] border-[#1E293B] text-white"
                 />
               </FormControl>
               <FormMessage />
@@ -215,7 +217,7 @@ function ExperienceFormComponent({
                 <Input
                   {...field}
                   placeholder="e.g., Google, MIT, Personal Project"
-                  className="bg-slate-900 border-slate-700 text-white"
+                  className="bg-[#0D1421] border-[#1E293B] text-white"
                 />
               </FormControl>
               <FormMessage />
@@ -258,7 +260,7 @@ function ExperienceFormComponent({
                     type="date"
                     value={formatDateForInput(field.value)}
                     onChange={(e) => field.onChange(new Date(e.target.value))}
-                    className="bg-slate-900 border-slate-700 text-white"
+                    className="bg-[#0D1421] border-[#1E293B] text-white"
                   />
                 </FormControl>
                 <FormMessage />
@@ -279,7 +281,7 @@ function ExperienceFormComponent({
                     onChange={(e) =>
                       field.onChange(e.target.value ? new Date(e.target.value) : null)
                     }
-                    className="bg-slate-900 border-slate-700 text-white"
+                    className="bg-[#0D1421] border-[#1E293B] text-white"
                   />
                 </FormControl>
                 <FormMessage />
@@ -300,7 +302,7 @@ function ExperienceFormComponent({
                   {...field}
                   rows={4}
                   placeholder="Describe your experience, responsibilities, achievements..."
-                  className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-md text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                  className="w-full px-3 py-2 bg-[#0D1421] border border-[#1E293B] rounded-sm text-white placeholder:text-[#64748B] focus:outline-none focus:ring-2 focus:ring-[#00D4FF] focus:ring-offset-2 focus:ring-offset-[#0A0E1A]"
                 />
               </FormControl>
               <FormMessage />

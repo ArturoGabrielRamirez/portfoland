@@ -12,6 +12,7 @@ import { NextIntlClientProvider } from 'next-intl'
 
 import { routing } from '@/i18n/config'
 import { Toaster } from '@/features/shadcn/ui/sonner'
+import { ToastBorderEffect } from '@/features/ui'
 
 // =============================================================================
 // Types
@@ -64,7 +65,8 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       {children}
-      <Toaster position="top-right" richColors closeButton />
+      <Toaster position="bottom-right" richColors closeButton />
+      <ToastBorderEffect />
     </NextIntlClientProvider>
   )
 }

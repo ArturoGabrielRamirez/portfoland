@@ -48,14 +48,14 @@ const PUBLIC_PATHS = ['/', '/login', '/register'] as const
  * API paths that should bypass authentication checks.
  * Better Auth handles its own authentication for these routes.
  */
-const PUBLIC_API_PREFIXES = ['/api/auth'] as const
+const PUBLIC_API_PREFIXES = ['/api'] as const
 
 /**
  * Paths that are valid on subdomain-routed portfolios.
  * These correspond to routes under app/[locale]/[username]/.
  * Any path not in this list triggers a redirect to the root domain.
  */
-const VALID_SUBDOMAIN_PATHS = ['/', '/skills'] as const
+const VALID_SUBDOMAIN_PATHS = ['/'] as const
 
 // =============================================================================
 // Domain Configuration
@@ -403,17 +403,23 @@ export function proxy(request: NextRequest): NextResponse {
         : `/${locale}/${subdomain}${cleanPathname}`
 
       const rewriteUrl = new URL(internalPath, request.url)
-      const response = NextResponse.rewrite(rewriteUrl)
 
-      // Set custom header so downstream components can detect subdomain context
-      response.headers.set('x-subdomain', subdomain)
+      // Pass x-subdomain as a request header so server components can read it
+      // via headers() and distinguish subdomain access from direct path access.
+      const requestHeaders = new Headers(request.headers)
+      requestHeaders.set('x-subdomain', subdomain)
+      const response = NextResponse.rewrite(rewriteUrl, {
+        request: { headers: requestHeaders },
+      })
 
       return response
     }
 
-    // Non-portfolio path on subdomain -- redirect to root domain
+    // Non-portfolio path on subdomain -- redirect to root domain (preserve port for dev)
     const protocol = request.url.startsWith('https') ? 'https' : 'http'
-    const redirectUrl = new URL(`${protocol}://${appDomain}/${locale}${cleanPathname}`)
+    const portMatch = host?.match(/:(\d+)$/)
+    const portSuffix = portMatch ? `:${portMatch[1]}` : ''
+    const redirectUrl = new URL(`${protocol}://${appDomain}${portSuffix}/${locale}${cleanPathname}`)
     return NextResponse.redirect(redirectUrl)
   }
 

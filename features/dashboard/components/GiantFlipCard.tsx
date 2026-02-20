@@ -4,14 +4,14 @@
  * GiantFlipCard Component - Simplified without 3D transforms
  * 
  * Simple card with hover flip, no complex 3D:
- * - Uses GamingCard as base
+ * - Uses TechCard as base
  * - Clean hover transition
  * - No perspective or transform-style issues
  * - Guaranteed to work with layout
  */
 
 import { useState } from 'react'
-import { GamingCard, XPBar, GamingBadge } from '@/features/gaming'
+import { TechCard, XPBar, TechBadge } from '@/features/tech'
 
 interface GiantFlipCardProps {
   title: string
@@ -43,7 +43,7 @@ export function GiantFlipCard({
     onFlip?.()
   }
 
-  const getGamingCardVariant = () => {
+  const getTechCardVariant = () => {
     switch (color) {
       case 'magenta':
         return 'magenta'
@@ -78,7 +78,7 @@ export function GiantFlipCard({
       >
         {/* Front Side */}
         {!isFlipped && (
-          <GamingCard variant={getGamingCardVariant()} className="w-full h-full p-4 sm:p-6 border-2 border-transparent group-hover:border-opacity-20 transition-all group-hover:border-[--hover-color]" style={{ '--hover-color': getProgressBarColor() + '30' } as React.CSSProperties}>
+          <TechCard variant={getTechCardVariant()} className="w-full h-full p-4 sm:p-6 border-2 border-transparent group-hover:border-opacity-20 transition-all group-hover:border-[--hover-color]" style={{ '--hover-color': getProgressBarColor() + '30' } as React.CSSProperties}>
             {/* Header Section */}
             <div className="mb-6">
               {/* Icon */}
@@ -110,9 +110,9 @@ export function GiantFlipCard({
 
             {/* Badge */}
             <div className="text-center mb-4">
-              <GamingBadge color="gray" className="mb-0">
+              <TechBadge color="gray" className="mb-0">
                 {version}
-              </GamingBadge>
+              </TechBadge>
             </div>
 
             {/* Stats Section */}
@@ -156,12 +156,12 @@ export function GiantFlipCard({
                 </div>
               </div>
             )}
-          </GamingCard>
+          </TechCard>
         )}
 
         {/* Back Side */}
         {isFlipped && (
-          <GamingCard variant="featured" className="w-full h-full p-6">
+          <TechCard variant="featured" className="w-full h-full p-6">
             {/* Back Content */}
             <div className="h-full flex flex-col justify-center items-center text-center">
               {/* Large Icon */}
@@ -188,12 +188,12 @@ export function GiantFlipCard({
               
               {/* Status Badge */}
               <div className="mb-4">
-                <GamingBadge color="gray" className="text-sm">
+                <TechBadge color="gray" className="text-sm">
                   {title.toLowerCase().includes('level') && 'LEVEL ANALYTICS'}
                   {title.toLowerCase().includes('achievement') && 'ACHIEVEMENT TRACKER'}
                   {title.toLowerCase().includes('profile') && 'PROFILE INSIGHTS'}
                   {!['level', 'achievement', 'profile'].some(word => title.toLowerCase().includes(word)) && 'SYSTEM STATUS'}
-                </GamingBadge>
+                </TechBadge>
               </div>
 
               {/* Description */}
@@ -225,7 +225,7 @@ export function GiantFlipCard({
                 </button>
               </div>
             </div>
-          </GamingCard>
+          </TechCard>
         )}
       </div>
     </div>

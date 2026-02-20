@@ -84,7 +84,7 @@ export const DEFAULT_CATEGORIES = [
  * Used for galaxy cluster visualization and UI theming
  */
 export const CATEGORY_COLORS: Record<CategorySlug, string> = {
-  core: '#00D4FF', // Cyan - matches accent
+  core: '#D946EF', // Magenta/Violet - fundamentals
   frontend: '#A855F7', // Purple
   backend: '#22C55E', // Green
   devops: '#F97316', // Orange
@@ -96,7 +96,7 @@ export const CATEGORY_COLORS: Record<CategorySlug, string> = {
  * Glow colors for category visualization (with opacity)
  */
 export const CATEGORY_GLOW_COLORS: Record<CategorySlug, string> = {
-  core: 'rgba(0, 212, 255, 0.6)',
+  core: 'rgba(217, 70, 239, 0.6)',
   frontend: 'rgba(168, 85, 247, 0.6)',
   backend: 'rgba(34, 197, 94, 0.6)',
   devops: 'rgba(249, 115, 22, 0.6)',
@@ -114,10 +114,10 @@ export const CATEGORY_COLOR_CLASSES: Record<CategorySlug, {
   glow: string;
 }> = {
   core: {
-    bg: 'bg-cyan-500',
-    text: 'text-cyan-400',
-    border: 'border-cyan-500',
-    glow: 'shadow-[0_0_20px_rgba(0,212,255,0.6)]',
+    bg: 'bg-[#D946EF]',
+    text: 'text-[#D946EF]',
+    border: 'border-[#D946EF]',
+    glow: 'shadow-[0_0_20px_rgba(217,70,239,0.6)]',
   },
   frontend: {
     bg: 'bg-purple-500',

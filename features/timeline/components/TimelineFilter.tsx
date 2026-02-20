@@ -52,12 +52,12 @@ function TimelineFilterComponent({
             type="button"
             onClick={() => onFilterChange(value)}
             className={cn(
-              'relative px-4 py-2 rounded-full text-sm font-medium',
+              'relative px-4 py-2 rounded-sm text-sm font-medium font-mono',
               'border transition-colors duration-200',
               'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-cyan-500',
               isActive
                 ? 'text-white border-transparent'
-                : 'text-slate-400 border-slate-700 hover:border-slate-600 hover:text-slate-300'
+                : 'text-muted-foreground border-[hsl(174,100%,50%,0.15)] hover:border-[hsl(174,100%,50%,0.3)] hover:text-foreground'
             )}
             style={{
               backgroundColor: isActive ? color : 'transparent',
@@ -70,8 +70,8 @@ function TimelineFilterComponent({
               {count !== undefined && (
                 <span
                   className={cn(
-                    'px-1.5 py-0.5 text-xs rounded-full',
-                    isActive ? 'bg-white/20' : 'bg-slate-800'
+                    'px-1.5 py-0.5 text-xs rounded-sm font-mono',
+                    isActive ? 'bg-white/20' : 'bg-[hsl(200,30%,8%)]'
                   )}
                 >
                   {count}
@@ -83,7 +83,7 @@ function TimelineFilterComponent({
             {isActive && (
               <motion.div
                 layoutId="filter-glow"
-                className="absolute inset-0 rounded-full"
+                className="absolute inset-0 rounded-sm"
                 style={{
                   boxShadow: `0 0 20px ${color}60`,
                 }}

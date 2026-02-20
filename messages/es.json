@@ -53,15 +53,15 @@
       "noAccount": "No tienes una cuenta?",
       "createAccount": "Crear una cuenta",
       "forgotPassword": "Olvidaste tu contrasena?",
-      "gaming": {
-        "heroTitle": "INICIA TU AVENTURA",
-        "heroSubtitle": "Crea tu portfolio gamificado y destaca entre la multitud de candidatos.",
+      "tech": {
+        "heroTitle": "INICIALIZA TU PERFIL",
+        "heroSubtitle": "Crea tu portfolio tecnologico y destaca entre la multitud de candidatos.",
         "feature1": "Timeline Interactivo",
         "feature2": "Sistema de Logros",
         "feature3": "CV con IA",
         "tabLogin": "INICIAR SESION",
         "tabRegister": "REGISTRARSE",
-        "submitButton": "INICIAR PARTIDA",
+        "submitButton": "LANZAR SESION",
         "orContinueWith": "O CONTINUAR CON"
       },
       "errors": {
@@ -91,15 +91,15 @@
       "termsText": "Al registrarte, aceptas nuestros",
       "termsLink": "Terminos de Servicio",
       "privacyLink": "Politica de Privacidad",
-      "gaming": {
+      "tech": {
         "heroTitle": "COMIENZA TU MISION",
-        "heroSubtitle": "Unite a miles de profesionales que cuentan su historia con un portfolio gamificado.",
+        "heroSubtitle": "Unite a miles de profesionales que cuentan su historia con un portfolio tecnologico.",
         "feature1": "Timeline Interactivo",
         "feature2": "Sistema de Logros",
         "feature3": "CV con IA",
         "tabLogin": "INICIAR SESION",
         "tabRegister": "REGISTRARSE",
-        "submitButton": "CREAR PERSONAJE",
+        "submitButton": "CREAR PERFIL",
         "orContinueWith": "O CONTINUAR CON"
       },
       "errors": {
@@ -130,12 +130,12 @@
     "welcome": "Bienvenido de nuevo, {name}!",
     "welcomeSubtitle": "Continua construyendo tu aventura profesional",
     "modeToggle": {
-      "professional": "Profesional",
-      "gaming": "Gaming",
+      "classic": "Clasico",
+      "tech": "Tech",
       "label": "Modo de Portafolio",
       "success": "Modo de portafolio actualizado exitosamente"
     },
-    "gaming": {
+    "tech": {
       "levelProgress": "PROGRESO AL NIVEL {level}",
       "currentLevel": "Nivel actual",
       "xpRemaining": "{xp} XP restantes - {percent}% completado - Sigue asi!",
@@ -289,74 +289,74 @@
       "ai": "IA"
     },
     "modes": {
-      "professional": "Profesional",
-      "gaming": "Gaming"
+      "classic": "Clasico",
+      "tech": "Tech"
     },
     "sections": {
       "hero": {
-        "professional": {
+        "classic": {
           "title": "Perfil"
         },
-        "gaming": {
-          "title": "PERFIL DE JUGADOR"
+        "tech": {
+          "title": "PERFIL TECH"
         }
       },
       "about": {
-        "professional": {
+        "classic": {
           "title": "Acerca de",
           "emptyState": "No se ha proporcionado un resumen"
         },
-        "gaming": {
+        "tech": {
           "title": "BIOGRAFIA",
           "emptyState": "DATOS DE BIOGRAFIA NO ENCONTRADOS"
         }
       },
       "timeline": {
-        "professional": {
+        "classic": {
           "title": "Experiencia",
           "emptyState": "No se ha agregado experiencia aun"
         },
-        "gaming": {
-          "title": "REGISTRO DE MISIONES",
-          "emptyState": "NO HAY MISIONES REGISTRADAS"
+        "tech": {
+          "title": "REGISTRO DE TRABAJO",
+          "emptyState": "NO HAY EXPERIENCIAS REGISTRADAS"
         }
       },
       "skills": {
-        "professional": {
+        "classic": {
           "title": "Habilidades",
           "emptyState": "No hay habilidades listadas aun"
         },
-        "gaming": {
+        "tech": {
           "title": "ARBOL DE SKILLS",
           "emptyState": "NO HAY SKILLS DESBLOQUEADAS"
         }
       },
       "projects": {
-        "professional": {
+        "classic": {
           "title": "Proyectos",
           "emptyState": "No hay proyectos aun",
           "featured": "Destacado"
         },
-        "gaming": {
-          "title": "MISIONES",
-          "emptyState": "NO HAY MISIONES DESPLEGADAS"
+        "tech": {
+          "title": "PROYECTOS",
+          "emptyState": "NO HAY PROYECTOS DESPLEGADOS"
         }
       },
       "contact": {
-        "professional": {
+        "classic": {
           "title": "Contacto"
         },
-        "gaming": {
+        "tech": {
           "title": "ENLACE DE COMUNICACION"
         }
       },
       "ai": {
-        "professional": {
+        "classic": {
           "title": "Analisis Impulsado por IA",
           "description": "Analisis inteligente y recomendaciones impulsadas por IA para mejorar tu presencia profesional.",
           "comingSoon": "Proximamente"
         },
-        "gaming": {
+        "tech": {
           "title": "NUCLEO DE IA",
           "description": "Interfaz neuronal avanzada para inteligencia profesional y analisis tactico.",
           "status": "SISTEMA INICIALIZANDO..."
@@ -529,23 +529,23 @@
       "title": "Dos Modos",
       "headline": "Tu portfolio, tu estilo",
       "subheadline": "Elige como queres presentarte al mundo",
-      "professional": {
-        "title": "Modo Profesional",
+      "classic": {
+        "title": "Modo Clasico",
         "subtitle": "Para recruiters y empresas",
         "feature1": "CV tradicional con IA asistida",
         "feature2": "Timeline cronologico limpio",
         "feature3": "Exportar a PDF profesional",
         "feature4": "Integracion con LinkedIn",
-        "cta": "Elegir Profesional"
+        "cta": "Elegir Modo Clasico"
       },
-      "gaming": {
-        "title": "Modo Gaming",
-        "subtitle": "Para creativos y gamers",
-        "feature1": "Timeline como aventura RPG",
+      "tech": {
+        "title": "Modo Tech",
+        "subtitle": "Para desarrolladores y profesionales tech",
+        "feature1": "Timeline de carrera visual",
         "feature2": "Arbol de habilidades visual",
         "feature3": "Sistema de logros y XP",
-        "feature4": "Avatar personalizable",
-        "cta": "Elegir Gaming"
+        "feature4": "Diseno de portfolio personalizado",
+        "cta": "Elegir Modo Tech"
       }
     },
     "cta": {
@@ -557,5 +557,14 @@
   "languageSwitcher": {
     "label": "Seleccionar idioma",
     "current": "Idioma actual: {language}"
+  },
+  "Seo": {
+    "titleTemplate": "{name} - {role} | Portfoland",
+    "descriptionTemplate": "Descubre la trayectoria profesional de {name} en Portfoland. Explora sus habilidades, proyectos y experiencias en un portfolio interactivo.",
+    "defaultRole": "Profesional",
+    "modes": {
+      "tech": "Perfil Tech",
+      "classic": "Perfil Profesional"
+    }
   }
 }

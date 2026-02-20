@@ -11,7 +11,7 @@ import { memo, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Briefcase, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { XPBar, LevelBadge, GamingBadge } from '@/features/gaming';
+import { XPBar, LevelBadge, TechBadge } from '@/features/tech';
 import type { MobileSkillListProps, UserSkillWithDetails, SkillCategory, SkillsByCategory } from '../types/skill';
 import { SKILL_LEVEL_NAMES, calculateLevelProgress, LEVEL_THRESHOLDS_ARRAY } from '../constants/xp';
 import { getCategoryColor, type CategorySlug } from '../constants/categories';
@@ -107,7 +107,7 @@ function MobileSkillItem({
       type="button"
       onClick={onClick}
       className={cn(
-        'w-full flex items-center gap-3 p-3 rounded-lg',
+        'w-full flex items-center gap-3 p-3 rounded-sm',
         'bg-[#1E293B]/50 border border-[#334155]/50',
         'hover:bg-[#1E293B] hover:border-[#00D4FF]/30',
         'transition-all duration-200 text-left',
@@ -116,7 +116,7 @@ function MobileSkillItem({
     >
       {/* Skill Letter Badge */}
       <div
-        className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg font-bold text-white"
+        className="flex-shrink-0 w-10 h-10 rounded-sm flex items-center justify-center text-lg font-bold text-white"
         style={{
           backgroundColor: skill.skill?.category?.color ?? '#64748B',
           boxShadow: `0 0 10px ${skill.skill?.category?.color ?? '#64748B'}40`,
@@ -186,7 +186,7 @@ function CategorySection({
   const categoryColor = getCategoryColor(group.category.slug as CategorySlug) ?? group.category.color;
 
   return (
-    <div className="border border-[#1E293B] rounded-lg overflow-hidden">
+    <div className="border border-[#1E293B] rounded-sm overflow-hidden">
       {/* Category Header */}
       <button
         type="button"
@@ -204,7 +204,7 @@ function CategorySection({
             style={{ backgroundColor: categoryColor }}
           />
           <span className="text-white font-medium">{group.category.name}</span>
-          <GamingBadge color="cyan">{group.skills.length}</GamingBadge>
+          <TechBadge color="cyan">{group.skills.length}</TechBadge>
         </div>
 
         <div className="flex items-center gap-3">
@@ -292,7 +292,7 @@ function MobileSkillListComponent({
   return (
     <div className={cn('space-y-3', className)}>
       {/* Stats Summary */}
-      <div className="flex items-center justify-between p-3 rounded-lg bg-[#1E293B]/30 border border-[#334155]/30">
+      <div className="flex items-center justify-between p-3 rounded-sm bg-[#1E293B]/30 border border-[#334155]/30">
         <span className="text-sm text-[#64748B]">
           {userSkills.length} skill{userSkills.length !== 1 ? 's' : ''}
         </span>

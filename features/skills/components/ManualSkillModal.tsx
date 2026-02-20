@@ -12,7 +12,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
-import { GamingCard } from '@/features/gaming';
+import { TechCard } from '@/features/tech';
+import { FormWithIndicator, useFormIndicator } from '@/features/ui';
 import type { CreateSkillInput, SkillCategory, UserSkillWithDetails } from '../types/skill';
 import { ManualSkillForm } from './ManualSkillForm';
 import { CreateCategoryModal } from './CreateCategoryModal';
@@ -47,11 +48,19 @@ function ManualSkillModalComponent({
   const [isPending, startTransition] = useTransition();
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [localCategories, setLocalCategories] = useState(categories);
+  const indicator = useFormIndicator('idle');
 
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Determine if we're in edit mode
   const isEditMode = !!skillToEdit;
+
+  // Sync indicator with isPending
+  useEffect(() => {
+    if (isPending) {
+      indicator.setLoading();
+    }
+  }, [isPending]);
 
   // Update local categories when prop changes
   useEffect(() => {
@@ -107,11 +116,15 @@ function ManualSkillModalComponent({
         });
 
         if (result.hasError) {
+          indicator.setTemporary('error');
           toast.error(result.message);
         } else {
+          indicator.setTemporary('success');
           toast.success(result.message || 'Skill updated successfully');
-          onSuccess?.();
-          onClose();
+          setTimeout(() => {
+            onSuccess?.();
+            onClose();
+          }, 1000);
         }
       } else {
         // Create new skill
@@ -124,11 +137,15 @@ function ManualSkillModalComponent({
         });
 
         if (result.hasError) {
+          indicator.setTemporary('error');
           toast.error(result.message);
         } else {
+          indicator.setTemporary('success');
           toast.success(result.message);
-          onSuccess?.();
-          onClose();
+          setTimeout(() => {
+            onSuccess?.();
+            onClose();
+          }, 1000);
         }
       }
     });
@@ -169,26 +186,32 @@ function ManualSkillModalComponent({
               transition={{ type: 'spring', stiffness: 400, damping: 30 }}
               className="w-full max-w-md max-h-[90vh] overflow-hidden"
             >
-              <GamingCard variant="glow" className="overflow-hidden">
-                {/* Header */}
-                <div className="flex items-center justify-between p-4 border-b border-[#1E293B]">
+              <TechCard variant="glow" className="overflow-hidden">
+                {/* Header with Indicator */}
+                <div className="relative flex items-center justify-between p-4 border-b border-[#1E293B]">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-5 h-5 text-[#00D4FF]" />
                     <h2 className="text-lg font-bold text-white">
                       {isEditMode ? 'Edit Skill' : 'Add New Skill'}
                     </h2>
                   </div>
-                  <button
-                    onClick={onClose}
-                    className="p-1.5 rounded-lg text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
-                    aria-label="Close"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    {/* Hexagonal status indicator */}
+                    <FormWithIndicator status={indicator.status} indicatorPosition="top-right">
+                      <div className="w-12 h-12" />
+                    </FormWithIndicator>
+                    <button
+                      onClick={onClose}
+                      className="p-1.5 rounded-sm text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
+                      aria-label="Close"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
 
-                {/* Form */}
-                <div className="p-4 max-h-[calc(90vh-8rem)] overflow-y-auto">
+                {/* Form - NO SCROLL */}
+                <div className="p-4">
                   <ManualSkillForm
                     initialData={
                       isEditMode && skillToEdit
@@ -214,7 +237,7 @@ function ManualSkillModalComponent({
                     isEditMode={isEditMode}
                   />
                 </div>
-              </GamingCard>
+              </TechCard>
             </motion.div>
           </motion.div>
         )}

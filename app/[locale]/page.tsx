@@ -13,7 +13,7 @@ import { getTranslations } from 'next-intl/server'
 import { headers } from 'next/headers'
 
 import { auth } from '@/lib/auth'
-import { GamingButton, GamingCard } from '@/features/gaming'
+import { TechButton, TechCard } from '@/features/tech'
 
 // =============================================================================
 // Types
@@ -147,14 +147,14 @@ export default async function LandingPage({ params }: LandingPageProps) {
             {/* CTA Buttons */}
             <div className="flex items-center gap-3">
               <Link href={`/${locale}/login`}>
-                <GamingButton variant="outline" size="sm">
+                <TechButton variant="outline" size="sm">
                   {tNav('signIn')}
-                </GamingButton>
+                </TechButton>
               </Link>
               <Link href={`/${locale}/register`} className="hidden sm:block">
-                <GamingButton variant="primary" size="sm">
+                <TechButton variant="primary" size="sm">
                   {tNav('signUp')}
-                </GamingButton>
+                </TechButton>
               </Link>
             </div>
           </div>
@@ -192,14 +192,14 @@ export default async function LandingPage({ params }: LandingPageProps) {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
             <Link href={`/${locale}/register`}>
-              <GamingButton variant="primary" size="lg">
+              <TechButton variant="primary" size="lg">
                 {t('hero.ctaSignUp')}
-              </GamingButton>
+              </TechButton>
             </Link>
             <Link href={`/${locale}/login`}>
-              <GamingButton variant="outline" size="lg">
+              <TechButton variant="outline" size="lg">
                 {t('hero.ctaSignIn')}
-              </GamingButton>
+              </TechButton>
             </Link>
           </div>
 
@@ -240,7 +240,7 @@ export default async function LandingPage({ params }: LandingPageProps) {
           {/* Feature Cards */}
           <div className="grid md:grid-cols-3 gap-6">
             {/* Feature 1 - Timeline */}
-            <GamingCard variant="glow" className="p-6">
+            <TechCard variant="glow" className="p-6">
               <div className="w-12 h-12 rounded-xl bg-[#00D4FF]/20 flex items-center justify-center mb-4">
                 <TimelineIcon className="w-6 h-6 text-[#00D4FF]" />
               </div>
@@ -250,10 +250,10 @@ export default async function LandingPage({ params }: LandingPageProps) {
               <p className="text-[#94A3B8] text-sm mb-4">
                 {t('features.timeline.description')}
               </p>
-            </GamingCard>
+            </TechCard>
 
             {/* Feature 2 - Skill Tree */}
-            <GamingCard variant="magenta" className="p-6">
+            <TechCard variant="magenta" className="p-6">
               <div className="w-12 h-12 rounded-xl bg-[#D946EF]/20 flex items-center justify-center mb-4">
                 <TreeIcon className="w-6 h-6 text-[#D946EF]" />
               </div>
@@ -263,10 +263,10 @@ export default async function LandingPage({ params }: LandingPageProps) {
               <p className="text-[#94A3B8] text-sm mb-4">
                 {t('features.portfolio.description')}
               </p>
-            </GamingCard>
+            </TechCard>
 
             {/* Feature 3 - Subdomain */}
-            <GamingCard variant="green" className="p-6">
+            <TechCard variant="green" className="p-6">
               <div className="w-12 h-12 rounded-xl bg-[#22C55E]/20 flex items-center justify-center mb-4">
                 <GlobeIcon className="w-6 h-6 text-[#22C55E]" />
               </div>
@@ -276,7 +276,7 @@ export default async function LandingPage({ params }: LandingPageProps) {
               <p className="text-[#94A3B8] text-sm mb-4">
                 {t('features.aiAssistant.description')}
               </p>
-            </GamingCard>
+            </TechCard>
           </div>
         </div>
       </section>
@@ -355,7 +355,7 @@ export default async function LandingPage({ params }: LandingPageProps) {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Professional Mode */}
-            <GamingCard variant="glow" className="p-8">
+            <TechCard variant="glow" className="p-8">
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-[#00D4FF]/20 flex items-center justify-center">
                   <UserIcon className="w-6 h-6 text-[#00D4FF]" />
@@ -384,14 +384,14 @@ export default async function LandingPage({ params }: LandingPageProps) {
                 </li>
               </ul>
               <Link href={`/${locale}/register`}>
-                <GamingButton variant="primary" className="w-full">
+                <TechButton variant="primary" className="w-full">
                   {t('modes.professional.cta')}
-                </GamingButton>
+                </TechButton>
               </Link>
-            </GamingCard>
+            </TechCard>
 
             {/* Gaming Mode */}
-            <GamingCard variant="magenta" className="p-8">
+            <TechCard variant="magenta" className="p-8">
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-[#D946EF]/20 flex items-center justify-center">
                   <ChartIcon className="w-6 h-6 text-[#D946EF]" />
@@ -420,11 +420,11 @@ export default async function LandingPage({ params }: LandingPageProps) {
                 </li>
               </ul>
               <Link href={`/${locale}/register`}>
-                <GamingButton variant="secondary" className="w-full">
+                <TechButton variant="secondary" className="w-full">
                   {t('modes.gaming.cta')}
-                </GamingButton>
+                </TechButton>
               </Link>
-            </GamingCard>
+            </TechCard>
           </div>
         </div>
       </section>
@@ -439,9 +439,9 @@ export default async function LandingPage({ params }: LandingPageProps) {
             {t('cta.subtitle')}
           </p>
           <Link href={`/${locale}/register`}>
-            <GamingButton variant="primary" size="lg">
+            <TechButton variant="primary" size="lg">
               {t('cta.button')}
-            </GamingButton>
+            </TechButton>
           </Link>
         </div>
       </section>

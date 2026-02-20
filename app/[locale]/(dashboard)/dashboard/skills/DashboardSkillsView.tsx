@@ -1,24 +1,25 @@
 'use client';
 
 /**
- * DashboardSkillsView Component
+ * DashboardSkillsView Component - Cyberpunk V2
  *
- * Client component for the dashboard skills page with editing capabilities.
+ * Client component for the dashboard skills page with cyberpunk hexagonal design.
  */
 
 import { useCallback, useTransition, useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { Plus, ExternalLink, Sparkles, Trophy, Zap, Grid3X3 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
-import { Button } from '@/features/shadcn/ui/button';
-import { 
+import { HexBadge, DashboardNav } from '@/features/tech';
+import {
   SkillTreeView,
-  ManualSkillModal 
+  ManualSkillModal
 } from '@/features/skills/components';
 import type { UserSkillWithDetails, SkillCategory } from '@/features/skills/types/skill';
+import type { PortfolioMode } from '@/features/portfolio/types/portfolio';
 
 // =============================================================================
 // Types
@@ -36,55 +37,11 @@ interface DashboardSkillsViewProps {
   user: {
     id: string;
     name: string;
+    email: string;
     username: string | null;
+    image: string | null;
+    portfolioMode: PortfolioMode;
   };
-}
-
-// =============================================================================
-// Stats Card Component
-// =============================================================================
-
-interface StatsCardProps {
-  icon: React.ReactNode;
-  label: string;
-  value: number | string;
-  color: string;
-  delay?: number;
-}
-
-function StatsCard({ icon, label, value, color, delay = 0 }: StatsCardProps) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay }}
-      className={cn(
-        'relative rounded-xl border border-[#1E293B] bg-[#0D1421]/80 p-4',
-        'overflow-hidden'
-      )}
-    >
-      {/* Background glow */}
-      <div
-        className="absolute inset-0 opacity-10"
-        style={{
-          background: `radial-gradient(circle at top right, ${color}, transparent 70%)`,
-        }}
-      />
-
-      <div className="relative flex items-center gap-3">
-        <div
-          className="flex h-10 w-10 items-center justify-center rounded-lg"
-          style={{ backgroundColor: `${color}20` }}
-        >
-          <span style={{ color }}>{icon}</span>
-        </div>
-        <div>
-          <p className="text-2xl font-bold text-white">{value}</p>
-          <p className="text-sm text-slate-400">{label}</p>
-        </div>
-      </div>
-    </motion.div>
-  );
 }
 
 // =============================================================================
@@ -97,6 +54,8 @@ export function DashboardSkillsView({
   stats,
   user,
 }: DashboardSkillsViewProps) {
+  const params = useParams();
+  const locale = params.locale as string;
   const t = useTranslations('skills');
   const tCommon = useTranslations('common');
   const [isPending, startTransition] = useTransition();
@@ -119,132 +78,126 @@ export function DashboardSkillsView({
   }, [handleCloseAddModal]);
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A]">
-      {/* Header */}
-      <header className="border-b border-[#1E293B] bg-[#0D1421]">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              {/* Icon */}
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#00D4FF] to-[#8B5CF6]">
-                <Sparkles className="h-5 w-5 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-white">{t('pageTitle')}</h1>
-                <p className="text-slate-400">{t('pageSubtitle')}</p>
-              </div>
-            </div>
+    <div className="min-h-screen bg-[#0A0E1A] font-mono">
+      {/* Main Navigation */}
+      <DashboardNav locale={locale} user={user} />
 
-            <div className="flex items-center gap-3">
-              {/* Public link */}
-              {user.username && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="border-slate-700 text-slate-300 hover:bg-slate-800"
-                  asChild
-                >
-                  <Link
-                    href={`/${user.username}/skills`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    {t('viewPublic')}
-                  </Link>
-                </Button>
-              )}
-            </div>
+      {/* Page Header */}
+      <div className="px-6 py-6 flex items-center justify-between border-b border-[hsl(174,100%,50%,0.1)]">
+        <div>
+          <h1 className="text-2xl font-mono font-bold text-foreground">My Skill Tree</h1>
+          <p className="text-xs font-mono text-muted-foreground mt-1">Manage your skills and expertise</p>
+        </div>
+        <div className="flex items-center gap-3">
+          {user.username && (
+            <a
+              href={`/${user.username}/skills`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              View Public
+            </a>
+          )}
+          <button
+            onClick={handleAddSkill}
+            className="flex items-center gap-1.5 bg-[hsl(174,100%,50%)] text-[hsl(200,25%,8%)] px-3 py-1.5 text-xs font-mono font-bold hover:shadow-[0_0_12px_hsl(174_100%_50%_/_0.4)] transition-shadow"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            Add Skill
+          </button>
+        </div>
+      </div>
+
+      {/* Stats */}
+      <div className="px-6 py-4 grid grid-cols-2 lg:grid-cols-4 gap-3 border-b border-[hsl(174,100%,50%,0.1)]">
+        <div className="border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-3 flex items-center gap-3">
+          <HexBadge color="cyan" size="sm" filled>
+            <Sparkles className="w-4 h-4" />
+          </HexBadge>
+          <div>
+            <div className="text-xl font-mono font-bold text-[hsl(174,100%,50%)]">{stats.totalSkills}</div>
+            <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">TOTAL SKILLS</div>
           </div>
         </div>
-      </header>
-
-      {/* Stats Section */}
-      <section className="border-b border-[#1E293B] bg-[#0D1421]/50">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <StatsCard
-              icon={<Sparkles className="h-5 w-5" />}
-              label={t('stats.totalSkills')}
-              value={stats.totalSkills}
-              color="#00D4FF"
-              delay={0}
-            />
-            <StatsCard
-              icon={<Zap className="h-5 w-5" />}
-              label={t('stats.totalXP')}
-              value={stats.totalXP.toLocaleString()}
-              color="#A855F7"
-              delay={0.1}
-            />
-            <StatsCard
-              icon={<Trophy className="h-5 w-5" />}
-              label={t('stats.masterSkills')}
-              value={stats.masterSkills}
-              color="#EAB308"
-              delay={0.2}
-            />
-            <StatsCard
-              icon={<Grid3X3 className="h-5 w-5" />}
-              label={t('stats.categories')}
-              value={stats.categoriesUsed}
-              color="#22C55E"
-              delay={0.3}
-            />
+        <div className="border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-3 flex items-center gap-3">
+          <HexBadge color="yellow" size="sm" filled>
+            <Zap className="w-4 h-4" />
+          </HexBadge>
+          <div>
+            <div className="text-xl font-mono font-bold text-[hsl(60,100%,50%)]">{stats.totalXP.toLocaleString()}</div>
+            <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">TOTAL XP</div>
           </div>
+        </div>
+        <div className="border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-3 flex items-center gap-3">
+          <HexBadge color="magenta" size="sm" filled>
+            <Trophy className="w-4 h-4" />
+          </HexBadge>
+          <div>
+            <div className="text-xl font-mono font-bold text-[hsl(330,100%,65%)]">{stats.masterSkills}</div>
+            <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">MASTERED</div>
+          </div>
+        </div>
+        <div className="border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-3 flex items-center gap-3">
+          <HexBadge color="green" size="sm" filled>
+            <Grid3X3 className="w-4 h-4" />
+          </HexBadge>
+          <div>
+            <div className="text-xl font-mono font-bold text-[hsl(150,100%,45%)]">{stats.categoriesUsed}</div>
+            <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">CATEGORIES</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Legend Row */}
+      <div className="px-6 py-2 flex items-center gap-4 border-b border-[hsl(174,100%,50%,0.1)]">
+        <button onClick={handleAddSkill} className="flex items-center gap-1 text-[10px] font-mono text-[hsl(174,100%,50%)] hover:underline">
+          <Plus className="w-3 h-3" /> Add Skill
+        </button>
+        <div className="flex items-center gap-3 ml-auto">
+          {/* Category color dots */}
+          <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
+            <span className="w-2 h-2 rounded-full bg-[hsl(330,100%,65%)]" /> Core
+          </span>
+          <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
+            <span className="w-2 h-2 rounded-full bg-[hsl(150,100%,45%)]" /> Backend
+          </span>
+          <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
+            <span className="w-2 h-2 rounded-full bg-[hsl(174,100%,50%)]" /> Frontend
+          </span>
+          <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
+            <span className="w-2 h-2 rounded-full bg-[hsl(60,100%,50%)]" /> Tools
+          </span>
+          <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
+            <span className="w-2 h-2 rounded-full bg-[hsl(280,100%,70%)]" /> Soft Skills
+          </span>
+        </div>
+        <span className="text-[9px] font-mono text-muted-foreground">
+          {skills.length} skills &middot; {stats.totalXP.toLocaleString()} XP
+        </span>
+      </div>
+
+      {/* Main Content - Skill Tree View */}
+      <section className="px-4 py-6">
+        <div style={{ height: 'calc(100vh - 300px)', minHeight: '500px' }}>
+          <SkillTreeView
+            userSkills={skills}
+            categories={categories}
+            isEditable={true}
+            onAddSkill={handleAddSkill}
+            className="w-full h-full"
+          />
         </div>
       </section>
 
-      {/* Main content - Skill Tree View */}
-      <main className="relative">
-        {skills.length === 0 ? (
-          // Empty state
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex flex-col items-center justify-center py-20 px-4"
-          >
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#1E293B] mb-6">
-              <Sparkles className="h-10 w-10 text-slate-500" />
-            </div>
-            <h2 className="text-xl font-semibold text-white mb-2">
-              {t('emptyState.title')}
-            </h2>
-            <p className="text-slate-400 text-center max-w-md mb-6">
-              {t('emptyState.description')}
-            </p>
-            <p className="text-sm text-slate-500 text-center max-w-md mb-6">
-              {t('emptyState.hint')}
-            </p>
-            <Button
-              onClick={handleAddSkill}
-              className="bg-[#00D4FF] hover:bg-[#00D4FF]/90 text-white"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Your First Skill
-            </Button>
-          </motion.div>
-        ) : (
-          // Skill Tree View
-          <div className="h-[calc(100vh-280px)] min-h-[500px]">
-            <SkillTreeView
-              userSkills={skills}
-              categories={categories}
-              isEditable={true}
-              onAddSkill={handleAddSkill}
-              className="w-full h-full"
-            />
-          </div>
-        )}
-
-        {/* Add Skill Modal */}
-        <ManualSkillModal
-          isOpen={isAddModalOpen}
-          onClose={handleCloseAddModal}
-          onSuccess={handleAddSuccess}
-          categories={categories}
-        />
-      </main>
+      {/* Modals */}
+      <ManualSkillModal
+        isOpen={isAddModalOpen}
+        onClose={handleCloseAddModal}
+        onSuccess={handleAddSuccess}
+        categories={categories}
+      />
     </div>
   );
 }

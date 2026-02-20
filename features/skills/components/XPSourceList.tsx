@@ -96,7 +96,7 @@ function SourceItem({
       onClick={isClickable ? handleClick : undefined}
       onKeyDown={isClickable ? (e) => e.key === 'Enter' && handleClick() : undefined}
       className={cn(
-        'flex items-start gap-3 p-3 rounded-lg bg-[#1E293B]/50 border border-[#334155]/50',
+        'flex items-start gap-3 p-3 rounded-sm bg-[#1E293B]/50 border border-[#334155]/50',
         'transition-all duration-200',
         isClickable && 'cursor-pointer hover:bg-[#1E293B] hover:border-[#00D4FF]/30'
       )}
@@ -104,7 +104,7 @@ function SourceItem({
       {/* Icon */}
       <div
         className={cn(
-          'flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center',
+          'flex-shrink-0 w-8 h-8 rounded-sm flex items-center justify-center',
           source.sourceType === 'EXPERIENCE'
             ? 'bg-[#00D4FF]/20 text-[#00D4FF]'
             : 'bg-[#A855F7]/20 text-[#A855F7]'

@@ -47,11 +47,11 @@ vi.mock('next-intl', () => ({
         'status.ARCHIVED': 'Archived',
       },
       portfolio: {
-        'sections.projects.professional.title': 'Projects',
-        'sections.projects.professional.emptyState': 'No projects yet',
-        'sections.projects.professional.featured': 'Featured',
-        'sections.projects.gaming.title': 'MISSIONS',
-        'sections.projects.gaming.emptyState': 'NO MISSIONS DEPLOYED',
+        'sections.projects.classic.title': 'Projects',
+        'sections.projects.classic.emptyState': 'No projects yet',
+        'sections.projects.classic.featured': 'Featured',
+        'sections.projects.tech.title': 'PROJECTS',
+        'sections.projects.tech.emptyState': 'NO PROJECTS DEPLOYED',
         'ui.featured': 'Featured',
         'ui.technologies': 'Technologies',
         'ui.links': 'Links',
@@ -120,8 +120,11 @@ const mockUser = {
   email: 'jane@example.com',
   image: null,
   bio: null,
-  portfolioMode: 'professional' as const,
+  portfolioMode: 'classic' as const,
   locale: 'en',
+  sectionOrder: [],
+  contactLinks: {},
+  sectionVisibility: {},
 };
 
 const mockProject = {
@@ -172,9 +175,9 @@ describe('Project i18n Integration (TG8)', () => {
     expect(screen.getByText('Create Project')).toBeInTheDocument();
   });
 
-  it('ProfessionalProjects renders translated section title', async () => {
-    const { ProfessionalProjects } = await import(
-      '../../portfolio/components/professional/ProfessionalProjects'
+  it('ClassicProjects renders translated section title', async () => {
+    const { ClassicProjects } = await import(
+      '../../portfolio/components/classic/ClassicProjects'
     );
 
     const mockData = {
@@ -184,7 +187,7 @@ describe('Project i18n Integration (TG8)', () => {
       projects: [mockProject] as any,
     };
 
-    render(<ProfessionalProjects data={mockData} />);
+    render(<ClassicProjects data={mockData} />);
 
     // Section title should display English translation
     expect(screen.getByText('Projects')).toBeInTheDocument();

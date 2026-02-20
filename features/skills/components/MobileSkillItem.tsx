@@ -12,7 +12,7 @@ import { memo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Briefcase, BookOpen, ChevronRight, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { LevelBadge } from '@/features/gaming';
+import { LevelBadge } from '@/features/tech';
 import type { MobileSkillItemProps } from '../types/skill';
 import { SKILL_LEVEL_NAMES, LEVEL_THRESHOLDS_ARRAY } from '../constants/xp';
 
@@ -63,7 +63,7 @@ function MobileSkillItemComponent({
   };
 
   return (
-    <div className={cn('rounded-lg overflow-hidden', className)}>
+    <div className={cn('rounded-sm overflow-hidden', className)}>
       {/* Main skill row */}
       <button
         type="button"
@@ -80,7 +80,7 @@ function MobileSkillItemComponent({
       >
         {/* Skill Letter Badge */}
         <div
-          className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-lg font-bold text-white"
+          className="flex-shrink-0 w-10 h-10 rounded-sm flex items-center justify-center text-lg font-bold text-white"
           style={{
             backgroundColor: userSkill.skill?.category?.color ?? '#64748B',
             boxShadow: `0 0 10px ${userSkill.skill?.category?.color ?? '#64748B'}40`,
@@ -196,7 +196,7 @@ function MobileSkillItemComponent({
                     {linkedExperiences.map((exp) => (
                       <div
                         key={exp.id}
-                        className="flex items-center justify-between p-2 rounded-lg bg-[#0D1421]/50"
+                        className="flex items-center justify-between p-2 rounded-sm bg-[#0D1421]/50"
                       >
                         <div className="flex-1 min-w-0">
                           <p className="text-sm text-white truncate">

@@ -53,15 +53,15 @@
       "noAccount": "Don't have an account?",
       "createAccount": "Create an account",
       "forgotPassword": "Forgot your password?",
-      "gaming": {
-        "heroTitle": "START YOUR ADVENTURE",
-        "heroSubtitle": "Create your gamified portfolio and stand out from the crowd of candidates.",
+      "tech": {
+        "heroTitle": "INITIALIZE YOUR PROFILE",
+        "heroSubtitle": "Create your tech portfolio and stand out from the crowd of candidates.",
         "feature1": "Interactive Timeline",
         "feature2": "Achievement System",
         "feature3": "AI-Powered CV",
         "tabLogin": "SIGN IN",
         "tabRegister": "SIGN UP",
-        "submitButton": "START GAME",
+        "submitButton": "LAUNCH SESSION",
         "orContinueWith": "OR CONTINUE WITH"
       },
       "errors": {
@@ -91,15 +91,15 @@
       "termsText": "By signing up, you agree to our",
       "termsLink": "Terms of Service",
       "privacyLink": "Privacy Policy",
-      "gaming": {
-        "heroTitle": "BEGIN YOUR QUEST",
-        "heroSubtitle": "Join thousands of professionals telling their story with a gamified portfolio.",
+      "tech": {
+        "heroTitle": "BEGIN YOUR MISSION",
+        "heroSubtitle": "Join thousands of professionals telling their story with a tech-forward portfolio.",
         "feature1": "Interactive Timeline",
         "feature2": "Achievement System",
         "feature3": "AI-Powered CV",
         "tabLogin": "SIGN IN",
         "tabRegister": "SIGN UP",
-        "submitButton": "CREATE CHARACTER",
+        "submitButton": "CREATE PROFILE",
         "orContinueWith": "OR CONTINUE WITH"
       },
       "errors": {
@@ -130,12 +130,12 @@
     "welcome": "Welcome back, {name}!",
     "welcomeSubtitle": "Continue building your professional adventure",
     "modeToggle": {
-      "professional": "Professional",
-      "gaming": "Gaming",
+      "classic": "Classic",
+      "tech": "Tech",
       "label": "Portfolio Mode",
       "success": "Portfolio mode updated successfully"
     },
-    "gaming": {
+    "tech": {
       "levelProgress": "PROGRESS TO LEVEL {level}",
       "currentLevel": "Current level",
       "xpRemaining": "{xp} XP remaining - {percent}% completed - Keep it up!",
@@ -289,74 +289,74 @@
       "ai": "AI"
     },
     "modes": {
-      "professional": "Professional",
-      "gaming": "Gaming"
+      "classic": "Classic",
+      "tech": "Tech"
     },
     "sections": {
       "hero": {
-        "professional": {
+        "classic": {
           "title": "Profile"
         },
-        "gaming": {
-          "title": "PLAYER PROFILE"
+        "tech": {
+          "title": "TECH PROFILE"
         }
       },
       "about": {
-        "professional": {
+        "classic": {
           "title": "About",
           "emptyState": "No summary provided"
         },
-        "gaming": {
+        "tech": {
           "title": "BIOGRAPHY",
           "emptyState": "BIOGRAPHY DATA NOT FOUND"
         }
       },
       "timeline": {
-        "professional": {
+        "classic": {
           "title": "Experience",
           "emptyState": "No experience added yet"
         },
-        "gaming": {
-          "title": "QUEST LOG",
-          "emptyState": "NO MISSIONS LOGGED"
+        "tech": {
+          "title": "WORK LOG",
+          "emptyState": "NO EXPERIENCE LOGGED"
         }
       },
       "skills": {
-        "professional": {
+        "classic": {
           "title": "Skills",
           "emptyState": "No skills listed yet"
         },
-        "gaming": {
+        "tech": {
           "title": "SKILL TREE",
           "emptyState": "NO SKILLS UNLOCKED"
         }
       },
       "projects": {
-        "professional": {
+        "classic": {
           "title": "Projects",
           "emptyState": "No projects yet",
           "featured": "Featured"
         },
-        "gaming": {
-          "title": "MISSIONS",
-          "emptyState": "NO MISSIONS DEPLOYED"
+        "tech": {
+          "title": "PROJECTS",
+          "emptyState": "NO PROJECTS DEPLOYED"
         }
       },
       "contact": {
-        "professional": {
+        "classic": {
           "title": "Contact"
         },
-        "gaming": {
+        "tech": {
           "title": "COMM LINK"
         }
       },
       "ai": {
-        "professional": {
+        "classic": {
           "title": "AI-Powered Insights",
           "description": "Intelligent analysis and recommendations powered by AI to enhance your professional presence.",
           "comingSoon": "Coming Soon"
         },
-        "gaming": {
+        "tech": {
           "title": "AI CORE",
           "description": "Advanced neural interface for career intelligence and tactical analysis.",
           "status": "SYSTEM INITIALIZING..."
@@ -529,23 +529,23 @@
       "title": "Two Modes",
       "headline": "Your portfolio, your style",
       "subheadline": "Choose how you want to present yourself to the world",
-      "professional": {
-        "title": "Professional Mode",
+      "classic": {
+        "title": "Classic Mode",
         "subtitle": "For recruiters and companies",
         "feature1": "AI-assisted traditional CV",
         "feature2": "Clean chronological timeline",
         "feature3": "Export to professional PDF",
         "feature4": "LinkedIn integration",
-        "cta": "Choose Professional"
+        "cta": "Choose Classic Mode"
       },
-      "gaming": {
-        "title": "Gaming Mode",
-        "subtitle": "For creatives and gamers",
-        "feature1": "Timeline as RPG adventure",
+      "tech": {
+        "title": "Tech Mode",
+        "subtitle": "For developers and tech professionals",
+        "feature1": "Visual career timeline",
         "feature2": "Visual skill tree",
         "feature3": "Achievements and XP system",
-        "feature4": "Customizable avatar",
-        "cta": "Choose Gaming"
+        "feature4": "Custom tech portfolio design",
+        "cta": "Choose Tech Mode"
       }
     },
     "cta": {
@@ -557,5 +557,14 @@
   "languageSwitcher": {
     "label": "Select language",
     "current": "Current language: {language}"
+  },
+  "Seo": {
+    "titleTemplate": "{name} - {role} | Portfoland",
+    "descriptionTemplate": "Discover the professional journey of {name} on Portfoland. Explore their skills, projects, and experiences in an interactive portfolio.",
+    "defaultRole": "Professional",
+    "modes": {
+      "tech": "Tech Profile",
+      "classic": "Professional Profile"
+    }
   }
 }

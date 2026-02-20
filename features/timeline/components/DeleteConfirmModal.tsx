@@ -62,8 +62,8 @@ function DeleteConfirmModalComponent({
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
             className={cn(
-              'relative w-full max-w-sm',
-              'bg-[#0D1421] border border-[#1E293B] rounded-lg shadow-2xl',
+              'relative w-full max-w-sm font-mono',
+              'bg-[hsl(200,30%,8%)] border border-[hsl(174,100%,50%,0.15)] rounded-sm shadow-2xl',
               'overflow-hidden'
             )}
           >
@@ -73,7 +73,7 @@ function DeleteConfirmModalComponent({
             {/* Content */}
             <div className="p-6 text-center">
               {/* Warning icon */}
-              <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-full bg-red-500/20">
+              <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-sm bg-red-500/20">
                 <AlertTriangle className="w-6 h-6 text-red-400" />
               </div>
 

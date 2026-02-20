@@ -8,6 +8,7 @@
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 import { getExperiencesByUserId } from '@/features/timeline/data';
 import { DashboardTimelineView } from './DashboardTimelineView';
 
@@ -21,6 +22,19 @@ export default async function DashboardTimelinePage() {
     redirect('/login');
   }
 
+  // Fetch user with image, username, and portfolioMode
+  const dbUser = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      username: true,
+      image: true,
+      portfolioMode: true,
+    },
+  });
+
   // Fetch user's timeline data
   const timelineData = await getExperiencesByUserId(session.user.id);
 
@@ -29,8 +43,11 @@ export default async function DashboardTimelinePage() {
       data={timelineData}
       user={{
         id: session.user.id,
-        name: session.user.name,
-        username: (session.user as { username?: string }).username || null,
+        name: dbUser?.name ?? session.user.name ?? 'User',
+        email: dbUser?.email ?? session.user.email,
+        username: dbUser?.username || null,
+        image: dbUser?.image ?? session.user.image ?? null,
+        portfolioMode: (dbUser?.portfolioMode ?? 'classic') as 'classic' | 'tech',
       }}
     />
   );

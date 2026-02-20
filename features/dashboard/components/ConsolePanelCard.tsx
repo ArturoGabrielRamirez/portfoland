@@ -8,7 +8,7 @@
  */
 
 import { useState } from 'react'
-import { GamingCard, GamingBadge } from '@/features/gaming'
+import { TechCard, TechBadge } from '@/features/tech'
 
 interface ConsolePanelCardProps {
   title: string
@@ -82,7 +82,7 @@ export function ConsolePanelCard({
       
       {/* Front Side */}
       <div className="absolute inset-0 backface-hidden" style={{ backfaceVisibility: 'hidden' }}>
-        <GamingCard
+        <TechCard
           variant="default"
           className={`relative h-full p-5 transition-all border ${styles.border} ${styles.glow} overflow-hidden`}
         >
@@ -116,9 +116,9 @@ export function ConsolePanelCard({
           {/* Status Badge with Glow */}
           <div className="absolute top-3 right-3">
             <div className={`relative ${styles.iconBg} rounded-full p-1`}>
-              <GamingBadge color={styles.badge} className="text-xs">
+              <TechBadge color={styles.badge} className="text-xs">
                 {version}
-              </GamingBadge>
+              </TechBadge>
               <div className={`absolute inset-0 ${styles.iconColor} opacity-30 blur-md animate-pulse`} />
             </div>
           </div>
@@ -148,7 +148,7 @@ export function ConsolePanelCard({
             </svg>
             <span className="relative z-10">CONFIG</span>
           </button>
-        </GamingCard>
+        </TechCard>
       </div>
 
       {/* Back Side */}
@@ -157,7 +157,7 @@ export function ConsolePanelCard({
              backfaceVisibility: 'hidden',
              transform: 'rotateY(180deg)'
            }}>
-        <GamingCard
+        <TechCard
           variant="default"
           className={`relative h-full p-5 border ${styles.border} ${styles.glow} overflow-hidden`}
         >
@@ -200,7 +200,7 @@ export function ConsolePanelCard({
               )}
             </div>
           </div>
-        </GamingCard>
+        </TechCard>
       </div>
 
       {/* CSS Animations */}

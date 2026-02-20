@@ -8,6 +8,10 @@
 import type { PublicTimelineData } from '@/features/timeline/types/experience';
 import type { PublicSkillsData } from '@/features/skills/data/getPublicSkills.data';
 import type { Project } from '@/features/projects/types/project';
+import type { ServiceModel } from '@/features/services/types/service';
+import type { TestimonialModel } from '@/features/testimonials/types/testimonial';
+import type { GalleryItemModel } from '@/features/gallery/types/galleryItem';
+import type { PortfolioSettingsData } from '@/features/portfolio-settings/types/portfolioSettings';
 
 // =============================================================================
 // Core Types
@@ -41,13 +45,19 @@ export interface PortfolioUser {
 export type ProjectData = Project;
 
 /**
- * Aggregated portfolio data for a public portfolio page
+ * Aggregated portfolio data for a public portfolio page.
+ * Includes all sections for both Tech Mode and Classic Mode.
  */
 export interface PortfolioData {
   user: PortfolioUser;
   experiences: PublicTimelineData | null;
   skills: PublicSkillsData | null;
   projects: ProjectData[];
+  // Classic Mode fields
+  services: ServiceModel[];
+  testimonials: TestimonialModel[];
+  gallery: GalleryItemModel[];
+  settings: PortfolioSettingsData | null;
 }
 
 // =============================================================================

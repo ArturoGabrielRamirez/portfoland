@@ -29,7 +29,8 @@
       "Bash(npx tsc:*)",
       "Bash(npx --yes tsc:*)",
       "Bash(npx vitest:*)",
-      "Bash(tr:*)"
+      "Bash(tr:*)",
+      "Bash(npx jest --testPathPattern=\"features/\\(services|testimonials|gallery|portfolio-settings|portfolio\\)\" --no-coverage)"
     ]
   }
 }

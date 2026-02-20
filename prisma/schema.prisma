@@ -38,13 +38,17 @@ model User {
   createdAt         DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  sessions        Session[]
-  accounts        Account[]
-  experiences     Experience[]
-  userSkills      UserSkill[]
-  skillCategories SkillCategory[]
-  projects        Project[]
-  conversations   Conversation[]
+  sessions          Session[]
+  accounts          Account[]
+  experiences       Experience[]
+  userSkills        UserSkill[]
+  skillCategories   SkillCategory[]
+  projects          Project[]
+  conversations     Conversation[]
+  services          Service[]
+  testimonials      Testimonial[]
+  galleryItems      GalleryItem[]
+  portfolioSettings PortfolioSettings?
 
   @@map("users")
 }
@@ -279,4 +283,90 @@ model Message {
 
   @@index([conversationId])
   @@map("messages")
+}
+
+// =============================================================================
+// Classic Mode Feature Models
+// =============================================================================
+
+// PriceType enum for Service model pricing options
+enum PriceType {
+  FIXED
+  RANGE
+  STARTING_FROM
+  CONTACT
+}
+
+model Service {
+  id              String    @id @default(cuid()) @map("_id")
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title           String
+  description     String
+  priceType       PriceType
+  priceMin        Float?
+  priceMax        Float?
+  currency        String    @default("USD")
+  durationMinutes Int?
+  order           Int       @default(0)
+  published       Boolean   @default(true)
+  imageUrl        String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("services")
+}
+
+model Testimonial {
+  id          String   @id @default(cuid()) @map("_id")
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clientName  String
+  clientTitle String?
+  content     String
+  rating      Int
+  imageUrl    String?
+  source      String?
+  externalId  String?
+  order       Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@map("testimonials")
+}
+
+model GalleryItem {
+  id        String   @id @default(cuid()) @map("_id")
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  imageUrl  String
+  caption   String?
+  altText   String?
+  category  String?
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("gallery_items")
+}
+
+model PortfolioSettings {
+  id            String   @id @default(cuid()) @map("_id")
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  theme         String   @default("default")
+  layoutVariant String   @default("bento")
+  accentColor   String?
+  fontFamily    String?
+  heroStyle     String   @default("standard")
+  showBranding  Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("portfolio_settings")
 }

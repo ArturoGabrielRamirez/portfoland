@@ -64,30 +64,30 @@ This is a **DATA LAYER ONLY** spec. No UI components, no pages. The work covers 
 #### Task Group 2: Services Feature — Types, Schemas, Data, Services, Actions
 **Dependencies:** Task Group 1 (Prisma types must be generated)
 
-- [ ] 2.0 Complete the `features/services/` feature directory
-  - [ ] 2.1 Write 4-6 focused tests for Services feature
+- [x] 2.0 Complete the `features/services/` feature directory
+  - [x] 2.1 Write 4-6 focused tests for Services feature
     - Test create service with valid data
     - Test create service with conditional price validation (RANGE requires priceMax > priceMin)
     - Test update service with ownership check (unauthorized user rejected)
     - Test delete service with ownership check
     - Test getPublicServices returns only published items ordered by `order`
     - Test MAX_SERVICES_PER_USER limit enforcement
-  - [ ] 2.2 Create `features/services/types/service.ts`
+  - [x] 2.2 Create `features/services/types/service.ts`
     - Re-export `Service as ServiceModel` and `PriceType` from `@/app/generated/prisma`
     - Define `CreateServiceInput` interface (Omit id, userId, createdAt, updatedAt from ServiceModel)
     - Define `UpdateServiceInput` interface (Partial of CreateServiceInput + required id)
     - Follow pattern from `features/projects/types/project.ts`
-  - [ ] 2.3 Create `features/services/schemas/service.schema.ts`
+  - [x] 2.3 Create `features/services/schemas/service.schema.ts`
     - `createServiceSchema`: title required max 100, description required max 2000, priceType required oneOf [FIXED, RANGE, STARTING_FROM, CONTACT], priceMin conditional (required + >= 0 when priceType != CONTACT), priceMax conditional (required + > priceMin when priceType == RANGE), currency required 3-char uppercase, durationMinutes optional > 0, order integer >= 0, published optional boolean, imageUrl optional string
     - `updateServiceSchema`: same fields all optional + id required string
     - `deleteServiceSchema`: id required string
     - Export inferred types via `yup.InferType`
-  - [ ] 2.4 Create `features/services/constants/messages.ts`
+  - [x] 2.4 Create `features/services/constants/messages.ts`
     - Export `SERVICE_MESSAGES` with keys: CREATE_SUCCESS, UPDATE_SUCCESS, DELETE_SUCCESS, NOT_FOUND, UNAUTHORIZED
     - Follow pattern from `features/projects/constants/messages.ts`
-  - [ ] 2.5 Create `features/services/constants/limits.ts`
+  - [x] 2.5 Create `features/services/constants/limits.ts`
     - Export `MAX_SERVICES_PER_USER = 20`
-  - [ ] 2.6 Create data layer files in `features/services/data/`
+  - [x] 2.6 Create data layer files in `features/services/data/`
     - `createService.data.ts` -- `createServiceData(input): Promise<ServiceModel>`
     - `updateService.data.ts` -- `updateServiceData(input): Promise<ServiceModel>`
     - `deleteService.data.ts` -- `deleteServiceData(id): Promise<ServiceModel>`
@@ -96,21 +96,21 @@ This is a **DATA LAYER ONLY** spec. No UI components, no pages. The work covers 
     - `getPublicServices.data.ts` -- `getPublicServicesData(userId): Promise<ServiceModel[]>` (filter `published: true`, order by `order asc`)
     - `index.ts` barrel re-exporting all data functions
     - Import `prisma` from `@/lib/prisma`
-  - [ ] 2.7 Create `features/services/services/service.service.ts`
+  - [x] 2.7 Create `features/services/services/service.service.ts`
     - `createServiceService(input)` -- check MAX_SERVICES_PER_USER limit, create, call `invalidateNarrativeCache(userId).catch(() => {})`
     - `updateServiceService(input)` -- ownership check via getServiceByIdData, throw NOT_FOUND / UNAUTHORIZED, update, invalidate cache
     - `deleteServiceService(id, userId)` -- ownership check, delete, invalidate cache
     - `getServicesService(userId)` -- delegate to getServicesByUserIdData
     - Follow pattern from `features/projects/services/project.service.ts`
-  - [ ] 2.8 Create `features/services/actions/serviceActions.ts`
+  - [x] 2.8 Create `features/services/actions/serviceActions.ts`
     - `"use server"` directive
     - `createServiceAction` -- validate with createServiceSchema, get userId from session, call createServiceService, `revalidatePath`
     - `updateServiceAction` -- validate with updateServiceSchema, ownership via service layer, revalidatePath
     - `deleteServiceAction` -- validate with deleteServiceSchema, call deleteServiceService, revalidatePath
     - All actions use `actionWrapper` from `@/features/core`
-  - [ ] 2.9 Create `features/services/index.ts` barrel file
+  - [x] 2.9 Create `features/services/index.ts` barrel file
     - Re-export types, actions, and public data functions
-  - [ ] 2.10 Ensure Services feature tests pass
+  - [x] 2.10 Ensure Services feature tests pass
     - Run ONLY the 4-6 tests written in 2.1
     - Do NOT run the entire test suite
 

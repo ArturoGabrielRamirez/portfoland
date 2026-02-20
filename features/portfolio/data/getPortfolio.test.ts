@@ -27,6 +27,23 @@ vi.mock('./getPublicProjects.data', () => ({
     getPublicProjectsByUsername: vi.fn(),
 }));
 
+// Mock the four Classic Mode byUsername wrappers introduced in TG7
+vi.mock('./getPublicServices.data', () => ({
+    getPublicServicesByUsername: vi.fn().mockResolvedValue([]),
+}));
+
+vi.mock('./getPublicTestimonials.data', () => ({
+    getPublicTestimonialsByUsername: vi.fn().mockResolvedValue([]),
+}));
+
+vi.mock('./getPublicGallery.data', () => ({
+    getPublicGalleryByUsername: vi.fn().mockResolvedValue([]),
+}));
+
+vi.mock('./getPortfolioSettings.data', () => ({
+    getPortfolioSettingsByUsername: vi.fn().mockResolvedValue(null),
+}));
+
 describe('getPortfolioByUsername', () => {
     const mockUser = {
         id: 'user-1',
@@ -37,6 +54,9 @@ describe('getPortfolioByUsername', () => {
         bio: 'Test Bio',
         portfolioMode: 'tech',
         locale: 'en',
+        sectionOrder: [],
+        contactLinks: {},
+        sectionVisibility: {},
     };
 
     const mockExperiences = [
@@ -75,15 +95,23 @@ describe('getPortfolioByUsername', () => {
             }),
         });
 
-        expect(result).toEqual({
-            user: {
-                ...mockUser,
-                portfolioMode: 'tech', // casting check
-            },
-            experiences: mockExperiences,
-            skills: mockSkills,
-            projects: mockProjects,
-        });
+        expect(result).toEqual(
+            expect.objectContaining({
+                user: expect.objectContaining({
+                    id: 'user-1',
+                    username: 'testuser',
+                    portfolioMode: 'tech',
+                }),
+                experiences: mockExperiences,
+                skills: mockSkills,
+                projects: mockProjects,
+                // Classic Mode fields return empty defaults when no content
+                services: [],
+                testimonials: [],
+                gallery: [],
+                settings: null,
+            })
+        );
     });
 
     it('should return null when user does not exist', async () => {

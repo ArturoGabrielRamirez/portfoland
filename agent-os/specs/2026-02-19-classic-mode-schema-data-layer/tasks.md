@@ -319,12 +319,12 @@ This is a **DATA LAYER ONLY** spec. No UI components, no pages. The work covers 
 #### Task Group 7: Extend PortfolioData Type and Aggregation Query
 **Dependencies:** Task Groups 2, 3, 4, 5, 6 (all feature data layers and section updates)
 
-- [ ] 7.0 Complete portfolio data aggregation extensions
-  - [ ] 7.1 Write 2-4 focused tests for portfolio aggregation
+- [x] 7.0 Complete portfolio data aggregation extensions
+  - [x] 7.1 Write 2-4 focused tests for portfolio aggregation
     - Test getPortfolioByUsername returns services, testimonials, gallery, and settings fields
     - Test getPortfolioByUsername returns empty arrays for users with no Classic Mode content
     - Test byUsername wrapper functions resolve username to userId correctly
-  - [ ] 7.2 Update `features/portfolio/types/portfolio.ts`
+  - [x] 7.2 Update `features/portfolio/types/portfolio.ts`
     - Import `ServiceModel` from `@/features/services/types/service`
     - Import `TestimonialModel` from `@/features/testimonials/types/testimonial`
     - Import `GalleryItemModel` from `@/features/gallery/types/galleryItem`
@@ -334,12 +334,12 @@ This is a **DATA LAYER ONLY** spec. No UI components, no pages. The work covers 
       - `testimonials: TestimonialModel[]`
       - `gallery: GalleryItemModel[]`
       - `settings: PortfolioSettingsData | null`
-  - [ ] 7.3 Create byUsername wrapper functions in `features/portfolio/data/`
+  - [x] 7.3 Create byUsername wrapper functions in `features/portfolio/data/`
     - `getPublicServices.data.ts` -- `getPublicServicesByUsername(username)`: resolve username to userId via `prisma.user.findUnique`, call `getPublicServicesData(userId)` from services feature
     - `getPublicTestimonials.data.ts` -- `getPublicTestimonialsByUsername(username)`: same pattern, calls `getPublicTestimonialsData`
     - `getPublicGallery.data.ts` -- `getPublicGalleryByUsername(username)`: same pattern, calls `getPublicGalleryData` (return items array, not grouped)
     - `getPortfolioSettings.data.ts` -- `getPortfolioSettingsByUsername(username)`: same pattern, calls `getPortfolioSettingsData` (lazy creation via upsert)
-  - [ ] 7.4 Update `features/portfolio/data/getPortfolio.data.ts`
+  - [x] 7.4 Update `features/portfolio/data/getPortfolio.data.ts`
     - Import the four new byUsername wrapper functions
     - Add to the `Promise.all` array: `getPublicServicesByUsername(username)`, `getPublicTestimonialsByUsername(username)`, `getPublicGalleryByUsername(username)`, `getPortfolioSettingsByUsername(username)`
     - Destructure results and add to the returned `PortfolioData` object:
@@ -347,7 +347,7 @@ This is a **DATA LAYER ONLY** spec. No UI components, no pages. The work covers 
       - `testimonials: testimonials ?? []`
       - `gallery: gallery ?? []`
       - `settings: settings ?? null`
-  - [ ] 7.5 Ensure portfolio aggregation tests pass
+  - [x] 7.5 Ensure portfolio aggregation tests pass
     - Run ONLY the 2-4 tests written in 7.1
 
 **Acceptance Criteria:**

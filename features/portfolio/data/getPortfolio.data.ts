@@ -1,18 +1,26 @@
 /**
  * Get Portfolio by Username
  *
- * Aggregates user profile, experiences, skills, and projects
- * for the public portfolio page.
+ * Aggregates user profile, experiences, skills, projects, services,
+ * testimonials, gallery items, and portfolio settings for the public
+ * portfolio page. All data fetches run in parallel via Promise.all.
  */
 
 import { prisma } from '@/lib/prisma';
 import { getPublicTimelineByUsername } from '@/features/timeline/data/getPublicTimeline.data';
 import { getPublicSkillsByUsername } from '@/features/skills/data/getPublicSkills.data';
 import { getPublicProjectsByUsername } from './getPublicProjects.data';
+import { getPublicServicesByUsername } from './getPublicServices.data';
+import { getPublicTestimonialsByUsername } from './getPublicTestimonials.data';
+import { getPublicGalleryByUsername } from './getPublicGallery.data';
+import { getPortfolioSettingsByUsername } from './getPortfolioSettings.data';
 import type { PortfolioData, PortfolioMode } from '../types/portfolio';
 
 /**
  * Get aggregated portfolio data for a username
+ *
+ * Fetches all portfolio sections in parallel: experiences, skills, projects
+ * (Tech Mode) and services, testimonials, gallery, settings (Classic Mode).
  *
  * @param username - The user's username
  * @returns Aggregated portfolio data or null if user not found
@@ -42,11 +50,23 @@ export async function getPortfolioByUsername(
     return null;
   }
 
-  // Fetch experiences, skills, and projects in parallel
-  const [experiences, skills, projects] = await Promise.all([
+  // Fetch all portfolio data in parallel — Tech Mode and Classic Mode fields
+  const [
+    experiences,
+    skills,
+    projects,
+    services,
+    testimonials,
+    gallery,
+    settings,
+  ] = await Promise.all([
     getPublicTimelineByUsername(username),
     getPublicSkillsByUsername(username),
     getPublicProjectsByUsername(username),
+    getPublicServicesByUsername(username),
+    getPublicTestimonialsByUsername(username),
+    getPublicGalleryByUsername(username),
+    getPortfolioSettingsByUsername(username),
   ]);
 
   return {
@@ -66,5 +86,9 @@ export async function getPortfolioByUsername(
     experiences,
     skills,
     projects: projects ?? [],
+    services: services ?? [],
+    testimonials: testimonials ?? [],
+    gallery: gallery ?? [],
+    settings: settings ?? null,
   };
 }

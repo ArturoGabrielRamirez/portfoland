@@ -136,8 +136,8 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
       <DashboardNav locale={locale} user={userData} />
 
       <div className="p-6 max-w-7xl mx-auto">
-        {/* Welcome + CRT Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-4 mb-6">
+        {/* Welcome + CRT + AI Sidebar Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px_280px] gap-4 mb-6">
           <WelcomeCard
             userName={displayName}
             userInitial={initials}
@@ -155,10 +155,8 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
               xpToLevel: tWelcome('xpToLevel', { xp: userStats.maxXP - userStats.currentXP, level: userStats.level + 1 }),
             }}
           />
-          <div className="flex flex-col gap-4">
-            <CRTMonitor className="min-h-[220px]" />
-            <AIAssistantWidget className="lg:self-start" />
-          </div>
+          <CRTMonitor className="min-h-[220px]" />
+          <AIAssistantWidget />
         </div>
 
         {/* Stats Row - Hex styled */}

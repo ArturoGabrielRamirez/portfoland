@@ -137,7 +137,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
 
       <div className="p-6 max-w-7xl mx-auto">
         {/* Welcome + CRT + AI Sidebar Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px_280px] gap-4 mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_340px_280px] gap-4 mb-6">
           <WelcomeCard
             userName={displayName}
             userInitial={initials}
@@ -146,7 +146,6 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
             currentXP={userStats.currentXP}
             maxXP={userStats.maxXP}
             streakDays={userStats.streakDays}
-            quickActions={quickActions}
             translations={{
               welcomeTitle: tWelcomeMsg('welcome', { name: displayName }),
               welcomeSubtitle: tWelcomeMsg('welcomeSubtitle'),
@@ -157,6 +156,41 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
           />
           <CRTMonitor className="min-h-[220px]" />
           <AIAssistantWidget />
+        </div>
+
+        {/* Quick Actions Row */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+          {quickActions.map((action, i) => {
+            const icons: Record<string, React.ReactNode> = {
+              Briefcase: <Briefcase className="w-5 h-5" />,
+              Clock: <Clock className="w-5 h-5" />,
+              GitBranch: <GitBranch className="w-5 h-5" />,
+              User: <User className="w-5 h-5" />,
+            }
+            const Icon = icons[action.icon]
+            return (
+              <a
+                key={action.label}
+                href={action.href}
+                className="relative border group flex items-center gap-3 p-4 bg-[hsl(200,30%,8%)] transition-all hover:scale-[1.02]"
+                style={{ 
+                  borderColor: `${action.color}30`,
+                  boxShadow: `0 0 0 1px ${action.color}20`
+                }}
+              >
+                <div 
+                  className="w-10 h-10 flex items-center justify-center"
+                  style={{ 
+                    backgroundColor: `${action.color}15`,
+                    clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)"
+                  }}
+                >
+                  {Icon}
+                </div>
+                <span className="text-xs font-mono text-foreground">{action.label}</span>
+              </a>
+            )
+          })}
         </div>
 
         {/* Stats Row - Hex styled */}

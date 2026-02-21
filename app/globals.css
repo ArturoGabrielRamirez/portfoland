@@ -874,6 +874,145 @@
   animation: expand-in 0.3s ease-out forwards;
 }
 
+/* Eye Awake - blinking + looking */
+@keyframes eye-awake-blink-look {
+  0%, 88%, 92%, 100% {
+    transform: scaleY(1) translateX(0);
+  }
+  90% {
+    transform: scaleY(0.1) translateX(0);
+  }
+}
+
+@keyframes eye-awake-blink-look-search {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+.animate-eye-awake-blink-look {
+  animation: eye-awake-blink-look 4s ease-in-out infinite, eye-awake-blink-look-search 2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* Chaotic thinking - 3 pupils going crazy */
+@keyframes chaos-1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  20% {
+    transform: translate(-8px, -5px) scale(0.8);
+    opacity: 0.7;
+  }
+  40% {
+    transform: translate(8px, 5px) scale(1.1);
+    opacity: 0.9;
+  }
+  60% {
+    transform: translate(-5px, 3px) scale(0.7);
+    opacity: 0.6;
+  }
+  80% {
+    transform: translate(6px, -4px) scale(1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes chaos-2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.9;
+  }
+  25% {
+    transform: translate(10px, -3px) scale(0.9);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-6px, 6px) scale(0.75);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translate(4px, -8px) scale(1.05);
+    opacity: 0.7;
+  }
+}
+
+@keyframes chaos-3 {
+  0%, 100% {
+    transform: translate(0, 0) scale(0.8);
+    opacity: 0.7;
+  }
+  33% {
+    transform: translate(-10px, 2px) scale(1);
+    opacity: 0.9;
+  }
+  66% {
+    transform: translate(8px, -6px) scale(0.6);
+    opacity: 0.5;
+  }
+}
+
+.animate-chaos-1 {
+  animation: chaos-1 0.3s ease-in-out infinite;
+}
+.animate-chaos-2 {
+  animation: chaos-2 0.35s ease-in-out infinite;
+}
+.animate-chaos-3 {
+  animation: chaos-3 0.4s ease-in-out infinite;
+}
+
+/* Fast spins */
+@keyframes spin-fast {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes spin-fast-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.animate-spin-fast {
+  animation: spin-fast 1s linear infinite;
+  transform-origin: center;
+}
+.animate-spin-fast-reverse {
+  animation: spin-fast-reverse 0.8s linear infinite;
+  transform-origin: center;
+}
+
+/* Happy bounce */
+@keyframes happy-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.animate-happy-bounce {
+  animation: happy-bounce 1s ease-in-out infinite;
+}
+
+/* Wiggle */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
+.animate-wiggle {
+  animation: wiggle 0.5s ease-in-out infinite;
+}
+
 @keyframes spin-slower {
   from {
     transform: rotate(0deg);

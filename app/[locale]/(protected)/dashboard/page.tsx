@@ -7,6 +7,7 @@
 
 import { headers } from 'next/headers'
 import { setRequestLocale } from 'next-intl/server'
+import { getTranslations } from 'next-intl/server'
 import { Zap, TrendingUp, Star, Trophy, Target, Briefcase, Award, BookOpen, GitBranch, MapPin, Clock, User } from 'lucide-react'
 
 import { auth } from '@/lib/auth'
@@ -74,6 +75,8 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   const { locale } = await params
   setRequestLocale(locale)
 
+  const tActions = await getTranslations({ locale, namespace: 'dashboard.home.quickActions' })
+
   const session = await auth.api.getSession({
     headers: await headers(),
   })
@@ -116,10 +119,10 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
 
   // Quick Actions with functional links
   const quickActions = [
-    { icon: "Briefcase", label: "Timeline", color: "hsl(174,100%,50%)", href: `/${locale}/dashboard/timeline` },
-    { icon: "Clock", label: "Projects", color: "hsl(60,100%,50%)", href: `/${locale}/dashboard/projects` },
-    { icon: "GitBranch", label: "Skills", color: "hsl(330,100%,65%)", href: `/${locale}/dashboard/skills` },
-    { icon: "User", label: "Portfolio", color: "hsl(150,100%,45%)", href: `/${locale}/dashboard/portfolio` },
+    { icon: "Briefcase", label: tActions('timeline'), color: "hsl(174,100%,50%)", href: `/${locale}/dashboard/timeline` },
+    { icon: "Clock", label: tActions('projects'), color: "hsl(60,100%,50%)", href: `/${locale}/dashboard/projects` },
+    { icon: "GitBranch", label: tActions('skills'), color: "hsl(330,100%,65%)", href: `/${locale}/dashboard/skills` },
+    { icon: "User", label: tActions('portfolio'), color: "hsl(150,100%,45%)", href: `/${locale}/dashboard/portfolio` },
   ]
 
   return (

@@ -305,6 +305,34 @@
         "archived": "Archivado"
       },
       "deleteConfirm": "Eliminar \"{title}\"?"
+    },
+    "dashboard": {
+      "home": {
+        "stats": {
+          "totalXP": "XP TOTAL",
+          "currentLevel": "NIVEL ACTUAL",
+          "experiences": "EXPERIENCIAS",
+          "achievements": "LOGROS",
+          "xpSub": "+{count} esta semana",
+          "levelSub": "rango {rank}",
+          "expSub": "{count} activas",
+          "achSub": "{percent}% desbloqueados"
+        },
+        "goals": {
+          "title": "Objetivos Actuales",
+          "active": "{count} activos"
+        },
+        "activity": {
+          "title": "Actividad Reciente",
+          "viewAll": "VER TODO"
+        },
+        "quickActions": {
+          "timeline": "Linea de Tiempo",
+          "projects": "Proyectos",
+          "skills": "Habilidades",
+          "portfolio": "Portfolio"
+        }
+      }
     }
   },
   "projects": {

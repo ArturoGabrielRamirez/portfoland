@@ -248,6 +248,25 @@
         "error": "Error al actualizar el perfil",
         "unexpectedError": "Ocurrio un error inesperado"
       }
+    },
+    "timeline": {
+      "title": "Mi Linea de Tiempo",
+      "subtitle": "Administra tu viaje profesional",
+      "viewPublic": "Ver Publico",
+      "addExperience": "Agregar Experiencia",
+      "stats": {
+        "totalXP": "XP TOTAL",
+        "milestones": "HITOS",
+        "experiences": "EXPERIENCIAS",
+        "achievements": "LOGROS"
+      },
+      "empty": {
+        "title": "Aun no hay experiencias",
+        "addFirst": "Agrega Tu Primera Experiencia"
+      },
+      "messages": {
+        "error": "Ocurrio un error"
+      }
     }
   },
   "projects": {

@@ -248,6 +248,25 @@
         "error": "Failed to update profile",
         "unexpectedError": "An unexpected error occurred"
       }
+    },
+    "timeline": {
+      "title": "My Timeline",
+      "subtitle": "Manage your professional journey",
+      "viewPublic": "View Public",
+      "addExperience": "Add Experience",
+      "stats": {
+        "totalXP": "TOTAL XP",
+        "milestones": "MILESTONES",
+        "experiences": "EXPERIENCES",
+        "achievements": "ACHIEVEMENTS"
+      },
+      "empty": {
+        "title": "No experiences yet",
+        "addFirst": "Add Your First Experience"
+      },
+      "messages": {
+        "error": "An error occurred"
+      }
     }
   },
   "projects": {

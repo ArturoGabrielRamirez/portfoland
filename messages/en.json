@@ -184,6 +184,12 @@
         "title": "Current Goals",
         "active": "{count} active"
       },
+      "skills": {
+        "title": "Your Skills",
+        "viewAll": "VIEW ALL",
+        "level": "Lv.{level}",
+        "xp": "{xp} XP"
+      },
       "activity": {
         "title": "Recent Activity",
         "viewAll": "VIEW ALL"

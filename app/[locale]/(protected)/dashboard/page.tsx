@@ -54,7 +54,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   const tWelcomeMsg = await getTranslations({ locale, namespace: 'dashboard' })
   const tActions = await getTranslations({ locale, namespace: 'dashboard.home.quickActions' })
   const tStats = await getTranslations({ locale, namespace: 'dashboard.home.stats' })
-  const tGoals = await getTranslations({ locale, namespace: 'dashboard.home.goals' })
+  const tSkills = await getTranslations({ locale, namespace: 'dashboard.home.skills' })
   const tActivity = await getTranslations({ locale, namespace: 'dashboard.home.activity' })
 
   const session = await auth.api.getSession({
@@ -113,11 +113,11 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
     { icon: "User", label: tActions('portfolio'), color: "hsl(150,100%,45%)", href: `/${locale}/dashboard/portfolio` },
   ]
 
-  // Goals - keeping mock data for now, just translating titles
-  const goals = [
-    { title: "Reach Level 20", desc: "Unlock Advanced Portfolio features", pct: 90, current: "18/20 levels", color: "hsl(174,100%,50%)" },
-    { title: "Complete 5 Certifications", desc: "Earn the Certified Pro badge", pct: 60, current: "3/5 certs", color: "hsl(60,100%,50%)" },
-    { title: "Master 5 Skills", desc: "Reach max XP in 5 skill nodes", pct: 60, current: "3/5 skills", color: "hsl(330,100%,65%)" },
+  // Skills Preview - mock data showing top skills with XP
+  const skills = [
+    { name: "TypeScript", category: "Frontend", xp: 2450, level: 4, maxXP: 3000, color: "hsl(174,100%,50%)" },
+    { name: "React", category: "Frontend", xp: 3200, level: 5, maxXP: 4000, color: "hsl(60,100%,50%)" },
+    { name: "Node.js", category: "Backend", xp: 1800, level: 3, maxXP: 2500, color: "hsl(330,100%,65%)" },
   ]
 
   // Activities - keeping mock data for now
@@ -183,45 +183,51 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
           ))}
         </div>
 
-        {/* Goals + Activity */}
+        {/* Skills + Activity */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {/* Current Goals */}
+          {/* Skills Preview */}
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Target className="w-4 h-4 text-[hsl(174,100%,50%)]" />
-                <h3 className="font-mono font-bold text-sm text-foreground">{tGoals('title')}</h3>
+                <h3 className="font-mono font-bold text-sm text-foreground">{tSkills('title')}</h3>
               </div>
-              <span className="text-[10px] font-mono text-muted-foreground">{tGoals('active', { count: 3 })}</span>
+              <span className="text-[10px] font-mono text-[hsl(174,100%,50%)] cursor-pointer hover:underline">{tSkills('viewAll')}</span>
             </div>
             <div className="flex flex-col gap-3">
-              {goals.map((goal) => (
-                <div key={goal.title} className="border border-[hsl(174,100%,50%,0.12)] bg-[hsl(200,30%,8%)] p-4 group hover:border-[hsl(174,100%,50%,0.25)] transition-colors">
-                  <div className="flex items-center gap-3 mb-2">
-                    {/* Hex percentage badge */}
-                    <div className="relative flex-shrink-0">
-                      <svg width="44" height="44" viewBox="0 0 100 100">
-                        <path d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z" fill="transparent" stroke={goal.color} strokeWidth="2" strokeOpacity="0.3" />
-                        <clipPath id={`goal-${goal.title.replace(/\s+/g, '-')}`}>
-                          <rect x="0" y={100 - goal.pct} width="100" height={goal.pct} />
-                        </clipPath>
-                        <path d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z" fill={goal.color} fillOpacity="0.2" clipPath={`url(#goal-${goal.title.replace(/\s+/g, '-')})`} />
-                        <text x="50" y="58" textAnchor="middle" fill={goal.color} fontSize="24" fontFamily="monospace" fontWeight="bold">
-                          {goal.pct}%
-                        </text>
-                      </svg>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-mono font-bold text-foreground">{goal.title}</h4>
-                      <p className="text-[10px] font-mono text-muted-foreground">{goal.desc}</p>
-                      <div className="mt-2 h-1.5 bg-[hsl(200,20%,13%)] overflow-hidden" style={{ clipPath: "polygon(0 0, 100% 0, 98% 100%, 2% 100%)" }}>
-                        <div className="h-full transition-all duration-1000" style={{ width: `${goal.pct}%`, backgroundColor: goal.color, boxShadow: `0 0 8px ${goal.color}` }} />
+              {skills.map((skill) => {
+                const pct = Math.round((skill.xp / skill.maxXP) * 100)
+                return (
+                  <div key={skill.name} className="border border-[hsl(174,100%,50%,0.12)] bg-[hsl(200,30%,8%)] p-4 group hover:border-[hsl(174,100%,50%,0.25)] transition-colors">
+                    <div className="flex items-center gap-3 mb-2">
+                      {/* Hex level badge */}
+                      <div className="relative flex-shrink-0">
+                        <svg width="44" height="44" viewBox="0 0 100 100">
+                          <path d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z" fill="transparent" stroke={skill.color} strokeWidth="2" strokeOpacity="0.3" />
+                          <clipPath id={`skill-${skill.name.replace(/\s+/g, '-')}`}>
+                            <rect x="0" y={100 - pct} width="100" height={pct} />
+                          </clipPath>
+                          <path d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z" fill={skill.color} fillOpacity="0.2" clipPath={`url(#skill-${skill.name.replace(/\s+/g, '-')})`} />
+                          <text x="50" y="58" textAnchor="middle" fill={skill.color} fontSize="24" fontFamily="monospace" fontWeight="bold">
+                            {skill.level}
+                          </text>
+                        </svg>
                       </div>
-                      <p className="text-[9px] font-mono text-muted-foreground mt-1 text-right">{goal.current}</p>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-sm font-mono font-bold text-foreground">{skill.name}</h4>
+                          <span className="text-[10px] font-mono" style={{ color: skill.color }}>{tSkills('level', { level: skill.level })}</span>
+                        </div>
+                        <p className="text-[10px] font-mono text-muted-foreground">{skill.category}</p>
+                        <div className="mt-2 h-1.5 bg-[hsl(200,20%,13%)] overflow-hidden" style={{ clipPath: "polygon(0 0, 100% 0, 98% 100%, 2% 100%)" }}>
+                          <div className="h-full transition-all duration-1000" style={{ width: `${pct}%`, backgroundColor: skill.color, boxShadow: `0 0 8px ${skill.color}` }} />
+                        </div>
+                        <p className="text-[9px] font-mono text-muted-foreground mt-1 text-right">{tSkills('xp', { xp: skill.xp })} / {skill.maxXP} XP</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
 

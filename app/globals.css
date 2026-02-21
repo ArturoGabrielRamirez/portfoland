@@ -746,6 +746,102 @@
   animation: spin-slower 4s linear infinite;
 }
 
+/* Quick Action Hex Animations */
+@keyframes hex-idle-breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.8;
+  }
+}
+
+@keyframes hex-idle-pulse {
+  0%, 100% {
+    r: 3;
+    opacity: 0.4;
+  }
+  50% {
+    r: 5;
+    opacity: 0.7;
+  }
+}
+
+.animate-hex-idle-breathe {
+  animation: hex-idle-breathe 3s ease-in-out infinite;
+}
+
+.animate-hex-idle-pulse {
+  animation: hex-idle-pulse 2s ease-in-out infinite;
+}
+
+/* Hover - Observing state */
+@keyframes hex-observe-look {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+}
+
+.animate-hex-observe {
+  animation: hex-observe-look 2s ease-in-out infinite;
+}
+
+/* Thinking - Active searching */
+@keyframes hex-thinking-search {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  33% {
+    transform: scale(0.8) translateX(-4px);
+    opacity: 0.6;
+  }
+  66% {
+    transform: scale(0.8) translateX(4px);
+    opacity: 0.8;
+  }
+}
+
+.animate-hex-thinking {
+  animation: hex-thinking-search 0.5s ease-in-out infinite;
+}
+
+/* Ready - Awake and alert */
+@keyframes hex-ready-blink {
+  0%, 90%, 100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+
+.animate-hex-ready {
+  animation: hex-ready-blink 5s ease-in-out infinite;
+}
+
+/* Spinning ring for active states */
+@keyframes hex-ring-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-hex-ring-spin {
+  animation: hex-ring-spin 4s linear infinite;
+}
+
 @keyframes spin-slower {
   from {
     transform: rotate(0deg);

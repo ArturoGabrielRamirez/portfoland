@@ -158,7 +158,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
           <AIAssistantWidget />
         </div>
 
-        {/* Quick Actions Row - Tech Hex Style */}
+        {/* Quick Actions Row - Living Hex Style */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
           {quickActions.map((action, i) => {
             const icons: Record<string, React.ReactNode> = {
@@ -172,89 +172,119 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
               <a
                 key={action.label}
                 href={action.href}
-                className="group relative border bg-[hsl(200,30%,8%)] p-4 flex items-center gap-4 transition-all duration-300 hover:bg-[hsl(200,30%,10%)] hover:border-opacity-50"
+                className="group relative border bg-[hsl(200,30%,8%)] p-4 flex items-center gap-4 transition-all duration-500 hover:bg-[hsl(200,30%,10%)] hover:border-opacity-50"
                 style={{ 
                   borderColor: `${action.color}30`,
                 }}
               >
-                {/* Hover glow effect */}
+                {/* Ambient glow on hover */}
                 <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                   style={{ 
-                    background: `radial-gradient(circle at center, ${action.color}15 0%, transparent 70%)`
+                    background: `radial-gradient(circle at center, ${action.color}12 0%, transparent 70%)`
                   }}
                 />
                 
-                {/* Animated Hexagon Icon */}
+                {/* Living Hexagon */}
                 <div className="relative flex-shrink-0">
-                  <svg width="48" height="48" viewBox="0 0 100 100" className="transition-transform duration-300 group-hover:scale-110">
-                    {/* Outer ring - spinning on hover */}
+                  <svg width="48" height="48" viewBox="0 0 100 100">
+                    {/* Idle: slow breathing outer glow */}
+                    <circle
+                      cx="50" cy="50" r="46"
+                      fill="none"
+                      stroke={action.color}
+                      strokeWidth="0.5"
+                      opacity="0.15"
+                      className="animate-hex-idle-breathe"
+                    />
+                    
+                    {/* Outer ring - idle vs hover states */}
                     <circle
                       cx="50" cy="50" r="44"
                       fill="none"
                       stroke={action.color}
                       strokeWidth="1"
-                      strokeDasharray="4 8"
+                      strokeDasharray="3 9"
                       opacity="0.2"
-                      className="group-hover:animate-spin-slow group-hover:opacity-40 transition-all duration-300"
-                      style={{ animationDuration: "3s" }}
+                      className="group-hover:animate-hex-ring-spin"
+                      style={{ 
+                        animationDuration: "4s",
+                        transformOrigin: "50px 50px"
+                      }}
                     />
                     
-                    {/* Middle ring */}
-                    <circle
-                      cx="50" cy="50" r="36"
-                      fill="none"
-                      stroke={action.color}
-                      strokeWidth="0.5"
-                      opacity="0.3"
-                      className="group-hover:animate-pulse transition-all duration-300"
-                    />
-                    
-                    {/* Hexagon outer */}
+                    {/* Hexagon frame */}
                     <path
-                      d="M50 5 L90 27.5 L90 72.5 L50 95 L10 72.5 L10 27.5 Z"
+                      d="M50 4 L92 27 L92 73 L50 96 L8 73 L8 27 Z"
                       fill="none"
                       stroke={action.color}
                       strokeWidth="2"
-                      strokeOpacity="0.4"
-                      className="group-hover:stroke-opacity-80 transition-all"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="transition-all duration-300"
+                      style={{
+                        strokeOpacity: 0.5,
+                        filter: `drop-shadow(0 0 2px ${action.color})`
+                      }}
                     />
                     
-                    {/* Hexagon inner glow */}
+                    {/* Inner hex - breathing */}
                     <path
-                      d="M50 15 L80 32.5 L80 67.5 L50 85 L20 67.5 L20 32.5 Z"
-                      fill={action.color}
-                      fillOpacity="0.08"
+                      d="M50 12 L82 31 L82 69 L50 88 L18 69 L18 31 Z"
+                      fill="none"
                       stroke={action.color}
                       strokeWidth="1.5"
-                      className="group-hover:fill-opacity-20 transition-all duration-300"
+                      className="transition-all duration-300 group-hover:animate-hex-idle-breathe"
+                      style={{
+                        strokeOpacity: 0.4,
+                        fillOpacity: 0.05
+                      }}
                     />
                     
-                    {/* Center icon with glow */}
-                    <foreignObject x="20" y="25" width="60" height="50" className="overflow-visible">
-                      <div 
-                        className="flex items-center justify-center w-full h-full transition-all duration-300 group-hover:scale-110"
-                        style={{ 
-                          color: action.color,
-                          filter: `drop-shadow(0 0 4px ${action.color})`
+                    {/* Eye/Pupil group - changes behavior */}
+                    <g className="transition-transform duration-300 group-hover:animate-hex-observe">
+                      {/* Eye white */}
+                      <ellipse
+                        cx="50" cy="50" rx="18" ry="12"
+                        fill={`${action.color}10`}
+                        stroke={action.color}
+                        strokeWidth="1"
+                        className="transition-all duration-300"
+                        style={{ opacity: 0.5 }}
+                      />
+                      
+                      {/* Pupil - breathing in idle, active on hover */}
+                      <circle
+                        cx="50" cy="50" r="5"
+                        fill={action.color}
+                        className="transition-all duration-300 group-hover:animate-hex-idle-pulse"
+                        style={{
+                          filter: `drop-shadow(0 0 4px ${action.color})`,
+                          opacity: 0.8
                         }}
-                      >
-                        {Icon}
-                      </div>
-                    </foreignObject>
+                      />
+                      
+                      {/* Eye shine */}
+                      <circle 
+                        cx="47" cy="47" r="2" 
+                        fill="white" 
+                        opacity="0.6"
+                        className="transition-transform duration-300 group-hover:translate-x-0.5"
+                      />
+                    </g>
                     
-                    {/* Center dot - pulsing */}
-                    <circle
-                      cx="50" cy="50" r="3"
-                      fill={action.color}
-                      opacity="0.6"
-                      className="animate-pulse"
-                    />
+                    {/* Connecting lines to center - appear on hover */}
+                    <g className="opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <line x1="50" y1="38" x2="50" y2="20" stroke={action.color} strokeWidth="0.5" opacity="0.3" />
+                      <line x1="50" y1="62" x2="50" y2="80" stroke={action.color} strokeWidth="0.5" opacity="0.3" />
+                      <line x1="32" y1="50" x2="20" y2="50" stroke={action.color} strokeWidth="0.5" opacity="0.3" />
+                      <line x1="68" y1="50" x2="80" y2="50" stroke={action.color} strokeWidth="0.5" opacity="0.3" />
+                    </g>
                   </svg>
                 </div>
                 
                 {/* Label */}
-                <span className="text-xs font-mono text-foreground group-hover:text-white transition-colors">
+                <span className="text-xs font-mono text-foreground group-hover:text-white transition-colors duration-300">
                   {action.label}
                 </span>
               </a>

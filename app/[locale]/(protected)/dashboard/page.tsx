@@ -17,6 +17,7 @@ import {
   CRTMonitor,
   HexBadge,
   DashboardNav,
+  AIAssistant,
 } from '@/features/tech'
 import type { DashboardPageProps } from '@/features/dashboard/types/dashboard'
 
@@ -155,6 +156,11 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
             }}
           />
           <CRTMonitor className="min-h-[220px]" />
+        </div>
+
+        {/* AI Assistant Row */}
+        <div className="mb-6">
+          <AIAssistant />
         </div>
 
         {/* Stats Row - Hex styled */}

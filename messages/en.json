@@ -199,6 +199,55 @@
       "title": "Recent Activity",
       "noActivity": "No recent activity to show",
       "viewAll": "View all activity"
+    },
+    "portfolio": {
+      "title": "Edit Portfolio",
+      "subtitle": "Manage your public profile settings",
+      "viewPublic": "View Public Portfolio",
+      "sections": {
+        "about": "About & Bio",
+        "displayName": "Display Name",
+        "displayNamePlaceholder": "Your identity",
+        "bio": "Developer Bio (Markdown Supported)",
+        "bioPlaceholder": "Describe your capabilities and stack...",
+        "avatar": "Profile Avatar",
+        "markdownTip": "Tip: Use **text** for bold, *text* for italic",
+        "preview": "Preview",
+        "previewLabel": "How it will appear in your portfolio:",
+        "experience": "Experience & Timeline",
+        "experienceNote": "Experience content is managed via separate Timeline tools.",
+        "experienceNote2": "Use this panel only for order and visibility settings.",
+        "skills": "Skills & Tech Stack",
+        "skillsNote": "Skills catalog is managed via Skill Tree tools.",
+        "projects": "Project Showcase",
+        "projectsNote": "Project list is managed via Project tools.",
+        "socialLinks": "Identity & Social Links",
+        "github": "GitHub",
+        "linkedin": "LinkedIn",
+        "externalChannels": "External Channels",
+        "addNew": "Add New",
+        "label": "Label",
+        "url": "URL",
+        "noLinks": "No custom links established"
+      },
+      "preferences": {
+        "title": "Platform Preferences",
+        "interface": "Terminal Interface",
+        "description": "Select visual protocol for public data transmission"
+      },
+      "actions": {
+        "syncing": "SYNCING DATA...",
+        "save": "INITIALIZE SYNC"
+      },
+      "ai": {
+        "assistantTitle": "RPG Master: Career Overseer",
+        "guidanceActive": "AI Assistant Guidance Active"
+      },
+      "messages": {
+        "updated": "Profile updated successfully",
+        "error": "Failed to update profile",
+        "unexpectedError": "An unexpected error occurred"
+      }
     }
   },
   "projects": {

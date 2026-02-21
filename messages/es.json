@@ -199,6 +199,55 @@
       "title": "Actividad Reciente",
       "noActivity": "No hay actividad reciente para mostrar",
       "viewAll": "Ver toda la actividad"
+    },
+    "portfolio": {
+      "title": "Editar Portfolio",
+      "subtitle": "Administra la configuracion de tu perfil pubblico",
+      "viewPublic": "Ver Portfolio Publico",
+      "sections": {
+        "about": "Acerca de & Biografia",
+        "displayName": "Nombre para Mostrar",
+        "displayNamePlaceholder": "Tu identidad",
+        "bio": "Biografia de Desarrollador (Soporta Markdown)",
+        "bioPlaceholder": "Describe tus capacidades y stack...",
+        "avatar": "Avatar de Perfil",
+        "markdownTip": "Consejo: Usa **texto** para negrita, *texto* para cursiva",
+        "preview": "Vista Previa",
+        "previewLabel": "Como se vera en tu portfolio:",
+        "experience": "Experiencia & Linea de Tiempo",
+        "experienceNote": "El contenido de experiencia se administra a traves de herramientas de Linea de Tiempo.",
+        "experienceNote2": "Usa este panel solo para configuracion de orden y visibilidad.",
+        "skills": "Habilidades & Tech Stack",
+        "skillsNote": "El catalogo de habilidades se administra a traves de herramientas de Arbol de Habilidades.",
+        "projects": "Galeria de Proyectos",
+        "projectsNote": "La lista de proyectos se administra a traves de herramientas de Proyectos.",
+        "socialLinks": "Identidad & Enlaces Sociales",
+        "github": "GitHub",
+        "linkedin": "LinkedIn",
+        "externalChannels": "Canales Externos",
+        "addNew": "Agregar Nuevo",
+        "label": "Etiqueta",
+        "url": "URL",
+        "noLinks": "No hay enlaces personalizados establecidos"
+      },
+      "preferences": {
+        "title": "Preferencias de Plataforma",
+        "interface": "Interfaz de Terminal",
+        "description": "Selecciona el protocolo visual para la transmision de datos publicos"
+      },
+      "actions": {
+        "syncing": "SINCRONIZANDO DATOS...",
+        "save": "INICIALIZAR SINCRONIZACION"
+      },
+      "ai": {
+        "assistantTitle": "Maestro RPG: Supervisor de Carrera",
+        "guidanceActive": "Guia de Asistente IA Activa"
+      },
+      "messages": {
+        "updated": "Perfil actualizado correctamente",
+        "error": "Error al actualizar el perfil",
+        "unexpectedError": "Ocurrio un error inesperado"
+      }
     }
   },
   "projects": {

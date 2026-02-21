@@ -185,30 +185,71 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
                   }}
                 />
                 
-                {/* Hexagon Icon */}
+                {/* Animated Hexagon Icon */}
                 <div className="relative flex-shrink-0">
                   <svg width="48" height="48" viewBox="0 0 100 100" className="transition-transform duration-300 group-hover:scale-110">
+                    {/* Outer ring - spinning on hover */}
+                    <circle
+                      cx="50" cy="50" r="44"
+                      fill="none"
+                      stroke={action.color}
+                      strokeWidth="1"
+                      strokeDasharray="4 8"
+                      opacity="0.2"
+                      className="group-hover:animate-spin-slow group-hover:opacity-40 transition-all duration-300"
+                      style={{ animationDuration: "3s" }}
+                    />
+                    
+                    {/* Middle ring */}
+                    <circle
+                      cx="50" cy="50" r="36"
+                      fill="none"
+                      stroke={action.color}
+                      strokeWidth="0.5"
+                      opacity="0.3"
+                      className="group-hover:animate-pulse transition-all duration-300"
+                    />
+                    
+                    {/* Hexagon outer */}
                     <path
                       d="M50 5 L90 27.5 L90 72.5 L50 95 L10 72.5 L10 27.5 Z"
                       fill="none"
                       stroke={action.color}
                       strokeWidth="2"
-                      strokeOpacity="0.3"
+                      strokeOpacity="0.4"
                       className="group-hover:stroke-opacity-80 transition-all"
                     />
+                    
+                    {/* Hexagon inner glow */}
                     <path
                       d="M50 15 L80 32.5 L80 67.5 L50 85 L20 67.5 L20 32.5 Z"
                       fill={action.color}
-                      fillOpacity="0.1"
+                      fillOpacity="0.08"
                       stroke={action.color}
                       strokeWidth="1.5"
-                      className="group-hover:fill-opacity-20 transition-all"
+                      className="group-hover:fill-opacity-20 transition-all duration-300"
                     />
+                    
+                    {/* Center icon with glow */}
                     <foreignObject x="20" y="25" width="60" height="50" className="overflow-visible">
-                      <div className="flex items-center justify-center w-full h-full" style={{ color: action.color }}>
+                      <div 
+                        className="flex items-center justify-center w-full h-full transition-all duration-300 group-hover:scale-110"
+                        style={{ 
+                          color: action.color,
+                          filter: `drop-shadow(0 0 4px ${action.color})`
+                        }}
+                      >
                         {Icon}
                       </div>
                     </foreignObject>
+                    
+                    {/* Center dot - pulsing */}
+                    <circle
+                      cx="50" cy="50" r="3"
+                      fill={action.color}
+                      opacity="0.6"
+                      className="animate-pulse"
+                    />
                   </svg>
                 </div>
                 

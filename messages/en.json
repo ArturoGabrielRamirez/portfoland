@@ -286,6 +286,25 @@
         "tools": "Tools",
         "softSkills": "Soft Skills"
       }
+    },
+    "projects": {
+      "title": "My Projects",
+      "subtitle": "Manage your project showcase",
+      "addProject": "Add Project",
+      "form": {
+        "newProject": "New Project",
+        "editProject": "Edit Project"
+      },
+      "empty": {
+        "title": "No projects yet",
+        "addFirst": "Create Your First Project"
+      },
+      "status": {
+        "in_progress": "In Progress",
+        "completed": "Completed",
+        "archived": "Archived"
+      },
+      "deleteConfirm": "Delete \"{title}\"?"
     }
   },
   "projects": {

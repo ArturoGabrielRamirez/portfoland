@@ -286,6 +286,25 @@
         "tools": "Herramientas",
         "softSkills": "Habilidades Blandas"
       }
+    },
+    "projects": {
+      "title": "Mis Proyectos",
+      "subtitle": "Administra tu galeria de proyectos",
+      "addProject": "Agregar Proyecto",
+      "form": {
+        "newProject": "Nuevo Proyecto",
+        "editProject": "Editar Proyecto"
+      },
+      "empty": {
+        "title": "Aun no hay proyectos",
+        "addFirst": "Crea Tu Primer Proyecto"
+      },
+      "status": {
+        "in_progress": "En Progreso",
+        "completed": "Completado",
+        "archived": "Archivado"
+      },
+      "deleteConfirm": "Eliminar \"{title}\"?"
     }
   },
   "projects": {

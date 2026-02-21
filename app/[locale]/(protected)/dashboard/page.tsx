@@ -50,6 +50,8 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   const { locale } = await params
   setRequestLocale(locale)
 
+  const tWelcome = await getTranslations({ locale, namespace: 'dashboard.welcomeCard' })
+  const tWelcomeMsg = await getTranslations({ locale, namespace: 'dashboard' })
   const tActions = await getTranslations({ locale, namespace: 'dashboard.home.quickActions' })
   const tStats = await getTranslations({ locale, namespace: 'dashboard.home.stats' })
   const tGoals = await getTranslations({ locale, namespace: 'dashboard.home.goals' })
@@ -144,6 +146,13 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
             maxXP={userStats.maxXP}
             streakDays={userStats.streakDays}
             quickActions={quickActions}
+            translations={{
+              welcomeTitle: tWelcomeMsg('welcome', { name: displayName }),
+              welcomeSubtitle: tWelcomeMsg('welcomeSubtitle'),
+              streak: tWelcome('streak', { count: userStats.streakDays }),
+              quickActionsTitle: tWelcome('quickActions'),
+              xpToLevel: tWelcome('xpToLevel', { xp: userStats.maxXP - userStats.currentXP, level: userStats.level + 1 }),
+            }}
           />
           <CRTMonitor className="min-h-[220px]" />
         </div>

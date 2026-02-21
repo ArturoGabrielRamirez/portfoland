@@ -32,6 +32,7 @@ export function WelcomeCard({
   maxXP,
   streakDays,
   quickActions = defaultQuickActions,
+  translations,
   className,
 }: WelcomeCardProps) {
   const [mounted, setMounted] = useState(false)
@@ -79,10 +80,10 @@ export function WelcomeCard({
               </div>
             </div>
             <div>
-              <h2 className="text-xl font-mono font-bold text-foreground">
-                Welcome back, <span className="text-[hsl(174,100%,50%)]">{userName}!</span>
+<h2 className="text-xl font-mono font-bold text-foreground">
+                {translations?.welcomeTitle || `Welcome back, ${userName}!`}
               </h2>
-              <p className="text-xs text-muted-foreground font-mono">Continue building your professional adventure</p>
+              <p className="text-xs text-muted-foreground font-mono">{translations?.welcomeSubtitle || "Continue building your professional adventure"}</p>
             </div>
           </div>
 
@@ -98,18 +99,18 @@ export function WelcomeCard({
                 style={{ width: mounted ? `${percentage}%` : "0%" }}
               />
             </div>
-            <p className="text-[10px] font-mono text-muted-foreground mt-1">{xpToNextLevel} XP to Level {level + 1}</p>
+            <p className="text-[10px] font-mono text-muted-foreground mt-1">{translations?.xpToLevel ? translations.xpToLevel.replace('{xp}', xpToNextLevel.toString()).replace('{level}', (level + 1).toString()) : `${xpToNextLevel} XP to Level ${level + 1}`}</p>
           </div>
 
           <div className="inline-flex items-center gap-1.5 bg-[hsl(150,100%,45%,0.1)] border border-[hsl(150,100%,45%,0.3)] px-2.5 py-1 text-[10px] font-mono text-[hsl(150,100%,45%)]">
-            <span className="w-1.5 h-1.5 bg-[hsl(150,100%,45%)] rounded-full animate-pulse" />
-            {streakDays} day streak
+<span className="w-1.5 h-1.5 bg-[hsl(150,100%,45%)] rounded-full animate-pulse" />
+            {translations?.streak ? translations.streak.replace('{count}', streakDays.toString()) : `${streakDays} day streak`}
           </div>
         </div>
 
         {/* Right: Quick Actions as honeycomb */}
         <div className="lg:w-[280px] border-t lg:border-t-0 lg:border-l border-[hsl(174,100%,50%,0.1)] p-4 flex flex-col items-center justify-center">
-          <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground mb-4">Quick Actions</p>
+          <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground mb-4">{translations?.quickActionsTitle || "Quick Actions"}</p>
           <div className="grid grid-cols-2 gap-y-0 gap-x-2">
             {quickActions.map((action, i) => {
               const Icon = iconMap[action.icon] || Target

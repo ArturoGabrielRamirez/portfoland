@@ -17,7 +17,6 @@ import {
   CRTMonitor,
   HexBadge,
   DashboardNav,
-  MiniSkillTree,
 } from '@/features/tech'
 import type { DashboardPageProps } from '@/features/dashboard/types/dashboard'
 
@@ -121,17 +120,6 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
     { name: "Node.js", category: "Backend", xp: 1800, level: 3, maxXP: 2500, color: "hsl(330,100%,65%)" },
   ]
 
-  // Mini Skill Tree data - positioned hex nodes
-  const skillTreeData = [
-    { id: "react", name: "React", level: 5, maxLevel: 5, x: 200, y: 40, category: "frontend" as const },
-    { id: "typescript", name: "TypeScript", level: 4, maxLevel: 5, x: 280, y: 80, category: "frontend" as const },
-    { id: "node", name: "Node.js", level: 3, maxLevel: 5, x: 340, y: 140, category: "backend" as const },
-    { id: "postgresql", name: "PostgreSQL", level: 2, maxLevel: 5, x: 380, y: 100, category: "backend" as const },
-    { id: "git", name: "Git", level: 4, maxLevel: 5, x: 120, y: 100, category: "tools" as const },
-    { id: "docker", name: "Docker", level: 2, maxLevel: 5, x: 80, y: 160, category: "tools" as const },
-    { id: "python", name: "Python", level: 3, maxLevel: 5, x: 300, y: 40, category: "backend" as const },
-  ]
-
   // Activities - keeping mock data for now
   const activities = [
     { icon: Briefcase, text: "Added Senior Developer experience", time: "2 hours ago", xp: "+200 XP", color: "cyan" as const },
@@ -195,19 +183,58 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
           ))}
         </div>
 
-        {/* Skills + Activity */}
+        {/* Profile Completion + Activity */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {/* Mini Skill Tree */}
+          {/* Profile Completion */}
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Target className="w-4 h-4 text-[hsl(174,100%,50%)]" />
                 <h3 className="font-mono font-bold text-sm text-foreground">{tSkills('title')}</h3>
               </div>
-              <span className="text-[10px] font-mono text-[hsl(174,100%,50%)] cursor-pointer hover:underline">{tSkills('viewAll')}</span>
             </div>
             <div className="border border-[hsl(174,100%,50%,0.12)] bg-[hsl(200,30%,8%)] p-4">
-              <MiniSkillTree skills={skillTreeData} />
+              {/* Profile Completion Bar */}
+              <div className="mb-4">
+                <div className="flex justify-between text-xs font-mono mb-1">
+                  <span className="text-muted-foreground">Profile Completion</span>
+                  <span className="text-[hsl(174,100%,50%)]">65%</span>
+                </div>
+                <div className="h-2 bg-[hsl(200,20%,13%)] overflow-hidden" style={{ clipPath: "polygon(0 0, 100% 0, 98% 100%, 2% 100%)" }}>
+                  <div className="h-full bg-[hsl(174,100%,50%)]" style={{ width: "65%", boxShadow: "0 0 8px hsl(174,100%,50%)" }} />
+                </div>
+              </div>
+              
+              {/* Checklist */}
+              <div className="space-y-2">
+                {[
+                  { done: true, label: "Profile photo" },
+                  { done: true, label: "Bio description" },
+                  { done: false, label: "Location" },
+                  { done: true, label: "Skills (3+)" },
+                  { done: false, label: "Projects (1+)" },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <div className={`w-3 h-3 ${item.done ? 'bg-[hsl(150,100%,45%)]' : 'bg-[hsl(200,20%,20%)]'} clip-hexagon`} />
+                    <span className={`text-[10px] font-mono ${item.done ? 'text-foreground' : 'text-muted-foreground'}`}>{item.label}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Portfolio Link */}
+              <div className="mt-4 pt-4 border-t border-[hsl(174,100%,50%,0.1)]">
+                <p className="text-[10px] font-mono text-muted-foreground mb-2">Your Portfolio</p>
+                <div className="flex items-center gap-2">
+                  <input 
+                    readOnly 
+                    value={`portfoland.com/${userData.name?.toLowerCase().replace(/\s+/g, '-') || 'user'}`}
+                    className="flex-1 bg-[hsl(200,20%,13%)] border border-[hsl(174,100%,50%,0.2)] text-xs font-mono text-foreground px-3 py-2"
+                  />
+                  <button className="bg-[hsl(174,100%,50%,0.2)] border border-[hsl(174,100%,50%,0.4)] text-[hsl(174,100%,50%)] px-3 py-2 text-xs font-mono hover:bg-[hsl(174,100%,50%,0.3)] transition-colors">
+                    Copy
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 

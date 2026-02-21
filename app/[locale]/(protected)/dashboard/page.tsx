@@ -158,7 +158,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
           <AIAssistantWidget />
         </div>
 
-        {/* Quick Actions Row */}
+        {/* Quick Actions Row - Tech Hex Style */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
           {quickActions.map((action, i) => {
             const icons: Record<string, React.ReactNode> = {
@@ -172,22 +172,50 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
               <a
                 key={action.label}
                 href={action.href}
-                className="relative border group flex items-center gap-3 p-4 bg-[hsl(200,30%,8%)] transition-all hover:scale-[1.02]"
+                className="group relative border bg-[hsl(200,30%,8%)] p-4 flex items-center gap-4 transition-all duration-300 hover:bg-[hsl(200,30%,10%)] hover:border-opacity-50"
                 style={{ 
                   borderColor: `${action.color}30`,
-                  boxShadow: `0 0 0 1px ${action.color}20`
                 }}
               >
+                {/* Hover glow effect */}
                 <div 
-                  className="w-10 h-10 flex items-center justify-center"
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                   style={{ 
-                    backgroundColor: `${action.color}15`,
-                    clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)"
+                    background: `radial-gradient(circle at center, ${action.color}15 0%, transparent 70%)`
                   }}
-                >
-                  {Icon}
+                />
+                
+                {/* Hexagon Icon */}
+                <div className="relative flex-shrink-0">
+                  <svg width="48" height="48" viewBox="0 0 100 100" className="transition-transform duration-300 group-hover:scale-110">
+                    <path
+                      d="M50 5 L90 27.5 L90 72.5 L50 95 L10 72.5 L10 27.5 Z"
+                      fill="none"
+                      stroke={action.color}
+                      strokeWidth="2"
+                      strokeOpacity="0.3"
+                      className="group-hover:stroke-opacity-80 transition-all"
+                    />
+                    <path
+                      d="M50 15 L80 32.5 L80 67.5 L50 85 L20 67.5 L20 32.5 Z"
+                      fill={action.color}
+                      fillOpacity="0.1"
+                      stroke={action.color}
+                      strokeWidth="1.5"
+                      className="group-hover:fill-opacity-20 transition-all"
+                    />
+                    <foreignObject x="20" y="25" width="60" height="50" className="overflow-visible">
+                      <div className="flex items-center justify-center w-full h-full" style={{ color: action.color }}>
+                        {Icon}
+                      </div>
+                    </foreignObject>
+                  </svg>
                 </div>
-                <span className="text-xs font-mono text-foreground">{action.label}</span>
+                
+                {/* Label */}
+                <span className="text-xs font-mono text-foreground group-hover:text-white transition-colors">
+                  {action.label}
+                </span>
               </a>
             )
           })}

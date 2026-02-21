@@ -267,6 +267,25 @@
       "messages": {
         "error": "Ocurrio un error"
       }
+    },
+    "skills": {
+      "title": "Mi Arbol de Habilidades",
+      "subtitle": "Administra tus habilidades y experiencia",
+      "viewPublic": "Ver Publico",
+      "addSkill": "Agregar Habilidad",
+      "stats": {
+        "totalSkills": "HABILIDADES TOTALES",
+        "totalXP": "XP TOTAL",
+        "mastered": "MAESTRAS",
+        "categories": "CATEGORIAS"
+      },
+      "legend": {
+        "core": "Core",
+        "backend": "Backend",
+        "frontend": "Frontend",
+        "tools": "Herramientas",
+        "softSkills": "Habilidades Blandas"
+      }
     }
   },
   "projects": {

@@ -267,6 +267,25 @@
       "messages": {
         "error": "An error occurred"
       }
+    },
+    "skills": {
+      "title": "My Skill Tree",
+      "subtitle": "Manage your skills and expertise",
+      "viewPublic": "View Public",
+      "addSkill": "Add Skill",
+      "stats": {
+        "totalSkills": "TOTAL SKILLS",
+        "totalXP": "TOTAL XP",
+        "mastered": "MASTERED",
+        "categories": "CATEGORIES"
+      },
+      "legend": {
+        "core": "Core",
+        "backend": "Backend",
+        "frontend": "Frontend",
+        "tools": "Tools",
+        "softSkills": "Soft Skills"
+      }
     }
   },
   "projects": {

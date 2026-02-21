@@ -17,6 +17,7 @@ import {
   CRTMonitor,
   HexBadge,
   DashboardNav,
+  MiniSkillTree,
 } from '@/features/tech'
 import type { DashboardPageProps } from '@/features/dashboard/types/dashboard'
 
@@ -120,6 +121,17 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
     { name: "Node.js", category: "Backend", xp: 1800, level: 3, maxXP: 2500, color: "hsl(330,100%,65%)" },
   ]
 
+  // Mini Skill Tree data - positioned hex nodes
+  const skillTreeData = [
+    { id: "react", name: "React", level: 5, maxLevel: 5, x: 200, y: 40, category: "frontend" as const },
+    { id: "typescript", name: "TypeScript", level: 4, maxLevel: 5, x: 280, y: 80, category: "frontend" as const },
+    { id: "node", name: "Node.js", level: 3, maxLevel: 5, x: 340, y: 140, category: "backend" as const },
+    { id: "postgresql", name: "PostgreSQL", level: 2, maxLevel: 5, x: 380, y: 100, category: "backend" as const },
+    { id: "git", name: "Git", level: 4, maxLevel: 5, x: 120, y: 100, category: "tools" as const },
+    { id: "docker", name: "Docker", level: 2, maxLevel: 5, x: 80, y: 160, category: "tools" as const },
+    { id: "python", name: "Python", level: 3, maxLevel: 5, x: 300, y: 40, category: "backend" as const },
+  ]
+
   // Activities - keeping mock data for now
   const activities = [
     { icon: Briefcase, text: "Added Senior Developer experience", time: "2 hours ago", xp: "+200 XP", color: "cyan" as const },
@@ -185,7 +197,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
 
         {/* Skills + Activity */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {/* Skills Preview */}
+          {/* Mini Skill Tree */}
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
@@ -194,40 +206,8 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
               </div>
               <span className="text-[10px] font-mono text-[hsl(174,100%,50%)] cursor-pointer hover:underline">{tSkills('viewAll')}</span>
             </div>
-            <div className="flex flex-col gap-3">
-              {skills.map((skill) => {
-                const pct = Math.round((skill.xp / skill.maxXP) * 100)
-                return (
-                  <div key={skill.name} className="border border-[hsl(174,100%,50%,0.12)] bg-[hsl(200,30%,8%)] p-4 group hover:border-[hsl(174,100%,50%,0.25)] transition-colors">
-                    <div className="flex items-center gap-3 mb-2">
-                      {/* Hex level badge */}
-                      <div className="relative flex-shrink-0">
-                        <svg width="44" height="44" viewBox="0 0 100 100">
-                          <path d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z" fill="transparent" stroke={skill.color} strokeWidth="2" strokeOpacity="0.3" />
-                          <clipPath id={`skill-${skill.name.replace(/\s+/g, '-')}`}>
-                            <rect x="0" y={100 - pct} width="100" height={pct} />
-                          </clipPath>
-                          <path d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z" fill={skill.color} fillOpacity="0.2" clipPath={`url(#skill-${skill.name.replace(/\s+/g, '-')})`} />
-                          <text x="50" y="58" textAnchor="middle" fill={skill.color} fontSize="24" fontFamily="monospace" fontWeight="bold">
-                            {skill.level}
-                          </text>
-                        </svg>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <h4 className="text-sm font-mono font-bold text-foreground">{skill.name}</h4>
-                          <span className="text-[10px] font-mono" style={{ color: skill.color }}>{tSkills('level', { level: skill.level })}</span>
-                        </div>
-                        <p className="text-[10px] font-mono text-muted-foreground">{skill.category}</p>
-                        <div className="mt-2 h-1.5 bg-[hsl(200,20%,13%)] overflow-hidden" style={{ clipPath: "polygon(0 0, 100% 0, 98% 100%, 2% 100%)" }}>
-                          <div className="h-full transition-all duration-1000" style={{ width: `${pct}%`, backgroundColor: skill.color, boxShadow: `0 0 8px ${skill.color}` }} />
-                        </div>
-                        <p className="text-[9px] font-mono text-muted-foreground mt-1 text-right">{tSkills('xp', { xp: skill.xp })} / {skill.maxXP} XP</p>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
+            <div className="border border-[hsl(174,100%,50%,0.12)] bg-[hsl(200,30%,8%)] p-4">
+              <MiniSkillTree skills={skillTreeData} />
             </div>
           </div>
 

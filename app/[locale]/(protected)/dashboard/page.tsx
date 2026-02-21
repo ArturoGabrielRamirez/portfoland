@@ -155,12 +155,10 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
               xpToLevel: tWelcome('xpToLevel', { xp: userStats.maxXP - userStats.currentXP, level: userStats.level + 1 }),
             }}
           />
-          <CRTMonitor className="min-h-[220px]" />
-        </div>
-
-        {/* AI Assistant Row */}
-        <div className="mb-6">
-          <AIAssistantWidget />
+          <div className="flex flex-col gap-4">
+            <CRTMonitor className="min-h-[220px]" />
+            <AIAssistantWidget className="lg:self-start" />
+          </div>
         </div>
 
         {/* Stats Row - Hex styled */}

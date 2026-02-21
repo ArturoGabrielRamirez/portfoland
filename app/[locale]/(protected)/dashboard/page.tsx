@@ -43,31 +43,6 @@ function getDisplayName(name: string | null, email: string): string {
 }
 
 // =============================================================================
-// Mock Data (will be replaced with real data)
-// =============================================================================
-
-const stats = [
-  { value: "2,450", label: "TOTAL XP", color: "cyan" as const, icon: <Zap className="w-5 h-5" />, sub: "+150 this week" },
-  { value: "18", label: "CURRENT LEVEL", color: "yellow" as const, icon: <TrendingUp className="w-5 h-5" />, sub: "Explorer rank" },
-  { value: "7", label: "EXPERIENCES", color: "green" as const, icon: <Star className="w-5 h-5" />, sub: "2 active" },
-  { value: "18/42", label: "ACHIEVEMENTS", color: "magenta" as const, icon: <Trophy className="w-5 h-5" />, sub: "43% unlocked" },
-]
-
-const goals = [
-  { title: "Reach Level 20", desc: "Unlock Advanced Portfolio features", pct: 90, current: "18/20 levels", color: "hsl(174,100%,50%)" },
-  { title: "Complete 5 Certifications", desc: "Earn the Certified Pro badge", pct: 60, current: "3/5 certs", color: "hsl(60,100%,50%)" },
-  { title: "Master 5 Skills", desc: "Reach max XP in 5 skill nodes", pct: 60, current: "3/5 skills", color: "hsl(330,100%,65%)" },
-]
-
-const activities = [
-  { icon: Briefcase, text: "Added Senior Developer experience", time: "2 hours ago", xp: "+200 XP", color: "cyan" as const },
-  { icon: Award, text: "Earned 'First Certification' badge", time: "1 day ago", xp: "+100 XP", color: "yellow" as const },
-  { icon: BookOpen, text: "Completed React Advanced course", time: "3 days ago", xp: "+150 XP", color: "magenta" as const },
-  { icon: GitBranch, text: "TypeScript skill reached Lv.4", time: "5 days ago", xp: "+50 XP", color: "green" as const },
-  { icon: MapPin, text: "Updated location: Buenos Aires", time: "1 week ago", xp: "+10 XP", color: "cyan" as const },
-]
-
-// =============================================================================
 // Page Component
 // =============================================================================
 
@@ -76,6 +51,9 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   setRequestLocale(locale)
 
   const tActions = await getTranslations({ locale, namespace: 'dashboard.home.quickActions' })
+  const tStats = await getTranslations({ locale, namespace: 'dashboard.home.stats' })
+  const tGoals = await getTranslations({ locale, namespace: 'dashboard.home.goals' })
+  const tActivity = await getTranslations({ locale, namespace: 'dashboard.home.activity' })
 
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -109,7 +87,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   const displayName = getDisplayName(userData.name, userData.email)
   const initials = getInitials(userData.name, userData.email)
 
-  // Mock user stats
+  // Mock user stats - using translations for labels
   const userStats = {
     currentXP: 1900,
     maxXP: 2450,
@@ -117,12 +95,36 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
     streakDays: 12,
   }
 
-  // Quick Actions with functional links
+  // Stats data with translations
+  const stats = [
+    { value: userStats.currentXP.toLocaleString(), label: tStats('totalXP'), color: "cyan" as const, icon: <Zap className="w-5 h-5" />, sub: tStats('xpSub', { count: 150 }) },
+    { value: userStats.level.toString(), label: tStats('currentLevel'), color: "yellow" as const, icon: <TrendingUp className="w-5 h-5" />, sub: "Explorer rank" },
+    { value: "7", label: tStats('experiences'), color: "green" as const, icon: <Star className="w-5 h-5" />, sub: tStats('expSub', { count: 2 }) },
+    { value: "18/42", label: tStats('achievements'), color: "magenta" as const, icon: <Trophy className="w-5 h-5" />, sub: tStats('achSub', { percent: 43 }) },
+  ]
+
+  // Quick Actions with translations
   const quickActions = [
     { icon: "Briefcase", label: tActions('timeline'), color: "hsl(174,100%,50%)", href: `/${locale}/dashboard/timeline` },
     { icon: "Clock", label: tActions('projects'), color: "hsl(60,100%,50%)", href: `/${locale}/dashboard/projects` },
     { icon: "GitBranch", label: tActions('skills'), color: "hsl(330,100%,65%)", href: `/${locale}/dashboard/skills` },
     { icon: "User", label: tActions('portfolio'), color: "hsl(150,100%,45%)", href: `/${locale}/dashboard/portfolio` },
+  ]
+
+  // Goals - keeping mock data for now, just translating titles
+  const goals = [
+    { title: "Reach Level 20", desc: "Unlock Advanced Portfolio features", pct: 90, current: "18/20 levels", color: "hsl(174,100%,50%)" },
+    { title: "Complete 5 Certifications", desc: "Earn the Certified Pro badge", pct: 60, current: "3/5 certs", color: "hsl(60,100%,50%)" },
+    { title: "Master 5 Skills", desc: "Reach max XP in 5 skill nodes", pct: 60, current: "3/5 skills", color: "hsl(330,100%,65%)" },
+  ]
+
+  // Activities - keeping mock data for now
+  const activities = [
+    { icon: Briefcase, text: "Added Senior Developer experience", time: "2 hours ago", xp: "+200 XP", color: "cyan" as const },
+    { icon: Award, text: "Earned 'First Certification' badge", time: "1 day ago", xp: "+100 XP", color: "yellow" as const },
+    { icon: BookOpen, text: "Completed React Advanced course", time: "3 days ago", xp: "+150 XP", color: "magenta" as const },
+    { icon: GitBranch, text: "TypeScript skill reached Lv.4", time: "5 days ago", xp: "+50 XP", color: "green" as const },
+    { icon: MapPin, text: "Updated location: Buenos Aires", time: "1 week ago", xp: "+10 XP", color: "cyan" as const },
   ]
 
   return (
@@ -179,9 +181,9 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Target className="w-4 h-4 text-[hsl(174,100%,50%)]" />
-                <h3 className="font-mono font-bold text-sm text-foreground">Current Goals</h3>
+                <h3 className="font-mono font-bold text-sm text-foreground">{tGoals('title')}</h3>
               </div>
-              <span className="text-[10px] font-mono text-muted-foreground">3 active</span>
+              <span className="text-[10px] font-mono text-muted-foreground">{tGoals('active', { count: 3 })}</span>
             </div>
             <div className="flex flex-col gap-3">
               {goals.map((goal) => (
@@ -219,9 +221,9 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Zap className="w-4 h-4 text-[hsl(60,100%,50%)]" />
-                <h3 className="font-mono font-bold text-sm text-foreground">Recent Activity</h3>
+                <h3 className="font-mono font-bold text-sm text-foreground">{tActivity('title')}</h3>
               </div>
-              <span className="text-[10px] font-mono text-[hsl(174,100%,50%)] cursor-pointer hover:underline">VIEW ALL</span>
+              <span className="text-[10px] font-mono text-[hsl(174,100%,50%)] cursor-pointer hover:underline">{tActivity('viewAll')}</span>
             </div>
             <div className="border border-[hsl(174,100%,50%,0.12)] bg-[hsl(200,30%,8%)]">
               {activities.map((act, i) => {

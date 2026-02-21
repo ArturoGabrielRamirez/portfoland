@@ -165,6 +165,49 @@
         "new": "new"
       }
     },
+    "home": {
+      "stats": {
+        "totalXP": "TOTAL XP",
+        "currentLevel": "CURRENT LEVEL",
+        "experiences": "EXPERIENCES",
+        "achievements": "ACHIEVEMENTS"
+      },
+      "goals": {
+        "title": "Current Goals",
+        "active": "{count} active"
+      },
+      "activity": {
+        "title": "Recent Activity",
+        "viewAll": "VIEW ALL"
+      },
+      "quickActions": {
+        "timeline": "Timeline",
+        "projects": "Projects",
+        "skills": "Skills",
+        "portfolio": "Portfolio"
+      }
+    }
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "timeline": "Timeline",
+    "skills": "Skills",
+    "projects": "Projects",
+    "online": "ONLINE"
+  },
+        "generateCVDesc": "Create your AI CV",
+        "sharePortfolio": "Share Portfolio",
+        "sharePortfolioDesc": "Share your profile"
+      },
+      "recentAchievements": {
+        "title": "RECENT ACHIEVEMENTS",
+        "viewAll": "View all"
+      },
+      "recentActivity": {
+        "title": "RECENT ACTIVITY",
+        "new": "new"
+      }
+    },
     "progress": {
       "title": "Profile Completion",
       "percentage": "{percent}% Complete",
@@ -305,34 +348,6 @@
         "archived": "Archived"
       },
       "deleteConfirm": "Delete \"{title}\"?"
-    },
-    "dashboard": {
-      "home": {
-        "stats": {
-          "totalXP": "TOTAL XP",
-          "currentLevel": "CURRENT LEVEL",
-          "experiences": "EXPERIENCES",
-          "achievements": "ACHIEVEMENTS",
-          "xpSub": "+{count} this week",
-          "levelSub": "{rank} rank",
-          "expSub": "{count} active",
-          "achSub": "{percent}% unlocked"
-        },
-        "goals": {
-          "title": "Current Goals",
-          "active": "{count} active"
-        },
-        "activity": {
-          "title": "Recent Activity",
-          "viewAll": "VIEW ALL"
-        },
-        "quickActions": {
-          "timeline": "Timeline",
-          "projects": "Projects",
-          "skills": "Skills",
-          "portfolio": "Portfolio"
-        }
-      }
     }
   },
   "projects": {

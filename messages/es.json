@@ -153,6 +153,49 @@
         "editSkillsDesc": "Actualiza tu skill tree",
         "generateCV": "Generar CV",
         "generateCVDesc": "Crea tu CV con IA",
+        "sharePortfolio": "Compartir Portafolio",
+        "sharePortfolioDesc": "Comparte tu perfil"
+      },
+      "recentAchievements": {
+        "title": "LOGROS RECIENTES",
+        "viewAll": "Ver todos"
+      },
+      "recentActivity": {
+        "title": "ACTIVIDAD RECIENTE",
+        "new": "nuevo"
+      },
+      "home": {
+        "stats": {
+          "totalXP": "XP TOTAL",
+          "currentLevel": "NIVEL ACTUAL",
+          "experiences": "EXPERIENCIAS",
+          "achievements": "LOGROS"
+        },
+        "goals": {
+          "title": "Objetivos Actuales",
+          "active": "{count} activos"
+        },
+        "activity": {
+          "title": "Actividad Reciente",
+          "viewAll": "VER TODO"
+        },
+        "quickActions": {
+          "timeline": "Linea de Tiempo",
+          "projects": "Proyectos",
+          "skills": "Habilidades",
+          "portfolio": "Portafolio"
+        }
+      }
+    },
+    "nav": {
+      "dashboard": "Panel",
+      "timeline": "Linea de Tiempo",
+      "skills": "Habilidades",
+      "projects": "Proyectos",
+      "online": "EN LINEA"
+    }
+  },
+        "generateCVDesc": "Crea tu CV con IA",
         "sharePortfolio": "Compartir Portfolio",
         "sharePortfolioDesc": "Comparte tu perfil"
       },
@@ -305,34 +348,6 @@
         "archived": "Archivado"
       },
       "deleteConfirm": "Eliminar \"{title}\"?"
-    },
-    "dashboard": {
-      "home": {
-        "stats": {
-          "totalXP": "XP TOTAL",
-          "currentLevel": "NIVEL ACTUAL",
-          "experiences": "EXPERIENCIAS",
-          "achievements": "LOGROS",
-          "xpSub": "+{count} esta semana",
-          "levelSub": "rango {rank}",
-          "expSub": "{count} activas",
-          "achSub": "{percent}% desbloqueados"
-        },
-        "goals": {
-          "title": "Objetivos Actuales",
-          "active": "{count} activos"
-        },
-        "activity": {
-          "title": "Actividad Reciente",
-          "viewAll": "VER TODO"
-        },
-        "quickActions": {
-          "timeline": "Linea de Tiempo",
-          "projects": "Proyectos",
-          "skills": "Habilidades",
-          "portfolio": "Portfolio"
-        }
-      }
     }
   },
   "projects": {

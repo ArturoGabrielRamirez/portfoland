@@ -88,7 +88,7 @@ export function AIAssistantWidget({ className }: AIAssistantWidgetProps) {
       >
         {/* Hex Eye */}
         <div className="relative flex-shrink-0">
-          <svg width="48" height="48" viewBox="0 0 100 100" className="transition-all duration-500">
+          <svg width="56" height="56" viewBox="0 0 100 100" className="transition-all duration-500">
             {/* Outer glow ring - only when awake */}
             <circle
               cx="50" cy="50" r="46"
@@ -126,34 +126,46 @@ export function AIAssistantWidget({ className }: AIAssistantWidgetProps) {
                 <>
                   {status === "thinking" ? (
                     <>
-                      {/* Thinking - CHAOTIC SEARCH - multiple pupils going crazy */}
-                      <ellipse cx="50" cy="50" rx="22" ry="16" fill="none" stroke={colors.main} strokeWidth="1" opacity="0.3" className="animate-wiggle" />
+                      {/* Thinking - SEARCHING EYES - natural eye looking around */}
+                      <ellipse cx="50" cy="50" rx="22" ry="16" fill={colors.secondary} stroke={colors.main} strokeWidth="1" opacity="0.5" />
                       
-                      {/* 3 chaotic pupils */}
-                      <circle cx="50" cy="50" r="7" fill={colors.main} className="animate-chaos-1" style={{ filter: `drop-shadow(0 0 4px ${colors.main})` }} />
-                      <circle cx="50" cy="50" r="6" fill={colors.main} className="animate-chaos-2" style={{ filter: `drop-shadow(0 0 4px ${colors.main})`, animationDelay: "0.1s" }} />
-                      <circle cx="50" cy="50" r="5" fill={colors.main} className="animate-chaos-3" style={{ filter: `drop-shadow(0 0 4px ${colors.main})`, animationDelay: "0.2s" }} />
+                      {/* Eyebrow */}
+                      <path d="M38 38 Q50 32 62 38" fill="none" stroke={colors.main} strokeWidth="2" strokeLinecap="round" className="animate-smile" />
                       
-                      {/* Chaotic rings */}
-                      <circle cx="50" cy="50" r="30" fill="none" stroke={colors.main} strokeWidth="0.5" strokeDasharray="3 7" opacity="0.5" className="animate-spin-fast" />
-                      <circle cx="50" cy="50" r="38" fill="none" stroke={colors.main} strokeWidth="0.5" strokeDasharray="2 6" opacity="0.4" className="animate-spin-fast-reverse" />
+                      {/* Single searching pupil with blink */}
+                      <g className="animate-eye-searching">
+                        <circle cx="50" cy="50" r="8" fill={colors.main} style={{ filter: `drop-shadow(0 0 6px ${colors.main})` }} className="animate-happy-blink" />
+                        <circle cx="50" cy="50" r="4" fill="hsl(200,30%,5%)" />
+                        <circle cx="48" cy="48" r="2" fill="white" opacity="0.8" />
+                      </g>
+                      
+                      {/* Subtle processing rings */}
+                      <circle cx="50" cy="50" r="32" fill="none" stroke={colors.main} strokeWidth="0.5" opacity="0.3" className="animate-spin-think" />
                     </>
                   ) : status === "ready" ? (
                     <>
                       {/* Ready - happy and satisfied - GREEN */}
-                      <ellipse cx="50" cy="50" rx="18" ry="12" fill={colors.secondary} stroke={colors.main} strokeWidth="1" opacity="0.5" />
-                      {/* Happy eye - curved like :) */}
-                      <path d="M38 50 Q50 62 62 50" fill="none" stroke={colors.main} strokeWidth="2.5" strokeLinecap="round" className="animate-happy-bounce" />
-                      <circle cx="50" cy="50" r="4" fill={colors.main} style={{ filter: `drop-shadow(0 0 6px ${colors.main})` }} />
+                      <ellipse cx="50" cy="50" rx="20" ry="14" fill={colors.secondary} stroke={colors.main} strokeWidth="1" opacity="0.5" />
+                      {/* Smile above the eye */}
+                      <path d="M38 42 Q50 35 62 42" fill="none" stroke={colors.main} strokeWidth="2" strokeLinecap="round" className="animate-smile" />
+                      {/* Eye with pupil + iris like others */}
+                      <g className="animate-ready-happy">
+                        <circle cx="50" cy="50" r="7" fill={colors.main} style={{ filter: `drop-shadow(0 0 6px ${colors.main})` }} className="animate-happy-blink" />
+                        <circle cx="50" cy="50" r="3" fill="hsl(200,30%,5%)" />
+                        <circle cx="48" cy="48" r="1.5" fill="white" opacity="0.8" />
+                      </g>
                     </>
                   ) : (
                     <>
                       {/* Normal awake - looking around + blinking */}
                       <ellipse cx="50" cy="50" rx="20" ry="14" fill={colors.secondary} stroke={colors.main} strokeWidth="1" opacity="0.4" />
                       
+                      {/* Eyebrow */}
+                      <path d="M38 38 Q50 32 62 38" fill="none" stroke={colors.main} strokeWidth="2" strokeLinecap="round" className="animate-smile" />
+                      
                       {/* Blinking + looking */}
                       <g className="animate-eye-awake-blink-look">
-                        <circle cx="50" cy="50" r="7" fill={colors.main} style={{ filter: `drop-shadow(0 0 4px ${colors.main})` }} />
+                        <circle cx="50" cy="50" r="7" fill={colors.main} style={{ filter: `drop-shadow(0 0 4px ${colors.main})` }} className="animate-happy-blink" />
                         <circle cx="50" cy="50" r="3" fill="hsl(200,30%,5%)" />
                         <circle cx="48" cy="48" r="1.5" fill="white" opacity="0.8" />
                       </g>
@@ -162,11 +174,14 @@ export function AIAssistantWidget({ className }: AIAssistantWidgetProps) {
                 </>
               ) : (
                 <>
-                  {/* Dormant - sleeping */}
-                  <path d="M30 50 Q50 42 70 50" fill="none" stroke={colors.main} strokeWidth="2" strokeLinecap="round" opacity="0.6" className="transition-all duration-500" />
-                  <g className="animate-sleep-z opacity-40">
-                    <text x="65" y="30" fill={colors.main} fontSize="12" fontFamily="monospace">z</text>
-                    <text x="72" y="22" fill={colors.main} fontSize="8" fontFamily="monospace">z</text>
+                  {/* Dormant - sleeping with closed eye + Zzz */}
+                  {/* Closed eye line */}
+                  <path d="M30 50 Q50 42 70 50" fill="none" stroke={colors.main} strokeWidth="2" strokeLinecap="round" opacity="0.6" className="transition-all duration-500 animate-sleep-eye" />
+                  {/* Zzz animation */}
+                  <g className="animate-sleep-z">
+                    <text x="50" y="35" fill={colors.main} fontSize="14" fontFamily="monospace" textAnchor="middle" opacity="0.7">Z</text>
+                    <text x="62" y="28" fill={colors.main} fontSize="10" fontFamily="monospace" textAnchor="middle" opacity="0.6">z</text>
+                    <text x="70" y="22" fill={colors.main} fontSize="7" fontFamily="monospace" textAnchor="middle" opacity="0.5">z</text>
                   </g>
                   <circle cx="50" cy="50" r="35" fill={colors.main} fillOpacity="0.05" className="animate-hex-idle-breathe" />
                 </>

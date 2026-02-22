@@ -858,6 +858,23 @@
   animation: sleep-z 2s ease-in-out infinite;
 }
 
+/* Sleep eye - occasional twitch/half-open */
+@keyframes sleep-eye {
+  0%, 90%, 100% {
+    transform: scaleY(1);
+    opacity: 0.6;
+  }
+  95% {
+    transform: scaleY(0.15);
+    opacity: 0.9;
+  }
+}
+
+.animate-sleep-eye {
+  animation: sleep-eye 6s ease-in-out infinite;
+  transform-origin: center;
+}
+
 /* Panel expand animation */
 @keyframes expand-in {
   from {
@@ -1011,6 +1028,82 @@
 
 .animate-wiggle {
   animation: wiggle 0.5s ease-in-out infinite;
+}
+
+/* Eye Searching - thinking state */
+@keyframes eye-searching {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+.animate-eye-searching {
+  animation: eye-searching 1.2s ease-in-out infinite;
+}
+
+/* Thinking spin - slower than chaotic */
+@keyframes spin-think {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-think {
+  animation: spin-think 3s linear infinite;
+  transform-origin: center;
+}
+
+/* Ready state - happy animations */
+@keyframes ready-happy {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.animate-ready-happy {
+  animation: ready-happy 2s ease-in-out infinite;
+}
+
+@keyframes smile-happy {
+  0%, 100% {
+    transform: translateY(0) scaleX(1);
+  }
+  50% {
+    transform: translateY(-1px) scaleX(1.05);
+  }
+}
+
+.animate-smile {
+  animation: smile-happy 1.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes happy-blink {
+  0%, 90%, 100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+
+.animate-happy-blink {
+  animation: happy-blink 5s ease-in-out infinite;
+  transform-origin: center;
 }
 
 @keyframes spin-slower {

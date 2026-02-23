@@ -17,6 +17,9 @@ import {
   FolderOpen,
   Mail,
   Bot,
+  MessageSquare,
+  Image,
+  Briefcase,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -27,7 +30,7 @@ import type { PanelNavigationProps } from '../types/portfolio';
 // Icon Map
 // =============================================================================
 
-const ICON_MAP = {
+const ICON_MAP: Record<string, any> = {
   User,
   FileText,
   Clock,
@@ -35,7 +38,10 @@ const ICON_MAP = {
   FolderOpen,
   Mail,
   Bot,
-} as const;
+  Briefcase,
+  MessageSquare,
+  Image,
+};
 
 // =============================================================================
 // Component

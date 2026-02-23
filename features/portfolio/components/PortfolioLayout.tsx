@@ -40,7 +40,7 @@ import { TechAI } from './tech/TechAI';
 // Section Component Maps
 // =============================================================================
 
-const classicSections: Record<PortfolioSectionKey, React.ComponentType<PortfolioSectionProps>> = {
+const classicSections: Partial<Record<PortfolioSectionKey, React.ComponentType<PortfolioSectionProps>>> = {
   hero: ClassicHero,
   about: ClassicAbout,
   timeline: ClassicTimeline,
@@ -50,7 +50,7 @@ const classicSections: Record<PortfolioSectionKey, React.ComponentType<Portfolio
   ai: ClassicAI,
 };
 
-const techSections: Record<PortfolioSectionKey, React.ComponentType<PortfolioSectionProps>> = {
+const techSections: Partial<Record<PortfolioSectionKey, React.ComponentType<PortfolioSectionProps>>> = {
   hero: TechHero,
   about: TechAbout,
   timeline: TechTimeline,

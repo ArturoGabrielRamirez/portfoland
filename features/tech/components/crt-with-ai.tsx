@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react"
 import { Send } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { motion, AnimatePresence } from "framer-motion"
 
 // =============================================================================
 // Types
@@ -139,6 +140,10 @@ function AIEye({
     const pupilX = isAsleepLike || isDrowsy ? 0 : Math.max(-6, Math.min(6, mouseOffset.x * 6)) + jitter.x
     const pupilY = isAsleepLike || isDrowsy ? 0 : Math.max(-6, Math.min(6, mouseOffset.y * 6)) + jitter.y
 
+    // Smooth Closure Stages (Y-scaling of iris)
+    const irisRY = isSleeping ? 0 : (isDrowsy ? 4 : 13)
+    const irisStrokeOpacity = isDrowsy ? 0.3 : 0.6
+
     return (
         <svg
             width="90"
@@ -202,22 +207,26 @@ function AIEye({
             {/* === AWAKE / THINKING / SUCCESS — Iris area === */}
             {!isSleeping && !isBlinking && (
                 <>
-                    {/* Iris Ellipse */}
-                    <ellipse
-                        cx="50" cy="50" rx="20" ry="13"
+                    {/* Iris Ellipse — Animated ry for smooth closure */}
+                    <motion.ellipse
+                        cx="50" cy="50" rx="20"
+                        animate={{ ry: irisRY, opacity: irisStrokeOpacity }}
+                        transition={{ type: "spring", stiffness: 100, damping: 15 }}
                         fill={mainColor}
                         fillOpacity="0.1"
                         stroke={mainColor}
                         strokeWidth="1"
-                        opacity={isDrowsy ? 0.3 : 0.6}
                     />
 
                     {/* Pupil group — follows mouse + jitter */}
-                    <g
-                        style={{
-                            transform: `translate(${pupilX}px, ${pupilY}px)`,
-                            transition: isThinking ? "none" : "transform 0.15s ease-out",
+                    <motion.g
+                        animate={{
+                            x: pupilX,
+                            y: pupilY,
+                            scale: isDrowsy ? 0.6 : 1,
+                            opacity: isDrowsy ? 0.4 : 1
                         }}
+                        transition={isThinking ? { duration: 0 } : { type: "spring", stiffness: 200, damping: 20 }}
                     >
                         <circle
                             cx="50" cy="50" r={isDrowsy ? 5 : 8}
@@ -227,7 +236,7 @@ function AIEye({
                         />
                         <circle cx="50" cy="50" r={isDrowsy ? 2 : 4} fill="hsl(200,30%,5%)" />
                         <circle cx="47.5" cy="47.5" r="1.8" fill="white" opacity="0.75" />
-                    </g>
+                    </motion.g>
                 </>
             )}
 
@@ -430,13 +439,23 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
             className={cn("relative border bg-[hsl(200,30%,6%)] overflow-hidden flex flex-col transition-all duration-700 h-[320px] min-h-[320px] cursor-pointer", className)}
             style={{ borderColor }}
         >
+            <style jsx global>{`
+                .crt-scrollbar::-webkit-scrollbar { width: 3px; }
+                .crt-scrollbar::-webkit-scrollbar-track { background: transparent; }
+                .crt-scrollbar::-webkit-scrollbar-thumb {
+                    background: rgba(0, 255, 230, 0.2);
+                    border-radius: 10px;
+                }
+                .crt-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(0, 255, 230, 0.4); }
+            `}</style>
+
             <div className="crt-scanner" />
 
             {/* Header */}
             <div className="flex items-center justify-between px-3 py-2 border-b bg-[hsl(200,30%,8%)]" style={{ borderColor }}>
                 <div className="flex items-center gap-2">
                     <div className={cn("w-1.5 h-1.5 rounded-full shadow-[0_0_4px]", aiState === "success" ? "bg-green-500 shadow-green-500" : (aiState === "sleeping" || aiState === "drowsy" ? "bg-red-500 shadow-red-500" : "bg-cyan-500 shadow-cyan-500"))} />
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground/60">SYS_CONSOLE v3.7_AI</span>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground/60">SYS_CONSOLE v3.8_AI</span>
                 </div>
                 <div className="flex gap-3 text-[9px] font-mono">
                     <span className={cn(aiState === "sleeping" || aiState === "drowsy" ? "text-red-500" : "text-cyan-400")}>
@@ -448,9 +467,9 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
             <div className="flex-1 flex min-h-0">
                 {/* Console */}
                 <div className="flex-1 p-4 font-mono text-[11px] leading-relaxed overflow-hidden flex flex-col">
-                    <div ref={scrollRef} className="flex-1 overflow-y-auto scrollbar-hide py-1">
+                    <div ref={scrollRef} className="flex-1 overflow-y-auto crt-scrollbar py-1">
 
-                        {/* 1. INITIAL SYSTEM INFO (Always visible at top or integrated) */}
+                        {/* 1. INITIAL SYSTEM INFO */}
                         <div className="text-[hsl(174,100%,50%)] mb-1">
                             <span className="text-muted-foreground">$ </span>
                             <DecipherText text={`BIENVENIDO, ${userName.toUpperCase()}`} active={true} />
@@ -461,24 +480,37 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
                             </div>
                         ))}
 
-                        {/* 2. CHAT HISTORY (If enabled) */}
-                        {showingChat && messages.length > 0 && (
-                            <div className="mt-4 pt-4 border-t border-white/5 space-y-3">
-                                {messages.map((msg, idx) => (
-                                    <div key={idx} className={cn("flex flex-col", msg.role === 'user' ? "text-foreground" : "text-[hsl(174,100%,50%)]")}>
-                                        <div className="flex gap-1">
-                                            <span className="text-muted-foreground">{msg.role === 'user' ? "$ query" : "> ai_resp"}:</span>
-                                            <span className={msg.role === 'ai' ? "animate-console-type-in" : ""}>{msg.content}</span>
+                        {/* 2. CHAT HISTORY with Exit Animation towards AI */}
+                        <AnimatePresence>
+                            {showingChat && messages.length > 0 && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{
+                                        opacity: 0,
+                                        x: 200,
+                                        scale: 0.2,
+                                        filter: "blur(4px)",
+                                        transition: { duration: 0.8, ease: "backIn" }
+                                    }}
+                                    className="mt-4 pt-4 border-t border-white/5 space-y-3 origin-right"
+                                >
+                                    {messages.map((msg, idx) => (
+                                        <div key={idx} className={cn("flex flex-col", msg.role === 'user' ? "text-foreground" : "text-[hsl(174,100%,50%)]")}>
+                                            <div className="flex gap-1">
+                                                <span className="text-muted-foreground">{msg.role === 'user' ? "$ query" : "> ai_resp"}:</span>
+                                                <span className={msg.role === 'ai' ? "animate-console-type-in" : ""}>{msg.content}</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
-                                {aiState === "thinking" && (
-                                    <div className="text-purple-400 animate-pulse">
-                                        <span className="text-muted-foreground">&gt; ai_resp:</span> Procesando respuesta neural...
-                                    </div>
-                                )}
-                            </div>
-                        )}
+                                    ))}
+                                    {aiState === "thinking" && (
+                                        <div className="text-purple-400 animate-pulse">
+                                            <span className="text-muted-foreground">&gt; ai_resp:</span> Procesando respuesta neural...
+                                        </div>
+                                    )}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
 
                         {/* 3. PROMPT Area */}
                         <div className="mt-4 flex items-start gap-1 relative opacity-80">

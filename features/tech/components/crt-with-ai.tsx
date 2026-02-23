@@ -32,8 +32,8 @@ interface ChatMessage {
 // Constants
 // =============================================================================
 
-const IDLE_TIMEOUT_MS = 45 * 1000
-const DROWSY_BEFORE_MS = 15 * 1000
+const IDLE_TIMEOUT_MS = 60 * 1000
+const INACTIVITY_RETURN_MS = 5000 // 5 seconds for testing views
 const AUTONOMOUS_IDLE_MS = 3000
 
 const BOOT_LINES: ConsoleLine[] = [
@@ -263,12 +263,57 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
 
     const idleTimer = useRef<NodeJS.Timeout | null>(null)
     const autonomousTimer = useRef<NodeJS.Timeout | null>(null)
-    const chatReturnTimer = useRef<NodeJS.Timeout | null>(null)
+    const inactivityTimer = useRef<NodeJS.Timeout | null>(null)
     const blinkTimer = useRef<NodeJS.Timeout | null>(null)
     const scanningInterval = useRef<NodeJS.Timeout | null>(null)
 
+    const containerRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
     const eyeRef = useRef<HTMLDivElement>(null)
+
+    // --- Persistence Simulation ---
+    useEffect(() => {
+        const saved = localStorage.getItem("ai_chat_history")
+        if (saved) {
+            const parsed = JSON.parse(saved)
+            setMessages(parsed.messages)
+            if (parsed.messages.length > 0) {
+                // Recover chat display lines from last message
+                const last = parsed.messages[parsed.messages.length - 1]
+                if (last.role === "ai") {
+                    setChatDisplayLines([
+                        { text: "Recovering session history...", color: "purple", prefix: "> " },
+                        { text: `AI: ${last.content}`, color: "cyan", prefix: "> " }
+                    ])
+                    setChatLinesVisible(2)
+                }
+            }
+        }
+    }, [])
+
+    useEffect(() => {
+        if (messages.length > 0) {
+            localStorage.setItem("ai_chat_history", JSON.stringify({ messages }))
+        }
+    }, [messages])
+
+    // --- Inactivity Logic (Return to user info) ---
+    const resetInactivity = useCallback(() => {
+        if (inactivityTimer.current) clearTimeout(inactivityTimer.current)
+        inactivityTimer.current = setTimeout(() => {
+            if (showingChat && aiState !== "thinking") {
+                // Transition back: Stats -> Drowsy -> Sleeping
+                setShowingChat(false)
+                setAIState("drowsy")
+                setTimeout(() => setAIState("sleeping"), 3000)
+            }
+        }, INACTIVITY_RETURN_MS)
+    }, [showingChat, aiState])
+
+    useEffect(() => {
+        resetInactivity()
+        return () => { if (inactivityTimer.current) clearTimeout(inactivityTimer.current) }
+    }, [resetInactivity, message, aiState])
 
     // --- Autonomous scanning ---
     const startScanning = useCallback(() => {
@@ -294,7 +339,7 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
             if (isAutonomous) stopScanning()
             if (autonomousTimer.current) clearTimeout(autonomousTimer.current)
             autonomousTimer.current = setTimeout(() => {
-                if (!["sleeping", "thinking", "listening", "success"].includes(aiState)) startScanning()
+                if (!["sleeping", "thinking", "listening", "success", "drowsy"].includes(aiState)) startScanning()
             }, AUTONOMOUS_IDLE_MS)
 
             const rect = eyeRef.current.getBoundingClientRect()
@@ -306,21 +351,18 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
         return () => window.removeEventListener("mousemove", handleMouseMove)
     }, [aiState, isAutonomous, startScanning, stopScanning])
 
-    // --- Boot Sequence (Run ONCE on mount) ---
+    // --- Boot Link (Mount only) ---
     useEffect(() => {
         setVisibleLines(0)
-
-        // Start welcome + system lines
         const bootTimer = setTimeout(() => {
             BOOT_LINES.forEach((_, i) => {
                 setTimeout(() => setVisibleLines(i + 1), i * 300)
             })
         }, 1500)
-
         return () => clearTimeout(bootTimer)
     }, [])
 
-    // --- Blink Interval (State dependent) ---
+    // --- Blink Interval ---
     useEffect(() => {
         const triggerBlink = () => {
             if (aiState === "sleeping") return
@@ -328,14 +370,8 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
             setTimeout(() => setIsBlinking(false), 200)
             blinkTimer.current = setTimeout(triggerBlink, Math.random() * 4000 + 2000)
         }
-
-        if (aiState !== "sleeping") {
-            blinkTimer.current = setTimeout(triggerBlink, 3000)
-        }
-
-        return () => {
-            if (blinkTimer.current) clearTimeout(blinkTimer.current)
-        }
+        if (aiState !== "sleeping") blinkTimer.current = setTimeout(triggerBlink, 3000)
+        return () => { if (blinkTimer.current) clearTimeout(blinkTimer.current) }
     }, [aiState])
 
     // --- Cursor blink ---
@@ -343,6 +379,13 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
         const interval = setInterval(() => setCursorVisible(v => !v), 530)
         return () => clearInterval(interval)
     }, [])
+
+    const wakeAI = () => {
+        if (aiState === "sleeping" || aiState === "drowsy") {
+            setAIState("awake")
+            resetInactivity()
+        }
+    }
 
     const handleSend = () => {
         if (!message.trim()) return
@@ -358,27 +401,18 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
         ])
         setChatLinesVisible(2)
 
-        // Sim Response + Success Flash
         setTimeout(() => {
+            const aiReply = `He procesado "${userMsg}". Red estable.`
             const aiLines: ConsoleLine[] = [
                 { text: `query --user "${userMsg}"`, color: "white", prefix: "$ " },
                 { text: "Data sync complete [OK]", color: "green", prefix: "> " },
-                { text: `AI: He procesado "${userMsg}". Red estable.`, color: "cyan", prefix: "> " },
+                { text: `AI: ${aiReply}`, color: "cyan", prefix: "> " },
             ]
             setChatDisplayLines(aiLines)
             setChatLinesVisible(aiLines.length)
-
-            // Trigger SUCCESS Flash (Green)
+            setMessages(prev => [...prev, { role: "ai", content: aiReply }])
             setAIState("success")
-
-            setTimeout(() => {
-                setAIState("awake")
-                if (chatReturnTimer.current) clearTimeout(chatReturnTimer.current)
-                chatReturnTimer.current = setTimeout(() => {
-                    setShowingChat(false)
-                    setChatDisplayLines([])
-                }, 8000)
-            }, 2500)
+            setTimeout(() => setAIState("awake"), 2500)
         }, 2500)
     }
 
@@ -386,7 +420,9 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
 
     return (
         <div
-            className={cn("relative border bg-[hsl(200,30%,6%)] overflow-hidden flex flex-col transition-all duration-700 h-[320px] min-h-[320px]", className)}
+            ref={containerRef}
+            onClick={wakeAI}
+            className={cn("relative border bg-[hsl(200,30%,6%)] overflow-hidden flex flex-col transition-all duration-700 h-[320px] min-h-[320px] cursor-pointer", className)}
             style={{ borderColor }}
         >
             <div className="crt-scanner" />
@@ -394,11 +430,11 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
             {/* Header */}
             <div className="flex items-center justify-between px-3 py-2 border-b bg-[hsl(200,30%,8%)]" style={{ borderColor }}>
                 <div className="flex items-center gap-2">
-                    <div className={cn("w-1.5 h-1.5 rounded-full shadow-[0_0_4px]", aiState === "success" ? "bg-green-500 shadow-green-500" : "bg-cyan-500 shadow-cyan-500")} />
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground/60">SYS_CONSOLE v3.5_AI</span>
+                    <div className={cn("w-1.5 h-1.5 rounded-full shadow-[0_0_4px]", aiState === "success" ? "bg-green-500 shadow-green-500" : (aiState === "sleeping" || aiState === "drowsy" ? "bg-red-500 shadow-red-500" : "bg-cyan-500 shadow-cyan-500"))} />
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground/60">SYS_CONSOLE v3.6_AI</span>
                 </div>
                 <div className="flex gap-3 text-[9px] font-mono">
-                    <span className={cn(aiState === "sleeping" ? "text-red-500" : "text-cyan-400")}>
+                    <span className={cn(aiState === "sleeping" || aiState === "drowsy" ? "text-red-500" : "text-cyan-400")}>
                         STATUS: {aiState.toUpperCase()}
                     </span>
                 </div>
@@ -435,8 +471,11 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
                                 <input
                                     ref={inputRef}
                                     value={message}
-                                    onChange={(e) => setMessage(e.target.value)}
-                                    onFocus={() => aiState === "sleeping" && setAIState("awake")}
+                                    onChange={(e) => {
+                                        setMessage(e.target.value)
+                                        resetInactivity()
+                                        if (aiState === "sleeping" || aiState === "drowsy") wakeAI()
+                                    }}
                                     onKeyDown={e => e.key === "Enter" && handleSend()}
                                     className="w-full bg-transparent border-none outline-none text-foreground p-0 m-0 caret-transparent"
                                     placeholder={aiState === "sleeping" ? "IA_HIBER (Click to wake)..." : "Neural Command..."}
@@ -446,8 +485,8 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
                                     className={cn("absolute top-0 w-2 h-4 transition-colors", cursorVisible ? "opacity-100" : "opacity-0")}
                                     style={{
                                         left: `${(message.length || 0) * 7.5}px`,
-                                        background: aiState === "sleeping" ? "hsl(0,80%,55%)" : "hsl(174,100%,50%)",
-                                        boxShadow: `0 0 5px ${aiState === "sleeping" ? "hsl(0,80%,55%)" : "hsl(174,100%,50%)"}`
+                                        background: aiState === "sleeping" || aiState === "drowsy" ? "hsl(0,80%,55%)" : "hsl(174,100%,50%)",
+                                        boxShadow: `0 0 5px ${aiState === "sleeping" || aiState === "drowsy" ? "hsl(0,80%,55%)" : "hsl(174,100%,50%)"}`
                                     }}
                                 />
                             </div>

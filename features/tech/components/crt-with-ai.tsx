@@ -56,7 +56,47 @@ const colorClass: Record<string, string> = {
 }
 
 // =============================================================================
-// AI Eye SVG — Success Flash, Enhanced Thinking, Selective Blink
+// Helper Components
+// =============================================================================
+
+function DecipherText({ text, active, onComplete }: { text: string; active: boolean; onComplete?: () => void }) {
+    const [display, setDisplay] = useState("")
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+=-"
+    const timer = useRef<NodeJS.Timeout | null>(null)
+
+    useEffect(() => {
+        if (!active) {
+            setDisplay("")
+            return
+        }
+
+        let iteration = 0
+        const maxIterations = text.length * 3
+
+        timer.current = setInterval(() => {
+            setDisplay(
+                text.split("").map((char, index) => {
+                    if (char === " ") return " "
+                    if (index < iteration / 3) return text[index]
+                    return chars[Math.floor(Math.random() * chars.length)]
+                }).join("")
+            )
+
+            if (iteration >= maxIterations) {
+                if (timer.current) clearInterval(timer.current)
+                onComplete?.()
+            }
+            iteration++
+        }, 30)
+
+        return () => { if (timer.current) clearInterval(timer.current) }
+    }, [text, active, onComplete])
+
+    return <span>{display}</span>
+}
+
+// =============================================================================
+// AI Eye SVG — Success Flash, Advanced Thinking, Selective Blink
 // =============================================================================
 
 function AIEye({
@@ -75,7 +115,6 @@ function AIEye({
     const isDrowsy = state === "drowsy"
     const isAsleepLike = isSleeping || isWaking
 
-    // Color logic
     const mainColor = isSuccess
         ? "hsl(150,100%,45%)"
         : isThinking
@@ -267,21 +306,36 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
         return () => window.removeEventListener("mousemove", handleMouseMove)
     }, [aiState, isAutonomous, startScanning, stopScanning])
 
-    // --- Boot + Blink ---
+    // --- Boot Sequence (Run ONCE on mount) ---
     useEffect(() => {
         setVisibleLines(0)
-        BOOT_LINES.forEach((_, i) => {
-            setTimeout(() => setVisibleLines(i + 1), i * 300)
-        })
 
+        // Start welcome + system lines
+        const bootTimer = setTimeout(() => {
+            BOOT_LINES.forEach((_, i) => {
+                setTimeout(() => setVisibleLines(i + 1), i * 300)
+            })
+        }, 1500)
+
+        return () => clearTimeout(bootTimer)
+    }, [])
+
+    // --- Blink Interval (State dependent) ---
+    useEffect(() => {
         const triggerBlink = () => {
             if (aiState === "sleeping") return
             setIsBlinking(true)
             setTimeout(() => setIsBlinking(false), 200)
             blinkTimer.current = setTimeout(triggerBlink, Math.random() * 4000 + 2000)
         }
-        blinkTimer.current = setTimeout(triggerBlink, 3000)
-        return () => { if (blinkTimer.current) clearTimeout(blinkTimer.current) }
+
+        if (aiState !== "sleeping") {
+            blinkTimer.current = setTimeout(triggerBlink, 3000)
+        }
+
+        return () => {
+            if (blinkTimer.current) clearTimeout(blinkTimer.current)
+        }
     }, [aiState])
 
     // --- Cursor blink ---
@@ -324,7 +378,7 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
                     setShowingChat(false)
                     setChatDisplayLines([])
                 }, 8000)
-            }, 2500) // 2.5s green flash
+            }, 2500)
         }, 2500)
     }
 
@@ -341,7 +395,7 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
             <div className="flex items-center justify-between px-3 py-2 border-b bg-[hsl(200,30%,8%)]" style={{ borderColor }}>
                 <div className="flex items-center gap-2">
                     <div className={cn("w-1.5 h-1.5 rounded-full shadow-[0_0_4px]", aiState === "success" ? "bg-green-500 shadow-green-500" : "bg-cyan-500 shadow-cyan-500")} />
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground/60">SYS_CONSOLE v3.2_AI</span>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground/60">SYS_CONSOLE v3.5_AI</span>
                 </div>
                 <div className="flex gap-3 text-[9px] font-mono">
                     <span className={cn(aiState === "sleeping" ? "text-red-500" : "text-cyan-400")}>
@@ -355,11 +409,17 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
                 <div className="flex-1 p-4 font-mono text-[11px] leading-relaxed overflow-hidden flex flex-col">
                     <div className="flex-1 overflow-y-auto scrollbar-hide">
                         {!showingChat ? (
-                            BOOT_LINES.slice(0, visibleLines).map((line, i) => (
-                                <div key={i} className={colorClass[line.color]}>
-                                    <span className="text-muted-foreground">{line.prefix}</span>{line.text}
+                            <>
+                                <div className="text-[hsl(174,100%,50%)] mb-1">
+                                    <span className="text-muted-foreground">$ </span>
+                                    <DecipherText text={`BIENVENIDO, ${userName.toUpperCase()}`} active={true} />
                                 </div>
-                            ))
+                                {BOOT_LINES.slice(0, visibleLines).map((line, i) => (
+                                    <div key={i} className={colorClass[line.color]}>
+                                        <span className="text-muted-foreground">{line.prefix}</span>{line.text}
+                                    </div>
+                                ))}
+                            </>
                         ) : (
                             chatDisplayLines.slice(0, chatLinesVisible).map((line, i) => (
                                 <div key={i} className={cn(colorClass[line.color], "animate-console-type-in")}>

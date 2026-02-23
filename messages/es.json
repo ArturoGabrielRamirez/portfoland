@@ -184,6 +184,12 @@
         "title": "Objetivos Actuales",
         "active": "{count} activos"
       },
+      "skills": {
+        "title": "Tus Habilidades",
+        "viewAll": "VER TODO",
+        "level": "Nv.{level}",
+        "xp": "{xp} XP"
+      },
       "activity": {
         "title": "Actividad Reciente",
         "viewAll": "VER TODO"

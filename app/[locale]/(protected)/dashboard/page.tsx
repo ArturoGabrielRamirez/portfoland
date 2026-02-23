@@ -17,6 +17,7 @@ import {
   CRTMonitor,
   HexBadge,
   DashboardNav,
+  AIAssistantWidget,
 } from '@/features/tech'
 import type { DashboardPageProps } from '@/features/dashboard/types/dashboard'
 
@@ -54,7 +55,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   const tWelcomeMsg = await getTranslations({ locale, namespace: 'dashboard' })
   const tActions = await getTranslations({ locale, namespace: 'dashboard.home.quickActions' })
   const tStats = await getTranslations({ locale, namespace: 'dashboard.home.stats' })
-  const tGoals = await getTranslations({ locale, namespace: 'dashboard.home.goals' })
+  const tSkills = await getTranslations({ locale, namespace: 'dashboard.home.skills' })
   const tActivity = await getTranslations({ locale, namespace: 'dashboard.home.activity' })
 
   const session = await auth.api.getSession({
@@ -113,11 +114,11 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
     { icon: "User", label: tActions('portfolio'), color: "hsl(150,100%,45%)", href: `/${locale}/dashboard/portfolio` },
   ]
 
-  // Goals - keeping mock data for now, just translating titles
-  const goals = [
-    { title: "Reach Level 20", desc: "Unlock Advanced Portfolio features", pct: 90, current: "18/20 levels", color: "hsl(174,100%,50%)" },
-    { title: "Complete 5 Certifications", desc: "Earn the Certified Pro badge", pct: 60, current: "3/5 certs", color: "hsl(60,100%,50%)" },
-    { title: "Master 5 Skills", desc: "Reach max XP in 5 skill nodes", pct: 60, current: "3/5 skills", color: "hsl(330,100%,65%)" },
+  // Skills Preview - mock data showing top skills with XP
+  const skills = [
+    { name: "TypeScript", category: "Frontend", xp: 2450, level: 4, maxXP: 3000, color: "hsl(174,100%,50%)" },
+    { name: "React", category: "Frontend", xp: 3200, level: 5, maxXP: 4000, color: "hsl(60,100%,50%)" },
+    { name: "Node.js", category: "Backend", xp: 1800, level: 3, maxXP: 2500, color: "hsl(330,100%,65%)" },
   ]
 
   // Activities - keeping mock data for now
@@ -135,8 +136,8 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
       <DashboardNav locale={locale} user={userData} />
 
       <div className="p-6 max-w-7xl mx-auto">
-        {/* Welcome + CRT Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-4 mb-6">
+        {/* Welcome + CRT + AI Sidebar Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_340px_280px] gap-4 mb-6">
           <WelcomeCard
             userName={displayName}
             userInitial={initials}
@@ -145,7 +146,6 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
             currentXP={userStats.currentXP}
             maxXP={userStats.maxXP}
             streakDays={userStats.streakDays}
-            quickActions={quickActions}
             translations={{
               welcomeTitle: tWelcomeMsg('welcome', { name: displayName }),
               welcomeSubtitle: tWelcomeMsg('welcomeSubtitle'),
@@ -155,6 +155,141 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
             }}
           />
           <CRTMonitor className="min-h-[220px]" />
+          <AIAssistantWidget />
+        </div>
+
+        {/* Quick Actions Row - Living Hex Style */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+          {quickActions.map((action, i) => {
+            const icons: Record<string, React.ReactNode> = {
+              Briefcase: <Briefcase className="w-5 h-5" />,
+              Clock: <Clock className="w-5 h-5" />,
+              GitBranch: <GitBranch className="w-5 h-5" />,
+              User: <User className="w-5 h-5" />,
+            }
+            const Icon = icons[action.icon]
+            return (
+              <a
+                key={action.label}
+                href={action.href}
+                className="group relative border bg-[hsl(200,30%,8%)] p-4 flex items-center gap-4 transition-all duration-500 hover:bg-[hsl(200,30%,10%)] hover:border-opacity-50"
+                style={{ 
+                  borderColor: `${action.color}30`,
+                }}
+              >
+                {/* Ambient glow on hover */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                  style={{ 
+                    background: `radial-gradient(circle at center, ${action.color}12 0%, transparent 70%)`
+                  }}
+                />
+                
+                {/* Living Hexagon */}
+                <div className="relative flex-shrink-0">
+                  <svg width="48" height="48" viewBox="0 0 100 100">
+                    {/* Idle: slow breathing outer glow */}
+                    <circle
+                      cx="50" cy="50" r="46"
+                      fill="none"
+                      stroke={action.color}
+                      strokeWidth="0.5"
+                      opacity="0.15"
+                      className="animate-hex-idle-breathe"
+                    />
+                    
+                    {/* Outer ring - idle vs hover states */}
+                    <circle
+                      cx="50" cy="50" r="44"
+                      fill="none"
+                      stroke={action.color}
+                      strokeWidth="1"
+                      strokeDasharray="3 9"
+                      opacity="0.2"
+                      className="group-hover:animate-hex-ring-spin"
+                      style={{ 
+                        animationDuration: "4s",
+                        transformOrigin: "50px 50px"
+                      }}
+                    />
+                    
+                    {/* Hexagon frame */}
+                    <path
+                      d="M50 4 L92 27 L92 73 L50 96 L8 73 L8 27 Z"
+                      fill="none"
+                      stroke={action.color}
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="transition-all duration-300"
+                      style={{
+                        strokeOpacity: 0.5,
+                        filter: `drop-shadow(0 0 2px ${action.color})`
+                      }}
+                    />
+                    
+                    {/* Inner hex - breathing */}
+                    <path
+                      d="M50 12 L82 31 L82 69 L50 88 L18 69 L18 31 Z"
+                      fill="none"
+                      stroke={action.color}
+                      strokeWidth="1.5"
+                      className="transition-all duration-300 group-hover:animate-hex-idle-breathe"
+                      style={{
+                        strokeOpacity: 0.4,
+                        fillOpacity: 0.05
+                      }}
+                    />
+                    
+                    {/* Eye/Pupil group - changes behavior */}
+                    <g className="transition-transform duration-300 group-hover:animate-hex-observe">
+                      {/* Eye white */}
+                      <ellipse
+                        cx="50" cy="50" rx="18" ry="12"
+                        fill={`${action.color}10`}
+                        stroke={action.color}
+                        strokeWidth="1"
+                        className="transition-all duration-300"
+                        style={{ opacity: 0.5 }}
+                      />
+                      
+                      {/* Pupil - breathing in idle, active on hover */}
+                      <circle
+                        cx="50" cy="50" r="5"
+                        fill={action.color}
+                        className="transition-all duration-300 group-hover:animate-hex-idle-pulse"
+                        style={{
+                          filter: `drop-shadow(0 0 4px ${action.color})`,
+                          opacity: 0.8
+                        }}
+                      />
+                      
+                      {/* Eye shine */}
+                      <circle 
+                        cx="47" cy="47" r="2" 
+                        fill="white" 
+                        opacity="0.6"
+                        className="transition-transform duration-300 group-hover:translate-x-0.5"
+                      />
+                    </g>
+                    
+                    {/* Connecting lines to center - appear on hover */}
+                    <g className="opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <line x1="50" y1="38" x2="50" y2="20" stroke={action.color} strokeWidth="0.5" opacity="0.3" />
+                      <line x1="50" y1="62" x2="50" y2="80" stroke={action.color} strokeWidth="0.5" opacity="0.3" />
+                      <line x1="32" y1="50" x2="20" y2="50" stroke={action.color} strokeWidth="0.5" opacity="0.3" />
+                      <line x1="68" y1="50" x2="80" y2="50" stroke={action.color} strokeWidth="0.5" opacity="0.3" />
+                    </g>
+                  </svg>
+                </div>
+                
+                {/* Label */}
+                <span className="text-xs font-mono text-foreground group-hover:text-white transition-colors duration-300">
+                  {action.label}
+                </span>
+              </a>
+            )
+          })}
         </div>
 
         {/* Stats Row - Hex styled */}
@@ -183,45 +318,58 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
           ))}
         </div>
 
-        {/* Goals + Activity */}
+        {/* Profile Completion + Activity */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {/* Current Goals */}
+          {/* Profile Completion */}
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Target className="w-4 h-4 text-[hsl(174,100%,50%)]" />
-                <h3 className="font-mono font-bold text-sm text-foreground">{tGoals('title')}</h3>
+                <h3 className="font-mono font-bold text-sm text-foreground">{tSkills('title')}</h3>
               </div>
-              <span className="text-[10px] font-mono text-muted-foreground">{tGoals('active', { count: 3 })}</span>
             </div>
-            <div className="flex flex-col gap-3">
-              {goals.map((goal) => (
-                <div key={goal.title} className="border border-[hsl(174,100%,50%,0.12)] bg-[hsl(200,30%,8%)] p-4 group hover:border-[hsl(174,100%,50%,0.25)] transition-colors">
-                  <div className="flex items-center gap-3 mb-2">
-                    {/* Hex percentage badge */}
-                    <div className="relative flex-shrink-0">
-                      <svg width="44" height="44" viewBox="0 0 100 100">
-                        <path d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z" fill="transparent" stroke={goal.color} strokeWidth="2" strokeOpacity="0.3" />
-                        <clipPath id={`goal-${goal.title.replace(/\s+/g, '-')}`}>
-                          <rect x="0" y={100 - goal.pct} width="100" height={goal.pct} />
-                        </clipPath>
-                        <path d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z" fill={goal.color} fillOpacity="0.2" clipPath={`url(#goal-${goal.title.replace(/\s+/g, '-')})`} />
-                        <text x="50" y="58" textAnchor="middle" fill={goal.color} fontSize="24" fontFamily="monospace" fontWeight="bold">
-                          {goal.pct}%
-                        </text>
-                      </svg>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-mono font-bold text-foreground">{goal.title}</h4>
-                      <p className="text-[10px] font-mono text-muted-foreground">{goal.desc}</p>
-                      <div className="mt-2 h-1.5 bg-[hsl(200,20%,13%)] overflow-hidden" style={{ clipPath: "polygon(0 0, 100% 0, 98% 100%, 2% 100%)" }}>
-                        <div className="h-full transition-all duration-1000" style={{ width: `${goal.pct}%`, backgroundColor: goal.color, boxShadow: `0 0 8px ${goal.color}` }} />
-                      </div>
-                      <p className="text-[9px] font-mono text-muted-foreground mt-1 text-right">{goal.current}</p>
-                    </div>
-                  </div>
+            <div className="border border-[hsl(174,100%,50%,0.12)] bg-[hsl(200,30%,8%)] p-4">
+              {/* Profile Completion Bar */}
+              <div className="mb-4">
+                <div className="flex justify-between text-xs font-mono mb-1">
+                  <span className="text-muted-foreground">Profile Completion</span>
+                  <span className="text-[hsl(174,100%,50%)]">65%</span>
                 </div>
-              ))}
+                <div className="h-2 bg-[hsl(200,20%,13%)] overflow-hidden" style={{ clipPath: "polygon(0 0, 100% 0, 98% 100%, 2% 100%)" }}>
+                  <div className="h-full bg-[hsl(174,100%,50%)]" style={{ width: "65%", boxShadow: "0 0 8px hsl(174,100%,50%)" }} />
+                </div>
+              </div>
+              
+              {/* Checklist */}
+              <div className="space-y-2">
+                {[
+                  { done: true, label: "Profile photo" },
+                  { done: true, label: "Bio description" },
+                  { done: false, label: "Location" },
+                  { done: true, label: "Skills (3+)" },
+                  { done: false, label: "Projects (1+)" },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <div className={`w-3 h-3 ${item.done ? 'bg-[hsl(150,100%,45%)]' : 'bg-[hsl(200,20%,20%)]'} clip-hexagon`} />
+                    <span className={`text-[10px] font-mono ${item.done ? 'text-foreground' : 'text-muted-foreground'}`}>{item.label}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Portfolio Link */}
+              <div className="mt-4 pt-4 border-t border-[hsl(174,100%,50%,0.1)]">
+                <p className="text-[10px] font-mono text-muted-foreground mb-2">Your Portfolio</p>
+                <div className="flex items-center gap-2">
+                  <input 
+                    readOnly 
+                    value={`portfoland.com/${userData.name?.toLowerCase().replace(/\s+/g, '-') || 'user'}`}
+                    className="flex-1 bg-[hsl(200,20%,13%)] border border-[hsl(174,100%,50%,0.2)] text-xs font-mono text-foreground px-3 py-2"
+                  />
+                  <button className="bg-[hsl(174,100%,50%,0.2)] border border-[hsl(174,100%,50%,0.4)] text-[hsl(174,100%,50%)] px-3 py-2 text-xs font-mono hover:bg-[hsl(174,100%,50%,0.3)] transition-colors">
+                    Copy
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 

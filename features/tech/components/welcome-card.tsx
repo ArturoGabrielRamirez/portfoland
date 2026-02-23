@@ -31,7 +31,7 @@ export function WelcomeCard({
   currentXP,
   maxXP,
   streakDays,
-  quickActions = defaultQuickActions,
+  quickActions,
   translations,
   className,
 }: WelcomeCardProps) {
@@ -109,6 +109,7 @@ export function WelcomeCard({
         </div>
 
         {/* Right: Quick Actions as honeycomb */}
+        {quickActions && quickActions.length > 0 && (
         <div className="lg:w-[280px] border-t lg:border-t-0 lg:border-l border-[hsl(174,100%,50%,0.1)] p-4 flex flex-col items-center justify-center">
           <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground mb-4">{translations?.quickActionsTitle || "Quick Actions"}</p>
           <div className="grid grid-cols-2 gap-y-0 gap-x-2">
@@ -170,6 +171,7 @@ export function WelcomeCard({
             })}
           </div>
         </div>
+        )}
       </div>
     </div>
   )

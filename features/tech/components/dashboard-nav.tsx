@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { LayoutDashboard, Clock, GitBranch, FolderOpen } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { PortfolioModeToggle } from '@/features/portfolio/components/PortfolioModeToggle'
@@ -20,17 +21,17 @@ interface DashboardNavProps {
   }
 }
 
-const navItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, exact: true },
-  { href: '/dashboard/timeline', label: 'Timeline', icon: Clock, exact: false },
-  { href: '/dashboard/skills', label: 'Skills', icon: GitBranch, exact: false },
-  { href: '/dashboard/projects', label: 'Projects', icon: FolderOpen, exact: false },
-]
-
 export function DashboardNav({ locale, user }: DashboardNavProps) {
   const pathname = usePathname()
+  const t = useTranslations('nav')
 
-  // Remove locale prefix for matching: /en/dashboard → /dashboard
+  const navItems = [
+    { href: '/dashboard', label: t('dashboard'), icon: LayoutDashboard, exact: true },
+    { href: '/dashboard/timeline', label: t('timeline'), icon: Clock, exact: false },
+    { href: '/dashboard/skills', label: t('skills'), icon: GitBranch, exact: false },
+    { href: '/dashboard/projects', label: t('projects'), icon: FolderOpen, exact: false },
+  ]
+
   const cleanPathname = pathname.replace(/^\/[a-z]{2}(-[A-Z]{2})?(\/|$)/, '/')
 
   return (
@@ -79,7 +80,7 @@ export function DashboardNav({ locale, user }: DashboardNavProps) {
         {/* Online Status */}
         <span className="flex items-center gap-1.5 text-[10px] font-mono text-[hsl(150,100%,45%)]">
           <span className="w-1.5 h-1.5 bg-[hsl(150,100%,45%)] rounded-full animate-pulse" />
-          ONLINE
+          {t('online')}
         </span>
 
         {/* Single User Menu (hexagonal avatar integrated) */}

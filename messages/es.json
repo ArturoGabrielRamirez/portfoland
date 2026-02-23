@@ -129,6 +129,11 @@
   "dashboard": {
     "welcome": "Bienvenido de nuevo, {name}!",
     "welcomeSubtitle": "Continua construyendo tu aventura profesional",
+    "welcomeCard": {
+      "streak": "{count} dias de racha",
+      "quickActions": "Acciones Rapidas",
+      "xpToLevel": "{xp} XP para Nivel {level}"
+    },
     "modeToggle": {
       "classic": "Clasico",
       "tech": "Tech",
@@ -153,7 +158,7 @@
         "editSkillsDesc": "Actualiza tu skill tree",
         "generateCV": "Generar CV",
         "generateCVDesc": "Crea tu CV con IA",
-        "sharePortfolio": "Compartir Portfolio",
+        "sharePortfolio": "Compartir Portafolio",
         "sharePortfolioDesc": "Comparte tu perfil"
       },
       "recentAchievements": {
@@ -162,409 +167,45 @@
       },
       "recentActivity": {
         "title": "ACTIVIDAD RECIENTE",
-        "new": "nuevas"
+        "new": "nuevo"
       }
     },
-    "progress": {
-      "title": "Completar Perfil",
-      "percentage": "{percent}% Completado",
-      "completeProfile": "Completa tu perfil para desbloquear todas las funciones"
-    },
-    "stats": {
-      "title": "Estadisticas Rapidas",
-      "experiences": "Experiencias",
-      "skills": "Habilidades",
-      "projects": "Proyectos",
-      "achievements": "Logros"
-    },
-    "features": {
-      "title": "Tus Herramientas",
-      "timeline": {
-        "title": "Linea de Tiempo",
-        "description": "Rastrea tu trayectoria profesional con una linea de tiempo interactiva de tus experiencias, logros e hitos.",
-        "comingSoon": "Proximamente en v0.2.0"
+    "home": {
+      "stats": {
+        "totalXP": "XP TOTAL",
+        "currentLevel": "NIVEL ACTUAL",
+        "experiences": "EXPERIENCIAS",
+        "achievements": "LOGROS",
+        "xpSub": "+{count} esta semana",
+        "expSub": "{count} nuevas",
+        "achSub": "{percent}% completado"
       },
-      "portfolio": {
-        "title": "Portafolio",
-        "description": "Muestra tu trabajo con un portafolio hermoso y personalizado. Comparte tus proyectos y logros con el mundo.",
-        "comingSoon": "Proximamente en v0.3.0"
+      "goals": {
+        "title": "Objetivos Actuales",
+        "active": "{count} activos"
       },
-      "aiAssistant": {
-        "title": "Asistente IA",
-        "description": "Obtene sugerencias impulsadas por IA para tu CV, cartas de presentacion y desarrollo profesional. Deja que nuestro asistente te ayude a destacar.",
-        "comingSoon": "Proximamente en v0.4.0"
-      }
-    },
-    "recentActivity": {
-      "title": "Actividad Reciente",
-      "noActivity": "No hay actividad reciente para mostrar",
-      "viewAll": "Ver toda la actividad"
-    }
-  },
-  "projects": {
-    "form": {
-      "title": "Titulo",
-      "titlePlaceholder": "Ingresa el titulo del proyecto",
-      "slug": "Slug",
-      "slugPlaceholder": "slug-del-proyecto",
-      "shortDescription": "Descripcion Corta",
-      "shortDescriptionPlaceholder": "Resumen breve para tarjetas de vista previa (max 200 caracteres)",
-      "description": "Descripcion",
-      "descriptionPlaceholder": "Descripcion detallada del proyecto (max 5000 caracteres)",
-      "imageUpload": "Imagen de Portada",
-      "technologies": "Tecnologias",
-      "technologiesPlaceholder": "Escribe una tecnologia y presiona Enter",
-      "links": "Enlaces",
-      "linkType": "Tipo",
-      "linkLabel": "Etiqueta",
-      "linkLabelPlaceholder": "Etiqueta del enlace",
-      "linkUrl": "URL",
-      "addLink": "Agregar Enlace",
-      "featured": "Proyecto Destacado",
-      "status": "Estado",
-      "startDate": "Fecha de Inicio",
-      "endDate": "Fecha de Fin",
-      "saving": "Guardando...",
-      "saved": "Guardado",
-      "cancel": "Cancelar",
-      "addProject": "Crear Proyecto",
-      "updateProject": "Actualizar Proyecto"
-    },
-    "status": {
-      "IN_PROGRESS": "En Progreso",
-      "COMPLETED": "Completado",
-      "ARCHIVED": "Archivado"
-    },
-    "linkTypes": {
-      "LIVE": "Sitio en Vivo",
-      "REPO": "Repositorio",
-      "DOCS": "Documentacion",
-      "VIDEO": "Video",
-      "CASE_STUDY": "Caso de Estudio",
-      "OTHER": "Otro"
-    },
-    "messages": {
-      "createSuccess": "Proyecto creado exitosamente",
-      "updateSuccess": "Proyecto actualizado exitosamente",
-      "deleteSuccess": "Proyecto eliminado exitosamente",
-      "notFound": "Proyecto no encontrado",
-      "unauthorized": "No tienes permiso para realizar esta accion",
-      "loginRequired": "Inicia sesion para continuar",
-      "uploadSuccess": "Imagen subida exitosamente",
-      "uploadError": "Error al subir la imagen",
-      "uploadTypeError": "Tipo de archivo no valido. Sube una imagen PNG, JPG o WEBP",
-      "uploadSizeError": "El archivo supera el limite de 5MB",
-      "deleteImageSuccess": "Imagen eliminada exitosamente",
-      "deleteImageError": "Error al eliminar la imagen"
-    },
-    "emptyState": {
-      "title": "No hay proyectos aun",
-      "description": "Crea tu primer proyecto para mostrar tu trabajo."
-    },
-    "validation": {
-      "titleRequired": "El titulo es requerido",
-      "titleMinLength": "El titulo debe tener al menos 2 caracteres",
-      "titleMaxLength": "El titulo debe tener como maximo 100 caracteres",
-      "slugInvalid": "El slug solo puede contener letras minusculas, numeros y guiones",
-      "descriptionRequired": "La descripcion es requerida",
-      "descriptionMinLength": "La descripcion debe tener al menos 10 caracteres",
-      "descriptionMaxLength": "La descripcion debe tener como maximo 5000 caracteres",
-      "shortDescriptionMaxLength": "La descripcion corta debe tener como maximo 200 caracteres",
-      "imageUrlInvalid": "Ingresa una URL valida",
-      "technologiesMaxItems": "Puedes agregar hasta 15 tecnologias",
-      "linkLabelMaxLength": "La etiqueta del enlace debe tener como maximo 50 caracteres",
-      "linkUrlInvalid": "Ingresa una URL valida",
-      "linkTypeInvalid": "Tipo de enlace no valido",
-      "startDateRequired": "La fecha de inicio es requerida"
-    }
-  },
-  "portfolio": {
-    "nav": {
-      "hero": "Inicio",
-      "about": "Acerca de",
-      "timeline": "Experiencia",
-      "skills": "Habilidades",
-      "projects": "Proyectos",
-      "contact": "Contacto",
-      "ai": "IA"
-    },
-    "modes": {
-      "classic": "Clasico",
-      "tech": "Tech"
-    },
-    "sections": {
-      "hero": {
-        "classic": {
-          "title": "Perfil"
-        },
-        "tech": {
-          "title": "PERFIL TECH"
-        }
+      "activity": {
+        "title": "Actividad Reciente",
+        "viewAll": "VER TODO"
       },
-      "about": {
-        "classic": {
-          "title": "Acerca de",
-          "emptyState": "No se ha proporcionado un resumen"
-        },
-        "tech": {
-          "title": "BIOGRAFIA",
-          "emptyState": "DATOS DE BIOGRAFIA NO ENCONTRADOS"
-        }
-      },
-      "timeline": {
-        "classic": {
-          "title": "Experiencia",
-          "emptyState": "No se ha agregado experiencia aun"
-        },
-        "tech": {
-          "title": "REGISTRO DE TRABAJO",
-          "emptyState": "NO HAY EXPERIENCIAS REGISTRADAS"
-        }
-      },
-      "skills": {
-        "classic": {
-          "title": "Habilidades",
-          "emptyState": "No hay habilidades listadas aun"
-        },
-        "tech": {
-          "title": "ARBOL DE SKILLS",
-          "emptyState": "NO HAY SKILLS DESBLOQUEADAS"
-        }
-      },
-      "projects": {
-        "classic": {
-          "title": "Proyectos",
-          "emptyState": "No hay proyectos aun",
-          "featured": "Destacado"
-        },
-        "tech": {
-          "title": "PROYECTOS",
-          "emptyState": "NO HAY PROYECTOS DESPLEGADOS"
-        }
-      },
-      "contact": {
-        "classic": {
-          "title": "Contacto"
-        },
-        "tech": {
-          "title": "ENLACE DE COMUNICACION"
-        }
-      },
-      "ai": {
-        "classic": {
-          "title": "Analisis Impulsado por IA",
-          "description": "Analisis inteligente y recomendaciones impulsadas por IA para mejorar tu presencia profesional.",
-          "comingSoon": "Proximamente"
-        },
-        "tech": {
-          "title": "NUCLEO DE IA",
-          "description": "Interfaz neuronal avanzada para inteligencia profesional y analisis tactico.",
-          "status": "SISTEMA INICIALIZANDO..."
-        }
-      }
-    },
-    "ui": {
-      "downloadCv": "Descargar CV",
-      "comingSoon": "Proximamente",
-      "contact": "Contacto",
-      "email": "Correo",
-      "github": "GitHub",
-      "linkedin": "LinkedIn",
-      "website": "Sitio Web",
-      "viewProject": "Ver Proyecto",
-      "totalProjects": "Total de Proyectos",
-      "category": "Categoria",
-      "level": "Nivel",
-      "present": "Presente",
-      "closeModal": "Cerrar",
-      "technologies": "Tecnologias",
-      "links": "Enlaces",
-      "status": "Estado",
-      "dates": "Fechas",
-      "featured": "Destacado",
-      "statusLabels": {
-        "IN_PROGRESS": "En Progreso",
-        "COMPLETED": "Completado",
-        "ARCHIVED": "Archivado"
-      },
-      "linkTypes": {
-        "LIVE": "Sitio en Vivo",
-        "REPO": "Repositorio",
-        "DOCS": "Documentacion",
-        "VIDEO": "Video",
-        "CASE_STUDY": "Caso de Estudio",
-        "OTHER": "Enlace"
+      "quickActions": {
+        "timeline": "Linea de Tiempo",
+        "projects": "Proyectos",
+        "skills": "Habilidades",
+        "portfolio": "Portafolio"
       }
     }
   },
-  "skills": {
-    "pageTitle": "Mi Arbol de Skills",
-    "pageSubtitle": "Rastrea tus habilidades profesionales y sube de nivel",
-    "viewPublic": "Ver Publico",
-    "stats": {
-      "totalSkills": "Total de Skills",
-      "totalXP": "XP Total",
-      "masterSkills": "Skills Maestras",
-      "categories": "Categorias"
-    },
-    "emptyState": {
-      "title": "Comienza a Construir tu Arbol de Skills",
-      "description": "Agrega skills manualmente o seran extraidas automaticamente de tus experiencias en el timeline.",
-      "hint": "Tip: Agrega experiencias a tu timeline y las skills seran extraidas automaticamente!"
-    },
-    "levels": {
-      "novice": "Novato",
-      "apprentice": "Aprendiz",
-      "journeyman": "Oficial",
-      "expert": "Experto",
-      "master": "Maestro"
-    },
-    "selfAssessment": {
-      "beginner": "Principiante",
-      "intermediate": "Intermedio",
-      "advanced": "Avanzado"
-    },
-    "form": {
-      "skillName": "Nombre del Skill",
-      "skillNamePlaceholder": "ej., React, Python, Liderazgo",
-      "category": "Categoria",
-      "selectCategory": "Selecciona una categoria",
-      "selfAssessment": "Nivel de Autoevaluacion",
-      "learningSources": "Fuentes de Aprendizaje (opcional)",
-      "learningSourcesPlaceholder": "ej., Cursos online, libros, tutoriales, autodidacta...",
-      "dateStarted": "Fecha de Inicio de Aprendizaje",
-      "createCategory": "Crear nueva categoria",
-      "addSkill": "Agregar Skill",
-      "updateSkill": "Actualizar Skill"
-    },
-    "category": {
-      "createTitle": "Crear Categoria",
-      "name": "Nombre de Categoria",
-      "namePlaceholder": "ej., Servicios Cloud, Desarrollo Movil",
-      "color": "Color de Categoria",
-      "create": "Crear Categoria"
-    },
-    "detail": {
-      "level": "Nivel",
-      "totalXP": "XP Total",
-      "xpToNextLevel": "XP para siguiente nivel",
-      "sources": "Fuentes de XP",
-      "experienceSource": "De Experiencia",
-      "manualSource": "Autodidacta",
-      "learningSources": "Fuentes de Aprendizaje",
-      "dateStarted": "Inicio de Aprendizaje",
-      "linkedExperiences": "Experiencias Vinculadas"
-    },
-    "suggestions": {
-      "title": "Skills Sugeridas",
-      "addSuggested": "Agregar esta skill"
-    },
-    "messages": {
-      "skillCreated": "Skill agregada exitosamente!",
-      "skillUpdated": "Skill actualizada exitosamente!",
-      "skillDeleted": "Skill eliminada exitosamente!",
-      "categoryCreated": "Categoria creada exitosamente!",
-      "cannotDeleteExperienceSkill": "No se pueden eliminar skills vinculadas a experiencias. Elimina la skill de tus experiencias primero.",
-      "errorCreating": "Error al agregar skill. Por favor, intenta de nuevo.",
-      "errorUpdating": "Error al actualizar skill. Por favor, intenta de nuevo.",
-      "errorDeleting": "Error al eliminar skill. Por favor, intenta de nuevo."
-    },
-    "validation": {
-      "nameRequired": "El nombre del skill es requerido",
-      "nameTooShort": "El nombre del skill debe tener al menos 2 caracteres",
-      "assessmentRequired": "Por favor, selecciona tu nivel de skill",
-      "categoryNameRequired": "El nombre de la categoria es requerido",
-      "categoryColorRequired": "Por favor, selecciona un color"
-    }
-  },
-  "landing": {
-    "hero": {
-      "badge": "Tu carrera, tu aventura",
-      "titlePrefix": "Transforma tu CV en una",
-      "titleHighlight": "Aventura Epica",
-      "title": "Cuenta Tu Historia Profesional",
-      "subtitle": "Crea portfolios interactivos con timelines gamificados, arboles de habilidades y tu propio subdominio. Destaca ante recruiters con una experiencia unica.",
-      "ctaSignUp": "Comenzar Aventura",
-      "ctaSignIn": "Ver Demo"
-    },
-    "stats": {
-      "users": "Usuarios activos",
-      "portfolios": "Portfolios creados",
-      "satisfaction": "Satisfaccion"
-    },
-    "features": {
-      "title": "Caracteristicas",
-      "headline": "Todo lo que necesitas para brillar",
-      "subheadline": "Herramientas disenadas para contar tu historia profesional de manera unica",
-      "timeline": {
-        "title": "Timeline Interactivo",
-        "description": "Mapea tu journey profesional como una aventura. Cada trabajo, proyecto y logro es un punto en tu camino hacia el exito."
-      },
-      "portfolio": {
-        "title": "Arbol de Habilidades",
-        "description": "Visualiza tus skills como un RPG. Desbloquea habilidades, sube de nivel y muestra tu progresion de manera visual."
-      },
-      "aiAssistant": {
-        "title": "Portfolio con Subdominio",
-        "description": "Tu propio espacio en internet: usuario.portfoland.com. Comparte tu portfolio con un link profesional y memorable."
-      }
-    },
-    "howItWorks": {
-      "title": "Como funciona",
-      "headline": "3 pasos para comenzar tu aventura",
-      "step1": {
-        "title": "Crea tu cuenta",
-        "description": "Registrate gratis y elige tu personaje. Podes ser un wizard, un developer, o cualquier avatar que te represente."
-      },
-      "step2": {
-        "title": "Construye tu timeline",
-        "description": "Agrega tus experiencias, educacion y proyectos. Nuestro asistente AI te ayuda a escribir descripciones profesionales."
-      },
-      "step3": {
-        "title": "Comparte y destaca",
-        "description": "Obtene tu subdominio personalizado y comparte tu portfolio con recruiters. Tu historia profesional, lista para brillar."
-      }
-    },
-    "modes": {
-      "title": "Dos Modos",
-      "headline": "Tu portfolio, tu estilo",
-      "subheadline": "Elige como queres presentarte al mundo",
-      "classic": {
-        "title": "Modo Clasico",
-        "subtitle": "Para recruiters y empresas",
-        "feature1": "CV tradicional con IA asistida",
-        "feature2": "Timeline cronologico limpio",
-        "feature3": "Exportar a PDF profesional",
-        "feature4": "Integracion con LinkedIn",
-        "cta": "Elegir Modo Clasico"
-      },
-      "tech": {
-        "title": "Modo Tech",
-        "subtitle": "Para desarrolladores y profesionales tech",
-        "feature1": "Timeline de carrera visual",
-        "feature2": "Arbol de habilidades visual",
-        "feature3": "Sistema de logros y XP",
-        "feature4": "Diseno de portfolio personalizado",
-        "cta": "Elegir Modo Tech"
-      }
-    },
-    "cta": {
-      "title": "Listo para tu aventura?",
-      "subtitle": "Unite a miles de profesionales que ya estan destacando con Portfoland",
-      "button": "Crear cuenta gratis"
-    }
+  "nav": {
+    "dashboard": "Panel",
+    "timeline": "Linea de Tiempo",
+    "skills": "Habilidades",
+    "projects": "Proyectos",
+    "online": "EN LINEA"
   },
   "languageSwitcher": {
-    "label": "Seleccionar idioma",
-    "current": "Idioma actual: {language}"
-  },
-  "Seo": {
-    "titleTemplate": "{name} - {role} | Portfoland",
-    "descriptionTemplate": "Descubre la trayectoria profesional de {name} en Portfoland. Explora sus habilidades, proyectos y experiencias en un portfolio interactivo.",
-    "defaultRole": "Profesional",
-    "modes": {
-      "tech": "Perfil Tech",
-      "classic": "Perfil Profesional"
-    }
+    "title": "Idioma",
+    "selectLanguage": "Seleccionar Idioma",
+    "label": "Cambiar idioma"
   }
 }

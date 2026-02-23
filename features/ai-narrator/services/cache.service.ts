@@ -1,7 +1,7 @@
 /**
- * AI Narrative Cache Invalidation Utility
+ * Narrative Cache Service
  *
- * Provides atomic cache invalidation for AI-generated portfolio narratives.
+ * Provides cache invalidation for AI-generated portfolio narratives.
  * Stored in User.meta as aiNarrative_<mode>_<locale> keys.
  */
 

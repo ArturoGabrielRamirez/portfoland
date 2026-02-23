@@ -10,6 +10,13 @@ export interface WelcomeCardProps {
   maxXP: number
   streakDays: number
   quickActions?: QuickAction[]
+  translations?: {
+    welcomeTitle: string
+    welcomeSubtitle: string
+    streak: string
+    quickActionsTitle: string
+    xpToLevel: string
+  }
   className?: string
 }
 

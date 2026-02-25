@@ -59,7 +59,7 @@ export function WelcomeCard({
           <div className="flex items-center gap-4 mb-4">
             {/* Avatar hex */}
             <div className="relative">
-              <div className="w-14 h-14 clip-hexagon bg-[hsl(174,100%,50%,0.2)] overflow-hidden flex items-center justify-center">
+              <div className="w-14 h-14 clip-hexagon bg-[hsl(200,30%,8%)] overflow-hidden flex items-center justify-center">
                 {isValidImage ? (
                   <Image
                     src={userImage}

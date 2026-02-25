@@ -132,7 +132,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
           <ActiveMissionsPanel className="min-h-[200px] md:min-h-0" />
 
           {/* CENTER: Hex Diamond — the centerpiece */}
-          <div className="flex flex-col items-center justify-center gap-6">
+          <div className="flex flex-col items-center justify-center gap-4 min-h-0">
             <HexStatGrid
               stats={{
                 xp: { current: userStats.currentXP, max: userStats.maxXP },
@@ -141,9 +141,8 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
                 achievements: userStats.achievements,
               }}
               streakDays={userStats.streakDays}
-              className="mt-4"
             />
-            <ActivityHeatmap className="mt-2" />
+            <ActivityHeatmap />
           </div>
 
           {/* Right column: Skills + Top Runners stacked */}

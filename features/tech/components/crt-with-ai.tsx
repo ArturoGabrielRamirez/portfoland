@@ -158,7 +158,7 @@ function AIEye({
                 stroke={mainColor}
                 strokeWidth="0.8"
                 opacity={isSuccess ? 0.6 : 0.2}
-                className={!isSleeping && !isBlinking ? (isSuccess ? "animate-pulse" : "animate-hex-idle-breathe") : ""}
+                className={!isBlinking ? (isSuccess ? "animate-pulse" : "animate-hex-idle-breathe") : ""}
             />
 
             {/* Outer hex border — ALWAYS VISIBLE */}
@@ -325,15 +325,16 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
         return () => { if (inactivityTimer.current) clearTimeout(inactivityTimer.current) }
     }, [resetInactivity, message, aiState])
 
-    // --- Drowsy Blinks (Pestañeos leves) ---
+    // --- Drowsy Blinks (Pestañeos lentos y naturales) ---
     useEffect(() => {
         if (aiState === "drowsy") {
             const runDrowsyBlink = () => {
                 setIsBlinking(true)
-                setTimeout(() => setIsBlinking(false), 150)
-                drowsyBlinkInterval.current = setTimeout(runDrowsyBlink, 800 + Math.random() * 400)
+                setTimeout(() => setIsBlinking(false), 500)
+                drowsyBlinkInterval.current = setTimeout(runDrowsyBlink, 2500 + Math.random() * 1000)
             }
-            drowsyBlinkInterval.current = setTimeout(runDrowsyBlink, 400)
+            // Delay inicial antes del primer pestañeo somnoliento
+            drowsyBlinkInterval.current = setTimeout(runDrowsyBlink, 1200)
         } else {
             if (drowsyBlinkInterval.current) clearTimeout(drowsyBlinkInterval.current)
         }
@@ -455,7 +456,7 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
             <div className="flex items-center justify-between px-3 py-2 border-b bg-[hsl(200,30%,8%)]" style={{ borderColor }}>
                 <div className="flex items-center gap-2">
                     <div className={cn("w-1.5 h-1.5 rounded-full shadow-[0_0_4px]", aiState === "success" ? "bg-green-500 shadow-green-500" : (aiState === "sleeping" || aiState === "drowsy" ? "bg-red-500 shadow-red-500" : "bg-cyan-500 shadow-cyan-500"))} />
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground/60">SYS_CONSOLE v3.8_AI</span>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground/60">SYS_CONSOLE v3.10_AI</span>
                 </div>
                 <div className="flex gap-3 text-[9px] font-mono">
                     <span className={cn(aiState === "sleeping" || aiState === "drowsy" ? "text-red-500" : "text-cyan-400")}>

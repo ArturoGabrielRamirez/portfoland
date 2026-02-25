@@ -101,118 +101,79 @@ function HexStat({ value, label, color, delay = 0, size = 90 }: StatItem) {
 }
 
 // =============================================================================
-// Diamond / Cross layout
+// 4-Hex Cluster Layout
 //
-//         [ TOP: Level  80px ]
-// [L:Exp]  [ CENTER: XP 100px ] [R:Ach]
-//         [ BOT: Streak 80px ]
+//  [EXP 90px] [XP 110px] [ACH 90px]
+//              [LVL 90px]
 //
-// Container: 310 × 270px
-// CENTER (100px) : left=105, top=85  → rendered center (155, 135)
-// TOP    (80px)  : left=115, top=5   → rendered center (155, 45)
-// BOT    (80px)  : left=115, top=185 → rendered center (155, 225)
-// LEFT   (80px)  : left=15,  top=95  → rendered center (55,  135)
-// RIGHT  (80px)  : left=215, top=95  → rendered center (255, 135)
+// Container: 265 × 190px
 //
-// Vertical: TOP-CENTER and BOT-CENTER share edges (y=85 / y=185).
-// Horizontal: 10px gap each side → bridged with dashed connector lines.
+// Geometry — hexes touch at flat edges / bottom vertex:
+//   XP  (110px): left=77,  top=0   → center at (132, 55)
+//   EXP (90px):  left=0,   top=10  → center at (45,  55)  — same mid-y as XP
+//   ACH (90px):  left=173, top=10  → center at (218, 55)  — same mid-y as XP
+//   LVL (90px):  left=87,  top=97  → top vertex at (132, 103) ≈ XP bottom vertex
+//
+// EXP right edge ≈ XP left edge  (x ≈ 84)
+// ACH left edge  ≈ XP right edge (x ≈ 180)
+// LVL top vertex ≈ XP bottom vertex (x=132, y≈103)
 // =============================================================================
 
-export function HexStatGrid({ stats, streakDays, className }: HexStatGridProps) {
+export function HexStatGrid({ stats, className }: HexStatGridProps) {
     const C = {
         cyan:    "hsl(174,100%,50%)",
         yellow:  "hsl(52,100%,50%)",
         green:   "hsl(150,100%,45%)",
         magenta: "hsl(330,100%,65%)",
-        purple:  "hsl(260,80%,65%)",
     }
 
     return (
         <div className={cn("flex items-center justify-center w-full", className)}>
 
-            {/* ── DESKTOP: Diamond / Cross ── */}
-            <div className="hidden md:block relative w-[310px] h-[270px]">
+            {/* ── DESKTOP: 4-hex cluster ── */}
+            <div className="hidden md:block relative w-[265px] h-[190px]">
 
-                {/* SVG overlay: connecting lines + junction dots */}
-                <svg
-                    className="absolute inset-0 pointer-events-none"
-                    viewBox="0 0 310 270"
-                    style={{ zIndex: 0 }}
-                >
-                    {/* LEFT bridge (x 95→105, y 135) */}
-                    <line x1="95" y1="135" x2="105" y2="135"
-                        stroke={C.cyan} strokeWidth="1.5" strokeOpacity="0.45"
-                        strokeDasharray="3 2" />
-                    {/* RIGHT bridge (x 205→215, y 135) */}
-                    <line x1="205" y1="135" x2="215" y2="135"
-                        stroke={C.cyan} strokeWidth="1.5" strokeOpacity="0.45"
-                        strokeDasharray="3 2" />
-
-                    {/* Junction dots at bridge endpoints */}
-                    <circle cx="95"  cy="135" r="2" fill={C.cyan} fillOpacity="0.5" />
-                    <circle cx="105" cy="135" r="2" fill={C.cyan} fillOpacity="0.5" />
-                    <circle cx="205" cy="135" r="2" fill={C.cyan} fillOpacity="0.5" />
-                    <circle cx="215" cy="135" r="2" fill={C.cyan} fillOpacity="0.5" />
-
-                    {/* Junction marks where TOP/BOT touch CENTER (shared edge) */}
-                    <line x1="130" y1="85" x2="180" y2="85"
-                        stroke={C.cyan} strokeWidth="0.5" strokeOpacity="0.2" />
-                    <line x1="130" y1="185" x2="180" y2="185"
-                        stroke={C.cyan} strokeWidth="0.5" strokeOpacity="0.2" />
-                </svg>
-
-                {/* CENTER: XP Total — main stat, largest hex */}
-                <div className="absolute" style={{ left: 105, top: 85, zIndex: 1 }}>
+                {/* XP — big center hex */}
+                <div className="absolute" style={{ left: 77, top: 0, zIndex: 1 }}>
                     <HexStat
                         value={stats.xp.current.toLocaleString()}
                         label="XP TOTAL"
                         color={C.cyan}
                         delay={0}
-                        size={100}
+                        size={110}
                     />
                 </div>
 
-                {/* TOP: Level */}
-                <div className="absolute" style={{ left: 115, top: 5, zIndex: 1 }}>
-                    <HexStat
-                        value={stats.level.toString()}
-                        label="NIVEL"
-                        color={C.yellow}
-                        delay={120}
-                        size={80}
-                    />
-                </div>
-
-                {/* BOTTOM: Streak */}
-                <div className="absolute" style={{ left: 115, top: 185, zIndex: 1 }}>
-                    <HexStat
-                        value={`${streakDays}d`}
-                        label="RACHA"
-                        color={C.purple}
-                        delay={120}
-                        size={80}
-                    />
-                </div>
-
-                {/* LEFT: Experiences */}
-                <div className="absolute" style={{ left: 15, top: 95, zIndex: 1 }}>
+                {/* EXP — left, touches XP left flat edge */}
+                <div className="absolute" style={{ left: 0, top: 10, zIndex: 1 }}>
                     <HexStat
                         value={stats.experiences.toString()}
                         label="EXP."
                         color={C.green}
                         delay={80}
-                        size={80}
+                        size={90}
                     />
                 </div>
 
-                {/* RIGHT: Achievements */}
-                <div className="absolute" style={{ left: 215, top: 95, zIndex: 1 }}>
+                {/* ACH — right, touches XP right flat edge */}
+                <div className="absolute" style={{ left: 173, top: 10, zIndex: 1 }}>
                     <HexStat
                         value={`${stats.achievements.current}/${stats.achievements.total}`}
                         label="LOGROS"
                         color={C.magenta}
                         delay={80}
-                        size={80}
+                        size={90}
+                    />
+                </div>
+
+                {/* LVL — below XP, top vertex touches XP bottom vertex */}
+                <div className="absolute" style={{ left: 87, top: 97, zIndex: 1 }}>
+                    <HexStat
+                        value={stats.level.toString()}
+                        label="NIVEL"
+                        color={C.yellow}
+                        delay={120}
+                        size={90}
                     />
                 </div>
             </div>

@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import type { WelcomeCardProps } from "../types/dashboard"
@@ -57,24 +56,49 @@ export function WelcomeCard({
         {/* Left: Welcome info */}
         <div className="flex-1 p-6">
           <div className="flex items-center gap-4 mb-4">
-            {/* Avatar hex */}
-            <div className="relative">
-              <div className="w-14 h-14 clip-hexagon bg-[hsl(200,30%,8%)] overflow-hidden flex items-center justify-center">
+            {/* Avatar hex — SVG clipPath eliminates white corner artifacts */}
+            <div className="relative flex-shrink-0">
+              <svg width="56" height="56" viewBox="0 0 100 100">
+                <defs>
+                  <clipPath id="hex-avatar-clip">
+                    <polygon points="50,0 100,25 100,75 50,100 0,75 0,25" />
+                  </clipPath>
+                </defs>
+                {/* Dark background fill */}
+                <polygon
+                  points="50,0 100,25 100,75 50,100 0,75 0,25"
+                  fill="hsl(200,30%,8%)"
+                />
                 {isValidImage ? (
-                  <Image
-                    src={userImage}
-                    alt={userName}
-                    width={56}
-                    height={56}
-                    className="w-full h-full object-cover"
+                  <image
+                    href={userImage!}
+                    width="100"
+                    height="100"
+                    clipPath="url(#hex-avatar-clip)"
+                    preserveAspectRatio="xMidYMid slice"
                     onError={() => setImageError(true)}
                   />
                 ) : (
-                  <span className="text-xl font-mono font-bold text-[hsl(174,100%,50%)]">
+                  <text
+                    x="50" y="63"
+                    textAnchor="middle"
+                    fontSize="42"
+                    fontFamily="monospace"
+                    fontWeight="bold"
+                    fill="hsl(174,100%,50%)"
+                  >
                     {userInitial}
-                  </span>
+                  </text>
                 )}
-              </div>
+                {/* Hex border */}
+                <polygon
+                  points="50,0 100,25 100,75 50,100 0,75 0,25"
+                  fill="none"
+                  stroke="hsl(174,100%,50%)"
+                  strokeWidth="2"
+                  strokeOpacity="0.4"
+                />
+              </svg>
               <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-[hsl(330,100%,65%)] text-[hsl(200,25%,8%)] text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-sm">
                 Lv.{level}
               </div>

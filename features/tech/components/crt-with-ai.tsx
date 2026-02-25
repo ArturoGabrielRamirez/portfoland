@@ -137,12 +137,12 @@ function AIEye({
         return () => clearInterval(interval)
     }, [isThinking])
 
-    const pupilX = isAsleepLike || isDrowsy ? 0 : Math.max(-6, Math.min(6, mouseOffset.x * 6)) + jitter.x
-    const pupilY = isAsleepLike || isDrowsy ? 0 : Math.max(-6, Math.min(6, mouseOffset.y * 6)) + jitter.y
+    const pupilX = isAsleepLike ? 0 : Math.max(-6, Math.min(6, mouseOffset.x * 6)) + jitter.x
+    const pupilY = isAsleepLike ? 0 : Math.max(-6, Math.min(6, mouseOffset.y * 6)) + jitter.y
 
-    // Smooth Closure Stages (Y-scaling of iris)
-    const irisRY = isSleeping ? 0 : (isDrowsy ? 4 : 13)
-    const irisStrokeOpacity = isDrowsy ? 0.3 : 0.6
+    // Iris stays normal size when drowsy (no shrinking), only closes when sleeping
+    const irisRY = isSleeping ? 0 : 13
+    const irisStrokeOpacity = 0.6
 
     return (
         <svg
@@ -220,21 +220,16 @@ function AIEye({
 
                     {/* Pupil group — follows mouse + jitter */}
                     <motion.g
-                        animate={{
-                            x: pupilX,
-                            y: pupilY,
-                            scale: isDrowsy ? 0.6 : 1,
-                            opacity: isDrowsy ? 0.4 : 1
-                        }}
+                        animate={{ x: pupilX, y: pupilY, scale: 1, opacity: 1 }}
                         transition={isThinking ? { duration: 0 } : { type: "spring", stiffness: 200, damping: 20 }}
                     >
                         <circle
-                            cx="50" cy="50" r={isDrowsy ? 5 : 8}
+                            cx="50" cy="50" r="8"
                             fill={mainColor}
                             style={{ filter: `drop-shadow(0 0 8px ${mainColor})` }}
                             className={isSuccess ? "animate-pulse" : ""}
                         />
-                        <circle cx="50" cy="50" r={isDrowsy ? 2 : 4} fill="hsl(200,30%,5%)" />
+                        <circle cx="50" cy="50" r="4" fill="hsl(200,30%,5%)" />
                         <circle cx="47.5" cy="47.5" r="1.8" fill="white" opacity="0.75" />
                     </motion.g>
                 </>
@@ -325,16 +320,15 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS }
         return () => { if (inactivityTimer.current) clearTimeout(inactivityTimer.current) }
     }, [resetInactivity, message, aiState])
 
-    // --- Drowsy Blinks (Pestañeos lentos y naturales) ---
+    // --- Drowsy Blinks (parpadeos rápidos repetidos, como luchando contra el sueño) ---
     useEffect(() => {
         if (aiState === "drowsy") {
             const runDrowsyBlink = () => {
                 setIsBlinking(true)
-                setTimeout(() => setIsBlinking(false), 500)
-                drowsyBlinkInterval.current = setTimeout(runDrowsyBlink, 2500 + Math.random() * 1000)
+                setTimeout(() => setIsBlinking(false), 180)
+                drowsyBlinkInterval.current = setTimeout(runDrowsyBlink, 650)
             }
-            // Delay inicial antes del primer pestañeo somnoliento
-            drowsyBlinkInterval.current = setTimeout(runDrowsyBlink, 1200)
+            drowsyBlinkInterval.current = setTimeout(runDrowsyBlink, 600)
         } else {
             if (drowsyBlinkInterval.current) clearTimeout(drowsyBlinkInterval.current)
         }

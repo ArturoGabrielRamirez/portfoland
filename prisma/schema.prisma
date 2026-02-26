@@ -31,6 +31,8 @@ model User {
   emailVerified Boolean  @default(false)
   portfolioMode         String   @default("classic")
   onboardingCompleted   Boolean  @default(false)
+  lastStreakDate        DateTime?
+  currentStreak         Int      @default(0)
   bio               String?
   sectionOrder      String[] @default(["about", "experience", "skills", "projects"])
   contactLinks      Json     @default("{}")
@@ -223,6 +225,7 @@ model UserSkill {
   skill     Skill    @relation(fields: [skillId], references: [id])
   totalXP   Int      @default(0)
   level     Int      @default(1)
+  aiValidated Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   sources   SkillSource[]

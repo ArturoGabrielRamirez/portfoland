@@ -9,6 +9,7 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getTestimonialsByUserIdData } from '@/features/testimonials/data';
+import { checkOnboarding } from '@/features/onboarding/utils/checkOnboarding';
 import { DashboardTestimonialsView } from './DashboardTestimonialsView';
 
 export default async function DashboardTestimonialsPage() {
@@ -31,6 +32,8 @@ export default async function DashboardTestimonialsPage() {
       portfolioMode: true,
     },
   });
+
+  await checkOnboarding(session.user.id);
 
   const testimonials = await getTestimonialsByUserIdData(session.user.id);
 

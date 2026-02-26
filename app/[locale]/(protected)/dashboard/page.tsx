@@ -11,8 +11,10 @@ import { headers } from 'next/headers'
 import { setRequestLocale } from 'next-intl/server'
 import { getTranslations } from 'next-intl/server'
 
+import { redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { checkOnboarding } from '@/features/onboarding/utils/checkOnboarding'
 import {
   DashboardNav,
   DashboardRow1,
@@ -57,8 +59,10 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   const tWelcomeMsg = await getTranslations({ locale, namespace: 'dashboard' })
 
   const session = await auth.api.getSession({ headers: await headers() })
-  const user = session?.user
-  if (!user) return null
+  if (!session?.user?.id) redirect(`/${locale}/login`)
+  const user = session.user
+
+  await checkOnboarding(user.id)
 
   const dbUser = await prisma.user.findUnique({
     where: { id: user.id },

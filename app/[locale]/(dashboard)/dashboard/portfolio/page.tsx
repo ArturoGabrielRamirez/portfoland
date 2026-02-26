@@ -11,6 +11,7 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getPortfolioSettingsData } from '@/features/portfolio-settings/data';
+import { checkOnboarding } from '@/features/onboarding/utils/checkOnboarding';
 import { DashboardPortfolioView } from './DashboardPortfolioView';
 
 export default async function DashboardPortfolioPage() {
@@ -23,6 +24,8 @@ export default async function DashboardPortfolioPage() {
     if (!session?.user?.id) {
       redirect('/login');
     }
+
+    await checkOnboarding(session.user.id);
 
     // Fetch user with complete profile data
     const dbUser = await prisma.user.findUnique({

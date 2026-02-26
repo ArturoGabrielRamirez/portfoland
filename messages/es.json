@@ -138,7 +138,10 @@
       "classic": "Clasico",
       "tech": "Tech",
       "label": "Modo de Portafolio",
-      "success": "Modo de portafolio actualizado exitosamente"
+      "success": "Modo de portafolio actualizado exitosamente",
+      "switchWarning": "Cambiar de modo cambiará tus secciones por defecto y estilo visual. Tus datos (proyectos, habilidades, servicios, etc.) NO se eliminarán.",
+      "confirm": "Confirmar Cambio",
+      "cancel": "Cancelar"
     },
     "tech": {
       "levelProgress": "PROGRESO AL NIVEL {level}",
@@ -213,5 +216,15 @@
     "title": "Idioma",
     "selectLanguage": "Seleccionar Idioma",
     "label": "Cambiar idioma"
+  },
+  "onboarding": {
+    "title": "¿Qué describe mejor tu trabajo?",
+    "subtitle": "Esto nos ayuda a configurar tu portfolio con las secciones y estilo correctos.",
+    "digitalTitle": "Digital / Online",
+    "digitalDescription": "Desarrollador, diseñador, científico de datos, creador de contenido",
+    "serviceTitle": "Presencial / Servicio",
+    "serviceDescription": "Fotógrafo, chef, arquitecto, coach, estilista",
+    "continue": "Continuar",
+    "changeLater": "Puedes cambiar esto después en ajustes"
   }
 }

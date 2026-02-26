@@ -5,6 +5,7 @@
 // Handles Next.js development hot-reload without creating multiple instances.
 // =============================================================================
 
+import 'server-only';
 import { PrismaClient } from '@/app/generated/prisma/client'
 
 // Extend globalThis to store the Prisma client instance

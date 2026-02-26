@@ -82,3 +82,18 @@ export interface ActivityItem {
   time: string
   color: 'primary' | 'secondary' | 'success' | 'warning'
 }
+
+/**
+ * Computed real stats for the Tech Mode dashboard.
+ * Returned by getUserDashboardStats and passed to DashboardRow1 and HexStatGrid.
+ */
+export interface DashboardStats {
+  totalXP: number
+  level: number
+  xpToNextLevel: number
+  currentLevelXP: number
+  nextLevelXP: number
+  experiencesCount: number
+  achievements: { current: number; total: number }
+  currentStreak: number
+}

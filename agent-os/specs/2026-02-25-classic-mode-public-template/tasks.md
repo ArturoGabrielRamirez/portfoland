@@ -219,7 +219,7 @@ Dependencies resolved: TG1 has no dependencies. TG2 has no dependencies. TG3 dep
 
 **File:** `features/portfolio/__tests__/portfolio-classic-new-sections.test.tsx` (new file — create when starting TG4)
 
-- [ ] Set up the test file with the same boilerplate as `portfolio-classic.test.tsx`:
+- [x] Set up the test file with the same boilerplate as `portfolio-classic.test.tsx`:
   - Imports: `describe`, `it`, `expect`, `vi` from `'vitest'`; `render`, `screen` from `'@testing-library/react'`; `'@testing-library/jest-dom'`
   - `vi.mock('next-intl', ...)` with a translations map that includes ALL new keys:
     - `'sections.gallery.classic.title'`: `'Gallery'`
@@ -230,19 +230,19 @@ Dependencies resolved: TG1 has no dependencies. TG2 has no dependencies. TG3 dep
     - `'sections.testimonials.classic.title'`: `'Testimonials'`
     - `'sections.testimonials.classic.emptyState'`: `'No testimonials yet'`
   - `vi.mock('next/image', ...)` returning a plain `<img>`
-- [ ] Define `mockData` with `PortfolioData` type — include all required fields: `user` (same shape as `portfolio-classic.test.tsx` `mockUser`), `experiences: null`, `skills: null`, `projects: []`, `services: []`, `testimonials: []`, `gallery: []`, `settings: null`
-- [ ] Test case 1 — `'ClassicGallery renders gallery grid with items'`:
+- [x] Define `mockData` with `PortfolioData` type — include all required fields: `user` (same shape as `portfolio-classic.test.tsx` `mockUser`), `experiences: null`, `skills: null`, `projects: []`, `services: []`, `testimonials: []`, `gallery: []`, `settings: null`
+- [x] Test case 1 — `'ClassicGallery renders gallery grid with items'`:
   - Override `gallery` with 2 items: `[{ id: 'g1', imageUrl: '/img1.jpg', altText: 'First photo', caption: null, category: null, order: 0, published: true }, { id: 'g2', imageUrl: '/img2.jpg', altText: null, caption: 'Second photo', category: null, order: 1, published: true }]`
   - Dynamic import: `const { ClassicGallery } = await import('../components/classic/ClassicGallery')`
   - Render and assert: `screen.getByTestId('gallery-grid')` is in document; `screen.getByAltText('First photo')` is in document; `screen.getByText('Second photo')` is in document (the caption)
-- [ ] Test case 2 — `'ClassicGallery shows empty state when no gallery items'`:
+- [x] Test case 2 — `'ClassicGallery shows empty state when no gallery items'`:
   - Use `mockData` with `gallery: []`
   - Dynamic import the same component
   - Assert: `screen.getByTestId('gallery-empty-state')` is in document
 
 ### TG4-2: Write tests for ClassicServices (price formatting variants + empty state)
 
-- [ ] Test case 3 — `'ClassicServices renders service cards with all price types'`:
+- [x] Test case 3 — `'ClassicServices renders service cards with all price types'`:
   - Override `services` with 4 items, one per `priceType`:
     - `{ id: 's1', title: 'Consultation', priceType: 'CONTACT', priceMin: null, priceMax: null, currency: 'USD', durationMinutes: 30, description: null, published: true, order: 0 }`
     - `{ id: 's2', title: 'Haircut', priceType: 'FIXED', priceMin: 50, priceMax: null, currency: 'USD', durationMinutes: 45, description: null, published: true, order: 1 }`
@@ -250,23 +250,23 @@ Dependencies resolved: TG1 has no dependencies. TG2 has no dependencies. TG3 dep
     - `{ id: 's4', title: 'Design', priceType: 'STARTING_FROM', priceMin: 300, priceMax: null, currency: 'USD', durationMinutes: null, description: null, published: true, order: 3 }`
   - Dynamic import: `const { ClassicServices } = await import('../components/classic/ClassicServices')`
   - Assert: `screen.getAllByTestId('service-card')` has length 4; `screen.getByText('Contact us')` in document; `screen.getByText('$50 USD')` in document; `screen.getByText(/\$100.*\$200/)` or `screen.getByText('$100 – $200 USD')` in document; `screen.getByText(/From \$300/)` in document
-- [ ] Test case 4 — `'ClassicServices shows empty state when no services'`:
+- [x] Test case 4 — `'ClassicServices shows empty state when no services'`:
   - Use `mockData` with `services: []`
   - Dynamic import the same component
   - Assert: `screen.getByTestId('services-empty-state')` is in document
 
 ### TG4-3: Write tests for ClassicTestimonials (star rating + empty state)
 
-- [ ] Test case 5 — `'ClassicTestimonials renders testimonial cards with star rating and content'`:
+- [x] Test case 5 — `'ClassicTestimonials renders testimonial cards with star rating and content'`:
   - Override `testimonials` with 1 item: `{ id: 't1', clientName: 'Jane Smith', clientTitle: 'CEO', content: 'Great work', rating: 4, imageUrl: null, published: true, order: 0 }`
   - Dynamic import: `const { ClassicTestimonials } = await import('../components/classic/ClassicTestimonials')`
   - Assert: `screen.getByTestId('testimonial-card')` is in document; `screen.getByText('Great work')` in document; `screen.getByText('Jane Smith')` in document; query for amber stars: `document.querySelectorAll('.text-amber-400')` has length 4 and `document.querySelectorAll('.text-gray-200')` has length 1
-- [ ] Test case 6 — `'ClassicTestimonials shows empty state when no testimonials'`:
+- [x] Test case 6 — `'ClassicTestimonials shows empty state when no testimonials'`:
   - Use `mockData` with `testimonials: []`
   - Dynamic import the same component
   - Assert: `screen.getByTestId('testimonials-empty-state')` is in document
-- [ ] Run only the new test file to verify all 6 tests pass: `npx vitest run features/portfolio/__tests__/portfolio-classic-new-sections.test.tsx`
-- [ ] Run the existing test file to verify no regressions: `npx vitest run features/portfolio/__tests__/portfolio-classic.test.tsx`
+- [x] Run only the new test file to verify all 6 tests pass: `npx vitest run features/portfolio/__tests__/portfolio-classic-new-sections.test.tsx`
+- [x] Run the existing test file to verify no regressions: `npx vitest run features/portfolio/__tests__/portfolio-classic.test.tsx`
 
 **Acceptance Criteria:**
 - All 6 new tests in `portfolio-classic-new-sections.test.tsx` pass

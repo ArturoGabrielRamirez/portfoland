@@ -101,22 +101,16 @@ function HexStat({ value, label, color, delay = 0, size = 90 }: StatItem) {
 }
 
 // =============================================================================
-// 4-Hex Cluster Layout
+// 4-Hex Cross/Diamond Layout
 //
-//  [EXP 90px] [XP 110px] [ACH 90px]
-//              [LVL 90px]
+// The hexagons form a tight cross pattern that visually resembles
+// one large hexagonal cluster:
 //
-// Container: 265 × 190px
+//         [XP 110px]          ← top center
+//   [EXP 90px]   [ACH 90px]  ← middle row, flanking
+//         [LVL 90px]         ← bottom center
 //
-// Geometry — hexes touch at flat edges / bottom vertex:
-//   XP  (110px): left=77,  top=0   → center at (132, 55)
-//   EXP (90px):  left=0,   top=10  → center at (45,  55)  — same mid-y as XP
-//   ACH (90px):  left=173, top=10  → center at (218, 55)  — same mid-y as XP
-//   LVL (90px):  left=87,  top=97  → top vertex at (132, 103) ≈ XP bottom vertex
-//
-// EXP right edge ≈ XP left edge  (x ≈ 84)
-// ACH left edge  ≈ XP right edge (x ≈ 180)
-// LVL top vertex ≈ XP bottom vertex (x=132, y≈103)
+// Hexes overlap slightly at edges to create a unified diamond shape.
 // =============================================================================
 
 export function HexStatGrid({ stats, className }: HexStatGridProps) {
@@ -130,11 +124,11 @@ export function HexStatGrid({ stats, className }: HexStatGridProps) {
     return (
         <div className={cn("flex items-center justify-center w-full", className)}>
 
-            {/* ── DESKTOP: 4-hex cluster ── */}
-            <div className="hidden md:block relative w-[265px] h-[190px]">
+            {/* ── DESKTOP: 4-hex diamond cross ── */}
+            <div className="hidden md:block relative w-[254px] h-[218px]">
 
-                {/* XP — big center hex */}
-                <div className="absolute" style={{ left: 77, top: 0, zIndex: 1 }}>
+                {/* XP — top center, big hex */}
+                <div className="absolute" style={{ left: 72, top: 0, zIndex: 2 }}>
                     <HexStat
                         value={stats.xp.current.toLocaleString()}
                         label="XP TOTAL"
@@ -144,8 +138,8 @@ export function HexStatGrid({ stats, className }: HexStatGridProps) {
                     />
                 </div>
 
-                {/* EXP — left, touches XP left flat edge */}
-                <div className="absolute" style={{ left: 0, top: 10, zIndex: 1 }}>
+                {/* EXP — middle left, touches XP's lower-left edge */}
+                <div className="absolute" style={{ left: 0, top: 62, zIndex: 1 }}>
                     <HexStat
                         value={stats.experiences.toString()}
                         label="EXP."
@@ -155,8 +149,8 @@ export function HexStatGrid({ stats, className }: HexStatGridProps) {
                     />
                 </div>
 
-                {/* ACH — right, touches XP right flat edge */}
-                <div className="absolute" style={{ left: 173, top: 10, zIndex: 1 }}>
+                {/* ACH — middle right, touches XP's lower-right edge */}
+                <div className="absolute" style={{ left: 164, top: 62, zIndex: 1 }}>
                     <HexStat
                         value={`${stats.achievements.current}/${stats.achievements.total}`}
                         label="LOGROS"
@@ -166,8 +160,8 @@ export function HexStatGrid({ stats, className }: HexStatGridProps) {
                     />
                 </div>
 
-                {/* LVL — below XP, top vertex touches XP bottom vertex */}
-                <div className="absolute" style={{ left: 87, top: 97, zIndex: 1 }}>
+                {/* LVL — bottom center, touches EXP's lower-right and ACH's lower-left */}
+                <div className="absolute" style={{ left: 82, top: 128, zIndex: 2 }}>
                     <HexStat
                         value={stats.level.toString()}
                         label="NIVEL"
@@ -176,6 +170,13 @@ export function HexStatGrid({ stats, className }: HexStatGridProps) {
                         size={90}
                     />
                 </div>
+
+                {/* Decorative connector lines between hexes */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }}>
+                    {/* Center cross glow */}
+                    <circle cx="127" cy="118" r="8" fill={C.cyan} fillOpacity="0.04" />
+                    <circle cx="127" cy="118" r="3" fill={C.cyan} fillOpacity="0.08" />
+                </svg>
             </div>
 
             {/* ── MOBILE: 2×2 grid ── */}

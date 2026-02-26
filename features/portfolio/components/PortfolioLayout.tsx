@@ -26,6 +26,10 @@ import { ClassicSkills } from './classic/ClassicSkills';
 import { ClassicProjects } from './classic/ClassicProjects';
 import { ClassicContact } from './classic/ClassicContact';
 import { ClassicAI } from './classic/ClassicAI';
+import { ClassicGallery } from './classic/ClassicGallery';
+import { ClassicServices } from './classic/ClassicServices';
+import { ClassicTestimonials } from './classic/ClassicTestimonials';
+import { THEME_PRESETS } from '@/features/portfolio-settings/constants/themes';
 
 // Tech mode components
 import { TechHero } from './tech/TechHero';
@@ -48,6 +52,9 @@ const classicSections: Partial<Record<PortfolioSectionKey, React.ComponentType<P
   projects: ClassicProjects,
   contact: ClassicContact,
   ai: ClassicAI,
+  gallery: ClassicGallery,
+  services: ClassicServices,
+  testimonials: ClassicTestimonials,
 };
 
 const techSections: Partial<Record<PortfolioSectionKey, React.ComponentType<PortfolioSectionProps>>> = {
@@ -102,6 +109,7 @@ export function PortfolioLayout({ data, mode }: PortfolioLayoutProps) {
 
   const isClassic = mode === 'classic';
   const sections = isClassic ? classicSections : techSections;
+  const preset = THEME_PRESETS[data.settings?.theme ?? 'default'] ?? THEME_PRESETS['default'];
 
   const handleSectionChange = useCallback((section: string) => {
     setActiveSection(section as PortfolioSectionKey);
@@ -121,8 +129,15 @@ export function PortfolioLayout({ data, mode }: PortfolioLayoutProps) {
         // Mobile: natural flow with scroll, add padding for bottom nav
         'min-h-screen pb-16 md:pb-0',
         // Mode-based background
-        isClassic ? 'bg-white text-gray-900' : 'bg-[#0A0E1A] text-white overflow-hidden'
+        isClassic ? 'bg-[var(--portfolio-bg)] text-[var(--portfolio-text)]' : 'bg-[#0A0E1A] text-white overflow-hidden'
       )}
+      style={isClassic ? {
+        '--portfolio-bg': preset.backgroundColor,
+        '--portfolio-text': preset.textColor,
+        '--portfolio-accent': preset.accentColor,
+        '--portfolio-border': preset.borderColor,
+        '--portfolio-card-bg': preset.cardBackground,
+      } as React.CSSProperties : undefined}
       data-testid="portfolio-layout"
     >
       {/* CRT Overlay (Gaming Mode only) */}

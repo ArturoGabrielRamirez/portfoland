@@ -35,34 +35,16 @@ export function ClassicHero({ data, className }: PortfolioSectionProps) {
         </div>
       )}
 
-      {/* Name and Developer-centric Role */}
+      {/* Name */}
       <div className="flex flex-col items-center gap-2">
         <h1 className="text-3xl font-bold text-gray-900 tracking-tight">{user.name}</h1>
-        <div className="flex items-center gap-2 font-mono text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded border border-blue-100">
-          <span className="opacity-50">const</span>
-          <span className="font-semibold text-blue-700">ROLE</span>
-          <span className="opacity-50">=</span>
-          <span className="text-orange-600">'Fullstack Developer'</span>
-          <span className="opacity-50">;</span>
-        </div>
       </div>
 
-      {/* Terminal-style Bio */}
+      {/* Bio */}
       {user.bio && (
-        <div className="w-full max-w-xl terminal-window mt-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <div className="terminal-header">
-            <div className="terminal-dot bg-red-500/80" />
-            <div className="terminal-dot bg-yellow-500/80" />
-            <div className="terminal-dot bg-green-500/80" />
-            <span className="ml-2 text-[10px] text-slate-500 font-mono uppercase tracking-widest">bio.md — bash — 80x24</span>
-          </div>
-          <div className="terminal-content bg-[#0D1117] min-h-[100px] leading-relaxed">
-            <p className="text-slate-300 font-mono text-sm leading-relaxed whitespace-pre-wrap italic">
-              <span className="text-[#58a6ff] mr-2">➜</span>
-              {user.bio}
-            </p>
-          </div>
-        </div>
+        <p className="text-sm leading-relaxed text-gray-600 line-clamp-3 max-w-xl text-center">
+          {user.bio}
+        </p>
       )}
 
       {/* Social Links */}

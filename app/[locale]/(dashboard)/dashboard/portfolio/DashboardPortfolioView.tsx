@@ -19,8 +19,11 @@ import { HUDPanel } from '@/features/dashboard/components/HUDPanel';
 import { AIChatContainer } from '@/features/dashboard/components/ai/AIChatContainer';
 import { ImproveBioButton } from '@/features/ai/components/ImproveBioButton';
 import { updateProfile } from '@/features/portfolio/actions/updateProfile';
+import { updatePortfolioSettingsAction } from '@/features/portfolio-settings/actions/portfolioSettingsActions';
+import { THEME_PRESETS } from '@/features/portfolio-settings/constants/themes';
 import ReactMarkdown from 'react-markdown';
 import type { PortfolioMode } from '@/features/portfolio/types/portfolio';
+import type { PortfolioSettingsModel } from '@/features/portfolio-settings/types/portfolioSettings';
 import {
   Github,
   Linkedin,
@@ -56,6 +59,7 @@ interface DashboardPortfolioViewProps {
     sectionVisibility?: Record<string, boolean>;
   };
   oauthImage?: string | null;
+  portfolioSettings?: PortfolioSettingsModel | null;
 }
 
 const DEFAULT_SECTION_ORDER = ['about', 'experience', 'skills', 'projects'];
@@ -64,7 +68,7 @@ const DEFAULT_SECTION_ORDER = ['about', 'experience', 'skills', 'projects'];
 // Main Component
 // =============================================================================
 
-export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioViewProps) {
+export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: DashboardPortfolioViewProps) {
   const params = useParams();
   const locale = params.locale as string;
   const t = useTranslations('dashboard.portfolio');
@@ -88,8 +92,18 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
   );
 
   const [sectionVisibility, setSectionVisibility] = useState<Record<string, boolean>>(
-    user.sectionVisibility || { about: true, experience: true, skills: true, projects: true }
+    user.sectionVisibility || {
+      about: true,
+      experience: true,
+      skills: true,
+      projects: true,
+      gallery: true,
+      services: true,
+      testimonials: true,
+    }
   );
+
+  const [currentTheme, setCurrentTheme] = useState(portfolioSettings?.theme ?? 'default');
 
   // Helper: Move section in order
   const moveSection = useCallback((index: number, direction: 'up' | 'down') => {
@@ -132,6 +146,19 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
     const newCustom = [...(contactLinks.custom || [])];
     newCustom.splice(index, 1);
     setContactLinks(prev => ({ ...prev, custom: newCustom }));
+  };
+
+  // Handle theme selection
+  const handleThemeSelect = (presetId: string) => {
+    startTransition(async () => {
+      const result = await updatePortfolioSettingsAction({ theme: presetId });
+      if (result.hasError) {
+        toast.error(result.message);
+      } else {
+        setCurrentTheme(presetId);
+        toast.success('Theme updated');
+      }
+    });
   };
 
   // Handle form submission
@@ -364,6 +391,38 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                 return null;
               })}
 
+              {/* CLASSIC SECTIONS VISIBILITY (Only for Classic Mode users) */}
+              {user.portfolioMode === 'classic' && (
+                <HUDPanel title="Classic Sections" icon={<Layers className="w-4 h-4" />}>
+                  <div>
+                    {[
+                      { key: 'gallery', label: 'Images / Gallery' },
+                      { key: 'services', label: 'Services' },
+                      { key: 'testimonials', label: 'Testimonials' },
+                    ].map(({ key, label }) => (
+                      <div
+                        key={key}
+                        className="flex items-center justify-between py-3 border-b border-[hsl(174,100%,50%,0.08)] last:border-0"
+                      >
+                        <span className="text-sm font-mono text-gray-200">{label}</span>
+                        <button
+                          type="button"
+                          onClick={() => toggleVisibility(key)}
+                          className={cn(
+                            'text-xs font-mono px-3 py-1 rounded-sm border transition-colors',
+                            sectionVisibility[key] !== false
+                              ? 'text-[hsl(150,100%,45%)] border-[hsl(150,100%,45%,0.3)] bg-[hsl(150,100%,45%,0.08)]'
+                              : 'text-[#64748B] border-[#64748B]/30 bg-[#64748B]/08'
+                          )}
+                        >
+                          {sectionVisibility[key] !== false ? 'Visible' : 'Hidden'}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </HUDPanel>
+              )}
+
               {/* STATIC SOCIAL LINKS SECTION (Not part of section order) */}
               <HUDPanel
                 title={t('sections.socialLinks')}
@@ -457,6 +516,44 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                   <PortfolioModeToggle currentMode={user.portfolioMode} />
                 </div>
               </HUDPanel>
+
+              {/* CLASSIC MODE THEME PICKER */}
+              {user.portfolioMode === 'classic' && (
+                <HUDPanel title="Classic Mode Theme" icon={<Layers className="w-4 h-4" />}>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {Object.values(THEME_PRESETS).map((preset) => (
+                      <button
+                        key={preset.id}
+                        type="button"
+                        onClick={() => handleThemeSelect(preset.id)}
+                        className={cn(
+                          'flex flex-col gap-2 p-3 border rounded-sm text-left transition-all',
+                          currentTheme === preset.id
+                            ? 'border-[hsl(174,100%,50%,0.5)] bg-[hsl(174,100%,50%,0.08)]'
+                            : 'border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] hover:border-[hsl(174,100%,50%,0.3)]'
+                        )}
+                      >
+                        <div className="flex items-center gap-1.5">
+                          <span
+                            className="w-3 h-3 rounded-full border border-white/10"
+                            style={{ backgroundColor: preset.backgroundColor }}
+                          />
+                          <span
+                            className="w-3 h-3 rounded-full"
+                            style={{ backgroundColor: preset.accentColor }}
+                          />
+                          {currentTheme === preset.id && (
+                            <span className="text-[hsl(150,100%,45%)] bg-[hsl(150,100%,45%,0.1)] text-[10px] font-mono px-1.5 py-0.5 rounded-sm uppercase ml-auto">
+                              Active
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-xs font-mono text-gray-200">{preset.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </HUDPanel>
+              )}
             </div>
 
             {/* Floating Action Button for Saving */}

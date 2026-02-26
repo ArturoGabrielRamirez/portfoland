@@ -10,6 +10,7 @@ import { redirect } from 'next/navigation';
 
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { getPortfolioSettingsData } from '@/features/portfolio-settings/data';
 import { DashboardPortfolioView } from './DashboardPortfolioView';
 
 export default async function DashboardPortfolioPage() {
@@ -42,6 +43,8 @@ export default async function DashboardPortfolioPage() {
       redirect('/login');
     }
 
+    const portfolioSettings = await getPortfolioSettingsData(session.user.id);
+
     // Get OAuth image - use the one from DB if exists, otherwise null
     // (will be set on next fresh login from OAuth provider)
     const oauthImage = dbUser.oauthImage ?? null;
@@ -61,6 +64,7 @@ export default async function DashboardPortfolioPage() {
           portfolioMode: (dbUser.portfolioMode ?? 'classic') as 'classic' | 'tech',
         }}
         oauthImage={oauthImage}
+        portfolioSettings={portfolioSettings}
       />
     );
   } catch (error) {

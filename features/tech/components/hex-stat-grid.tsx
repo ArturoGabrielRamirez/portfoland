@@ -3,14 +3,6 @@
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react"
 
-interface StatItem {
-    value: string
-    label: string
-    color: string
-    delay?: number
-    size?: number
-}
-
 interface HexStatGridProps {
     stats: {
         xp: { current: number; max: number }
@@ -22,10 +14,22 @@ interface HexStatGridProps {
     className?: string
 }
 
-// Hex SVG — pointy-top, fits a square viewBox 0 0 90 90
-const HEX_PATH = "M45 6.03 L83.97 28.53 L83.97 61.47 L45 83.97 L6.03 61.47 L6.03 28.53 Z"
+// Pointy-top hexagon path in a 100×100 viewBox
+const HEX_POINTS = "50,3 97,27.5 97,72.5 50,97 3,72.5 3,27.5"
 
-function HexStat({ value, label, color, delay = 0, size = 90 }: StatItem) {
+interface HexStatProps {
+    value: string
+    label: string
+    color: string
+    /** Rendered width/height in px */
+    size: number
+    left: number
+    top: number
+    delay?: number
+    zIndex?: number
+}
+
+function HexStat({ value, label, color, size, left, top, delay = 0, zIndex = 1 }: HexStatProps) {
     const [visible, setVisible] = useState(false)
 
     useEffect(() => {
@@ -33,64 +37,67 @@ function HexStat({ value, label, color, delay = 0, size = 90 }: StatItem) {
         return () => clearTimeout(t)
     }, [delay])
 
-    const isBig = size >= 100
-    const fontSize = isBig ? "1.5rem" : size >= 90 ? "1.35rem" : "1.1rem"
-    const labelSize = isBig ? "0.5rem" : "0.42rem"
+    const fontSize = size >= 105 ? "1.45rem" : "1.15rem"
+    const labelSize = size >= 105 ? "0.48rem" : "0.4rem"
 
     return (
         <div
             className={cn(
-                "flex flex-col items-center transition-all duration-700",
-                visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-3 scale-90"
+                "absolute transition-all duration-700",
+                visible ? "opacity-100 scale-100" : "opacity-0 scale-90"
             )}
-            style={{ transitionDelay: `${delay}ms` }}
+            style={{ left, top, zIndex, transitionDelay: `${delay}ms` }}
         >
-            <div className="relative group cursor-default">
+            <div className="relative group cursor-default select-none">
                 <svg
                     width={size}
                     height={size}
-                    viewBox="0 0 90 90"
-                    className="transition-all duration-300"
-                    style={{ filter: `drop-shadow(0 0 4px ${color}30)` }}
+                    viewBox="0 0 100 100"
+                    style={{ filter: `drop-shadow(0 0 6px ${color}40)` }}
+                    className="transition-all duration-300 group-hover:scale-[1.03]"
                 >
-                    {/* Outer glow ring */}
-                    <path
-                        d={HEX_PATH}
+                    {/* Outer glow stroke */}
+                    <polygon
+                        points={HEX_POINTS}
                         fill="none"
                         stroke={color}
-                        strokeWidth="0.5"
-                        strokeOpacity="0.2"
-                        className="group-hover:stroke-opacity-50 transition-all duration-300"
+                        strokeWidth="0.6"
+                        strokeOpacity="0.18"
                     />
-                    {/* Main hex border */}
-                    <path
-                        d={HEX_PATH}
+                    {/* Main border + fill */}
+                    <polygon
+                        points={HEX_POINTS}
                         fill={color}
-                        fillOpacity="0.06"
+                        fillOpacity="0.07"
                         stroke={color}
-                        strokeWidth="2"
-                        strokeOpacity="0.55"
-                        className="group-hover:fill-opacity-15 group-hover:stroke-opacity-100 transition-all duration-300"
+                        strokeWidth="1.8"
+                        strokeOpacity="0.6"
+                        className="group-hover:fill-opacity-[0.14] group-hover:stroke-opacity-100 transition-all duration-300"
+                    />
+                    {/* Inner accent ring */}
+                    <polygon
+                        points="50,12 88,33 88,67 50,88 12,67 12,33"
+                        fill="none"
+                        stroke={color}
+                        strokeWidth="0.4"
+                        strokeOpacity="0.12"
                     />
                 </svg>
+                {/* Text overlay */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
                     <span
-                        className="font-mono font-bold leading-none tracking-tight"
+                        className="font-mono font-bold leading-none tabular-nums"
                         style={{
                             color,
                             fontSize,
-                            textShadow: `0 0 12px ${color}50`,
+                            textShadow: `0 0 14px ${color}60`,
                         }}
                     >
                         {value}
                     </span>
                     <span
-                        className="font-mono uppercase tracking-[0.18em] mt-0.5"
-                        style={{
-                            color,
-                            fontSize: labelSize,
-                            opacity: 0.75,
-                        }}
+                        className="font-mono uppercase tracking-[0.16em] mt-0.5"
+                        style={{ color, fontSize: labelSize, opacity: 0.7 }}
                     >
                         {label}
                     </span>
@@ -101,17 +108,31 @@ function HexStat({ value, label, color, delay = 0, size = 90 }: StatItem) {
 }
 
 // =============================================================================
-// 4-Hex Cross/Diamond Layout
+// Hex Diamond Cluster — hexes OVERLAP to form one unified diamond shape
 //
-// The hexagons form a tight cross pattern that visually resembles
-// one large hexagonal cluster:
+//         ╔══════════╗           ← XP (112px) top-center
+//     ╔══════╗   ╔══════╗       ← EXP (left) + ACH (right) overlap XP flanks
+//         ╔══════╗               ← LVL (bottom) fits between EXP and ACH
 //
-//         [XP 110px]          ← top center
-//   [EXP 90px]   [ACH 90px]  ← middle row, flanking
-//         [LVL 90px]         ← bottom center
-//
-// Hexes overlap slightly at edges to create a unified diamond shape.
+// Container: 248 × 212px
+// Overlaps:  XP↔EXP = 28px horiz | XP↔ACH = 28px horiz
+//            EXP↔LVL = 26px vert | ACH↔LVL = 26px vert
 // =============================================================================
+
+const CLUSTER_W = 248
+const CLUSTER_H = 212
+
+const MOBILE_STATS = (C: Record<string, string>, stats: HexStatGridProps["stats"]) => [
+    { value: stats.xp.current.toLocaleString(), label: "XP TOTAL", color: C.cyan,    delay: 0   },
+    { value: stats.level.toString(),             label: "NIVEL",    color: C.yellow,  delay: 80  },
+    { value: stats.experiences.toString(),       label: "EXP.",     color: C.green,   delay: 160 },
+    {
+        value: `${stats.achievements.current}/${stats.achievements.total}`,
+        label: "LOGROS",
+        color: C.magenta,
+        delay: 240,
+    },
+]
 
 export function HexStatGrid({ stats, className }: HexStatGridProps) {
     const C = {
@@ -121,70 +142,88 @@ export function HexStatGrid({ stats, className }: HexStatGridProps) {
         magenta: "hsl(330,100%,65%)",
     }
 
+    // ── Sizes ──────────────────────────────────────────────────────────────
+    const BIG = 112   // XP hex
+    const SM  = 92    // EXP, ACH, LVL
+
+    // ── Positions ──────────────────────────────────────────────────────────
+    // Centers:  XP=(124,56)  EXP=(46,100)  ACH=(202,100)  LVL=(124,154)
+    // Overlap:  XP/EXP & XP/ACH share ~28px horizontally
+    //           EXP/LVL & ACH/LVL share ~26px vertically
+    const XP_L  = 68   // left: 68  → center x = 68  + 56 = 124
+    const EXP_L = 0    // left:  0  → center x = 0   + 46 = 46
+    const ACH_L = 156  // left: 156 → center x = 156 + 46 = 202
+    const LVL_L = 78   // left: 78  → center x = 78  + 46 = 124
+
+    const XP_T  = 0    // top: 0  → center y = 0   + 56 = 56
+    const EXP_T = 54   // top: 54 → center y = 54  + 46 = 100
+    const ACH_T = 54   // top: 54 → center y = 54  + 46 = 100
+    const LVL_T = 108  // top: 108 → center y = 108 + 46 = 154
+
     return (
         <div className={cn("flex items-center justify-center w-full", className)}>
 
-            {/* ── DESKTOP: 4-hex diamond cross ── */}
-            <div className="hidden md:block relative w-[254px] h-[218px]">
+            {/* ── DESKTOP: overlapping diamond cluster ── */}
+            <div className="hidden md:block">
+                <div className="relative" style={{ width: CLUSTER_W, height: CLUSTER_H }}>
 
-                {/* XP — top center, big hex */}
-                <div className="absolute" style={{ left: 72, top: 0, zIndex: 2 }}>
-                    <HexStat
-                        value={stats.xp.current.toLocaleString()}
-                        label="XP TOTAL"
-                        color={C.cyan}
-                        delay={0}
-                        size={110}
-                    />
-                </div>
-
-                {/* EXP — middle left, touches XP's lower-left edge */}
-                <div className="absolute" style={{ left: 0, top: 62, zIndex: 1 }}>
-                    <HexStat
-                        value={stats.experiences.toString()}
-                        label="EXP."
-                        color={C.green}
-                        delay={80}
-                        size={90}
-                    />
-                </div>
-
-                {/* ACH — middle right, touches XP's lower-right edge */}
-                <div className="absolute" style={{ left: 164, top: 62, zIndex: 1 }}>
-                    <HexStat
-                        value={`${stats.achievements.current}/${stats.achievements.total}`}
-                        label="LOGROS"
-                        color={C.magenta}
-                        delay={80}
-                        size={90}
-                    />
-                </div>
-
-                {/* LVL — bottom center, touches EXP's lower-right and ACH's lower-left */}
-                <div className="absolute" style={{ left: 82, top: 128, zIndex: 2 }}>
+                    {/* LVL — bottom, behind EXP/ACH */}
                     <HexStat
                         value={stats.level.toString()}
                         label="NIVEL"
                         color={C.yellow}
-                        delay={120}
-                        size={90}
+                        size={SM}
+                        left={LVL_L} top={LVL_T}
+                        delay={140} zIndex={1}
+                    />
+
+                    {/* EXP — left flank, in front of XP */}
+                    <HexStat
+                        value={stats.experiences.toString()}
+                        label="EXP."
+                        color={C.green}
+                        size={SM}
+                        left={EXP_L} top={EXP_T}
+                        delay={80} zIndex={3}
+                    />
+
+                    {/* ACH — right flank, in front of XP */}
+                    <HexStat
+                        value={`${stats.achievements.current}/${stats.achievements.total}`}
+                        label="LOGROS"
+                        color={C.magenta}
+                        size={SM}
+                        left={ACH_L} top={ACH_T}
+                        delay={80} zIndex={3}
+                    />
+
+                    {/* XP — top center, behind flanks so all borders show through */}
+                    <HexStat
+                        value={stats.xp.current.toLocaleString()}
+                        label="XP TOTAL"
+                        color={C.cyan}
+                        size={BIG}
+                        left={XP_L} top={XP_T}
+                        delay={0} zIndex={2}
                     />
                 </div>
-
-                {/* Decorative connector lines between hexes */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }}>
-                    {/* Center cross glow */}
-                    <circle cx="127" cy="118" r="8" fill={C.cyan} fillOpacity="0.04" />
-                    <circle cx="127" cy="118" r="3" fill={C.cyan} fillOpacity="0.08" />
-                </svg>
             </div>
 
             {/* ── MOBILE: 2×2 grid ── */}
-            <div className="md:hidden grid grid-cols-2 gap-3 place-items-center">
-                <HexStat value={stats.xp.current.toLocaleString()} label="XP TOTAL" color={C.cyan}    size={90} delay={0} />
-                <HexStat value={stats.level.toString()}             label="NIVEL"    color={C.yellow}  size={90} delay={80} />
-                <HexStat value={stats.experiences.toString()}       label="EXP."     color={C.green}   size={90} delay={160} />
-                <HexStat value={`${stats.achievements.current}/${stats.achievements.total}`} label="LOGROS" color={C.magenta} size={90} delay={240} />
+            <div className="md:hidden grid grid-cols-2 gap-3">
+                {MOBILE_STATS(C, stats).map((s) => (
+                    <div key={s.label} className="relative" style={{ width: 90, height: 90 }}>
+                        <HexStat
+                            value={s.value}
+                            label={s.label}
+                            color={s.color}
+                            size={90}
+                            left={0} top={0}
+                            delay={s.delay}
+                            zIndex={1}
+                        />
+                    </div>
+                ))}
             </div>
         </div>
     )

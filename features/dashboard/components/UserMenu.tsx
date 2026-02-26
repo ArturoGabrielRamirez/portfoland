@@ -10,6 +10,7 @@
 import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import Link from 'next/link'
 import { toast } from 'sonner'
 import { LogOut, User } from 'lucide-react'
 
@@ -87,8 +88,8 @@ export function UserMenu({ user, locale }: UserMenuProps) {
 
   const initials = getInitials(user.name)
 
-  // Validate image URL (not empty string or invalid)
-  const validImageUrl = user.image?.trim() && user.image.trim() !== '' ? user.image.trim() : null
+  // Normalize image URL — undefined means Radix won't attempt to load
+  const avatarSrc = user.image?.trim() || undefined
 
   return (
     <DropdownMenu>
@@ -99,13 +100,11 @@ export function UserMenu({ user, locale }: UserMenuProps) {
           aria-label={t('profile')}
         >
           <Avatar className="h-9 w-9 clip-hexagon rounded-none overflow-hidden">
-            {validImageUrl && (
-              <AvatarImage
-                src={validImageUrl}
-                alt={user.name ?? 'User avatar'}
-                className="object-cover"
-              />
-            )}
+            <AvatarImage
+              src={avatarSrc}
+              alt={user.name ?? 'User avatar'}
+              className="object-cover"
+            />
             <AvatarFallback className="bg-[hsl(174,100%,50%,0.15)] text-[hsl(174,100%,50%)] font-mono font-bold text-xs rounded-none">
               {initials}
             </AvatarFallback>
@@ -131,14 +130,12 @@ export function UserMenu({ user, locale }: UserMenuProps) {
 
         <DropdownMenuSeparator className="bg-[#334155]" />
 
-        {/* Profile link - placeholder for future implementation */}
-        <DropdownMenuItem
-          className="cursor-pointer text-[#94A3B8] focus:bg-[#1A2332] focus:text-white"
-          disabled
-        >
-          <User className="mr-2 h-4 w-4" />
-          <span>{t('profile')}</span>
-          <span className="ml-auto text-xs text-[#64748B]">Soon</span>
+        {/* Portfolio link */}
+        <DropdownMenuItem asChild className="cursor-pointer text-[#94A3B8] focus:bg-[#1A2332] focus:text-white">
+          <Link href={`/${locale}/dashboard/portfolio`}>
+            <User className="mr-2 h-4 w-4" />
+            <span>{t('profile')}</span>
+          </Link>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator className="bg-[#334155]" />

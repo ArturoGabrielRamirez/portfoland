@@ -1,5 +1,5 @@
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../app/generated/prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -10,7 +10,7 @@ async function main() {
     const user = await prisma.user.findUnique({
         where: { username },
         include: {
-            profile: true, // Assuming profile relation exists or check schema
+            // Check schema to see what's actually available if needed
         }
     });
 

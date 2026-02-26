@@ -21,9 +21,8 @@ async function clearNarrativeCache() {
 
     const users = await prisma.user.findMany({
       where: {
-        meta: {
-          not: null
-        }
+        // Fetch users who have some meta data; filtering null on Json fields can be tricky
+        // so we'll fetch and then filter in memory for safety in this script
       },
       select: {
         id: true,

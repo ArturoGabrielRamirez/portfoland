@@ -1,28 +1,32 @@
 // =============================================================================
-// Dashboard Page - Cyberpunk V2
+// Dashboard Page — Redesign V3 — Hex-Center Tech Panel
 // =============================================================================
-// Main dashboard following the cyberpunk design system with hexagonal stat cards,
-// CRT monitor, goals tracking, and activity feed. All monospace, sharp edges.
+// Layout: Hex diamond stats in the CENTER, all other panels SURROUNDING it.
+//   TOP: WelcomeCard (left) + CRTWithAI (right)
+//   CENTER: Missions+SysLog (left) | HexDiamond+Actions+Heatmap (center) | Skills+Runners (right)
+// Mobile: single column scroll, floating bottom toolbar.
 // =============================================================================
 
 import { headers } from 'next/headers'
 import { setRequestLocale } from 'next-intl/server'
 import { getTranslations } from 'next-intl/server'
-import { Zap, TrendingUp, Star, Trophy, Target, Briefcase, Award, BookOpen, GitBranch, MapPin, Clock, User } from 'lucide-react'
 
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import {
-  WelcomeCard,
-  CRTMonitor,
-  HexBadge,
   DashboardNav,
-  AIAssistantWidget,
+  DashboardRow1,
+  HexStatGrid,
+  ActiveMissionsPanel,
+  ActivityHeatmap,
+  SkillRadarPanel,
+  TopRunnersPanel,
+  QuickActionsBar,
 } from '@/features/tech'
 import type { DashboardPageProps } from '@/features/dashboard/types/dashboard'
 
 // =============================================================================
-// Helper Functions
+// Helpers
 // =============================================================================
 
 function getInitials(name: string | null, email: string): string {
@@ -37,14 +41,12 @@ function getInitials(name: string | null, email: string): string {
 }
 
 function getDisplayName(name: string | null, email: string): string {
-  if (name) {
-    return name.split(' ')[0]
-  }
+  if (name) return name.split(' ')[0]
   return email.split('@')[0]
 }
 
 // =============================================================================
-// Page Component
+// Page
 // =============================================================================
 
 export default async function DashboardPage({ params }: DashboardPageProps) {
@@ -53,30 +55,14 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
 
   const tWelcome = await getTranslations({ locale, namespace: 'dashboard.welcomeCard' })
   const tWelcomeMsg = await getTranslations({ locale, namespace: 'dashboard' })
-  const tActions = await getTranslations({ locale, namespace: 'dashboard.home.quickActions' })
-  const tStats = await getTranslations({ locale, namespace: 'dashboard.home.stats' })
-  const tSkills = await getTranslations({ locale, namespace: 'dashboard.home.skills' })
-  const tActivity = await getTranslations({ locale, namespace: 'dashboard.home.activity' })
 
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  })
-
+  const session = await auth.api.getSession({ headers: await headers() })
   const user = session?.user
-  if (!user) {
-    return null
-  }
+  if (!user) return null
 
-  // Fetch user with image and portfolioMode from database
   const dbUser = await prisma.user.findUnique({
     where: { id: user.id },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      image: true,
-      portfolioMode: true,
-    },
+    select: { id: true, name: true, email: true, image: true, portfolioMode: true },
   })
 
   const userData = {
@@ -90,322 +76,121 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   const displayName = getDisplayName(userData.name, userData.email)
   const initials = getInitials(userData.name, userData.email)
 
-  // Mock user stats - using translations for labels
+  // --- Mock stats (replace with real DB queries) ---
   const userStats = {
     currentXP: 1900,
     maxXP: 2450,
     level: 18,
     streakDays: 12,
+    experiences: 7,
+    achievements: { current: 18, total: 42 },
   }
 
-  // Stats data with translations
-  const stats = [
-    { value: userStats.currentXP.toLocaleString(), label: tStats('totalXP'), color: "cyan" as const, icon: <Zap className="w-5 h-5" />, sub: tStats('xpSub', { count: 150 }) },
-    { value: userStats.level.toString(), label: tStats('currentLevel'), color: "yellow" as const, icon: <TrendingUp className="w-5 h-5" />, sub: "Explorer rank" },
-    { value: "7", label: tStats('experiences'), color: "green" as const, icon: <Star className="w-5 h-5" />, sub: tStats('expSub', { count: 2 }) },
-    { value: "18/42", label: tStats('achievements'), color: "magenta" as const, icon: <Trophy className="w-5 h-5" />, sub: tStats('achSub', { percent: 43 }) },
-  ]
-
-  // Quick Actions with translations
-  const quickActions = [
-    { icon: "Briefcase", label: tActions('timeline'), color: "hsl(174,100%,50%)", href: `/${locale}/dashboard/timeline` },
-    { icon: "Clock", label: tActions('projects'), color: "hsl(60,100%,50%)", href: `/${locale}/dashboard/projects` },
-    { icon: "GitBranch", label: tActions('skills'), color: "hsl(330,100%,65%)", href: `/${locale}/dashboard/skills` },
-    { icon: "User", label: tActions('portfolio'), color: "hsl(150,100%,45%)", href: `/${locale}/dashboard/portfolio` },
-  ]
-
-  // Skills Preview - mock data showing top skills with XP
-  const skills = [
-    { name: "TypeScript", category: "Frontend", xp: 2450, level: 4, maxXP: 3000, color: "hsl(174,100%,50%)" },
-    { name: "React", category: "Frontend", xp: 3200, level: 5, maxXP: 4000, color: "hsl(60,100%,50%)" },
-    { name: "Node.js", category: "Backend", xp: 1800, level: 3, maxXP: 2500, color: "hsl(330,100%,65%)" },
-  ]
-
-  // Activities - keeping mock data for now
-  const activities = [
-    { icon: Briefcase, text: "Added Senior Developer experience", time: "2 hours ago", xp: "+200 XP", color: "cyan" as const },
-    { icon: Award, text: "Earned 'First Certification' badge", time: "1 day ago", xp: "+100 XP", color: "yellow" as const },
-    { icon: BookOpen, text: "Completed React Advanced course", time: "3 days ago", xp: "+150 XP", color: "magenta" as const },
-    { icon: GitBranch, text: "TypeScript skill reached Lv.4", time: "5 days ago", xp: "+50 XP", color: "green" as const },
-    { icon: MapPin, text: "Updated location: Buenos Aires", time: "1 week ago", xp: "+10 XP", color: "cyan" as const },
-  ]
-
   return (
-    <div className="min-h-screen bg-[#0A0E1A] font-mono">
-      {/* Main Navigation */}
+    <div
+      className="h-[100dvh] overflow-hidden flex flex-col bg-[#0A0E1A] font-mono"
+    >
+      {/* ===== NAVIGATION ===== */}
       <DashboardNav locale={locale} user={userData} />
 
-      <div className="p-6 max-w-7xl mx-auto">
-        {/* Welcome + CRT + AI Sidebar Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_340px_280px] gap-4 mb-6">
-          <WelcomeCard
-            userName={displayName}
-            userInitial={initials}
-            userImage={userData.image}
-            level={userStats.level}
-            currentXP={userStats.currentXP}
-            maxXP={userStats.maxXP}
-            streakDays={userStats.streakDays}
-            translations={{
-              welcomeTitle: tWelcomeMsg('welcome', { name: displayName }),
-              welcomeSubtitle: tWelcomeMsg('welcomeSubtitle'),
-              streak: tWelcome('streak', { count: userStats.streakDays }),
-              quickActionsTitle: tWelcome('quickActions'),
-              xpToLevel: tWelcome('xpToLevel', { xp: userStats.maxXP - userStats.currentXP, level: userStats.level + 1 }),
-            }}
-          />
-          <CRTMonitor className="min-h-[220px]" />
-          <AIAssistantWidget />
-        </div>
+      {/* ===== MAIN CONTENT ===== */}
+      <div className="flex-1 min-h-0 overflow-y-auto md:overflow-hidden flex flex-col gap-2 p-2 pb-20 md:pb-2">
 
-        {/* Quick Actions Row - Living Hex Style */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-          {quickActions.map((action, i) => {
-            const icons: Record<string, React.ReactNode> = {
-              Briefcase: <Briefcase className="w-5 h-5" />,
-              Clock: <Clock className="w-5 h-5" />,
-              GitBranch: <GitBranch className="w-5 h-5" />,
-              User: <User className="w-5 h-5" />,
-            }
-            const Icon = icons[action.icon]
-            return (
-              <a
-                key={action.label}
-                href={action.href}
-                className="group relative border bg-[hsl(200,30%,8%)] p-4 flex items-center gap-4 transition-all duration-500 hover:bg-[hsl(200,30%,10%)] hover:border-opacity-50"
-                style={{ 
-                  borderColor: `${action.color}30`,
-                }}
-              >
-                {/* Ambient glow on hover */}
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                  style={{ 
-                    background: `radial-gradient(circle at center, ${action.color}12 0%, transparent 70%)`
-                  }}
-                />
-                
-                {/* Living Hexagon */}
-                <div className="relative flex-shrink-0">
-                  <svg width="48" height="48" viewBox="0 0 100 100">
-                    {/* Idle: slow breathing outer glow */}
-                    <circle
-                      cx="50" cy="50" r="46"
-                      fill="none"
-                      stroke={action.color}
-                      strokeWidth="0.5"
-                      opacity="0.15"
-                      className="animate-hex-idle-breathe"
-                    />
-                    
-                    {/* Outer ring - idle vs hover states */}
-                    <circle
-                      cx="50" cy="50" r="44"
-                      fill="none"
-                      stroke={action.color}
-                      strokeWidth="1"
-                      strokeDasharray="3 9"
-                      opacity="0.2"
-                      className="group-hover:animate-hex-ring-spin"
-                      style={{ 
-                        animationDuration: "4s",
-                        transformOrigin: "50px 50px"
-                      }}
-                    />
-                    
-                    {/* Hexagon frame */}
-                    <path
-                      d="M50 4 L92 27 L92 73 L50 96 L8 73 L8 27 Z"
-                      fill="none"
-                      stroke={action.color}
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="transition-all duration-300"
-                      style={{
-                        strokeOpacity: 0.5,
-                        filter: `drop-shadow(0 0 2px ${action.color})`
-                      }}
-                    />
-                    
-                    {/* Inner hex - breathing */}
-                    <path
-                      d="M50 12 L82 31 L82 69 L50 88 L18 69 L18 31 Z"
-                      fill="none"
-                      stroke={action.color}
-                      strokeWidth="1.5"
-                      className="transition-all duration-300 group-hover:animate-hex-idle-breathe"
-                      style={{
-                        strokeOpacity: 0.4,
-                        fillOpacity: 0.05
-                      }}
-                    />
-                    
-                    {/* Eye/Pupil group - changes behavior */}
-                    <g className="transition-transform duration-300 group-hover:animate-hex-observe">
-                      {/* Eye white */}
-                      <ellipse
-                        cx="50" cy="50" rx="18" ry="12"
-                        fill={`${action.color}10`}
-                        stroke={action.color}
-                        strokeWidth="1"
-                        className="transition-all duration-300"
-                        style={{ opacity: 0.5 }}
-                      />
-                      
-                      {/* Pupil - breathing in idle, active on hover */}
-                      <circle
-                        cx="50" cy="50" r="5"
-                        fill={action.color}
-                        className="transition-all duration-300 group-hover:animate-hex-idle-pulse"
-                        style={{
-                          filter: `drop-shadow(0 0 4px ${action.color})`,
-                          opacity: 0.8
-                        }}
-                      />
-                      
-                      {/* Eye shine */}
-                      <circle 
-                        cx="47" cy="47" r="2" 
-                        fill="white" 
-                        opacity="0.6"
-                        className="transition-transform duration-300 group-hover:translate-x-0.5"
-                      />
-                    </g>
-                    
-                    {/* Connecting lines to center - appear on hover */}
-                    <g className="opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      <line x1="50" y1="38" x2="50" y2="20" stroke={action.color} strokeWidth="0.5" opacity="0.3" />
-                      <line x1="50" y1="62" x2="50" y2="80" stroke={action.color} strokeWidth="0.5" opacity="0.3" />
-                      <line x1="32" y1="50" x2="20" y2="50" stroke={action.color} strokeWidth="0.5" opacity="0.3" />
-                      <line x1="68" y1="50" x2="80" y2="50" stroke={action.color} strokeWidth="0.5" opacity="0.3" />
-                    </g>
-                  </svg>
-                </div>
-                
-                {/* Label */}
-                <span className="text-xs font-mono text-foreground group-hover:text-white transition-colors duration-300">
-                  {action.label}
-                </span>
-              </a>
-            )
-          })}
-        </div>
+        {/* ── ROW 1: WelcomeCard + CRTWithAI (client wrapper coordinates aiActive state) ── */}
+        <DashboardRow1
+          userName={displayName}
+          userInitial={initials}
+          userImage={userData.image}
+          level={userStats.level}
+          currentXP={userStats.currentXP}
+          maxXP={userStats.maxXP}
+          streakDays={userStats.streakDays}
+          translations={{
+            welcomeTitle: tWelcomeMsg('welcome', { name: displayName }),
+            welcomeSubtitle: tWelcomeMsg('welcomeSubtitle'),
+            streak: tWelcome('streak', { count: userStats.streakDays }),
+            quickActionsTitle: tWelcome('quickActions'),
+            xpToLevel: tWelcome('xpToLevel', {
+              xp: userStats.maxXP - userStats.currentXP,
+              level: userStats.level + 1,
+            }),
+          }}
+        />
 
-        {/* Stats Row - Hex styled */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-          {stats.map((stat) => (
-            <div key={stat.label} className="relative border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-4 overflow-hidden group hover:border-[hsl(174,100%,50%,0.3)] transition-colors">
-              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[hsl(174,100%,50%,0.3)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="flex items-center gap-3">
-                <HexBadge color={stat.color} size="lg" filled>
-                  {stat.icon}
-                </HexBadge>
-                <div>
-                  <div className={`text-2xl font-mono font-bold ${
-                    stat.color === "cyan" ? "text-[hsl(174,100%,50%)]" :
-                    stat.color === "yellow" ? "text-[hsl(60,100%,50%)]" :
-                    stat.color === "green" ? "text-[hsl(150,100%,45%)]" :
-                    "text-[hsl(330,100%,65%)]"
-                  }`}>
-                    {stat.value}
+        {/* ── ROW 2: Missions+SysLog | HEX DIAMOND + Actions + Heatmap | Skills+Runners ── */}
+        <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_minmax(0,1fr)] gap-2">
+
+          {/* Left column: Active Missions + SYS_LOG */}
+          <div className="flex flex-col gap-2 min-h-0">
+            <ActiveMissionsPanel className="flex-1 min-h-[140px]" />
+            {/* SYS_LOG — recent activity feed */}
+            <div className="border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,6%)] p-3 flex-1 min-h-[120px]">
+              <div className="flex items-center justify-between mb-2.5">
+                <span className="text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground/60">SYS_LOG</span>
+                <span className="text-[8px] font-mono text-muted-foreground/30">last 48h</span>
+              </div>
+              <div className="space-y-2.5">
+                <div className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[hsl(150,100%,45%)] mt-1 flex-shrink-0" />
+                  <div>
+                    <p className="text-[10px] font-mono text-foreground/80">Deployed v2.0 to Production</p>
+                    <p className="text-[8px] font-mono text-muted-foreground/40">2 hours ago</p>
                   </div>
-                  <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground">{stat.label}</div>
-                  <div className="text-[9px] font-mono text-muted-foreground mt-0.5">{stat.sub}</div>
                 </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Profile Completion + Activity */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {/* Profile Completion */}
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <Target className="w-4 h-4 text-[hsl(174,100%,50%)]" />
-                <h3 className="font-mono font-bold text-sm text-foreground">{tSkills('title')}</h3>
-              </div>
-            </div>
-            <div className="border border-[hsl(174,100%,50%,0.12)] bg-[hsl(200,30%,8%)] p-4">
-              {/* Profile Completion Bar */}
-              <div className="mb-4">
-                <div className="flex justify-between text-xs font-mono mb-1">
-                  <span className="text-muted-foreground">Profile Completion</span>
-                  <span className="text-[hsl(174,100%,50%)]">65%</span>
-                </div>
-                <div className="h-2 bg-[hsl(200,20%,13%)] overflow-hidden" style={{ clipPath: "polygon(0 0, 100% 0, 98% 100%, 2% 100%)" }}>
-                  <div className="h-full bg-[hsl(174,100%,50%)]" style={{ width: "65%", boxShadow: "0 0 8px hsl(174,100%,50%)" }} />
-                </div>
-              </div>
-              
-              {/* Checklist */}
-              <div className="space-y-2">
-                {[
-                  { done: true, label: "Profile photo" },
-                  { done: true, label: "Bio description" },
-                  { done: false, label: "Location" },
-                  { done: true, label: "Skills (3+)" },
-                  { done: false, label: "Projects (1+)" },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <div className={`w-3 h-3 ${item.done ? 'bg-[hsl(150,100%,45%)]' : 'bg-[hsl(200,20%,20%)]'} clip-hexagon`} />
-                    <span className={`text-[10px] font-mono ${item.done ? 'text-foreground' : 'text-muted-foreground'}`}>{item.label}</span>
+                <div className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[hsl(174,100%,50%)] mt-1 flex-shrink-0" />
+                  <div>
+                    <p className="text-[10px] font-mono text-foreground/80">Completed &quot;React Hooks&quot; module</p>
+                    <p className="text-[8px] font-mono text-muted-foreground/40">Yesterday</p>
                   </div>
-                ))}
-              </div>
-
-              {/* Portfolio Link */}
-              <div className="mt-4 pt-4 border-t border-[hsl(174,100%,50%,0.1)]">
-                <p className="text-[10px] font-mono text-muted-foreground mb-2">Your Portfolio</p>
-                <div className="flex items-center gap-2">
-                  <input 
-                    readOnly 
-                    value={`portfoland.com/${userData.name?.toLowerCase().replace(/\s+/g, '-') || 'user'}`}
-                    className="flex-1 bg-[hsl(200,20%,13%)] border border-[hsl(174,100%,50%,0.2)] text-xs font-mono text-foreground px-3 py-2"
-                  />
-                  <button className="bg-[hsl(174,100%,50%,0.2)] border border-[hsl(174,100%,50%,0.4)] text-[hsl(174,100%,50%)] px-3 py-2 text-xs font-mono hover:bg-[hsl(174,100%,50%,0.3)] transition-colors">
-                    Copy
-                  </button>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[hsl(52,100%,50%)] mt-1 flex-shrink-0" />
+                  <div>
+                    <p className="text-[10px] font-mono text-foreground/80">Earned &quot;Fast Learner&quot; badge</p>
+                    <p className="text-[8px] font-mono text-muted-foreground/40">2 days ago</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Recent Activity */}
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <Zap className="w-4 h-4 text-[hsl(60,100%,50%)]" />
-                <h3 className="font-mono font-bold text-sm text-foreground">{tActivity('title')}</h3>
-              </div>
-              <span className="text-[10px] font-mono text-[hsl(174,100%,50%)] cursor-pointer hover:underline">{tActivity('viewAll')}</span>
+          {/* CENTER: Section header + Hex Diamond + Quick Actions + Heatmap */}
+          <div className="flex flex-col items-center justify-center gap-2 min-h-0">
+            {/* Section header */}
+            <div className="w-full flex items-center gap-2 px-2">
+              <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-[hsl(174,100%,50%,0.2)]" />
+              <span className="text-[8px] font-mono uppercase tracking-[0.25em] text-muted-foreground/30">CORE_METRICS</span>
+              <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-[hsl(174,100%,50%,0.2)]" />
             </div>
-            <div className="border border-[hsl(174,100%,50%,0.12)] bg-[hsl(200,30%,8%)]">
-              {activities.map((act, i) => {
-                const Icon = act.icon
-                return (
-                  <div key={i} className={`flex items-center gap-3 p-3 hover:bg-[hsl(200,20%,10%)] transition-colors ${i !== activities.length - 1 ? "border-b border-[hsl(174,100%,50%,0.08)]" : ""}`}>
-                    <HexBadge color={act.color} size="sm">
-                      <Icon className="w-3.5 h-3.5" />
-                    </HexBadge>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-mono text-foreground truncate">{act.text}</p>
-                      <p className="text-[9px] font-mono text-muted-foreground">{act.time}</p>
-                    </div>
-                    <span className={`text-[10px] font-mono font-bold ${
-                      act.color === "cyan" ? "text-[hsl(174,100%,50%)]" :
-                      act.color === "yellow" ? "text-[hsl(60,100%,50%)]" :
-                      act.color === "magenta" ? "text-[hsl(330,100%,65%)]" :
-                      "text-[hsl(150,100%,45%)]"
-                    }`}>
-                      {act.xp}
-                    </span>
-                  </div>
-                )
-              })}
+
+            <HexStatGrid
+              stats={{
+                xp: { current: userStats.currentXP, max: userStats.maxXP },
+                level: userStats.level,
+                experiences: userStats.experiences,
+                achievements: userStats.achievements,
+              }}
+              streakDays={userStats.streakDays}
+            />
+
+            {/* Quick Actions hex row */}
+            <QuickActionsBar />
+
+            <ActivityHeatmap />
+
+            {/* Bottom data readout */}
+            <div className="w-full flex items-center justify-between px-3 text-[7px] font-mono text-muted-foreground/25 uppercase">
+              <span>data_integrity: 99.7%</span>
+              <span>last_sync: 2m ago</span>
+              <span>conn: stable</span>
             </div>
+          </div>
+
+          {/* Right column: Skills + Top Runners stacked */}
+          <div className="flex flex-col gap-2 min-h-0">
+            <SkillRadarPanel className="flex-1 min-h-[160px]" />
+            <TopRunnersPanel className="flex-1 min-h-[160px]" />
           </div>
         </div>
       </div>

@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import type { WelcomeCardProps } from "../types/dashboard"
@@ -16,12 +15,118 @@ const iconMap: Record<string, any> = {
   User,
 }
 
+// =============================================================================
+// System Status HUD Panel — mock data readouts
+// =============================================================================
+
+function StatusBar({ label, value, color, delay = 0 }: { label: string; value: number; color: string; delay?: number }) {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    const t = setTimeout(() => setMounted(true), 400 + delay)
+    return () => clearTimeout(t)
+  }, [delay])
+
+  return (
+    <div className="flex items-center gap-2 text-[9px] font-mono">
+      <span className="text-muted-foreground w-8 uppercase">{label}</span>
+      <div className="flex-1 h-[3px] bg-[hsl(200,20%,13%)] overflow-hidden">
+        <div
+          className="h-full transition-all duration-1000 ease-out"
+          style={{
+            width: mounted ? `${value}%` : '0%',
+            background: color,
+            boxShadow: `0 0 4px ${color}`,
+          }}
+        />
+      </div>
+      <span style={{ color }} className="w-7 text-right tabular-nums">{value}%</span>
+    </div>
+  )
+}
+
+function SystemStatusPanel() {
+  const [time, setTime] = useState('')
+
+  useEffect(() => {
+    const update = () => setTime(new Date().toLocaleTimeString('en-US', { hour12: false }))
+    update()
+    const interval = setInterval(update, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <div className="border-t border-[hsl(174,100%,50%,0.1)] mx-6 pt-3 pb-4">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-2.5">
+        <span className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground/60">SYS_MONITOR.210</span>
+        <span className="text-[9px] font-mono text-[hsl(174,100%,50%,0.5)] tabular-nums">{time}</span>
+      </div>
+
+      {/* Status badges row */}
+      <div className="flex gap-1.5 mb-3">
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[8px] font-mono uppercase bg-[hsl(150,100%,45%,0.1)] border border-[hsl(150,100%,45%,0.2)] text-[hsl(150,100%,45%)]">
+          <span className="w-1 h-1 bg-[hsl(150,100%,45%)] rounded-full" />
+          online
+        </span>
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[8px] font-mono uppercase bg-[hsl(174,100%,50%,0.1)] border border-[hsl(174,100%,50%,0.2)] text-[hsl(174,100%,50%)]">
+          <span className="w-1 h-1 bg-[hsl(174,100%,50%)] rounded-full" />
+          synced
+        </span>
+        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[8px] font-mono uppercase bg-[hsl(52,100%,50%,0.1)] border border-[hsl(52,100%,50%,0.2)] text-[hsl(52,100%,50%)]">
+          rank: explorer
+        </span>
+      </div>
+
+      {/* Resource bars */}
+      <div className="space-y-1.5">
+        <StatusBar label="NET" value={94} color="hsl(174,100%,50%)" delay={0} />
+        <StatusBar label="CPU" value={37} color="hsl(150,100%,45%)" delay={100} />
+        <StatusBar label="RAM" value={62} color="hsl(330,100%,65%)" delay={200} />
+        <StatusBar label="GPU" value={18} color="hsl(52,100%,50%)" delay={300} />
+      </div>
+
+      {/* Data readout line */}
+      <div className="mt-2.5 flex items-center justify-between text-[8px] font-mono text-muted-foreground/40">
+        <span>skills: 24 active</span>
+        <span>uptime: 12d 4h 32m</span>
+        <span>pid: 0x4F2A</span>
+      </div>
+    </div>
+  )
+}
+
 const defaultQuickActions = [
   { icon: "Briefcase", label: "Add Experience", color: "hsl(174,100%,50%)" },
   { icon: "Clock", label: "Timeline", color: "hsl(60,100%,50%)" },
   { icon: "GitBranch", label: "Level Up", color: "hsl(330,100%,65%)" },
   { icon: "Target", label: "New Goal", color: "hsl(150,100%,45%)" },
 ]
+
+// Mini AI Eye for avatar swap
+function MiniAIEye() {
+  return (
+    <svg width="56" height="56" viewBox="0 0 100 100">
+      <polygon
+        points="50,0 100,25 100,75 50,100 0,75 0,25"
+        fill="hsl(200,30%,8%)"
+      />
+      <polygon
+        points="50,0 100,25 100,75 50,100 0,75 0,25"
+        fill="none"
+        stroke="hsl(174,100%,50%)"
+        strokeWidth="2"
+        strokeOpacity="0.6"
+        className="animate-pulse"
+      />
+      {/* Iris */}
+      <ellipse cx="50" cy="50" rx="20" ry="13" fill="hsl(174,100%,50%)" fillOpacity="0.1" stroke="hsl(174,100%,50%)" strokeWidth="1" />
+      {/* Pupil */}
+      <circle cx="50" cy="50" r="8" fill="hsl(174,100%,50%)" style={{ filter: "drop-shadow(0 0 8px hsl(174,100%,50%))" }} />
+      <circle cx="50" cy="50" r="4" fill="hsl(200,30%,5%)" />
+      <circle cx="47.5" cy="47.5" r="1.8" fill="white" opacity="0.75" />
+    </svg>
+  )
+}
 
 export function WelcomeCard({
   userName,
@@ -32,6 +137,7 @@ export function WelcomeCard({
   maxXP,
   streakDays,
   quickActions,
+  aiActive,
   translations,
   className,
 }: WelcomeCardProps) {
@@ -57,26 +163,63 @@ export function WelcomeCard({
         {/* Left: Welcome info */}
         <div className="flex-1 p-6">
           <div className="flex items-center gap-4 mb-4">
-            {/* Avatar hex */}
-            <div className="relative">
-              <div className="w-14 h-14 clip-hexagon bg-[hsl(174,100%,50%,0.2)] overflow-hidden flex items-center justify-center">
-                {isValidImage ? (
-                  <Image
-                    src={userImage}
-                    alt={userName}
-                    width={56}
-                    height={56}
-                    className="w-full h-full object-cover"
-                    onError={() => setImageError(true)}
+            {/* Avatar hex — swaps to AI eye when AI is active */}
+            <div className="relative flex-shrink-0 transition-all duration-500">
+              {aiActive ? (
+                <MiniAIEye />
+              ) : (
+                <svg width="56" height="56" viewBox="0 0 100 100">
+                  <defs>
+                    <clipPath id="hex-avatar-clip">
+                      <polygon points="50,0 100,25 100,75 50,100 0,75 0,25" />
+                    </clipPath>
+                    <clipPath id="circle-avatar-clip">
+                      <circle cx="50" cy="50" r="48" />
+                    </clipPath>
+                  </defs>
+                  {/* Dark background fill — visible through hex corners when image is circular */}
+                  <polygon
+                    points="50,0 100,25 100,75 50,100 0,75 0,25"
+                    fill="hsl(200,30%,8%)"
                   />
-                ) : (
-                  <span className="text-xl font-mono font-bold text-[hsl(174,100%,50%)]">
-                    {userInitial}
-                  </span>
-                )}
-              </div>
-              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-[hsl(330,100%,65%)] text-[hsl(200,25%,8%)] text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-sm">
-                Lv.{level}
+                  {isValidImage ? (
+                    <image
+                      href={userImage!}
+                      width="100"
+                      height="100"
+                      clipPath="url(#circle-avatar-clip)"
+                      preserveAspectRatio="xMidYMid slice"
+                      onError={() => setImageError(true)}
+                    />
+                  ) : (
+                    <text
+                      x="50" y="63"
+                      textAnchor="middle"
+                      fontSize="42"
+                      fontFamily="monospace"
+                      fontWeight="bold"
+                      fill="hsl(174,100%,50%)"
+                    >
+                      {userInitial}
+                    </text>
+                  )}
+                  {/* Hex border */}
+                  <polygon
+                    points="50,0 100,25 100,75 50,100 0,75 0,25"
+                    fill="none"
+                    stroke="hsl(174,100%,50%)"
+                    strokeWidth="2"
+                    strokeOpacity="0.4"
+                  />
+                </svg>
+              )}
+              <div className={cn(
+                "absolute -bottom-1 left-1/2 -translate-x-1/2 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-sm transition-colors duration-500",
+                aiActive
+                  ? "bg-[hsl(174,100%,50%)] text-[hsl(200,25%,8%)]"
+                  : "bg-[hsl(330,100%,65%)] text-[hsl(200,25%,8%)]"
+              )}>
+                {aiActive ? "AI" : `Lv.${level}`}
               </div>
             </div>
             <div>
@@ -107,6 +250,9 @@ export function WelcomeCard({
             {translations?.streak ? translations.streak.replace('{count}', streakDays.toString()) : `${streakDays} day streak`}
           </div>
         </div>
+
+        {/* System Status HUD Panel */}
+        <SystemStatusPanel />
 
         {/* Right: Quick Actions as honeycomb */}
         {quickActions && quickActions.length > 0 && (

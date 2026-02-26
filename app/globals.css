@@ -638,15 +638,20 @@
 
 /* AI Eye Animation */
 @keyframes eye-look {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(0);
   }
+
   25% {
     transform: translateX(-3px);
   }
+
   50% {
     transform: translateX(3px);
   }
+
   75% {
     transform: translateX(-2px);
   }
@@ -660,6 +665,7 @@
   0% {
     stroke-dashoffset: 20;
   }
+
   100% {
     stroke-dashoffset: 0;
   }
@@ -673,9 +679,13 @@
 
 /* AI Eye Animations - Idle blinking */
 @keyframes eye-blink {
-  0%, 90%, 100% {
+
+  0%,
+  90%,
+  100% {
     transform: scaleY(1);
   }
+
   95% {
     transform: scaleY(0.1);
   }
@@ -688,18 +698,23 @@
 
 /* AI Eye Animations - Thinking search */
 @keyframes eye-search-1 {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
     transform: translateX(0);
   }
+
   25% {
     opacity: 0.5;
     transform: translateX(-3px);
   }
+
   50% {
     opacity: 0.8;
     transform: translateX(3px);
   }
+
   75% {
     opacity: 0.6;
     transform: translateX(-2px);
@@ -711,9 +726,12 @@
 }
 
 @keyframes eye-search-2 {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0;
   }
+
   33% {
     opacity: 0.8;
   }
@@ -725,12 +743,16 @@
 }
 
 @keyframes eye-search-3 {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0;
   }
+
   33% {
     opacity: 0;
   }
+
   66% {
     opacity: 0.7;
   }
@@ -748,10 +770,13 @@
 
 /* Quick Action Hex Animations */
 @keyframes hex-idle-breathe {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.6;
   }
+
   50% {
     transform: scale(1.02);
     opacity: 0.8;
@@ -759,10 +784,13 @@
 }
 
 @keyframes hex-idle-pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     r: 3;
     opacity: 0.4;
   }
+
   50% {
     r: 5;
     opacity: 0.7;
@@ -779,12 +807,16 @@
 
 /* Hover - Observing state */
 @keyframes hex-observe-look {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(0);
   }
+
   25% {
     transform: translateX(-2px);
   }
+
   75% {
     transform: translateX(2px);
   }
@@ -796,14 +828,18 @@
 
 /* Thinking - Active searching */
 @keyframes hex-thinking-search {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
+
   33% {
     transform: scale(0.8) translateX(-4px);
     opacity: 0.6;
   }
+
   66% {
     transform: scale(0.8) translateX(4px);
     opacity: 0.8;
@@ -816,9 +852,13 @@
 
 /* Ready - Awake and alert */
 @keyframes hex-ready-blink {
-  0%, 90%, 100% {
+
+  0%,
+  90%,
+  100% {
     transform: scaleY(1);
   }
+
   95% {
     transform: scaleY(0.1);
   }
@@ -833,6 +873,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -844,10 +885,13 @@
 
 /* Sleep Z animation */
 @keyframes sleep-z {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0;
     transform: translateY(0);
   }
+
   50% {
     opacity: 0.6;
     transform: translateY(-5px);
@@ -860,10 +904,14 @@
 
 /* Sleep eye - occasional twitch/half-open */
 @keyframes sleep-eye {
-  0%, 90%, 100% {
+
+  0%,
+  90%,
+  100% {
     transform: scaleY(1);
     opacity: 0.6;
   }
+
   95% {
     transform: scaleY(0.15);
     opacity: 0.9;
@@ -881,6 +929,7 @@
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -893,21 +942,30 @@
 
 /* Eye Awake - blinking + looking */
 @keyframes eye-awake-blink-look {
-  0%, 88%, 92%, 100% {
+
+  0%,
+  88%,
+  92%,
+  100% {
     transform: scaleY(1) translateX(0);
   }
+
   90% {
     transform: scaleY(0.1) translateX(0);
   }
 }
 
 @keyframes eye-awake-blink-look-search {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(0);
   }
+
   25% {
     transform: translateX(-3px);
   }
+
   75% {
     transform: translateX(3px);
   }
@@ -920,22 +978,28 @@
 
 /* Chaotic thinking - 3 pupils going crazy */
 @keyframes chaos-1 {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate(0, 0) scale(1);
     opacity: 1;
   }
+
   20% {
     transform: translate(-8px, -5px) scale(0.8);
     opacity: 0.7;
   }
+
   40% {
     transform: translate(8px, 5px) scale(1.1);
     opacity: 0.9;
   }
+
   60% {
     transform: translate(-5px, 3px) scale(0.7);
     opacity: 0.6;
   }
+
   80% {
     transform: translate(6px, -4px) scale(1);
     opacity: 0.8;
@@ -943,18 +1007,23 @@
 }
 
 @keyframes chaos-2 {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate(0, 0) scale(1);
     opacity: 0.9;
   }
+
   25% {
     transform: translate(10px, -3px) scale(0.9);
     opacity: 0.6;
   }
+
   50% {
     transform: translate(-6px, 6px) scale(0.75);
     opacity: 0.8;
   }
+
   75% {
     transform: translate(4px, -8px) scale(1.05);
     opacity: 0.7;
@@ -962,14 +1031,18 @@
 }
 
 @keyframes chaos-3 {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate(0, 0) scale(0.8);
     opacity: 0.7;
   }
+
   33% {
     transform: translate(-10px, 2px) scale(1);
     opacity: 0.9;
   }
+
   66% {
     transform: translate(8px, -6px) scale(0.6);
     opacity: 0.5;
@@ -979,27 +1052,41 @@
 .animate-chaos-1 {
   animation: chaos-1 0.3s ease-in-out infinite;
 }
+
 .animate-chaos-2 {
   animation: chaos-2 0.35s ease-in-out infinite;
 }
+
 .animate-chaos-3 {
   animation: chaos-3 0.4s ease-in-out infinite;
 }
 
 /* Fast spins */
 @keyframes spin-fast {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
+
 @keyframes spin-fast-reverse {
-  from { transform: rotate(360deg); }
-  to { transform: rotate(0deg); }
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
 }
 
 .animate-spin-fast {
   animation: spin-fast 1s linear infinite;
   transform-origin: center;
 }
+
 .animate-spin-fast-reverse {
   animation: spin-fast-reverse 0.8s linear infinite;
   transform-origin: center;
@@ -1007,9 +1094,12 @@
 
 /* Happy bounce */
 @keyframes happy-bounce {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-2px);
   }
@@ -1021,9 +1111,19 @@
 
 /* Wiggle */
 @keyframes wiggle {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-3deg); }
-  75% { transform: rotate(3deg); }
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(-3deg);
+  }
+
+  75% {
+    transform: rotate(3deg);
+  }
 }
 
 .animate-wiggle {
@@ -1032,18 +1132,24 @@
 
 /* Eye Searching - thinking state */
 @keyframes eye-searching {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(0);
   }
+
   20% {
     transform: translateX(-6px);
   }
+
   40% {
     transform: translateX(6px);
   }
+
   60% {
     transform: translateX(-4px);
   }
+
   80% {
     transform: translateX(4px);
   }
@@ -1055,8 +1161,13 @@
 
 /* Thinking spin - slower than chaotic */
 @keyframes spin-think {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .animate-spin-think {
@@ -1066,9 +1177,12 @@
 
 /* Ready state - happy animations */
 @keyframes ready-happy {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.02);
   }
@@ -1079,9 +1193,12 @@
 }
 
 @keyframes smile-happy {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0) scaleX(1);
   }
+
   50% {
     transform: translateY(-1px) scaleX(1.05);
   }
@@ -1093,9 +1210,13 @@
 }
 
 @keyframes happy-blink {
-  0%, 90%, 100% {
+
+  0%,
+  90%,
+  100% {
     transform: scaleY(1);
   }
+
   95% {
     transform: scaleY(0.1);
   }
@@ -1110,7 +1231,139 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+.animate-spin-slower {
+  animation: spin-slower 8s linear infinite;
+  transform-origin: center;
+}
+
+/* =============================================================================
+   Dashboard Redesign V3 — New Animations
+   ============================================================================= */
+
+/* Hex idle breathe — subtle glow pulse */
+@keyframes hex-idle-breathe {
+
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.animate-hex-idle-breathe {
+  animation: hex-idle-breathe 3s ease-in-out infinite;
+}
+
+/* Sleep float — Zzz floating up */
+@keyframes sleep-float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: translateY(-6px);
+    opacity: 0.3;
+  }
+}
+
+.animate-sleep-float {
+  animation: sleep-float 2.5s ease-in-out infinite;
+}
+
+/* Drowsy eyelid — before sleeping */
+@keyframes drowsy-lid {
+
+  0%,
+  80%,
+  100% {
+    transform: scaleY(1);
+  }
+
+  85%,
+  95% {
+    transform: scaleY(0.5);
+  }
+
+  90% {
+    transform: scaleY(0.3);
+  }
+}
+
+.animate-drowsy {
+  animation: drowsy-lid 4s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* Console text rewrite — glitch transition out */
+@keyframes console-glitch-out {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  50% {
+    opacity: 0.3;
+    transform: translateX(4px);
+    filter: blur(1px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+}
+
+.animate-console-glitch-out {
+  animation: console-glitch-out 0.3s ease-out forwards;
+}
+
+/* Console text type-in */
+@keyframes console-type-in {
+  from {
+    opacity: 0;
+    transform: translateX(-2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-console-type-in {
+  animation: console-type-in 0.2s ease-out forwards;
+}
+
+/* CRT Scanner line */
+@keyframes crt-scan {
+  from {
+    top: -2px;
+  }
+
+  to {
+    top: 100%;
+  }
+}
+
+.crt-scanner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, hsl(174 100% 50% / 0.12), transparent);
+  z-index: 10;
+  pointer-events: none;
+  animation: crt-scan 4s linear infinite;
 }

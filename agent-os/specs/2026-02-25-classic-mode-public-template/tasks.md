@@ -74,20 +74,20 @@ Dependencies resolved: TG1 has no dependencies. TG2 has no dependencies. TG3 dep
 
 **File:** `features/portfolio/components/classic/ClassicGallery.tsx` (new file)
 
-- [ ] Add `'use client'` directive at the top
-- [ ] Imports: `useState` from `'react'`, `useTranslations` from `'next-intl'`, `cn` from `'@/lib/utils'`, `PortfolioSectionProps` from `'../../types/portfolio'`, `GalleryItemModel` from `'@/features/gallery/types/galleryItem'`
-- [ ] Export named function `ClassicGallery({ data, className }: PortfolioSectionProps)`
-- [ ] Derive items: `const items = (data.gallery ?? []).filter(item => item.published)` — defensive published filter even though data layer filters already
-- [ ] Category filter state: `const [activeCategory, setActiveCategory] = useState<string | null>(null)` — `null` means "All"
-- [ ] Derive categories: extract distinct non-null `item.category` values from `items` using a `Set`; only render the filter bar if `categories.length > 0`
-- [ ] Filter bar (render only when categories exist): a `<div>` of pill `<button>` elements — "All" button + one per distinct category; active pill class `bg-blue-600 text-white rounded-full px-3 py-1 text-sm`, inactive class `bg-gray-100 text-gray-600 rounded-full px-3 py-1 text-sm hover:bg-gray-200`; clicking a category sets `activeCategory` to that string, clicking "All" sets it to `null`
-- [ ] Filtered items: `const filteredItems = activeCategory ? items.filter(i => i.category === activeCategory) : items`
-- [ ] Section root: `<section className={cn('py-6', className)}>`
-- [ ] Heading: `<h2 className="mb-6 text-2xl font-bold text-gray-900">{t('sections.gallery.classic.title')}</h2>`
-- [ ] Empty state (when `filteredItems.length === 0`): `<p className="text-gray-400" data-testid="gallery-empty-state">{t('sections.gallery.classic.emptyState')}</p>`
-- [ ] Grid (when items exist): `<div className="grid grid-cols-2 md:grid-cols-3 gap-4" data-testid="gallery-grid">`
-- [ ] Each grid cell: a `<div>` wrapping `<img src={item.imageUrl} alt={item.altText ?? item.caption ?? ''} className="w-full h-48 object-cover rounded-lg" />` — if `item.caption` is set, render `<p className="mt-1 text-xs text-gray-500 text-center">{item.caption}</p>` below the image
-- [ ] Use `item.id` as the React `key` on each cell div
+- [x] Add `'use client'` directive at the top
+- [x] Imports: `useState` from `'react'`, `useTranslations` from `'next-intl'`, `cn` from `'@/lib/utils'`, `PortfolioSectionProps` from `'../../types/portfolio'`, `GalleryItemModel` from `'@/features/gallery/types/galleryItem'`
+- [x] Export named function `ClassicGallery({ data, className }: PortfolioSectionProps)`
+- [x] Derive items: `const items = (data.gallery ?? []).filter(item => item.published)` — defensive published filter even though data layer filters already
+- [x] Category filter state: `const [activeCategory, setActiveCategory] = useState<string | null>(null)` — `null` means "All"
+- [x] Derive categories: extract distinct non-null `item.category` values from `items` using a `Set`; only render the filter bar if `categories.length > 0`
+- [x] Filter bar (render only when categories exist): a `<div>` of pill `<button>` elements — "All" button + one per distinct category; active pill class `bg-blue-600 text-white rounded-full px-3 py-1 text-sm`, inactive class `bg-gray-100 text-gray-600 rounded-full px-3 py-1 text-sm hover:bg-gray-200`; clicking a category sets `activeCategory` to that string, clicking "All" sets it to `null`
+- [x] Filtered items: `const filteredItems = activeCategory ? items.filter(i => i.category === activeCategory) : items`
+- [x] Section root: `<section className={cn('py-6', className)}>`
+- [x] Heading: `<h2 className="mb-6 text-2xl font-bold text-gray-900">{t('sections.gallery.classic.title')}</h2>`
+- [x] Empty state (when `filteredItems.length === 0`): `<p className="text-gray-400" data-testid="gallery-empty-state">{t('sections.gallery.classic.emptyState')}</p>`
+- [x] Grid (when items exist): `<div className="grid grid-cols-2 md:grid-cols-3 gap-4" data-testid="gallery-grid">`
+- [x] Each grid cell: a `<div>` wrapping `<img src={item.imageUrl} alt={item.altText ?? item.caption ?? ''} className="w-full h-48 object-cover rounded-lg" />` — if `item.caption` is set, render `<p className="mt-1 text-xs text-gray-500 text-center">{item.caption}</p>` below the image
+- [x] Use `item.id` as the React `key` on each cell div
 
 **Acceptance Criteria:**
 - Component renders `data-testid="gallery-grid"` when items exist and `data-testid="gallery-empty-state"` when empty
@@ -101,24 +101,24 @@ Dependencies resolved: TG1 has no dependencies. TG2 has no dependencies. TG3 dep
 
 **File:** `features/portfolio/components/classic/ClassicServices.tsx` (new file)
 
-- [ ] Add `'use client'` directive at the top
-- [ ] Imports: `useTranslations` from `'next-intl'`, `cn` from `'@/lib/utils'`, `PortfolioSectionProps` from `'../../types/portfolio'`, `ServiceModel` from `'@/features/services/types/service'`
-- [ ] Export named function `ClassicServices({ data, className }: PortfolioSectionProps)`
-- [ ] Derive services: `const services = (data.services ?? []).filter(s => s.published)` — defensive filter
-- [ ] Implement `formatPrice(service: ServiceModel): string` helper inside the file (not exported):
+- [x] Add `'use client'` directive at the top
+- [x] Imports: `useTranslations` from `'next-intl'`, `cn` from `'@/lib/utils'`, `PortfolioSectionProps` from `'../../types/portfolio'`, `ServiceModel` from `'@/features/services/types/service'`
+- [x] Export named function `ClassicServices({ data, className }: PortfolioSectionProps)`
+- [x] Derive services: `const services = (data.services ?? []).filter(s => s.published)` — defensive filter
+- [x] Implement `formatPrice(service: ServiceModel): string` helper inside the file (not exported):
   - `priceType === 'CONTACT'`: return `t('sections.services.classic.priceContact')`
   - `priceType === 'FIXED'`: return `$${service.priceMin} ${service.currency}` — e.g. `$50 USD`
   - `priceType === 'RANGE'`: return `$${service.priceMin} – $${service.priceMax} ${service.currency}`
   - `priceType === 'STARTING_FROM'`: return `From $${service.priceMin} ${service.currency}`
   - fallback: return empty string `''`
-- [ ] Implement `formatDuration(minutes: number): string` helper inside the file (not exported):
+- [x] Implement `formatDuration(minutes: number): string` helper inside the file (not exported):
   - `minutes < 60`: return `${minutes} min`
   - `minutes >= 60`: return `${Math.floor(minutes / 60)}h${minutes % 60 > 0 ? ` ${minutes % 60}min` : ''}`
-- [ ] Section root: `<section className={cn('py-6', className)}>`
-- [ ] Heading: `<h2 className="mb-6 text-2xl font-bold text-gray-900">{t('sections.services.classic.title')}</h2>`
-- [ ] Empty state (when `services.length === 0`): `<p className="text-gray-400" data-testid="services-empty-state">{t('sections.services.classic.emptyState')}</p>`
-- [ ] Grid (when services exist): `<div className="grid gap-4 md:grid-cols-2">`
-- [ ] Each service card: `<div key={service.id} className="rounded-lg border border-gray-100 bg-gray-50 p-4 shadow-sm" data-testid="service-card">`
+- [x] Section root: `<section className={cn('py-6', className)}>`
+- [x] Heading: `<h2 className="mb-6 text-2xl font-bold text-gray-900">{t('sections.services.classic.title')}</h2>`
+- [x] Empty state (when `services.length === 0`): `<p className="text-gray-400" data-testid="services-empty-state">{t('sections.services.classic.emptyState')}</p>`
+- [x] Grid (when services exist): `<div className="grid gap-4 md:grid-cols-2">`
+- [x] Each service card: `<div key={service.id} className="rounded-lg border border-gray-100 bg-gray-50 p-4 shadow-sm" data-testid="service-card">`
   - `<h3 className="font-semibold text-gray-900">{service.title}</h3>`
   - `{service.description && <p className="mt-1 text-sm text-gray-600">{service.description}</p>}`
   - Price line: `<p className="mt-2 text-sm font-medium text-gray-800">{formatPrice(service)}</p>` — only render if `formatPrice(service)` is non-empty
@@ -136,16 +136,16 @@ Dependencies resolved: TG1 has no dependencies. TG2 has no dependencies. TG3 dep
 
 **File:** `features/portfolio/components/classic/ClassicTestimonials.tsx` (new file)
 
-- [ ] Add `'use client'` directive at the top
-- [ ] Imports: `useTranslations` from `'next-intl'`, `cn` from `'@/lib/utils'`, `PortfolioSectionProps` from `'../../types/portfolio'`, `TestimonialModel` from `'@/features/testimonials/types/testimonial'`
-- [ ] Export named function `ClassicTestimonials({ data, className }: PortfolioSectionProps)`
-- [ ] Derive testimonials: `const testimonials = (data.testimonials ?? []).filter(t => t.published)` — defensive filter (note: avoid naming this `t` since `t` is used for translations; use `item` or `testimonial` as loop variable)
-- [ ] Implement `getInitials(name: string): string` helper inside the file (same pattern as ClassicHero): split on whitespace, take first letter of first and last word uppercased; single-word name returns first letter uppercased
-- [ ] Section root: `<section className={cn('py-6', className)}>`
-- [ ] Heading: `<h2 className="mb-6 text-2xl font-bold text-gray-900">{t('sections.testimonials.classic.title')}</h2>`
-- [ ] Empty state (when `testimonials.length === 0`): `<p className="text-gray-400" data-testid="testimonials-empty-state">{t('sections.testimonials.classic.emptyState')}</p>`
-- [ ] Grid (when testimonials exist): `<div className="grid gap-4 md:grid-cols-2">`
-- [ ] Each testimonial card: `<div key={item.id} className="rounded-lg border border-gray-100 bg-gray-50 p-4 shadow-sm" data-testid="testimonial-card">`
+- [x] Add `'use client'` directive at the top
+- [x] Imports: `useTranslations` from `'next-intl'`, `cn` from `'@/lib/utils'`, `PortfolioSectionProps` from `'../../types/portfolio'`, `TestimonialModel` from `'@/features/testimonials/types/testimonial'`
+- [x] Export named function `ClassicTestimonials({ data, className }: PortfolioSectionProps)`
+- [x] Derive testimonials: `const testimonials = (data.testimonials ?? []).filter(t => t.published)` — defensive filter (note: avoid naming this `t` since `t` is used for translations; use `item` or `testimonial` as loop variable)
+- [x] Implement `getInitials(name: string): string` helper inside the file (same pattern as ClassicHero): split on whitespace, take first letter of first and last word uppercased; single-word name returns first letter uppercased
+- [x] Section root: `<section className={cn('py-6', className)}>`
+- [x] Heading: `<h2 className="mb-6 text-2xl font-bold text-gray-900">{t('sections.testimonials.classic.title')}</h2>`
+- [x] Empty state (when `testimonials.length === 0`): `<p className="text-gray-400" data-testid="testimonials-empty-state">{t('sections.testimonials.classic.emptyState')}</p>`
+- [x] Grid (when testimonials exist): `<div className="grid gap-4 md:grid-cols-2">`
+- [x] Each testimonial card: `<div key={item.id} className="rounded-lg border border-gray-100 bg-gray-50 p-4 shadow-sm" data-testid="testimonial-card">`
   - Star rating row: `<div className="flex gap-0.5">` containing 5 `<span>` elements; for index `i` in `1..5`, use `className={i <= item.rating ? 'text-amber-400' : 'text-gray-200'}` and render `★` unicode character
   - Quote: `<blockquote className="mt-2 text-sm italic text-gray-600">"{item.content}"</blockquote>`
   - Client name: `<p className="mt-3 font-semibold text-gray-900">{item.clientName}</p>`

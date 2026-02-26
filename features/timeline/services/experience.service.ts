@@ -22,7 +22,7 @@ import {
   type SyncSkillsFromExperienceServiceInput,
 } from '@/features/skills/services/skill.service';
 import { removeSourcesByExperienceData } from '@/features/skills/data';
-import { invalidateNarrativeCache } from '@/lib/ai/cache';
+import { invalidateNarrativeCache } from '@/features/ai-narrator';
 
 /**
  * Input for creating an experience via service

@@ -46,7 +46,7 @@ export type SkillSource = PrismaSkillSource;
 export type SourceType = PrismaSourceType;
 
 // Re-export the enum values for use
-export { SourceType as SourceTypeEnum } from '@/app/generated/prisma/client';
+export { SourceType as SourceTypeEnum } from '@/app/generated/prisma/enums';
 
 // =============================================================================
 // Enums
@@ -111,6 +111,35 @@ export type UserSkillWithDetails = Prisma.UserSkillGetPayload<{
     };
   };
 }>;
+
+/**
+ * Extended UserSkill with computed fields
+ * Adds selfAssessmentLevel and githubValidated computed from sources/metadata
+ */
+export type UserSkillWithComputed = UserSkillWithDetails & {
+  selfAssessmentLevel?: SelfAssessmentLevel;
+  githubValidated?: boolean;
+};
+
+/**
+ * Get self-assessment level from skill sources
+ */
+export function getSelfAssessmentLevel(sources: UserSkillWithDetails['sources']): SelfAssessmentLevel | undefined {
+  const manualSource = sources.find(s => s.sourceType === 'MANUAL');
+  if (manualSource?.metadata) {
+    const meta = manualSource.metadata as SkillSourceMetadata;
+    return meta.selfAssessmentLevel;
+  }
+  return undefined;
+}
+
+/**
+ * Check if skill has GitHub validation
+ * Currently returns false as githubValidated is not implemented
+ */
+export function hasGitHubValidation(sources: UserSkillWithDetails['sources']): boolean {
+  return false;
+}
 
 /**
  * SkillSource with experience details (for EXPERIENCE type sources)

@@ -6,7 +6,7 @@
  */
 
 import type { PublicTimelineData } from '@/features/timeline/types/experience';
-import type { PublicSkillsData } from '@/features/skills/data/getPublicSkills.data';
+import type { PublicSkillsData } from '@/features/skills/types/public-skills';
 import type { Project } from '@/features/projects/types/project';
 import type { ServiceModel } from '@/features/services/types/service';
 import type { TestimonialModel } from '@/features/testimonials/types/testimonial';

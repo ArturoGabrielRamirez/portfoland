@@ -39,7 +39,7 @@ function HexagonAvatarComponent({
   }
 
   const currentSize = sizeConfig[size]
-  
+
   // Level-based styling
   const visualLevel = Math.min(level, 5) as 1 | 2 | 3 | 4 | 5
   const visualStyle = LEVEL_VISUAL_STYLES[visualLevel]
@@ -65,7 +65,7 @@ function HexagonAvatarComponent({
             <stop offset="0%" stopColor={isLegendary ? legendaryColor : color} stopOpacity={0.2} />
             <stop offset="100%" stopColor={isLegendary ? legendaryColor : color} stopOpacity={0.1} />
           </linearGradient>
-          
+
           {/* Glow filter */}
           {visualStyle.hasGlow && (
             <filter id={`avatar-glow-${alt}`}>
@@ -96,12 +96,9 @@ function HexagonAvatarComponent({
             src={src}
             alt={alt}
             className={cn(
-              'rounded-full object-cover',
+              'object-cover clip-hexagon',
               size === 'sm' ? 'w-8 h-8' : size === 'md' ? 'w-10 h-10' : 'w-12 h-12'
             )}
-            style={{
-              boxShadow: `0 0 12px ${isLegendary ? legendaryColor : color}40`,
-            }}
           />
         ) : (
           <span

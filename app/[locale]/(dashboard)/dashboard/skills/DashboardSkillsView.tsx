@@ -56,8 +56,9 @@ export function DashboardSkillsView({
 }: DashboardSkillsViewProps) {
   const params = useParams();
   const locale = params.locale as string;
-  const t = useTranslations('skills');
-  const tCommon = useTranslations('common');
+  const t = useTranslations('dashboard.skills');
+  const tLegend = useTranslations('dashboard.skills.legend');
+  const tStats = useTranslations('dashboard.skills.stats');
   const [isPending, startTransition] = useTransition();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -74,7 +75,6 @@ export function DashboardSkillsView({
   // Handle add modal success
   const handleAddSuccess = useCallback(() => {
     handleCloseAddModal();
-    // Refresh would typically happen via revalidation
   }, [handleCloseAddModal]);
 
   return (
@@ -85,8 +85,8 @@ export function DashboardSkillsView({
       {/* Page Header */}
       <div className="px-6 py-6 flex items-center justify-between border-b border-[hsl(174,100%,50%,0.1)]">
         <div>
-          <h1 className="text-2xl font-mono font-bold text-foreground">My Skill Tree</h1>
-          <p className="text-xs font-mono text-muted-foreground mt-1">Manage your skills and expertise</p>
+          <h1 className="text-2xl font-mono font-bold text-foreground">{t('title')}</h1>
+          <p className="text-xs font-mono text-muted-foreground mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
           {user.username && (
@@ -97,7 +97,7 @@ export function DashboardSkillsView({
               className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors"
             >
               <ExternalLink className="w-3.5 h-3.5" />
-              View Public
+              {t('viewPublic')}
             </a>
           )}
           <button
@@ -105,7 +105,7 @@ export function DashboardSkillsView({
             className="flex items-center gap-1.5 bg-[hsl(174,100%,50%)] text-[hsl(200,25%,8%)] px-3 py-1.5 text-xs font-mono font-bold hover:shadow-[0_0_12px_hsl(174_100%_50%_/_0.4)] transition-shadow"
           >
             <Plus className="w-3.5 h-3.5" />
-            Add Skill
+            {t('addSkill')}
           </button>
         </div>
       </div>
@@ -118,7 +118,7 @@ export function DashboardSkillsView({
           </HexBadge>
           <div>
             <div className="text-xl font-mono font-bold text-[hsl(174,100%,50%)]">{stats.totalSkills}</div>
-            <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">TOTAL SKILLS</div>
+            <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">{tStats('totalSkills')}</div>
           </div>
         </div>
         <div className="border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-3 flex items-center gap-3">
@@ -127,7 +127,7 @@ export function DashboardSkillsView({
           </HexBadge>
           <div>
             <div className="text-xl font-mono font-bold text-[hsl(60,100%,50%)]">{stats.totalXP.toLocaleString()}</div>
-            <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">TOTAL XP</div>
+            <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">{tStats('totalXP')}</div>
           </div>
         </div>
         <div className="border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-3 flex items-center gap-3">
@@ -136,7 +136,7 @@ export function DashboardSkillsView({
           </HexBadge>
           <div>
             <div className="text-xl font-mono font-bold text-[hsl(330,100%,65%)]">{stats.masterSkills}</div>
-            <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">MASTERED</div>
+            <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">{tStats('mastered')}</div>
           </div>
         </div>
         <div className="border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-3 flex items-center gap-3">
@@ -145,7 +145,7 @@ export function DashboardSkillsView({
           </HexBadge>
           <div>
             <div className="text-xl font-mono font-bold text-[hsl(150,100%,45%)]">{stats.categoriesUsed}</div>
-            <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">CATEGORIES</div>
+            <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">{tStats('categories')}</div>
           </div>
         </div>
       </div>
@@ -153,24 +153,24 @@ export function DashboardSkillsView({
       {/* Legend Row */}
       <div className="px-6 py-2 flex items-center gap-4 border-b border-[hsl(174,100%,50%,0.1)]">
         <button onClick={handleAddSkill} className="flex items-center gap-1 text-[10px] font-mono text-[hsl(174,100%,50%)] hover:underline">
-          <Plus className="w-3 h-3" /> Add Skill
+          <Plus className="w-3 h-3" /> {t('addSkill')}
         </button>
         <div className="flex items-center gap-3 ml-auto">
           {/* Category color dots */}
           <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
-            <span className="w-2 h-2 rounded-full bg-[hsl(330,100%,65%)]" /> Core
+            <span className="w-2 h-2 rounded-full bg-[hsl(330,100%,65%)]" /> {tLegend('core')}
           </span>
           <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
-            <span className="w-2 h-2 rounded-full bg-[hsl(150,100%,45%)]" /> Backend
+            <span className="w-2 h-2 rounded-full bg-[hsl(150,100%,45%)]" /> {tLegend('backend')}
           </span>
           <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
-            <span className="w-2 h-2 rounded-full bg-[hsl(174,100%,50%)]" /> Frontend
+            <span className="w-2 h-2 rounded-full bg-[hsl(174,100%,50%)]" /> {tLegend('frontend')}
           </span>
           <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
-            <span className="w-2 h-2 rounded-full bg-[hsl(60,100%,50%)]" /> Tools
+            <span className="w-2 h-2 rounded-full bg-[hsl(60,100%,50%)]" /> {tLegend('tools')}
           </span>
           <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
-            <span className="w-2 h-2 rounded-full bg-[hsl(280,100%,70%)]" /> Soft Skills
+            <span className="w-2 h-2 rounded-full bg-[hsl(280,100%,70%)]" /> {tLegend('softSkills')}
           </span>
         </div>
         <span className="text-[9px] font-mono text-muted-foreground">

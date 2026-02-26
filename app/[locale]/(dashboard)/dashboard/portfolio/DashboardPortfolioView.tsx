@@ -9,6 +9,7 @@
 import { useCallback, useTransition, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
 import { DashboardNav } from '@/features/tech';
@@ -18,8 +19,11 @@ import { HUDPanel } from '@/features/dashboard/components/HUDPanel';
 import { AIChatContainer } from '@/features/dashboard/components/ai/AIChatContainer';
 import { ImproveBioButton } from '@/features/ai/components/ImproveBioButton';
 import { updateProfile } from '@/features/portfolio/actions/updateProfile';
+import { updatePortfolioSettingsAction } from '@/features/portfolio-settings/actions/portfolioSettingsActions';
+import { THEME_PRESETS } from '@/features/portfolio-settings/constants/themes';
 import ReactMarkdown from 'react-markdown';
 import type { PortfolioMode } from '@/features/portfolio/types/portfolio';
+import type { PortfolioSettingsModel } from '@/features/portfolio-settings/types/portfolioSettings';
 import {
   Github,
   Linkedin,
@@ -29,8 +33,6 @@ import {
   Layers,
   History,
   Box,
-  ArrowUp,
-  ArrowDown,
   Save,
   Loader2,
   ExternalLink,
@@ -57,6 +59,7 @@ interface DashboardPortfolioViewProps {
     sectionVisibility?: Record<string, boolean>;
   };
   oauthImage?: string | null;
+  portfolioSettings?: PortfolioSettingsModel | null;
 }
 
 const DEFAULT_SECTION_ORDER = ['about', 'experience', 'skills', 'projects'];
@@ -65,9 +68,11 @@ const DEFAULT_SECTION_ORDER = ['about', 'experience', 'skills', 'projects'];
 // Main Component
 // =============================================================================
 
-export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioViewProps) {
+export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: DashboardPortfolioViewProps) {
   const params = useParams();
   const locale = params.locale as string;
+  const t = useTranslations('dashboard.portfolio');
+  const tCommon = useTranslations('common');
   const [isPending, startTransition] = useTransition();
 
   // Form state
@@ -87,8 +92,18 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
   );
 
   const [sectionVisibility, setSectionVisibility] = useState<Record<string, boolean>>(
-    user.sectionVisibility || { about: true, experience: true, skills: true, projects: true }
+    user.sectionVisibility || {
+      about: true,
+      experience: true,
+      skills: true,
+      projects: true,
+      gallery: true,
+      services: true,
+      testimonials: true,
+    }
   );
+
+  const [currentTheme, setCurrentTheme] = useState(portfolioSettings?.theme ?? 'default');
 
   // Helper: Move section in order
   const moveSection = useCallback((index: number, direction: 'up' | 'down') => {
@@ -133,6 +148,19 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
     setContactLinks(prev => ({ ...prev, custom: newCustom }));
   };
 
+  // Handle theme selection
+  const handleThemeSelect = (presetId: string) => {
+    startTransition(async () => {
+      const result = await updatePortfolioSettingsAction({ theme: presetId });
+      if (result.hasError) {
+        toast.error(result.message);
+      } else {
+        setCurrentTheme(presetId);
+        toast.success('Theme updated');
+      }
+    });
+  };
+
   // Handle form submission
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -150,17 +178,17 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
           });
 
           if (!result.hasError) {
-            toast.success(result.message || 'Profile updated successfully');
+            toast.success(t('messages.updated'));
           } else {
-            toast.error(result.message || 'Failed to update profile');
+            toast.error(t('messages.error'));
           }
         } catch (error) {
           console.error('Error updating profile:', error);
-          toast.error('An unexpected error occurred');
+          toast.error(t('messages.unexpectedError'));
         }
       });
     },
-    [name, bio, image, sectionOrder, contactLinks, sectionVisibility]
+    [name, bio, image, sectionOrder, contactLinks, sectionVisibility, t]
   );
 
   return (
@@ -171,9 +199,9 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
       {/* Page Header */}
       <div className="px-6 py-6 flex items-center justify-between border-b border-[hsl(174,100%,50%,0.1)]">
         <div>
-          <h1 className="text-2xl font-mono font-bold text-foreground">Edit Portfolio</h1>
+          <h1 className="text-2xl font-mono font-bold text-foreground">{t('title')}</h1>
           <p className="text-xs font-mono text-muted-foreground mt-1">
-            Manage your public profile settings
+            {t('subtitle')}
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -185,7 +213,7 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
               className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors"
             >
               <ExternalLink className="w-3.5 h-3.5" />
-              View Public Portfolio
+              {t('viewPublic')}
             </a>
           )}
         </div>
@@ -196,14 +224,14 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
         <div className="space-y-8">
           {/* AI ASSISTANT HUD PANEL */}
           <HUDPanel
-            title="RPG Master: Career Overseer"
+            title={t('ai.assistantTitle')}
             icon={<Bot className="w-4 h-4" />}
             className="border-[#00D4FF]/40 shadow-[0_0_15px_rgba(0,212,255,0.1)]"
           >
             <div className="space-y-4">
               <div className="flex items-center gap-2 mb-2">
                 <Sparkles className="w-3.5 h-3.5 text-[#00D4FF]" />
-                <span className="text-[10px] text-gray-400 font-mono uppercase">AI Assistant Guidance Active</span>
+                <span className="text-[10px] text-gray-400 font-mono uppercase">{t('ai.guidanceActive')}</span>
               </div>
               <AIChatContainer />
             </div>
@@ -219,7 +247,7 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                   return (
                     <HUDPanel
                       key="about"
-                      title="About & Bio"
+                      title={t('sections.about')}
                       icon={<User className="w-4 h-4" />}
                       isVisible={sectionVisibility.about}
                       onToggleVisibility={() => toggleVisibility('about')}
@@ -228,20 +256,20 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                     >
                       <div className="space-y-6">
                         <div className="space-y-2">
-                          <label className="text-[10px] font-bold font-mono text-gray-300 uppercase tracking-widest">Display Name</label>
+                          <label className="text-[10px] font-bold font-mono text-gray-300 uppercase tracking-widest">{t('sections.displayName')}</label>
                           <input
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             className="w-full px-4 py-2.5 bg-[#0D1421] border border-[hsl(174,100%,50%,0.25)] rounded font-mono text-sm text-gray-100 placeholder:text-gray-600 focus:border-[#00D4FF] focus:ring-1 focus:ring-[#00D4FF]/30 focus:outline-none transition-all"
-                            placeholder="Your identity"
+                            placeholder={t('sections.displayNamePlaceholder')}
                           />
                         </div>
 
                         <div className="space-y-2">
                           <div className="flex items-center justify-between">
                             <label className="text-[10px] font-bold font-mono text-gray-300 uppercase tracking-widest">
-                              Developer Bio (Markdown Supported)
+                              {t('sections.bio')}
                             </label>
                             <div className="flex items-center gap-2">
                               <ImproveBioButton
@@ -259,7 +287,7 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                             rows={8}
                             maxLength={1000}
                             className="w-full px-4 py-3 bg-[#0D1421] border border-[hsl(174,100%,50%,0.25)] rounded font-mono text-sm text-gray-100 placeholder:text-gray-600 focus:border-[#00D4FF] focus:ring-1 focus:ring-[#00D4FF]/30 focus:outline-none resize-none transition-all"
-                            placeholder="Describe your capabilities and stack..."
+                            placeholder={t('sections.bioPlaceholder')}
                           />
 
                           {/* Markdown Preview & Hint */}
@@ -267,12 +295,12 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                             <div className="mt-2 space-y-2">
                               <div className="flex items-center gap-2">
                                 <span className="text-[9px] font-mono text-[#00D4FF]/60 uppercase tracking-wider">
-                                  💡 Tip: Usa **texto** para negrita, *texto* para cursiva
+                                  {t('sections.markdownTip')}
                                 </span>
                               </div>
                               <div className="p-3 bg-[#0A0E1A] border border-[hsl(174,100%,50%,0.15)] rounded">
                                 <div className="text-[9px] font-mono text-[#00D4FF]/50 uppercase tracking-wider mb-2">
-                                  Preview (Cómo se verá en tu portfolio):
+                                  {t('sections.previewLabel')}
                                 </div>
                                 <div className="text-sm text-gray-200 prose prose-invert prose-sm max-w-none prose-strong:text-[#00D4FF] prose-em:text-purple-400">
                                   <ReactMarkdown>
@@ -285,7 +313,7 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                         </div>
 
                         <div className="space-y-2">
-                          <label className="text-[10px] font-bold font-mono text-gray-300 uppercase tracking-widest">Profile Avatar</label>
+                          <label className="text-[10px] font-bold font-mono text-gray-300 uppercase tracking-widest">{t('sections.avatar')}</label>
                           <ProfileImageUpload
                             value={image}
                             onChange={setImage}
@@ -302,7 +330,7 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                   return (
                     <HUDPanel
                       key="experience"
-                      title="Experience & Timeline"
+                      title={t('sections.experience')}
                       icon={<History className="w-4 h-4" />}
                       isVisible={sectionVisibility.experience}
                       onToggleVisibility={() => toggleVisibility('experience')}
@@ -311,8 +339,8 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                     >
                       <div className="flex flex-col items-center justify-center py-10 bg-[#0D1421]/50 border-2 border-dashed border-[hsl(174,100%,50%,0.1)] rounded group hover:border-[hsl(174,100%,50%,0.2)] transition-colors">
                         <History className="w-10 h-10 text-[#00D4FF]/30 mb-4 opacity-40 group-hover:opacity-100 transition-opacity" />
-                        <p className="text-sm text-gray-300 font-mono font-bold">Experience content is managed via separate Timeline tools.</p>
-                        <p className="text-[10px] text-gray-500 font-mono mt-2 uppercase tracking-tight">Use this panel only for order and visibility settings.</p>
+                        <p className="text-sm text-gray-300 font-mono font-bold">{t('sections.experienceNote')}</p>
+                        <p className="text-[10px] text-gray-500 font-mono mt-2 uppercase tracking-tight">{t('sections.experienceNote2')}</p>
                       </div>
                     </HUDPanel>
                   );
@@ -323,7 +351,7 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                   return (
                     <HUDPanel
                       key="skills"
-                      title="Skills & Tech Stack"
+                      title={t('sections.skills')}
                       icon={<Layers className="w-4 h-4" />}
                       isVisible={sectionVisibility.skills}
                       onToggleVisibility={() => toggleVisibility('skills')}
@@ -332,8 +360,8 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                     >
                       <div className="flex flex-col items-center justify-center py-10 bg-[#0D1421]/50 border-2 border-dashed border-[hsl(174,100%,50%,0.1)] rounded group hover:border-[hsl(174,100%,50%,0.2)] transition-colors">
                         <Layers className="w-10 h-10 text-[#00D4FF]/30 mb-4 opacity-40 group-hover:opacity-100 transition-opacity" />
-                        <p className="text-sm text-gray-300 font-mono font-bold">Skills catalog is managed via Skill Tree tools.</p>
-                        <p className="text-[10px] text-gray-500 font-mono mt-2 uppercase tracking-tight">Use this panel only for order and visibility settings.</p>
+                        <p className="text-sm text-gray-300 font-mono font-bold">{t('sections.skillsNote')}</p>
+                        <p className="text-[10px] text-gray-500 font-mono mt-2 uppercase tracking-tight">{t('sections.experienceNote2')}</p>
                       </div>
                     </HUDPanel>
                   );
@@ -344,7 +372,7 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                   return (
                     <HUDPanel
                       key="projects"
-                      title="Project Showcase"
+                      title={t('sections.projects')}
                       icon={<Box className="w-4 h-4" />}
                       isVisible={sectionVisibility.projects}
                       onToggleVisibility={() => toggleVisibility('projects')}
@@ -353,8 +381,8 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                     >
                       <div className="flex flex-col items-center justify-center py-8 border-2 border-dashed border-[hsl(174,100%,50%,0.05)] rounded">
                         <Box className="w-8 h-8 text-muted-foreground mb-3 opacity-20" />
-                        <p className="text-sm text-muted-foreground font-mono">Project list is managed via Project tools.</p>
-                        <p className="text-xs text-muted-foreground font-mono mt-1 opacity-60">Use this panel only for order and visibility.</p>
+                        <p className="text-sm text-muted-foreground font-mono">{t('sections.projectsNote')}</p>
+                        <p className="text-xs text-muted-foreground font-mono mt-1 opacity-60">{t('sections.experienceNote2')}</p>
                       </div>
                     </HUDPanel>
                   );
@@ -363,9 +391,41 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                 return null;
               })}
 
+              {/* CLASSIC SECTIONS VISIBILITY (Only for Classic Mode users) */}
+              {user.portfolioMode === 'classic' && (
+                <HUDPanel title="Classic Sections" icon={<Layers className="w-4 h-4" />}>
+                  <div>
+                    {[
+                      { key: 'gallery', label: 'Images / Gallery' },
+                      { key: 'services', label: 'Services' },
+                      { key: 'testimonials', label: 'Testimonials' },
+                    ].map(({ key, label }) => (
+                      <div
+                        key={key}
+                        className="flex items-center justify-between py-3 border-b border-[hsl(174,100%,50%,0.08)] last:border-0"
+                      >
+                        <span className="text-sm font-mono text-gray-200">{label}</span>
+                        <button
+                          type="button"
+                          onClick={() => toggleVisibility(key)}
+                          className={cn(
+                            'text-xs font-mono px-3 py-1 rounded-sm border transition-colors',
+                            sectionVisibility[key] !== false
+                              ? 'text-[hsl(150,100%,45%)] border-[hsl(150,100%,45%,0.3)] bg-[hsl(150,100%,45%,0.08)]'
+                              : 'text-[#64748B] border-[#64748B]/30 bg-[#64748B]/08'
+                          )}
+                        >
+                          {sectionVisibility[key] !== false ? 'Visible' : 'Hidden'}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </HUDPanel>
+              )}
+
               {/* STATIC SOCIAL LINKS SECTION (Not part of section order) */}
               <HUDPanel
-                title="Identity & Social Links"
+                title={t('sections.socialLinks')}
                 icon={<ExternalLink className="w-4 h-4" />}
               >
                 <div className="space-y-8">
@@ -374,7 +434,7 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                     <div className="space-y-4">
                       <div className="space-y-2">
                         <label className="text-[10px] font-black font-mono text-gray-300 flex items-center gap-2 tracking-[0.2em] uppercase">
-                          <Github className="w-3.5 h-3.5 text-[#00D4FF]" /> GITHUB_KEY
+                          <Github className="w-3.5 h-3.5 text-[#00D4FF]" /> {t('sections.github').toUpperCase()}_KEY
                         </label>
                         <input
                           type="url"
@@ -386,7 +446,7 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] font-black font-mono text-gray-300 flex items-center gap-2 tracking-[0.2em] uppercase">
-                          <Linkedin className="w-3.5 h-3.5 text-[#00D4FF]" /> LINKEDIN_KEY
+                          <Linkedin className="w-3.5 h-3.5 text-[#00D4FF]" /> {t('sections.linkedin').toUpperCase()}_KEY
                         </label>
                         <input
                           type="url"
@@ -401,13 +461,13 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                     {/* Custom Links */}
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <label className="text-[10px] font-black font-mono text-gray-300 uppercase tracking-[0.2em]">EXTERNAL_CHANNELS</label>
+                        <label className="text-[10px] font-black font-mono text-gray-300 uppercase tracking-[0.2em]">{t('sections.externalChannels').toUpperCase()}</label>
                         <button
                           type="button"
                           onClick={addCustomLink}
                           className="text-[10px] font-mono font-black text-[#00D4FF] hover:text-[#00D4FF]/80 transition-colors flex items-center gap-1.5"
                         >
-                          <Plus className="w-3 h-3" /> ADD_NEW
+                          <Plus className="w-3 h-3" /> {t('sections.addNew').toUpperCase()}
                         </button>
                       </div>
 
@@ -415,13 +475,13 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                         {contactLinks.custom?.map((link: any, idx: number) => (
                           <div key={idx} className="flex gap-2 items-center group animate-in slide-in-from-left-2 duration-200">
                             <input
-                              placeholder="LABEL"
+                              placeholder={t('sections.label')}
                               value={link.label}
                               onChange={(e) => updateCustomLink(idx, 'label', e.target.value)}
                               className="flex-1 px-3 py-2 bg-[#0D1421] border border-[hsl(174,100%,50%,0.1)] rounded font-mono text-[10px] text-gray-100 placeholder:text-gray-700 focus:border-[#00D4FF] focus:outline-none"
                             />
                             <input
-                              placeholder="URL_ENDPOINT"
+                              placeholder={t('sections.url')}
                               value={link.url}
                               onChange={(e) => updateCustomLink(idx, 'url', e.target.value)}
                               className="flex-[2] px-3 py-2 bg-[#0D1421] border border-[hsl(174,100%,50%,0.1)] rounded font-mono text-[10px] text-gray-100 placeholder:text-gray-700 focus:border-[#00D4FF] focus:outline-none"
@@ -437,7 +497,7 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                         ))}
                         {(!contactLinks.custom || contactLinks.custom.length === 0) && (
                           <div className="py-4 border border-dashed border-gray-800/50 rounded flex items-center justify-center">
-                            <span className="text-[10px] font-mono text-gray-600 uppercase">No custom links established</span>
+                            <span className="text-[10px] font-mono text-gray-600 uppercase">{t('sections.noLinks')}</span>
                           </div>
                         )}
                       </div>
@@ -447,15 +507,53 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
               </HUDPanel>
 
               {/* Theme & Display HUD */}
-              <HUDPanel title="Platform Preferences" icon={<Layers className="w-4 h-4" />}>
+              <HUDPanel title={t('preferences.title')} icon={<Layers className="w-4 h-4" />}>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="space-y-1">
-                    <p className="text-sm font-mono text-gray-100 font-black tracking-wide uppercase">Terminal Interface</p>
-                    <p className="text-[10px] font-mono text-gray-400 uppercase tracking-tighter">Select visual protocol for public data transmission</p>
+                    <p className="text-sm font-mono text-gray-100 font-black tracking-wide uppercase">{t('preferences.interface')}</p>
+                    <p className="text-[10px] font-mono text-gray-400 uppercase tracking-tighter">{t('preferences.description')}</p>
                   </div>
                   <PortfolioModeToggle currentMode={user.portfolioMode} />
                 </div>
               </HUDPanel>
+
+              {/* CLASSIC MODE THEME PICKER */}
+              {user.portfolioMode === 'classic' && (
+                <HUDPanel title="Classic Mode Theme" icon={<Layers className="w-4 h-4" />}>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {Object.values(THEME_PRESETS).map((preset) => (
+                      <button
+                        key={preset.id}
+                        type="button"
+                        onClick={() => handleThemeSelect(preset.id)}
+                        className={cn(
+                          'flex flex-col gap-2 p-3 border rounded-sm text-left transition-all',
+                          currentTheme === preset.id
+                            ? 'border-[hsl(174,100%,50%,0.5)] bg-[hsl(174,100%,50%,0.08)]'
+                            : 'border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] hover:border-[hsl(174,100%,50%,0.3)]'
+                        )}
+                      >
+                        <div className="flex items-center gap-1.5">
+                          <span
+                            className="w-3 h-3 rounded-full border border-white/10"
+                            style={{ backgroundColor: preset.backgroundColor }}
+                          />
+                          <span
+                            className="w-3 h-3 rounded-full"
+                            style={{ backgroundColor: preset.accentColor }}
+                          />
+                          {currentTheme === preset.id && (
+                            <span className="text-[hsl(150,100%,45%)] bg-[hsl(150,100%,45%,0.1)] text-[10px] font-mono px-1.5 py-0.5 rounded-sm uppercase ml-auto">
+                              Active
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-xs font-mono text-gray-200">{preset.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </HUDPanel>
+              )}
             </div>
 
             {/* Floating Action Button for Saving */}
@@ -471,7 +569,7 @@ export function DashboardPortfolioView({ user, oauthImage }: DashboardPortfolioV
                 )}
               >
                 {isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-                {isPending ? 'SYNCING DATA...' : 'INITIALIZE SYNC'}
+                {isPending ? t('actions.syncing') : t('actions.save')}
               </button>
             </div>
           </form>

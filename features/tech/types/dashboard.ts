@@ -10,6 +10,15 @@ export interface WelcomeCardProps {
   maxXP: number
   streakDays: number
   quickActions?: QuickAction[]
+  /** When true, the avatar swaps to a mini AI eye indicator */
+  aiActive?: boolean
+  translations?: {
+    welcomeTitle: string
+    welcomeSubtitle: string
+    streak: string
+    quickActionsTitle: string
+    xpToLevel: string
+  }
   className?: string
 }
 

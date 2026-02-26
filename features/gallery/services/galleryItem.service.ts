@@ -15,7 +15,7 @@ import {
 } from '../data';
 import { GALLERY_MESSAGES } from '../constants/messages';
 import { MAX_GALLERY_ITEMS_PER_USER } from '../constants/limits';
-import { invalidateNarrativeCache } from '@/lib/ai/cache';
+import { invalidateNarrativeCache } from '@/features/ai-narrator';
 import { prisma } from '@/lib/prisma';
 
 /**

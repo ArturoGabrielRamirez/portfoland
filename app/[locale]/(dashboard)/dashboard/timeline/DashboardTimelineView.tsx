@@ -9,6 +9,7 @@
 import { useState, useCallback, useMemo, useTransition } from 'react';
 import { Plus, MapPin, ExternalLink, Zap, Flag, Star, Trophy } from 'lucide-react';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { HexBadge, DashboardNav } from '@/features/tech';
 import { useParams } from 'next/navigation';
@@ -50,6 +51,8 @@ interface DashboardTimelineViewProps {
 export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps) {
   const params = useParams();
   const locale = params.locale as string;
+  const t = useTranslations('dashboard.timeline');
+  const tCommon = useTranslations('common');
 
   const [selectedExperience, setSelectedExperience] = useState<Experience | null>(null);
   const [activeFilter, setActiveFilter] = useState<FilterOption>('ALL');
@@ -141,11 +144,11 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
             }
           }
         } catch (error) {
-          toast.error('An error occurred');
+          toast.error(t('messages.error'));
         }
       });
     },
-    []
+    [t]
   );
 
   // Handle delete confirm
@@ -161,10 +164,10 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
           toast.success(result.message);
         }
       } catch (error) {
-        toast.error('An error occurred');
+        toast.error(t('messages.error'));
       }
     });
-  }, [deletingExperience]);
+  }, [deletingExperience, t]);
 
   return (
     <div className="min-h-screen bg-[#0A0E1A] font-mono">
@@ -174,8 +177,8 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
       {/* Page Header */}
       <div className="px-6 py-6 flex items-center justify-between border-b border-[hsl(174,100%,50%,0.1)]">
         <div>
-          <h1 className="text-2xl font-mono font-bold text-foreground">My Timeline</h1>
-          <p className="text-xs font-mono text-muted-foreground mt-1">Manage your professional journey</p>
+          <h1 className="text-2xl font-mono font-bold text-foreground">{t('title')}</h1>
+          <p className="text-xs font-mono text-muted-foreground mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
           {user.username && (
@@ -186,7 +189,7 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
               className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors"
             >
               <ExternalLink className="w-3.5 h-3.5" />
-              View Public
+              {t('viewPublic')}
             </a>
           )}
           <button
@@ -194,7 +197,7 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
             className="flex items-center gap-1.5 bg-[hsl(174,100%,50%)] text-[hsl(200,25%,8%)] px-3 py-1.5 text-xs font-mono font-bold hover:shadow-[0_0_12px_hsl(174_100%_50%_/_0.4)] transition-shadow"
           >
             <Plus className="w-3.5 h-3.5" />
-            Add Experience
+            {t('addExperience')}
           </button>
         </div>
       </div>
@@ -202,10 +205,10 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
       {/* Stats */}
       <div className="px-6 py-4 grid grid-cols-2 lg:grid-cols-4 gap-3 border-b border-[hsl(174,100%,50%,0.1)]">
         {[
-          { value: data.stats.totalXP.toLocaleString(), label: "TOTAL XP", color: "cyan" as const, icon: <Zap className="w-4 h-4" /> },
-          { value: data.stats.milestones.toString(), label: "MILESTONES", color: "magenta" as const, icon: <Flag className="w-4 h-4" /> },
-          { value: data.stats.totalExperiences.toString(), label: "EXPERIENCES", color: "yellow" as const, icon: <Star className="w-4 h-4" /> },
-          { value: data.stats.achievements?.toString() || "0", label: "ACHIEVEMENTS", color: "green" as const, icon: <Trophy className="w-4 h-4" /> },
+          { value: data.stats.totalXP.toLocaleString(), label: t('stats.totalXP'), color: "cyan" as const, icon: <Zap className="w-4 h-4" /> },
+          { value: data.stats.milestones.toString(), label: t('stats.milestones'), color: "magenta" as const, icon: <Flag className="w-4 h-4" /> },
+          { value: data.stats.totalExperiences.toString(), label: t('stats.experiences'), color: "yellow" as const, icon: <Star className="w-4 h-4" /> },
+          { value: data.stats.achievements?.toString() || "0", label: t('stats.achievements'), color: "green" as const, icon: <Trophy className="w-4 h-4" /> },
         ].map((stat) => (
           <div key={stat.label} className="border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-3 flex items-center gap-3">
             <HexBadge color={stat.color} size="sm" filled>
@@ -267,13 +270,13 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
             {filteredExperiences.length === 0 ? (
               <div className="text-center py-12">
                 <MapPin className="w-12 h-12 text-[hsl(174,100%,50%,0.3)] mx-auto mb-4" />
-                <p className="text-muted-foreground font-mono mb-4">No experiences yet</p>
+                <p className="text-muted-foreground font-mono mb-4">{t('empty.title')}</p>
                 <button
                   onClick={handleOpenCreate}
                   className="bg-[hsl(174,100%,50%)] text-[hsl(200,25%,8%)] px-4 py-2 text-sm font-mono font-bold hover:shadow-[0_0_12px_hsl(174_100%_50%_/_0.4)] transition-shadow inline-flex items-center gap-2"
                 >
                   <Plus className="w-4 h-4" />
-                  Add Your First Experience
+                  {t('empty.addFirst')}
                 </button>
               </div>
             ) : (

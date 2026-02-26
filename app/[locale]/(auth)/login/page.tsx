@@ -132,22 +132,22 @@ export default function LoginPage() {
 
         <div className="space-y-8 max-w-md">
           <h1 className="text-4xl lg:text-5xl font-mono font-black uppercase tracking-tight text-foreground leading-tight">
-            {t('gaming.heroTitle').split(' ').slice(0, 2).join(' ')}
+            {t('tech.heroTitle').split(' ').slice(0, 2).join(' ')}
             <br />
             <span className="text-[#00D4FF]">
-              {t('gaming.heroTitle').split(' ').slice(2).join(' ')}
+              {t('tech.heroTitle').split(' ').slice(2).join(' ')}
             </span>
           </h1>
           <p className="text-sm font-mono text-[#94A3B8] leading-relaxed">
-            {t('gaming.heroSubtitle')}
+            {t('tech.heroSubtitle')}
           </p>
 
           {/* Feature List */}
           <div className="flex flex-col gap-2">
             {[
-              { text: t('gaming.feature1'), color: 'hsl(174,100%,50%)' },
-              { text: t('gaming.feature2'), color: 'hsl(330,100%,65%)' },
-              { text: t('gaming.feature3'), color: 'hsl(150,100%,45%)' },
+              { text: t('tech.feature1'), color: 'hsl(174,100%,50%)' },
+              { text: t('tech.feature2'), color: 'hsl(330,100%,65%)' },
+              { text: t('tech.feature3'), color: 'hsl(150,100%,45%)' },
             ].map((feature) => (
               <div key={feature.text} className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full" style={{ backgroundColor: feature.color }} />
@@ -199,7 +199,7 @@ export default function LoginPage() {
           {/* Auth Tabs */}
           <div className="flex border border-[hsl(174,100%,50%,0.2)] mb-8">
             <div className="flex-1 py-2.5 text-xs font-mono uppercase tracking-[0.2em] font-bold bg-[#00D4FF] text-[#0A0E1A] text-center">
-              {t('gaming.tabLogin')}
+              {t('tech.tabLogin')}
             </div>
             <Link
               href={`/${locale}/register`}
@@ -208,7 +208,7 @@ export default function LoginPage() {
                 isSubmitting && 'pointer-events-none opacity-50'
               )}
             >
-              {t('gaming.tabRegister')}
+              {t('tech.tabRegister')}
             </Link>
           </div>
 
@@ -289,7 +289,7 @@ export default function LoginPage() {
                   <span>{tCommon('loading')}</span>
                 </>
               ) : (
-                t('gaming.submitButton')
+                t('tech.submitButton')
               )}
             </TechButton>
 
@@ -297,7 +297,7 @@ export default function LoginPage() {
             <div className="flex items-center gap-3">
               <div className="flex-1 h-[1px] bg-[hsl(174,100%,50%,0.15)]" />
               <span className="text-[9px] font-mono uppercase tracking-wider text-[#64748B]">
-                {t('gaming.orContinueWith')}
+                {t('tech.orContinueWith')}
               </span>
               <div className="flex-1 h-[1px] bg-[hsl(174,100%,50%,0.15)]" />
             </div>

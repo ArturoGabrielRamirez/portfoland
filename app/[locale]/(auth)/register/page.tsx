@@ -130,23 +130,23 @@ export default function RegisterPage() {
 
         <div className="space-y-8">
           <h1 className="text-4xl font-bold text-white leading-tight">
-            {t('gaming.heroTitle')}
+            {t('tech.heroTitle')}
           </h1>
-          <p className="text-[#94A3B8] text-lg">{t('gaming.heroSubtitle')}</p>
+          <p className="text-[#94A3B8] text-lg">{t('tech.heroSubtitle')}</p>
 
           {/* Feature List */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-2 h-2 rounded-full bg-[#00D4FF] shadow-[0_0_8px_rgba(0,212,255,0.6)]" />
-              <span className="text-white">{t('gaming.feature1')}</span>
+              <span className="text-white">{t('tech.feature1')}</span>
             </div>
             <div className="flex items-center gap-3">
               <div className="w-2 h-2 rounded-full bg-[#D946EF] shadow-[0_0_8px_rgba(217,70,239,0.6)]" />
-              <span className="text-white">{t('gaming.feature2')}</span>
+              <span className="text-white">{t('tech.feature2')}</span>
             </div>
             <div className="flex items-center gap-3">
               <div className="w-2 h-2 rounded-full bg-[#22C55E] shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
-              <span className="text-white">{t('gaming.feature3')}</span>
+              <span className="text-white">{t('tech.feature3')}</span>
             </div>
           </div>
         </div>
@@ -183,10 +183,10 @@ export default function RegisterPage() {
                 isSubmitting && 'pointer-events-none opacity-50'
               )}
             >
-              {t('gaming.tabLogin')}
+              {t('tech.tabLogin')}
             </Link>
             <div className="flex-1 py-2.5 px-4 rounded-sm text-sm font-medium bg-[#00D4FF] text-[#0A0E1A] shadow-[0_0_15px_rgba(0,212,255,0.3)] text-center">
-              {t('gaming.tabRegister')}
+              {t('tech.tabRegister')}
             </div>
           </div>
 
@@ -311,7 +311,7 @@ export default function RegisterPage() {
                   <span>{tCommon('loading')}</span>
                 </>
               ) : (
-                t('gaming.submitButton')
+                t('tech.submitButton')
               )}
             </TechButton>
 
@@ -322,7 +322,7 @@ export default function RegisterPage() {
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-4 bg-[#0A0E1A] text-[#64748B] uppercase tracking-wider">
-                  {t('gaming.orContinueWith')}
+                  {t('tech.orContinueWith')}
                 </span>
               </div>
             </div>

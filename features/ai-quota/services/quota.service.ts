@@ -1,31 +1,28 @@
+/**
+ * AI Quota Service
+ *
+ * Business logic for managing AI quota/lives.
+ */
+
 import { prisma } from '@/lib/prisma';
-
-export interface UserAIConfig {
-  remainingLives: number;
-  lastResetDate: string;
-}
-
-const DEFAULT_LIVES = 3;
+import { DEFAULT_LIVES, type ConsumeLifeResult } from '../types/quota';
 
 /**
- * Atomically checks and consumes an AI life for a user.
+ * Consume a life for a user
  *
- * Uses two sequential MongoDB findAndModify operations to avoid race conditions:
+ * Atomically checks and consumes an AI life.
+ * Uses two sequential MongoDB findAndModify operations:
  * 1. Atomic daily reset: if lastResetDate != today, reset lives to DEFAULT_LIVES
  * 2. Atomic decrement: if remainingLives > 0, decrement by 1 and return updated doc
  *
- * @param userId - The user ID to check
- * @param locale - Locale for error messages ('en' | 'es'), defaults to 'en'
- * @returns Object with hasLives (boolean) and remainingLives (number)
+ * @param userId - The user ID
+ * @param locale - Locale for error messages ('en' | 'es')
+ * @returns Result with hasLives and remainingLives
  */
-export async function checkAndConsumeLives(
+export async function consumeLifeService(
   userId: string,
   locale: string = 'en'
-): Promise<{
-  hasLives: boolean;
-  remainingLives: number;
-  error?: string;
-}> {
+): Promise<ConsumeLifeResult> {
   const today = new Date().toISOString().split('T')[0];
 
   // Step 1: Atomic daily reset — only fires if lastResetDate != today
@@ -57,7 +54,7 @@ export async function checkAndConsumeLives(
     new: true,
   });
 
-  const updatedDoc = (decrementResult as any).value;
+  const updatedDoc = (decrementResult as { value?: { meta?: { remainingLives?: number } } }).value;
 
   if (!updatedDoc) {
     const error =
@@ -67,25 +64,26 @@ export async function checkAndConsumeLives(
     return { hasLives: false, remainingLives: 0, error };
   }
 
-  const remainingLives = (updatedDoc.meta as any)?.remainingLives ?? 0;
+  const remainingLives = updatedDoc.meta?.remainingLives ?? 0;
   return { hasLives: true, remainingLives };
 }
 
 /**
- * Retrieves the current AI configuration for a user.
+ * Check if user has remaining lives without consuming
+ *
+ * @param userId - The user ID
+ * @returns Whether user has lives remaining
  */
-export async function getUserAIConfig(userId: string): Promise<UserAIConfig> {
+export async function hasRemainingLives(userId: string): Promise<boolean> {
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: { meta: true },
   });
 
   if (!user?.meta) {
-    return {
-      remainingLives: DEFAULT_LIVES,
-      lastResetDate: new Date().toISOString().split('T')[0],
-    };
+    return true;
   }
 
-  return user.meta as unknown as UserAIConfig;
+  const meta = user.meta as { remainingLives?: number };
+  return (meta.remainingLives ?? 0) > 0;
 }

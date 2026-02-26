@@ -7,8 +7,9 @@
 
 import { PORTFOLIO_MODES, PORTFOLIO_MESSAGES } from '../constants/messages';
 import { updatePortfolioModeData } from '../data/updatePortfolioMode.data';
+import { TECH_DEFAULT_SECTIONS, CLASSIC_DEFAULT_SECTIONS } from '../constants/sections';
 import { updateUserProfileData } from '../data/updateProfile.data';
-import { invalidateNarrativeCache } from '@/lib/ai/cache';
+import { invalidateNarrativeCache } from '@/features/ai-narrator';
 
 const VALID_MODES = [PORTFOLIO_MODES.CLASSIC, PORTFOLIO_MODES.TECH];
 
@@ -30,7 +31,12 @@ export async function updatePortfolioModeService(
     throw new Error(PORTFOLIO_MESSAGES.INVALID_MODE);
   }
 
-  return await updatePortfolioModeData(userId, mode);
+  const sections = mode === 'tech'
+    ? [...TECH_DEFAULT_SECTIONS]
+    : [...CLASSIC_DEFAULT_SECTIONS];
+  const sectionVisibility = Object.fromEntries(sections.map(s => [s, true]));
+
+  return await updatePortfolioModeData(userId, mode, sections, sectionVisibility);
 }
 
 /**

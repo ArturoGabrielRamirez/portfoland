@@ -12,6 +12,7 @@ import { getTranslations } from 'next-intl/server';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getUserSkillsData, getSkillCategoriesData } from '@/features/skills/data';
+import { checkOnboarding } from '@/features/onboarding/utils/checkOnboarding';
 import { DashboardSkillsView } from './DashboardSkillsView';
 
 export default async function DashboardSkillsPage() {
@@ -23,6 +24,8 @@ export default async function DashboardSkillsPage() {
   if (!session?.user?.id) {
     redirect('/login');
   }
+
+  await checkOnboarding(session.user.id);
 
   // Get translations
   const t = await getTranslations('skills');

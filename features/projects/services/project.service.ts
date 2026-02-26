@@ -15,7 +15,7 @@ import {
   getProjectsByUserIdData,
 } from '../data';
 import { PROJECT_MESSAGES } from '../constants/messages';
-import { invalidateNarrativeCache } from '@/lib/ai/cache';
+import { invalidateNarrativeCache } from '@/features/ai-narrator';
 
 /**
  * Input for creating a project via service

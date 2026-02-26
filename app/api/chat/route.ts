@@ -7,8 +7,9 @@ import { z } from 'zod';
 import { createExperienceService } from '@/features/timeline/services/experience.service';
 import { createSkillService } from '@/features/skills/services/skill.service';
 import { updateProfileService } from '@/features/portfolio/services/portfolio.service';
-import { checkAndConsumeLives } from '@/lib/ai/lives';
+import { consumeLifeService } from '@/features/ai-quota';
 import { getUserSkillsData } from '@/features/skills/data/getUserSkills.data';
+import { getSelfAssessmentLevel, hasGitHubValidation } from '@/features/skills/types/skill';
 import { prisma } from '@/lib/prisma';
 import { logger } from '@/lib/logger';
 
@@ -88,7 +89,7 @@ export async function POST(req: Request) {
         logger.debug(`User: ${userId} | Messages: ${messages?.length || 0} | Locale: ${locale || 'en'}`);
 
         // Check and consume AI lives (3 per day limit)
-        const { hasLives, remainingLives, error } = await checkAndConsumeLives(userId, locale || 'en');
+        const { hasLives, remainingLives, error } = await consumeLifeService(userId, locale || 'en');
 
         if (!hasLives) {
             logger.debug(`LIVES_DEPLETED | User: ${userId} | Remaining: ${remainingLives}`);
@@ -209,9 +210,9 @@ export async function POST(req: Request) {
                             const skillTree = userSkills.map(us => ({
                                 name: us.skill.name,
                                 category: us.skill.category.name,
-                                selfAssessmentLevel: us.selfAssessmentLevel,
+                                selfAssessmentLevel: getSelfAssessmentLevel(us.sources),
                                 totalXP: us.totalXP,
-                                githubValidated: us.githubValidated,
+                                githubValidated: hasGitHubValidation(us.sources),
                                 manuallyAdded: us.sources.some(s => s.sourceType === 'MANUAL'),
                                 experienceBased: us.sources.some(s => s.sourceType === 'EXPERIENCE'),
                                 sourcesCount: us.sources.length,

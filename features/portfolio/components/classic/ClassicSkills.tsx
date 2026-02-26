@@ -27,12 +27,6 @@ export function ClassicSkills({ data, className }: PortfolioSectionProps) {
 
   return (
     <section className={cn('py-6', className)}>
-      <div className="flex items-center gap-4 text-[10px] font-mono text-gray-400 mb-1 border-b border-gray-100 pb-1">
-        <span>CPU: 12.4%</span>
-        <span>MEM: 2.1GB/16GB</span>
-        <span>UPTIME: 365d</span>
-        <span className="text-purple-500">skills.bin</span>
-      </div>
       <h2 className="mb-6 text-2xl font-bold text-gray-900">
         {t('sections.skills.classic.title')}
       </h2>

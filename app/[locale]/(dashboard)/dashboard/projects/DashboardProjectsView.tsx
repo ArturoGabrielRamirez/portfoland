@@ -10,6 +10,7 @@ import { useState, useCallback, useTransition } from 'react';
 import { Plus, Pencil, Trash2, FolderOpen, Star } from 'lucide-react';
 import Image from 'next/image';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { DashboardNav } from '@/features/tech';
@@ -33,6 +34,9 @@ interface DashboardProjectsViewProps {
 export function DashboardProjectsView({ projects, user }: DashboardProjectsViewProps) {
   const params = useParams();
   const locale = params.locale as string;
+  const t = useTranslations('dashboard.projects');
+  const tStatus = useTranslations('dashboard.projects.status');
+  
   const [showForm, setShowForm] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | undefined>();
   const [isPending, startTransition] = useTransition();
@@ -53,7 +57,7 @@ export function DashboardProjectsView({ projects, user }: DashboardProjectsViewP
   }, []);
 
   const handleDelete = useCallback((project: Project) => {
-    if (!confirm(`Delete "${project.title}"?`)) return;
+    if (!confirm(t('deleteConfirm', { title: project.title }))) return;
 
     startTransition(async () => {
       const result = await deleteProject({ id: project.id });
@@ -63,12 +67,20 @@ export function DashboardProjectsView({ projects, user }: DashboardProjectsViewP
         toast.success(result.message);
       }
     });
-  }, []);
+  }, [t]);
 
   const statusColors: Record<string, string> = {
     IN_PROGRESS: 'text-[hsl(174,100%,50%)] bg-[hsl(174,100%,50%,0.1)]',
     COMPLETED: 'text-[hsl(150,100%,45%)] bg-[hsl(150,100%,45%,0.1)]',
     ARCHIVED: 'text-[#64748B] bg-[#64748B]/10',
+  };
+
+  const getStatusLabel = (status: string): string => {
+    const statusKey = status.toLowerCase();
+    if (statusKey === 'in_progress') return tStatus('in_progress');
+    if (statusKey === 'completed') return tStatus('completed');
+    if (statusKey === 'archived') return tStatus('archived');
+    return status.replace('_', ' ');
   };
 
   return (
@@ -79,15 +91,15 @@ export function DashboardProjectsView({ projects, user }: DashboardProjectsViewP
       {/* Page Header */}
       <div className="px-6 py-6 flex items-center justify-between border-b border-[hsl(174,100%,50%,0.1)]">
         <div>
-          <h1 className="text-2xl font-mono font-bold text-foreground">My Projects</h1>
-          <p className="text-xs font-mono text-muted-foreground mt-1">Manage your project showcase</p>
+          <h1 className="text-2xl font-mono font-bold text-foreground">{t('title')}</h1>
+          <p className="text-xs font-mono text-muted-foreground mt-1">{t('subtitle')}</p>
         </div>
         <button
           onClick={handleCreate}
           className="flex items-center gap-1.5 bg-[hsl(60,100%,50%)] text-[hsl(200,25%,8%)] px-3 py-1.5 text-xs font-mono font-bold hover:shadow-[0_0_12px_hsl(60_100%_50%_/_0.4)] transition-shadow"
         >
           <Plus className="w-3.5 h-3.5" />
-          Add Project
+          {t('addProject')}
         </button>
       </div>
 
@@ -96,7 +108,7 @@ export function DashboardProjectsView({ projects, user }: DashboardProjectsViewP
         {showForm && (
           <div className="mb-8 rounded-sm border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-6">
             <h2 className="text-lg font-mono font-bold text-foreground mb-4">
-              {editingProject ? 'Edit Project' : 'New Project'}
+              {editingProject ? t('form.editProject') : t('form.newProject')}
             </h2>
             <ProjectForm
               project={editingProject}
@@ -109,13 +121,13 @@ export function DashboardProjectsView({ projects, user }: DashboardProjectsViewP
         {projects.length === 0 && !showForm ? (
           <div className="text-center py-16">
             <FolderOpen className="w-16 h-16 text-[hsl(174,100%,50%,0.3)] mx-auto mb-4" />
-            <p className="text-muted-foreground font-mono mb-4">No projects yet</p>
+            <p className="text-muted-foreground font-mono mb-4">{t('empty.title')}</p>
             <button
               onClick={handleCreate}
               className="flex items-center gap-2 bg-[hsl(60,100%,50%)] text-[hsl(200,25%,8%)] px-4 py-2 text-sm font-mono font-bold hover:shadow-[0_0_12px_hsl(60_100%_50%_/_0.4)] transition-shadow inline-flex mx-auto"
             >
               <Plus className="w-4 h-4" />
-              Create Your First Project
+              {t('empty.addFirst')}
             </button>
           </div>
         ) : (
@@ -156,7 +168,7 @@ export function DashboardProjectsView({ projects, user }: DashboardProjectsViewP
                       'text-[10px] font-mono px-2 py-0.5 rounded-sm shrink-0 uppercase tracking-wider',
                       statusColors[project.status] || statusColors.IN_PROGRESS
                     )}>
-                      {project.status.replace('_', ' ')}
+                      {getStatusLabel(project.status)}
                     </span>
                   </div>
                   <p className="text-xs font-mono text-muted-foreground line-clamp-1 mt-1">

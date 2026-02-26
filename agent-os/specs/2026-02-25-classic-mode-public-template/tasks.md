@@ -169,9 +169,9 @@ Dependencies resolved: TG1 has no dependencies. TG2 has no dependencies. TG3 dep
 
 ### TG3-1: Apply THEME_PRESETS CSS variables for Classic Mode
 
-- [ ] Add import at the top of the Classic components import block: `import { THEME_PRESETS } from '@/features/portfolio-settings/constants/themes';`
-- [ ] Inside the component body, before the `return`, add: `const preset = THEME_PRESETS[data.settings?.theme ?? 'default'] ?? THEME_PRESETS['default'];`
-- [ ] On the root `<div>` (currently at line 116, the one with `data-testid="portfolio-layout"`), add a `style` prop:
+- [x] Add import at the top of the Classic components import block: `import { THEME_PRESETS } from '@/features/portfolio-settings/constants/themes';`
+- [x] Inside the component body, before the `return`, add: `const preset = THEME_PRESETS[data.settings?.theme ?? 'default'] ?? THEME_PRESETS['default'];`
+- [x] On the root `<div>` (currently at line 116, the one with `data-testid="portfolio-layout"`), add a `style` prop:
   ```tsx
   style={isClassic ? {
     '--portfolio-bg': preset.backgroundColor,
@@ -181,26 +181,26 @@ Dependencies resolved: TG1 has no dependencies. TG2 has no dependencies. TG3 dep
     '--portfolio-card-bg': preset.cardBackground,
   } as React.CSSProperties : undefined}
   ```
-- [ ] On that same root `<div>`, in the `cn(...)` className call, change `isClassic ? 'bg-white text-gray-900'` to `isClassic ? 'bg-[var(--portfolio-bg)] text-[var(--portfolio-text)]'`
-- [ ] The tech mode branch of the ternary (`'bg-[#0A0E1A] text-white overflow-hidden'`) is unchanged
-- [ ] `data-testid="portfolio-layout"` is preserved on the root div
+- [x] On that same root `<div>`, in the `cn(...)` className call, change `isClassic ? 'bg-white text-gray-900'` to `isClassic ? 'bg-[var(--portfolio-bg)] text-[var(--portfolio-text)]'`
+- [x] The tech mode branch of the ternary (`'bg-[#0A0E1A] text-white overflow-hidden'`) is unchanged
+- [x] `data-testid="portfolio-layout"` is preserved on the root div
 
 ### TG3-2: Register ClassicGallery, ClassicServices, ClassicTestimonials in classicSections map
 
-- [ ] Add three imports in the Classic mode components import block (lines 22-28), after the existing 7 imports:
+- [x] Add three imports in the Classic mode components import block (lines 22-28), after the existing 7 imports:
   ```tsx
   import { ClassicGallery } from './classic/ClassicGallery';
   import { ClassicServices } from './classic/ClassicServices';
   import { ClassicTestimonials } from './classic/ClassicTestimonials';
   ```
-- [ ] In the `classicSections` object (currently lines 43-51), add three new entries after `ai: ClassicAI,`:
+- [x] In the `classicSections` object (currently lines 43-51), add three new entries after `ai: ClassicAI,`:
   ```tsx
   gallery: ClassicGallery,
   services: ClassicServices,
   testimonials: ClassicTestimonials,
   ```
-- [ ] After this change `classicSections` has 10 keys: `hero`, `about`, `timeline`, `skills`, `projects`, `contact`, `ai`, `gallery`, `services`, `testimonials`
-- [ ] The `techSections` map and all other code in the file is unchanged
+- [x] After this change `classicSections` has 10 keys: `hero`, `about`, `timeline`, `skills`, `projects`, `contact`, `ai`, `gallery`, `services`, `testimonials`
+- [x] The `techSections` map and all other code in the file is unchanged
 
 **Acceptance Criteria:**
 - The app compiles without TypeScript errors after TG3-1 and TG3-2 are applied

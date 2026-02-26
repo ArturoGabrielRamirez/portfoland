@@ -7,7 +7,7 @@
 'use server';
 
 import { headers } from 'next/headers';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 import { auth } from '@/lib/auth';
 import { actionWrapper } from '@/features/core';
@@ -16,6 +16,7 @@ import { createProjectSchema } from '../schemas/project.schema';
 import { createProjectService } from '../services/project.service';
 import { PROJECT_MESSAGES } from '../constants/messages';
 import type { ProjectStatus } from '@/app/generated/prisma/enums';
+import { updateStreak } from '@/features/dashboard/utils/updateStreak';
 
 /**
  * Create a new project
@@ -87,6 +88,12 @@ export async function createProject(
 
     // Revalidate cache
     revalidatePath('/dashboard/projects');
+    revalidateTag(`user-stats-${session.user.id}`);
+    try {
+      await updateStreak(session.user.id);
+    } catch {
+      // Streak update failure must never block the primary action
+    }
 
     return {
       payload: project,

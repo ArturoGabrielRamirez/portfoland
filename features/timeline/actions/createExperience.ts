@@ -7,7 +7,7 @@
 'use server';
 
 import { headers } from 'next/headers';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 import { auth } from '@/lib/auth';
 import { actionWrapper } from '@/features/core';
@@ -16,6 +16,7 @@ import { createExperienceSchema } from '../schemas/experience.schema';
 import { createExperienceService } from '../services/experience.service';
 import { EXPERIENCE_MESSAGES } from '../constants/messages';
 import type { ExperienceType } from '@/app/generated/prisma/enums';
+import { updateStreak } from '@/features/dashboard/utils/updateStreak';
 
 /**
  * Create a new experience
@@ -82,6 +83,12 @@ export async function createExperience(
     // Revalidate cache
     revalidatePath('/dashboard/timeline');
     revalidatePath('/dashboard/skills');
+    revalidateTag(`user-stats-${session.user.id}`);
+    try {
+      await updateStreak(session.user.id);
+    } catch {
+      // Streak update failure must never block the primary action
+    }
 
     return {
       payload: experience,

@@ -44,8 +44,8 @@ These two sub-tasks (2A and 2B) are independent of each other and can be impleme
 
 #### 2A: `DashboardStats` type
 
-- [ ] 2A.0 Add the `DashboardStats` interface to the existing types file
-  - [ ] 2A.1 Open `features/dashboard/types/dashboard.ts`
+- [x] 2A.0 Add the `DashboardStats` interface to the existing types file
+  - [x] 2A.1 Open `features/dashboard/types/dashboard.ts`
     - Append the following interface at the end of the file, after the `ActivityItem` interface
     - Preserve all existing interfaces (`DashboardUser`, `DashboardHeaderProps`, `UserMenuProps`, `ProtectedLayoutProps`, `DashboardPageProps`, `UserStats`, `Achievement`, `ActivityItem`) unchanged
     - The new interface:
@@ -72,14 +72,14 @@ These two sub-tasks (2A and 2B) are independent of each other and can be impleme
 
 #### 2B: `getUserDashboardStats` data function
 
-- [ ] 2B.0 Create the directory `features/dashboard/data/` and create the file `features/dashboard/data/getUserDashboardStats.data.ts`
-  - [ ] 2B.1 Add the file header comment block following the existing pattern in `features/timeline/data/getExperiences.data.ts`
-  - [ ] 2B.2 Add imports at the top of the file:
+- [x] 2B.0 Create the directory `features/dashboard/data/` and create the file `features/dashboard/data/getUserDashboardStats.data.ts`
+  - [x] 2B.1 Add the file header comment block following the existing pattern in `features/timeline/data/getExperiences.data.ts`
+  - [x] 2B.2 Add imports at the top of the file:
     - `import { prisma } from '@/lib/prisma';`
     - `import { unstable_cache } from 'next/cache';`
     - `import { calculateMonthsDuration } from '@/features/skills/constants/xp';`
     - `import type { DashboardStats } from '@/features/dashboard/types/dashboard';`
-  - [ ] 2B.3 Define the following local constants inside the file (module-level, before the function):
+  - [x] 2B.3 Define the following local constants inside the file (module-level, before the function):
     ```ts
     const PROJECT_XP = {
       COMPLETED: 300,
@@ -87,7 +87,7 @@ These two sub-tasks (2A and 2B) are independent of each other and can be impleme
       ARCHIVED: 50,
     } as const;
     ```
-  - [ ] 2B.4 Implement the inner async function `fetchDashboardStats(userId: string): Promise<DashboardStats>` with the following logic:
+  - [x] 2B.4 Implement the inner async function `fetchDashboardStats(userId: string): Promise<DashboardStats>` with the following logic:
     - Fetch user data via a single `prisma.user.findUniqueOrThrow` call using `where: { id: userId }`
     - Use `select` to retrieve: `bio`, `image`, `username`, `currentStreak`, `experiences` (include all, select `startDate` and `endDate` only), `projects` (include all, select `status` only), `userSkills` (filtered via `where: { aiValidated: true }`, select `totalXP` only)
     - Check AI Survivor achievement via `_count: { select: { conversations: true } }` on the same `prisma.user.findUniqueOrThrow` call (use `include` or nest `_count` inside `select` — whichever Prisma supports for the field; `conversations` is a relation already on the `User` model)
@@ -107,7 +107,7 @@ These two sub-tasks (2A and 2B) are independent of each other and can be impleme
       - `check3 = user._count.conversations > 0`
       - `achievementsCurrent = [check1, check2, check3].filter(Boolean).length`
     - Return object of type `DashboardStats` with all fields populated
-  - [ ] 2B.5 Wrap `fetchDashboardStats` with `unstable_cache` and export the wrapped function as `getUserDashboardStats`:
+  - [x] 2B.5 Wrap `fetchDashboardStats` with `unstable_cache` and export the wrapped function as `getUserDashboardStats`:
     ```ts
     export const getUserDashboardStats = (userId: string): Promise<DashboardStats> =>
       unstable_cache(
@@ -128,11 +128,11 @@ These two sub-tasks (2A and 2B) are independent of each other and can be impleme
 
 #### 2C: `updateStreak` utility
 
-- [ ] 2C.0 Create the directory `features/dashboard/utils/` and create the file `features/dashboard/utils/updateStreak.ts`
-  - [ ] 2C.1 Add imports:
+- [x] 2C.0 Create the directory `features/dashboard/utils/` and create the file `features/dashboard/utils/updateStreak.ts`
+  - [x] 2C.1 Add imports:
     - `import { prisma } from '@/lib/prisma';`
     - `import { revalidateTag } from 'next/cache';`
-  - [ ] 2C.2 Implement and export `async function updateStreak(userId: string): Promise<void>` with the following logic:
+  - [x] 2C.2 Implement and export `async function updateStreak(userId: string): Promise<void>` with the following logic:
     - Fetch `user.lastStreakDate` and `user.currentStreak` via `prisma.user.findUnique({ where: { id: userId }, select: { lastStreakDate: true, currentStreak: true } })`
     - If the user is not found, return early without throwing
     - Compute `today`: `new Date()` with hours, minutes, seconds, and milliseconds zeroed to midnight UTC — use `new Date(new Date().toISOString().split('T')[0] + 'T00:00:00.000Z')`
@@ -181,12 +181,12 @@ Modify 6 existing server action files. Each modification follows the identical p
 
 **Files to modify:**
 
-- [ ] 3.1 Apply the pattern to `features/timeline/actions/createExperience.ts`
-- [ ] 3.2 Apply the pattern to `features/timeline/actions/updateExperience.ts`
-- [ ] 3.3 Apply the pattern to `features/projects/actions/createProject.ts`
-- [ ] 3.4 Apply the pattern to `features/projects/actions/updateProject.ts`
-- [ ] 3.5 Apply the pattern to `features/skills/actions/createSkill.ts`
-- [ ] 3.6 Apply the pattern to `features/skills/actions/updateSkill.ts`
+- [x] 3.1 Apply the pattern to `features/timeline/actions/createExperience.ts`
+- [x] 3.2 Apply the pattern to `features/timeline/actions/updateExperience.ts`
+- [x] 3.3 Apply the pattern to `features/projects/actions/createProject.ts`
+- [x] 3.4 Apply the pattern to `features/projects/actions/updateProject.ts`
+- [x] 3.5 Apply the pattern to `features/skills/actions/createSkill.ts`
+- [x] 3.6 Apply the pattern to `features/skills/actions/updateSkill.ts`
 
 **Acceptance Criteria:**
 - All 6 action files import both `revalidatePath` and `revalidateTag` from `'next/cache'`

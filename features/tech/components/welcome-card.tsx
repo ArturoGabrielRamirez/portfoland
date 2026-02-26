@@ -168,50 +168,46 @@ export function WelcomeCard({
               {aiActive ? (
                 <MiniAIEye />
               ) : (
-                <svg width="56" height="56" viewBox="0 0 100 100">
-                  <defs>
-                    <clipPath id="hex-avatar-clip">
-                      <polygon points="50,0 100,25 100,75 50,100 0,75 0,25" />
-                    </clipPath>
-                    <clipPath id="circle-avatar-clip">
-                      <circle cx="50" cy="50" r="48" />
-                    </clipPath>
-                  </defs>
-                  {/* Dark background fill — visible through hex corners when image is circular */}
-                  <polygon
-                    points="50,0 100,25 100,75 50,100 0,75 0,25"
-                    fill="hsl(200,30%,8%)"
-                  />
-                  {isValidImage ? (
-                    <image
-                      href={userImage!}
-                      width="100"
-                      height="100"
-                      clipPath="url(#circle-avatar-clip)"
-                      preserveAspectRatio="xMidYMid slice"
-                      onError={() => setImageError(true)}
+                <>
+                  <svg width="56" height="56" viewBox="0 0 100 100">
+                    {/* Dark background fill */}
+                    <polygon
+                      points="50,0 100,25 100,75 50,100 0,75 0,25"
+                      fill="hsl(200,30%,8%)"
                     />
-                  ) : (
-                    <text
-                      x="50" y="63"
-                      textAnchor="middle"
-                      fontSize="42"
-                      fontFamily="monospace"
-                      fontWeight="bold"
-                      fill="hsl(174,100%,50%)"
-                    >
-                      {userInitial}
-                    </text>
+                    {/* Initials fallback — only shown when no image */}
+                    {!isValidImage && (
+                      <text
+                        x="50" y="63"
+                        textAnchor="middle"
+                        fontSize="42"
+                        fontFamily="monospace"
+                        fontWeight="bold"
+                        fill="hsl(174,100%,50%)"
+                      >
+                        {userInitial}
+                      </text>
+                    )}
+                    {/* Hex border */}
+                    <polygon
+                      points="50,0 100,25 100,75 50,100 0,75 0,25"
+                      fill="none"
+                      stroke="hsl(174,100%,50%)"
+                      strokeWidth="2"
+                      strokeOpacity="0.4"
+                    />
+                  </svg>
+                  {/* User photo overlaid as regular <img> — SVG <image> blocks cross-origin loads */}
+                  {isValidImage && (
+                    <img
+                      src={userImage!}
+                      alt="User avatar"
+                      onError={() => setImageError(true)}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      style={{ clipPath: 'circle(48% at 50% 50%)' }}
+                    />
                   )}
-                  {/* Hex border */}
-                  <polygon
-                    points="50,0 100,25 100,75 50,100 0,75 0,25"
-                    fill="none"
-                    stroke="hsl(174,100%,50%)"
-                    strokeWidth="2"
-                    strokeOpacity="0.4"
-                  />
-                </svg>
+                </>
               )}
               <div className={cn(
                 "absolute -bottom-1 left-1/2 -translate-x-1/2 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-sm transition-colors duration-500",

@@ -138,7 +138,10 @@
       "classic": "Classic",
       "tech": "Tech",
       "label": "Portfolio Mode",
-      "success": "Portfolio mode updated successfully"
+      "success": "Portfolio mode updated successfully",
+      "switchWarning": "Switching modes will change your default sections and visual style. Your data (projects, skills, services, etc.) will NOT be deleted.",
+      "confirm": "Confirm Switch",
+      "cancel": "Cancel"
     },
     "tech": {
       "levelProgress": "PROGRESS TO LEVEL {level}",
@@ -213,5 +216,15 @@
     "title": "Language",
     "selectLanguage": "Select Language",
     "label": "Change language"
+  },
+  "onboarding": {
+    "title": "What best describes your work?",
+    "subtitle": "This helps us set up your portfolio with the right sections and style.",
+    "digitalTitle": "Digital / Online",
+    "digitalDescription": "Developer, designer, data scientist, content creator",
+    "serviceTitle": "In-Person / Service",
+    "serviceDescription": "Photographer, chef, architect, coach, stylist",
+    "continue": "Continue",
+    "changeLater": "You can change this later in settings"
   }
 }

@@ -21,15 +21,15 @@ Task groups must be executed in order: TG1 → TG2 → TG3 → (TG4, TG5, TG6 ca
 **Dependencies:** None
 **Existing pattern to follow:** The `portfolioMode` field on User is the nearest neighbor
 
-- [ ] 1.0 Add `onboardingCompleted` field and create migration script
-  - [ ] 1.1 Modify `prisma/schema.prisma`
+- [x] 1.0 Add `onboardingCompleted` field and create migration script
+  - [x] 1.1 Modify `prisma/schema.prisma`
     - Add `onboardingCompleted Boolean @default(false)` on the line after `portfolioMode` (line 32):
       ```prisma
       portfolioMode         String   @default("classic")
       onboardingCompleted   Boolean  @default(false)
       ```
-  - [ ] 1.2 Run `npx prisma db push` to sync the schema to MongoDB
-  - [ ] 1.3 Create `scripts/migrate-onboarding-completed.ts`
+  - [x] 1.2 Run `npx prisma db push` to sync the schema to MongoDB
+  - [x] 1.3 Create `scripts/migrate-onboarding-completed.ts`
     - Standalone script that updates all existing users to have `onboardingCompleted: true`
     - Content:
       ```ts
@@ -67,15 +67,15 @@ Task groups must be executed in order: TG1 → TG2 → TG3 → (TG4, TG5, TG6 ca
 **Dependencies:** TG1 (needs `onboardingCompleted` field in schema)
 **Existing pattern to follow:** `features/portfolio/actions/togglePortfolioMode.ts` for the action; `features/portfolio/schemas/portfolio.schema.ts` for the Yup schema
 
-- [ ] 2.0 Create the onboarding feature module
-  - [ ] 2.1 Create `features/onboarding/types/onboarding.ts`
+- [x] 2.0 Create the onboarding feature module
+  - [x] 2.1 Create `features/onboarding/types/onboarding.ts`
     - Export `CompleteOnboardingInput` interface:
       ```ts
       export interface CompleteOnboardingInput {
         mode: 'tech' | 'classic'
       }
       ```
-  - [ ] 2.2 Create `features/onboarding/constants/messages.ts`
+  - [x] 2.2 Create `features/onboarding/constants/messages.ts`
     - Export `ONBOARDING_MESSAGES`:
       ```ts
       export const ONBOARDING_MESSAGES = {
@@ -84,7 +84,7 @@ Task groups must be executed in order: TG1 → TG2 → TG3 → (TG4, TG5, TG6 ca
         LOGIN_REQUIRED: 'Please log in to continue',
       } as const
       ```
-  - [ ] 2.3 Create `features/onboarding/schemas/onboarding.schema.ts`
+  - [x] 2.3 Create `features/onboarding/schemas/onboarding.schema.ts`
     - Export `completeOnboardingSchema` Yup schema:
       ```ts
       import * as yup from 'yup'
@@ -93,7 +93,7 @@ Task groups must be executed in order: TG1 → TG2 → TG3 → (TG4, TG5, TG6 ca
         mode: yup.string().oneOf(['tech', 'classic']).required(),
       })
       ```
-  - [ ] 2.4 Create `features/onboarding/actions/completeOnboarding.ts`
+  - [x] 2.4 Create `features/onboarding/actions/completeOnboarding.ts`
     - Mark as `'use server'`
     - Import `auth` from `@/lib/auth`, `headers` from `next/headers`, `revalidatePath` from `next/cache`, `actionWrapper` from `@/features/core`, `prisma` from `@/lib/prisma`
     - Import `completeOnboardingSchema` from `../schemas/onboarding.schema`
@@ -134,7 +134,7 @@ Task groups must be executed in order: TG1 → TG2 → TG3 → (TG4, TG5, TG6 ca
         })
       }
       ```
-  - [ ] 2.5 Create `features/onboarding/utils/checkOnboarding.ts`
+  - [x] 2.5 Create `features/onboarding/utils/checkOnboarding.ts`
     - Import `prisma` from `@/lib/prisma`, `redirect` from `next/navigation`
     - Export `checkOnboarding` function:
       ```ts
@@ -163,8 +163,8 @@ Task groups must be executed in order: TG1 → TG2 → TG3 → (TG4, TG5, TG6 ca
 **Dependencies:** TG2 (needs `completeOnboarding` action)
 **Existing pattern to follow:** `app/[locale]/(auth)/login/page.tsx` for visual style and component imports
 
-- [ ] 3.0 Build the onboarding page
-  - [ ] 3.1 Create `app/[locale]/(auth)/onboarding/page.tsx`
+- [x] 3.0 Build the onboarding page
+  - [x] 3.1 Create `app/[locale]/(auth)/onboarding/page.tsx`
     - Mark as `'use client'` at the top
     - Imports:
       ```ts
@@ -274,8 +274,8 @@ Task groups must be executed in order: TG1 → TG2 → TG3 → (TG4, TG5, TG6 ca
 **Dependencies:** TG2 (needs `checkOnboarding` utility)
 **Existing pattern to follow:** Each dashboard page already has an auth check — add onboarding check right after
 
-- [ ] 4.0 Add onboarding redirect guards to all dashboard pages
-  - [ ] 4.1 Modify `app/[locale]/(protected)/dashboard/page.tsx`
+- [x] 4.0 Add onboarding redirect guards to all dashboard pages
+  - [x] 4.1 Modify `app/[locale]/(protected)/dashboard/page.tsx`
     - Add import: `import { checkOnboarding } from '@/features/onboarding/utils/checkOnboarding'`
     - After the session check (`if (!user) return null`), replace `return null` with a proper redirect:
       ```ts
@@ -287,20 +287,20 @@ Task groups must be executed in order: TG1 → TG2 → TG3 → (TG4, TG5, TG6 ca
       ```
     - Add `redirect` import from `next/navigation` if not already imported
     - Note: this page currently does `if (!user) return null` — change to redirect for consistency with other dashboard pages
-  - [ ] 4.2 Modify `app/[locale]/(dashboard)/dashboard/portfolio/page.tsx`
+  - [x] 4.2 Modify `app/[locale]/(dashboard)/dashboard/portfolio/page.tsx`
     - Add import: `import { checkOnboarding } from '@/features/onboarding/utils/checkOnboarding'`
     - After the existing auth redirect, add: `await checkOnboarding(session.user.id, locale)`
-  - [ ] 4.3 Modify `app/[locale]/(dashboard)/dashboard/projects/page.tsx`
+  - [x] 4.3 Modify `app/[locale]/(dashboard)/dashboard/projects/page.tsx`
     - Same pattern: add `checkOnboarding` import and call after auth check
-  - [ ] 4.4 Modify `app/[locale]/(dashboard)/dashboard/skills/page.tsx`
+  - [x] 4.4 Modify `app/[locale]/(dashboard)/dashboard/skills/page.tsx`
     - Same pattern: add `checkOnboarding` import and call after auth check
-  - [ ] 4.5 Modify `app/[locale]/(dashboard)/dashboard/timeline/page.tsx`
+  - [x] 4.5 Modify `app/[locale]/(dashboard)/dashboard/timeline/page.tsx`
     - Same pattern: add `checkOnboarding` import and call after auth check
-  - [ ] 4.6 Modify `app/[locale]/(dashboard)/dashboard/services/page.tsx`
+  - [x] 4.6 Modify `app/[locale]/(dashboard)/dashboard/services/page.tsx`
     - Same pattern: add `checkOnboarding` import and call after auth check
-  - [ ] 4.7 Modify `app/[locale]/(dashboard)/dashboard/testimonials/page.tsx`
+  - [x] 4.7 Modify `app/[locale]/(dashboard)/dashboard/testimonials/page.tsx`
     - Same pattern: add `checkOnboarding` import and call after auth check
-  - [ ] 4.8 Modify `app/[locale]/(dashboard)/dashboard/gallery/page.tsx`
+  - [x] 4.8 Modify `app/[locale]/(dashboard)/dashboard/gallery/page.tsx`
     - Same pattern: add `checkOnboarding` import and call after auth check
 
 **Acceptance Criteria:**
@@ -317,8 +317,8 @@ Task groups must be executed in order: TG1 → TG2 → TG3 → (TG4, TG5, TG6 ca
 **Dependencies:** TG2 (for the enhanced toggle that updates sections) — actually depends on TG6 which modifies the toggle action. But TG5 and TG6 can be done together since they touch different files.
 **Existing pattern to follow:** The existing `PortfolioModeToggle` component
 
-- [ ] 5.0 Add confirmation dialog to the mode toggle
-  - [ ] 5.1 Modify `features/portfolio/components/PortfolioModeToggle.tsx`
+- [x] 5.0 Add confirmation dialog to the mode toggle
+  - [x] 5.1 Modify `features/portfolio/components/PortfolioModeToggle.tsx`
     - Add state: `const [showConfirm, setShowConfirm] = useState(false)`
     - Change the existing `handleToggle` function: instead of calling the action directly, set `setShowConfirm(true)`
     - Add a new `confirmToggle` function that contains the existing action call logic:
@@ -397,8 +397,8 @@ Task groups must be executed in order: TG1 → TG2 → TG3 → (TG4, TG5, TG6 ca
 **Dependencies:** None (modifies existing files that TG5 calls, but TG5 and TG6 touch different files)
 **Existing pattern to follow:** The existing data/service layer for portfolio mode
 
-- [ ] 6.0 Update mode toggle to also update sections
-  - [ ] 6.1 Modify `features/portfolio/data/updatePortfolioMode.data.ts`
+- [x] 6.0 Update mode toggle to also update sections
+  - [x] 6.1 Modify `features/portfolio/data/updatePortfolioMode.data.ts`
     - Change the function signature to accept additional parameters:
       ```ts
       export async function updatePortfolioModeData(
@@ -413,7 +413,7 @@ Task groups must be executed in order: TG1 → TG2 → TG3 → (TG4, TG5, TG6 ca
         })
       }
       ```
-  - [ ] 6.2 Modify `features/portfolio/services/portfolio.service.ts`
+  - [x] 6.2 Modify `features/portfolio/services/portfolio.service.ts`
     - Add import: `import { TECH_DEFAULT_SECTIONS, CLASSIC_DEFAULT_SECTIONS } from '../constants/sections'`
     - Update `updatePortfolioModeService` to compute and pass section data:
       ```ts
@@ -448,8 +448,8 @@ Task groups must be executed in order: TG1 → TG2 → TG3 → (TG4, TG5, TG6 ca
 **Dependencies:** None — can be done at any point, but must be done before TG3 and TG5 are tested
 **Files to modify:** `messages/en.json`, `messages/es.json`
 
-- [ ] 7.0 Add i18n translations for onboarding and enhanced mode toggle
-  - [ ] 7.1 Add `onboarding` namespace to `messages/en.json`
+- [x] 7.0 Add i18n translations for onboarding and enhanced mode toggle
+  - [x] 7.1 Add `onboarding` namespace to `messages/en.json`
     - Add as a new top-level key (sibling to `auth`, `dashboard`, etc.):
       ```json
       "onboarding": {
@@ -463,7 +463,7 @@ Task groups must be executed in order: TG1 → TG2 → TG3 → (TG4, TG5, TG6 ca
         "changeLater": "You can change this later in settings"
       }
       ```
-  - [ ] 7.2 Add `onboarding` namespace to `messages/es.json`
+  - [x] 7.2 Add `onboarding` namespace to `messages/es.json`
     - Same structure:
       ```json
       "onboarding": {
@@ -477,14 +477,14 @@ Task groups must be executed in order: TG1 → TG2 → TG3 → (TG4, TG5, TG6 ca
         "changeLater": "Puedes cambiar esto después en ajustes"
       }
       ```
-  - [ ] 7.3 Add mode toggle warning keys to `messages/en.json`
+  - [x] 7.3 Add mode toggle warning keys to `messages/en.json`
     - Under the existing `dashboard.modeToggle` object, add:
       ```json
       "switchWarning": "Switching modes will change your default sections and visual style. Your data (projects, skills, services, etc.) will NOT be deleted.",
       "confirm": "Confirm Switch",
       "cancel": "Cancel"
       ```
-  - [ ] 7.4 Add mode toggle warning keys to `messages/es.json`
+  - [x] 7.4 Add mode toggle warning keys to `messages/es.json`
     - Under the existing `dashboard.modeToggle` object, add:
       ```json
       "switchWarning": "Cambiar de modo cambiará tus secciones por defecto y estilo visual. Tus datos (proyectos, habilidades, servicios, etc.) NO se eliminarán.",

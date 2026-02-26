@@ -29,7 +29,8 @@ model User {
   username      String?  @unique
   locale        String   @default("en")
   emailVerified Boolean  @default(false)
-  portfolioMode     String   @default("classic")
+  portfolioMode         String   @default("classic")
+  onboardingCompleted   Boolean  @default(false)
   bio               String?
   sectionOrder      String[] @default(["about", "experience", "skills", "projects"])
   contactLinks      Json     @default("{}")

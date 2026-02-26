@@ -9,6 +9,7 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getGalleryItemsByUserIdData } from '@/features/gallery/data';
+import { checkOnboarding } from '@/features/onboarding/utils/checkOnboarding';
 import { DashboardGalleryView } from './DashboardGalleryView';
 
 export default async function DashboardGalleryPage() {
@@ -31,6 +32,8 @@ export default async function DashboardGalleryPage() {
       portfolioMode: true,
     },
   });
+
+  await checkOnboarding(session.user.id);
 
   const items = await getGalleryItemsByUserIdData(session.user.id);
 

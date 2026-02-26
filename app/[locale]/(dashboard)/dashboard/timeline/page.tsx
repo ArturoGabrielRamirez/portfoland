@@ -10,6 +10,7 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getExperiencesByUserId } from '@/features/timeline/data';
+import { checkOnboarding } from '@/features/onboarding/utils/checkOnboarding';
 import { DashboardTimelineView } from './DashboardTimelineView';
 
 export default async function DashboardTimelinePage() {
@@ -21,6 +22,8 @@ export default async function DashboardTimelinePage() {
   if (!session?.user?.id) {
     redirect('/login');
   }
+
+  await checkOnboarding(session.user.id);
 
   // Fetch user with image, username, and portfolioMode
   const dbUser = await prisma.user.findUnique({

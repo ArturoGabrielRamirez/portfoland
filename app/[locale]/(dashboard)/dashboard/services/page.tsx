@@ -9,6 +9,7 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getServicesByUserIdData } from '@/features/services/data';
+import { checkOnboarding } from '@/features/onboarding/utils/checkOnboarding';
 import { DashboardServicesView } from './DashboardServicesView';
 
 export default async function DashboardServicesPage() {
@@ -31,6 +32,8 @@ export default async function DashboardServicesPage() {
       portfolioMode: true,
     },
   });
+
+  await checkOnboarding(session.user.id);
 
   const services = await getServicesByUserIdData(session.user.id);
 

@@ -9,6 +9,7 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getProjectsByUserIdData } from '@/features/projects/data';
+import { checkOnboarding } from '@/features/onboarding/utils/checkOnboarding';
 import { DashboardProjectsView } from './DashboardProjectsView';
 
 export default async function DashboardProjectsPage() {
@@ -32,6 +33,8 @@ export default async function DashboardProjectsPage() {
       portfolioMode: true,
     },
   });
+
+  await checkOnboarding(session.user.id);
 
   const projects = await getProjectsByUserIdData(session.user.id);
 

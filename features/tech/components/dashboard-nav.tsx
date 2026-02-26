@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { LayoutDashboard, Clock, GitBranch, FolderOpen, User } from 'lucide-react'
+import { LayoutDashboard, Clock, GitBranch, FolderOpen, User, Briefcase, MessageSquare, Images } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { PortfolioModeToggle } from '@/features/portfolio/components/PortfolioModeToggle'
 import { LanguageSwitcher } from '@/features/i18n'
@@ -30,6 +30,12 @@ export function DashboardNav({ locale, user }: DashboardNavProps) {
     { href: '/dashboard/timeline', label: t('timeline'), icon: Clock, exact: false },
     { href: '/dashboard/skills', label: t('skills'), icon: GitBranch, exact: false },
     { href: '/dashboard/projects', label: t('projects'), icon: FolderOpen, exact: false },
+  ]
+
+  const classicNavItems = [
+    { href: '/dashboard/services', label: 'Services', icon: Briefcase },
+    { href: '/dashboard/testimonials', label: 'Testimonials', icon: MessageSquare },
+    { href: '/dashboard/gallery', label: 'Gallery', icon: Images },
   ]
 
   const cleanPathname = pathname.replace(/^\/[a-z]{2}(-[A-Z]{2})?(\/|$)/, '/')
@@ -65,6 +71,27 @@ export function DashboardNav({ locale, user }: DashboardNavProps) {
                     isActive
                       ? "bg-[hsl(174,100%,50%)] text-[#0A0E1A] font-bold shadow-[0_0_15px_hsl(174,100%,50%,0.3)] clip-hex-tab"
                       : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  {item.label}
+                </Link>
+              )
+            })}
+
+            {/* Classic Mode links — only shown when portfolioMode is 'classic' */}
+            {user.portfolioMode === 'classic' && classicNavItems.map((item) => {
+              const isActive = cleanPathname === item.href || cleanPathname.startsWith(item.href + '/')
+              const Icon = item.icon
+              return (
+                <Link
+                  key={item.href}
+                  href={`/${locale}${item.href}`}
+                  className={cn(
+                    'flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono transition-all',
+                    isActive
+                      ? 'text-[hsl(174,100%,50%)] bg-[hsl(174,100%,50%,0.1)]'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-[hsl(174,100%,50%,0.05)]'
                   )}
                 >
                   <Icon className="w-3.5 h-3.5" />
@@ -120,9 +147,9 @@ export function DashboardNav({ locale, user }: DashboardNavProps) {
             </svg>
           </Link>
 
-          {/* Nav items as hex buttons */}
-          {navItems.slice(1).map((item) => {
-            const isActive = item.exact
+          {/* Nav items as hex buttons — Classic items when portfolioMode is 'classic', tech items otherwise */}
+          {(user.portfolioMode === 'classic' ? classicNavItems : navItems.slice(1)).map((item) => {
+            const isActive = 'exact' in item && item.exact
               ? cleanPathname === item.href
               : cleanPathname === item.href || cleanPathname.startsWith(item.href + '/')
             const Icon = item.icon

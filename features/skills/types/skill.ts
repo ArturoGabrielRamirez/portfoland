@@ -46,7 +46,7 @@ export type SkillSource = PrismaSkillSource;
 export type SourceType = PrismaSourceType;
 
 // Re-export the enum values for use
-export { SourceType as SourceTypeEnum } from '@/app/generated/prisma/client';
+export { SourceType as SourceTypeEnum } from '@/app/generated/prisma/enums';
 
 // =============================================================================
 // Enums

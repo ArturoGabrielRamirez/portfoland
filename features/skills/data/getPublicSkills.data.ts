@@ -7,27 +7,8 @@
 
 import { prisma } from '@/lib/prisma';
 import type { UserSkillWithDetails, SkillCategory, SkillsByCategory } from '../types/skill';
-
-/**
- * Public skills data returned for a username
- */
-export interface PublicSkillsData {
-  user: {
-    id: string;
-    name: string;
-    username: string;
-    image: string | null;
-  };
-  skills: UserSkillWithDetails[];
-  categories: SkillCategory[];
-  groupedByCategory: SkillsByCategory[];
-  stats: {
-    totalSkills: number;
-    totalXP: number;
-    masterSkills: number;
-    categoriesUsed: number;
-  };
-}
+import type { PublicSkillsData } from '../types/public-skills';
+export type { PublicSkillsData } from '../types/public-skills';
 
 /**
  * Get public skills data for a username

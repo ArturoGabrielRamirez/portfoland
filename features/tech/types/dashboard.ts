@@ -1,5 +1,4 @@
 import { ReactNode } from "react"
-import { LucideIcon } from "lucide-react"
 
 export interface WelcomeCardProps {
   userName: string
@@ -66,4 +65,55 @@ export interface DashboardRow1Props {
   onXPGain?: () => void
   /** Increment to trigger life loss animation on the AIEye */
   onLifeLoss?: () => void
+}
+
+// =============================================================================
+// SysLogPanel (TG2-A)
+// =============================================================================
+
+/**
+ * Props for the SysLogPanel server component that displays recent activity events.
+ */
+export interface SysLogPanelProps {
+  userId: string
+  className?: string
+}
+
+// =============================================================================
+// ActivityHeatmap (TG2-B)
+// =============================================================================
+
+/**
+ * Props for the ActivityHeatmap component.
+ * Real streak data replaces the previous random data generation.
+ */
+export interface ActivityHeatmapProps {
+  currentStreak: number
+  lastStreakDate: Date | null
+  className?: string
+}
+
+// =============================================================================
+// TopRunners (TG2-C)
+// =============================================================================
+
+/**
+ * A single runner entry for the TopRunnersPanel leaderboard.
+ */
+export interface Runner {
+  id: string
+  rank: number
+  name: string
+  username: string | null
+  image: string | null
+  xp: number
+  isCurrentUser: boolean
+}
+
+/**
+ * Props for the TopRunnersPanel component.
+ */
+export interface TopRunnersPanelProps {
+  runners: Runner[]
+  className?: string
 }

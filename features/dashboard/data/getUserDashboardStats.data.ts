@@ -37,6 +37,7 @@ async function fetchDashboardStats(userId: string): Promise<DashboardStats> {
       image: true,
       username: true,
       currentStreak: true,
+      lastStreakDate: true,
       experiences: {
         select: { startDate: true, endDate: true },
       },
@@ -112,6 +113,7 @@ async function fetchDashboardStats(userId: string): Promise<DashboardStats> {
     experiencesCount: user.experiences.length,
     achievements: { current: achievementsCurrent, total: 3 },
     currentStreak: user.currentStreak,
+    lastStreakDate: user.lastStreakDate,
     // Total skill count (all user skills, validated + manual) for SYS_MONITOR
     activeSkillsCount: user._count.userSkills,
   };

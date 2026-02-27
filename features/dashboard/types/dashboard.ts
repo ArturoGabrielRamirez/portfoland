@@ -98,4 +98,33 @@ export interface DashboardStats {
   currentStreak: number
   /** Total number of skills the user has added (AI-validated + manual) */
   activeSkillsCount: number
+  /** Date of the last streak activity, used to compute the heatmap window */
+  lastStreakDate: Date | null
+}
+
+// =============================================================================
+// Activity Event Types (SYS_LOG — TG2-A)
+// =============================================================================
+
+/**
+ * Discriminated type for the different kinds of user activity events
+ * that can appear in the SYS_LOG panel.
+ */
+export type ActivityEventType =
+  | "experience"
+  | "project_completed"
+  | "skill_ai"
+  | "skill_manual"
+  | "experience_updated"
+
+/**
+ * A single user activity event as returned by getRecentUserActivity.
+ * The timestamp is a raw Date; formatting is done at render time.
+ */
+export interface ActivityEvent {
+  id: string
+  title: string
+  xp: number
+  type: ActivityEventType
+  timestamp: Date
 }

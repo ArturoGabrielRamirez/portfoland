@@ -260,7 +260,7 @@ in this codebase do not have test coverage tasks; tests would be added in a dedi
 
 **Also modifies:** `app/[locale]/(protected)/dashboard/page.tsx`
 
-- [ ] 2-A.1 Create `lib/utils/format.ts` with `formatTimeAgo(date: Date): string`
+- [x] 2-A.1 Create `lib/utils/format.ts` with `formatTimeAgo(date: Date): string`
   - Pure utility function, no imports beyond standard JS `Date`
   - Logic:
     - Difference in minutes: `< 60` → `"hace X minutos"`
@@ -269,7 +269,7 @@ in this codebase do not have test coverage tasks; tests would be added in a dedi
     - Else → `"hace X días"`
   - Export as named export: `export function formatTimeAgo(date: Date): string`
 
-- [ ] 2-A.2 Define the `ActivityEvent` type
+- [x] 2-A.2 Define the `ActivityEvent` type
   - Add to `features/dashboard/types/dashboard.ts`:
     ```typescript
     export type ActivityEventType = "experience" | "project_completed" | "skill_ai" | "skill_manual" | "experience_updated"
@@ -283,7 +283,7 @@ in this codebase do not have test coverage tasks; tests would be added in a dedi
     }
     ```
 
-- [ ] 2-A.3 Create `features/dashboard/data/getRecentUserActivity.data.ts`
+- [x] 2-A.3 Create `features/dashboard/data/getRecentUserActivity.data.ts`
   - Server-side Prisma query — imports `prisma` from `@/lib/prisma`
   - Query structure:
     ```typescript
@@ -304,7 +304,7 @@ in this codebase do not have test coverage tasks; tests would be added in a dedi
     time in the component, not in the data layer; the data function returns raw `ActivityEvent[]` with
     `timestamp: Date`
 
-- [ ] 2-A.4 Create `features/tech/components/sys-log-panel.tsx` as a server component
+- [x] 2-A.4 Create `features/tech/components/sys-log-panel.tsx` as a server component
   - No `"use client"` directive — this is a React Server Component
   - Props: `{ userId: string; className?: string }`
   - Calls `getRecentUserActivity(userId)` directly (async server component)
@@ -320,7 +320,7 @@ in this codebase do not have test coverage tasks; tests would be added in a dedi
   - Export: `export async function SysLogPanel({ userId, className }: SysLogPanelProps)`
   - Props type goes in `features/tech/types/dashboard.ts` as `SysLogPanelProps`
 
-- [ ] 2-A.5 Replace the inline SYS_LOG block in `dashboard/page.tsx` with `<SysLogPanel>`
+- [x] 2-A.5 Replace the inline SYS_LOG block in `dashboard/page.tsx` with `<SysLogPanel>`
   - Remove lines 124–152 (the entire hardcoded `<div>` block containing the 3 mock events)
   - Import and render: `<SysLogPanel userId={user.id} className="flex-1 min-h-[120px]" />`
   - Add `SysLogPanel` to the exports in `features/tech/index.tsx` or import directly from the component
@@ -343,7 +343,7 @@ in this codebase do not have test coverage tasks; tests would be added in a dedi
 - `features/dashboard/types/dashboard.ts`
 - `app/[locale]/(protected)/dashboard/page.tsx`
 
-- [ ] 2-B.1 Add `lastStreakDate` to `getUserDashboardStats`
+- [x] 2-B.1 Add `lastStreakDate` to `getUserDashboardStats`
   - In `features/dashboard/data/getUserDashboardStats.data.ts`, add `lastStreakDate` to the Prisma
     `select` for the `user` query (the field exists on the `User` model from Phase 3C):
     ```
@@ -351,13 +351,13 @@ in this codebase do not have test coverage tasks; tests would be added in a dedi
     ```
   - In the return object, include `lastStreakDate: user.lastStreakDate` (type: `Date | null`)
 
-- [ ] 2-B.2 Add `lastStreakDate` to the `DashboardStats` type
+- [x] 2-B.2 Add `lastStreakDate` to the `DashboardStats` type
   - In `features/dashboard/types/dashboard.ts`, add to the `DashboardStats` interface:
     ```typescript
     lastStreakDate: Date | null
     ```
 
-- [ ] 2-B.3 Add `currentStreak` and `lastStreakDate` props to `ActivityHeatmap`
+- [x] 2-B.3 Add `currentStreak` and `lastStreakDate` props to `ActivityHeatmap`
   - The component currently generates random data — add these props:
     ```typescript
     interface ActivityHeatmapProps {
@@ -369,7 +369,7 @@ in this codebase do not have test coverage tasks; tests would be added in a dedi
   - Move the props type to `features/tech/types/dashboard.ts` as `ActivityHeatmapProps`
   - Remove the `Math.random()` generation block entirely
 
-- [ ] 2-B.4 Build the 30-day real activity array from streak props
+- [x] 2-B.4 Build the 30-day real activity array from streak props
   - Inside `ActivityHeatmap`, compute the 30-day array:
     ```typescript
     const today = new Date()
@@ -390,7 +390,7 @@ in this codebase do not have test coverage tasks; tests would be added in a dedi
     ```
   - Pass `data` into the existing heatmap dot renderer — no change to the visual dot layout
 
-- [ ] 2-B.5 Pass `currentStreak` and `lastStreakDate` from `dashboard/page.tsx`
+- [x] 2-B.5 Pass `currentStreak` and `lastStreakDate` from `dashboard/page.tsx`
   - In `dashboard/page.tsx`, `stats` now includes `lastStreakDate` (added in 2-B.1)
   - Change `<ActivityHeatmap />` to:
     ```tsx
@@ -413,7 +413,7 @@ in this codebase do not have test coverage tasks; tests would be added in a dedi
 - `app/[locale]/(protected)/dashboard/page.tsx`
 - `features/tech/types/dashboard.ts` (for `Runner` type if not already exported)
 
-- [ ] 2-C.1 Create `features/dashboard/data/getTopRunners.data.ts`
+- [x] 2-C.1 Create `features/dashboard/data/getTopRunners.data.ts`
   - Imports: `prisma` from `@/lib/prisma`, `unstable_cache` from `next/cache`
   - Define the return type `TopRunner`:
     ```typescript
@@ -457,7 +457,7 @@ in this codebase do not have test coverage tasks; tests would be added in a dedi
     )
     ```
 
-- [ ] 2-C.2 Update `TopRunnersPanel` to accept real `runners` prop
+- [x] 2-C.2 Update `TopRunnersPanel` to accept real `runners` prop
   - In `features/tech/components/top-runners-panel.tsx`:
     - The component currently uses `defaultRunners` hardcoded data — remove the `defaultRunners` import/const
     - The existing `runners?: Runner[]` prop (if it already exists in the component) now becomes required
@@ -467,7 +467,7 @@ in this codebase do not have test coverage tasks; tests would be added in a dedi
       and `bg-[hsl(174,100%,50%,0.06)]` on the matching row (consistent with the spec)
   - Move the `Runner` type definition (if inline) to `features/tech/types/dashboard.ts` and import it back
 
-- [ ] 2-C.3 Pass `runners` from `dashboard/page.tsx`
+- [x] 2-C.3 Pass `runners` from `dashboard/page.tsx`
   - In `dashboard/page.tsx`, after `stats` is fetched, add:
     ```typescript
     const runners = await getTopRunners(user.id)

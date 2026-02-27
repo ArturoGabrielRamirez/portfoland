@@ -102,6 +102,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
           currentXP={stats.totalXP}
           maxXP={stats.nextLevelXP}
           streakDays={stats.currentStreak}
+          activeSkillsCount={stats.activeSkillsCount}
           translations={{
             welcomeTitle: tWelcomeMsg('welcome', { name: displayName }),
             welcomeSubtitle: tWelcomeMsg('welcomeSubtitle'),

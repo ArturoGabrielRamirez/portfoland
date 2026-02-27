@@ -9,6 +9,8 @@ export interface WelcomeCardProps {
   currentXP: number
   maxXP: number
   streakDays: number
+  /** Number of active skills from getUserDashboardStats */
+  activeSkillsCount?: number
   quickActions?: QuickAction[]
   /** When true, the avatar swaps to a mini AI eye indicator */
   aiActive?: boolean
@@ -36,4 +38,32 @@ export interface DashboardStat {
   color: "cyan" | "magenta" | "yellow" | "green"
   icon: ReactNode
   subtitle: string
+}
+
+// =============================================================================
+// DashboardRow1
+// =============================================================================
+
+export interface DashboardRow1Props {
+  // WelcomeCard data
+  userName: string
+  userInitial: string
+  userImage?: string | null
+  level: number
+  currentXP: number
+  maxXP: number
+  streakDays: number
+  /** Number of active skills to display in SYS_MONITOR */
+  activeSkillsCount?: number
+  translations: {
+    welcomeTitle: string
+    welcomeSubtitle: string
+    streak: string
+    quickActionsTitle: string
+    xpToLevel: string
+  }
+  /** Increment to trigger XP gain animation on the AIEye */
+  onXPGain?: () => void
+  /** Increment to trigger life loss animation on the AIEye */
+  onLifeLoss?: () => void
 }

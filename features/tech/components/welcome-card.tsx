@@ -16,7 +16,7 @@ const iconMap: Record<string, any> = {
 }
 
 // =============================================================================
-// System Status HUD Panel — mock data readouts
+// System Status HUD Panel — real browser metrics + live readouts
 // =============================================================================
 
 function StatusBar({ label, value, color, delay = 0 }: { label: string; value: number; color: string; delay?: number }) {
@@ -44,8 +44,57 @@ function StatusBar({ label, value, color, delay = 0 }: { label: string; value: n
   )
 }
 
-function SystemStatusPanel() {
+// TG1-C: SystemStatusPanel now accepts activeSkillsCount and streakDays as real-data props
+function SystemStatusPanel({ activeSkillsCount, streakDays }: { activeSkillsCount: number; streakDays: number }) {
   const [time, setTime] = useState('')
+
+  // TG1-C: Browser performance metrics state — fallback values match the design reference
+  const [metrics, setMetrics] = useState({ net: 88, cpu: 24, ram: 61, gpu: 18 })
+
+  // TG1-C: Read browser metrics on mount; gracefully fall back to decorative values on any error
+  useEffect(() => {
+    let cpuInterval: ReturnType<typeof setInterval> | null = null
+
+    try {
+      // NET: navigator.connection.downlink is in Mbps; map to 0–100% (10 Mbps = 100%)
+      const downlink = (navigator as any).connection?.downlink
+      const net = downlink != null
+        ? Math.min(100, Math.round(downlink * 10))
+        : 88
+
+      // RAM: performance.memory available in Chrome; ratio of used/total heap
+      let ram = 61
+      const mem = (performance as any).memory
+      if (mem?.usedJSHeapSize && mem?.totalJSHeapSize) {
+        ram = Math.round((mem.usedJSHeapSize / mem.totalJSHeapSize) * 100)
+      }
+
+      // Apply net + ram immediately; CPU is computed over 10 samples at 100ms intervals
+      setMetrics(m => ({ ...m, net, ram }))
+
+      // CPU estimator: 10 performance.now() delta measurements at 100ms intervals.
+      // avgDelta should be ~100ms when idle; higher values indicate CPU load.
+      const deltas: number[] = []
+      let last = performance.now()
+      cpuInterval = setInterval(() => {
+        const now = performance.now()
+        deltas.push(now - last)
+        last = now
+        if (deltas.length >= 10) {
+          if (cpuInterval) clearInterval(cpuInterval)
+          const avg = deltas.reduce((a, b) => a + b, 0) / deltas.length
+          const cpu = Math.max(0, Math.min(99, Math.round((avg - 100) / 2)))
+          setMetrics(m => ({ ...m, cpu: cpu > 0 ? cpu : 24 }))
+        }
+      }, 100)
+    } catch {
+      // Any API unavailability falls back silently to the default decorative values
+    }
+
+    return () => {
+      if (cpuInterval) clearInterval(cpuInterval)
+    }
+  }, [])
 
   useEffect(() => {
     const update = () => setTime(new Date().toLocaleTimeString('en-US', { hour12: false }))
@@ -77,18 +126,19 @@ function SystemStatusPanel() {
         </span>
       </div>
 
-      {/* Resource bars */}
+      {/* Resource bars — NET/CPU/RAM from browser APIs, GPU always decorative */}
       <div className="space-y-1.5">
-        <StatusBar label="NET" value={94} color="hsl(174,100%,50%)" delay={0} />
-        <StatusBar label="CPU" value={37} color="hsl(150,100%,45%)" delay={100} />
-        <StatusBar label="RAM" value={62} color="hsl(330,100%,65%)" delay={200} />
-        <StatusBar label="GPU" value={18} color="hsl(52,100%,50%)" delay={300} />
+        <StatusBar label="NET" value={metrics.net} color="hsl(174,100%,50%)" delay={0} />
+        <StatusBar label="CPU" value={metrics.cpu} color="hsl(150,100%,45%)" delay={100} />
+        <StatusBar label="RAM" value={metrics.ram} color="hsl(330,100%,65%)" delay={200} />
+        {/* decorative — WebGL heap is unavailable without canvas; static value */}
+        <StatusBar label="GPU" value={metrics.gpu} color="hsl(52,100%,50%)" delay={300} />
       </div>
 
-      {/* Data readout line */}
+      {/* TG1-C: Data readout line — real activeSkillsCount and streakDays, pid stays decorative */}
       <div className="mt-2.5 flex items-center justify-between text-[8px] font-mono text-muted-foreground/40">
-        <span>skills: 24 active</span>
-        <span>uptime: 12d 4h 32m</span>
+        <span>skills: {activeSkillsCount} active</span>
+        <span>streak: {streakDays}d</span>
         <span>pid: 0x4F2A</span>
       </div>
     </div>
@@ -136,6 +186,7 @@ export function WelcomeCard({
   currentXP,
   maxXP,
   streakDays,
+  activeSkillsCount,
   quickActions,
   aiActive,
   translations,
@@ -219,7 +270,7 @@ export function WelcomeCard({
               </div>
             </div>
             <div>
-<h2 className="text-xl font-mono font-bold text-foreground">
+              <h2 className="text-xl font-mono font-bold text-foreground">
                 {translations?.welcomeTitle || `Welcome back, ${userName}!`}
               </h2>
               <p className="text-xs text-muted-foreground font-mono">{translations?.welcomeSubtitle || "Continue building your professional adventure"}</p>
@@ -242,13 +293,13 @@ export function WelcomeCard({
           </div>
 
           <div className="inline-flex items-center gap-1.5 bg-[hsl(150,100%,45%,0.1)] border border-[hsl(150,100%,45%,0.3)] px-2.5 py-1 text-[10px] font-mono text-[hsl(150,100%,45%)]">
-<span className="w-1.5 h-1.5 bg-[hsl(150,100%,45%)] rounded-full animate-pulse" />
+            <span className="w-1.5 h-1.5 bg-[hsl(150,100%,45%)] rounded-full animate-pulse" />
             {translations?.streak ? translations.streak.replace('{count}', streakDays.toString()) : `${streakDays} day streak`}
           </div>
         </div>
 
-        {/* System Status HUD Panel */}
-        <SystemStatusPanel />
+        {/* TG1-C: System Status HUD Panel — receives real activeSkillsCount and streakDays */}
+        <SystemStatusPanel activeSkillsCount={activeSkillsCount ?? 0} streakDays={streakDays} />
 
         {/* Right: Quick Actions as honeycomb */}
         {quickActions && quickActions.length > 0 && (

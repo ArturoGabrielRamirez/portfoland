@@ -48,7 +48,11 @@ async function fetchDashboardStats(userId: string): Promise<DashboardStats> {
         select: { totalXP: true },
       },
       _count: {
-        select: { conversations: true },
+        select: {
+          conversations: true,
+          // Count all user skills (AI-validated + manual) for SYS_MONITOR display
+          userSkills: true,
+        },
       },
     },
   });
@@ -108,6 +112,8 @@ async function fetchDashboardStats(userId: string): Promise<DashboardStats> {
     experiencesCount: user.experiences.length,
     achievements: { current: achievementsCurrent, total: 3 },
     currentStreak: user.currentStreak,
+    // Total skill count (all user skills, validated + manual) for SYS_MONITOR
+    activeSkillsCount: user._count.userSkills,
   };
 }
 

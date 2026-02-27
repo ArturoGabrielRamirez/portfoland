@@ -96,4 +96,6 @@ export interface DashboardStats {
   experiencesCount: number
   achievements: { current: number; total: number }
   currentStreak: number
+  /** Total number of skills the user has added (AI-validated + manual) */
+  activeSkillsCount: number
 }

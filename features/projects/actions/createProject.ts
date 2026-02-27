@@ -88,7 +88,7 @@ export async function createProject(
 
     // Revalidate cache
     revalidatePath('/dashboard/projects');
-    revalidateTag(`user-stats-${session.user.id}`);
+    revalidateTag(`user-stats-${session.user.id}`, {});
     try {
       await updateStreak(session.user.id);
     } catch {

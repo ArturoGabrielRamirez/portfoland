@@ -26,6 +26,7 @@ import {
   QuickActionsBar,
 } from '@/features/tech'
 import type { DashboardPageProps } from '@/features/dashboard/types/dashboard'
+import { getUserDashboardStats } from '@/features/dashboard/data/getUserDashboardStats.data'
 
 // =============================================================================
 // Helpers
@@ -80,15 +81,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   const displayName = getDisplayName(userData.name, userData.email)
   const initials = getInitials(userData.name, userData.email)
 
-  // --- Mock stats (replace with real DB queries) ---
-  const userStats = {
-    currentXP: 1900,
-    maxXP: 2450,
-    level: 18,
-    streakDays: 12,
-    experiences: 7,
-    achievements: { current: 18, total: 42 },
-  }
+  const stats = await getUserDashboardStats(user.id)
 
   return (
     <div
@@ -105,18 +98,18 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
           userName={displayName}
           userInitial={initials}
           userImage={userData.image}
-          level={userStats.level}
-          currentXP={userStats.currentXP}
-          maxXP={userStats.maxXP}
-          streakDays={userStats.streakDays}
+          level={stats.level}
+          currentXP={stats.totalXP}
+          maxXP={stats.nextLevelXP}
+          streakDays={stats.currentStreak}
           translations={{
             welcomeTitle: tWelcomeMsg('welcome', { name: displayName }),
             welcomeSubtitle: tWelcomeMsg('welcomeSubtitle'),
-            streak: tWelcome('streak', { count: userStats.streakDays }),
+            streak: tWelcome('streak', { count: stats.currentStreak }),
             quickActionsTitle: tWelcome('quickActions'),
             xpToLevel: tWelcome('xpToLevel', {
-              xp: userStats.maxXP - userStats.currentXP,
-              level: userStats.level + 1,
+              xp: stats.xpToNextLevel,
+              level: stats.level + 1,
             }),
           }}
         />
@@ -170,12 +163,12 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
 
             <HexStatGrid
               stats={{
-                xp: { current: userStats.currentXP, max: userStats.maxXP },
-                level: userStats.level,
-                experiences: userStats.experiences,
-                achievements: userStats.achievements,
+                xp: { current: stats.totalXP, max: stats.nextLevelXP },
+                level: stats.level,
+                experiences: stats.experiencesCount,
+                achievements: stats.achievements,
               }}
-              streakDays={userStats.streakDays}
+              streakDays={stats.currentStreak}
             />
 
             {/* Quick Actions hex row */}

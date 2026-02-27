@@ -202,37 +202,37 @@ Modify 6 existing server action files. Each modification follows the identical p
 
 **Dependencies:** Task Group 2 (specifically `getUserDashboardStats` from 2B and `DashboardStats` type from 2A)
 
-- [ ] 4.0 Replace mock stats with real data in `app/[locale]/(protected)/dashboard/page.tsx`
-  - [ ] 4.1 Add the import for `getUserDashboardStats` near the top of the file, after the existing feature imports:
+- [x] 4.0 Replace mock stats with real data in `app/[locale]/(protected)/dashboard/page.tsx`
+  - [x] 4.1 Add the import for `getUserDashboardStats` near the top of the file, after the existing feature imports:
     ```ts
     import { getUserDashboardStats } from '@/features/dashboard/data/getUserDashboardStats.data';
     ```
-  - [ ] 4.2 In the `DashboardPage` function body, after the `dbUser` query and after `userData`/`displayName`/`initials` are resolved, replace the mock `userStats` block entirely:
+  - [x] 4.2 In the `DashboardPage` function body, after the `dbUser` query and after `userData`/`displayName`/`initials` are resolved, replace the mock `userStats` block entirely:
     - Remove the entire `const userStats = { currentXP: 1900, maxXP: 2450, ... }` block (lines 83–91 in the current file)
     - Replace it with:
       ```ts
       const stats = await getUserDashboardStats(user.id);
       ```
-  - [ ] 4.3 Update the `DashboardRow1` props to use `stats` instead of `userStats`:
+  - [x] 4.3 Update the `DashboardRow1` props to use `stats` instead of `userStats`:
     - `level={stats.level}`
     - `currentXP={stats.totalXP}`
     - `maxXP={stats.nextLevelXP}`
     - `streakDays={stats.currentStreak}`
-  - [ ] 4.4 Update the `streak` translation call inside `DashboardRow1`'s `translations` prop:
+  - [x] 4.4 Update the `streak` translation call inside `DashboardRow1`'s `translations` prop:
     - Before: `streak: tWelcome('streak', { count: userStats.streakDays })`
     - After: `streak: tWelcome('streak', { count: stats.currentStreak })`
-  - [ ] 4.5 Update the `xpToLevel` translation call inside `DashboardRow1`'s `translations` prop:
+  - [x] 4.5 Update the `xpToLevel` translation call inside `DashboardRow1`'s `translations` prop:
     - Before: `xpToLevel: tWelcome('xpToLevel', { xp: userStats.maxXP - userStats.currentXP, level: userStats.level + 1 })`
     - After: `xpToLevel: tWelcome('xpToLevel', { xp: stats.xpToNextLevel, level: stats.level + 1 })`
-  - [ ] 4.6 Update the `HexStatGrid` props to use `stats`:
+  - [x] 4.6 Update the `HexStatGrid` props to use `stats`:
     - `stats.xp.current={stats.totalXP}`
     - `stats.xp.max={stats.nextLevelXP}`
     - `stats.level={stats.level}`
     - `stats.experiences={stats.experiencesCount}`
     - `stats.achievements={ current: stats.achievements.current, total: stats.achievements.total }`
     - `streakDays={stats.currentStreak}`
-  - [ ] 4.7 Verify the existing `prisma.user.findUnique` call (for `portfolioMode`, `name`, `email`, `image`) remains unchanged — do NOT merge it into `getUserDashboardStats`
-  - [ ] 4.8 Verify no import of `userStats` or any mock stat constant remains in the file
+  - [x] 4.7 Verify the existing `prisma.user.findUnique` call (for `portfolioMode`, `name`, `email`, `image`) remains unchanged — do NOT merge it into `getUserDashboardStats`
+  - [x] 4.8 Verify no import of `userStats` or any mock stat constant remains in the file
 
 **Acceptance Criteria:**
 - The `userStats` mock object is fully removed from `app/[locale]/(protected)/dashboard/page.tsx`

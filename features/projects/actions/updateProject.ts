@@ -93,7 +93,7 @@ export async function updateProject(
 
     // Revalidate cache
     revalidatePath('/dashboard/projects');
-    revalidateTag(`user-stats-${session.user.id}`);
+    revalidateTag(`user-stats-${session.user.id}`, {});
     try {
       await updateStreak(session.user.id);
     } catch {

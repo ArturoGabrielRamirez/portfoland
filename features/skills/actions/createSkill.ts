@@ -66,7 +66,7 @@ export async function createSkill(
 
     // Revalidate cache
     revalidatePath('/dashboard/skills');
-    revalidateTag(`user-stats-${session.user.id}`);
+    revalidateTag(`user-stats-${session.user.id}`, {});
     try {
       await updateStreak(session.user.id);
     } catch {

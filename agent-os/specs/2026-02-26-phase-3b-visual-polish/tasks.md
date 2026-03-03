@@ -688,7 +688,7 @@ to avoid merge conflicts on types files.
 - `features/dashboard/data/getUserDashboardStats.data.ts`
 - `app/globals.css` or the relevant CSS file containing `@keyframes glitch` and `animate-digital-flicker`
 
-- [ ] 5-A.1 Create `lib/utils/xp.ts` with `calculateGlobalLevel`
+- [x] 5-A.1 Create `lib/utils/xp.ts` with `calculateGlobalLevel`
   - New file with a single exported pure function:
     ```typescript
     /**
@@ -700,20 +700,20 @@ to avoid merge conflicts on types files.
     }
     ```
 
-- [ ] 5-A.2 Replace the inline formula in `getUserDashboardStats.data.ts`
+- [x] 5-A.2 Replace the inline formula in `getUserDashboardStats.data.ts`
   - Locate the line (approximately line 82): `Math.floor(Math.sqrt(totalXP / 100))`
   - Replace with: `import { calculateGlobalLevel } from '@/lib/utils/xp'` at the top of the file, and
     `calculateGlobalLevel(totalXP)` at the computation site
   - No logic change — pure extraction
 
-- [ ] 5-A.3 Fix the `LevelBadge` in `TechHero.tsx` to use real Global Level
+- [x] 5-A.3 Fix the `LevelBadge` in `TechHero.tsx` to use real Global Level
   - In `features/portfolio/components/tech/TechHero.tsx`:
     - Import `calculateGlobalLevel` from `@/lib/utils/xp`
     - Locate the hardcoded `level={1}` on `<LevelBadge>`
     - Replace with: `const globalLevel = calculateGlobalLevel(data.stats?.totalXP ?? 0)`
     - Change to: `<LevelBadge level={globalLevel} />`
 
-- [ ] 5-A.4 Add the mandatory terminal cursor after the username `<p>` tag in `TechHero.tsx`
+- [x] 5-A.4 Add the mandatory terminal cursor after the username `<p>` tag in `TechHero.tsx`
   - Locate the username `<p>` element in `TechHero.tsx`
   - Immediately after it, add:
     ```tsx
@@ -722,14 +722,14 @@ to avoid merge conflicts on types files.
   - The `animate-pulse` Tailwind class handles the blinking without additional JS — this satisfies the
     "mandatory blinking cursor" hard requirement
 
-- [ ] 5-A.5 Reduce `glitch-text` CSS animation intensity to 50% of current values
+- [x] 5-A.5 Reduce `glitch-text` CSS animation intensity to 50% of current values
   - Locate `@keyframes glitch` (or equivalent) in `app/globals.css` or `tailwind.config.ts`
   - Halve all `translate` and `skew` values in the keyframe stops:
     - Example: `transform: translate(-4px, 2px) skew(0.5deg)` → `transform: translate(-2px, 1px) skew(0.25deg)`
   - Apply the same 50% reduction to all `translate`/`skew` values across all keyframe stops — do not
     change timing, easing, or the keyframe structure
 
-- [ ] 5-A.6 Reduce `animate-digital-flicker` to 50% opacity floor and doubled duration
+- [x] 5-A.6 Reduce `animate-digital-flicker` to 50% opacity floor and doubled duration
   - Locate the `animate-digital-flicker` keyframe definition in the same CSS/config file
   - Change opacity range from `[0, 1]` (or whatever current min is) to `[0.5, 1.0]`
   - Double the animation duration (if currently `0.8s`, change to `1.6s`; if `1s`, change to `2s`)
@@ -750,7 +750,7 @@ to avoid merge conflicts on types files.
 
 **File:** `features/portfolio/components/tech/TechSkills.tsx`
 
-- [ ] 5-B.1 Confirm AI-validated glow propagates automatically
+- [x] 5-B.1 Confirm AI-validated glow propagates automatically
   - The `TechSkills` component renders `SkillTreeView` with `isEditable={false}`, which renders
     `SkillHexagonNode` — the same component modified in TG3-A
   - Verify by inspection (read the component tree) that `aiValidated` is included in the `userSkills`
@@ -758,7 +758,7 @@ to avoid merge conflicts on types files.
     Prisma query, add `aiValidated: true` to the select in the public portfolio data function
   - No component code changes needed for the glow itself — it flows through `SkillHexagonNode`
 
-- [ ] 5-B.2 Add AI-validated legend row above the skill tree in `TechSkills`
+- [x] 5-B.2 Add AI-validated legend row above the skill tree in `TechSkills`
   - Import `TechBadge` from `@/features/tech`
   - Above the `<SkillTreeView ...>` element, add:
     ```tsx

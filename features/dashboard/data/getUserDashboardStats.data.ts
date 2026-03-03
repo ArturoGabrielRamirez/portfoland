@@ -9,6 +9,7 @@
 import { prisma } from '@/lib/prisma';
 import { unstable_cache } from 'next/cache';
 import { calculateMonthsDuration } from '@/features/skills/constants/xp';
+import { calculateGlobalLevel } from '@/lib/utils/xp';
 import type { DashboardStats } from '@/features/dashboard/types/dashboard';
 
 // =============================================================================
@@ -81,10 +82,10 @@ async function fetchDashboardStats(userId: string): Promise<DashboardStats> {
     skillXPs.reduce((sum, xp) => sum + xp, 0);
 
   // ---------------------------------------------------------------------------
-  // Level computation
+  // Level computation — uses shared utility from lib/utils/xp
   // ---------------------------------------------------------------------------
 
-  const level = Math.floor(Math.sqrt(totalXP / 100));
+  const level = calculateGlobalLevel(totalXP);
   const currentLevelXP = level * level * 100;
   const nextLevelXP = (level + 1) * (level + 1) * 100;
   const xpToNextLevel = nextLevelXP - totalXP;

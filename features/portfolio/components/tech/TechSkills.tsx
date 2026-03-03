@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
-import { HUDPanel } from '@/features/tech';
+import { HUDPanel, TechBadge } from '@/features/tech';
 import { SkillTreeView } from '@/features/skills/components';
 import type { PortfolioSectionProps } from '../../types/portfolio';
 
@@ -23,6 +23,13 @@ export function TechSkills({ data, className }: PortfolioSectionProps) {
 
   return (
     <div className={cn('h-full', className)} data-testid="tech-skills">
+      {/* AI-validated badge legend — only renders when at least one skill is AI-validated */}
+      {userSkills.some(s => s.aiValidated) && (
+        <div className="flex items-center gap-3 mb-4 px-2">
+          <TechBadge color="magenta">★ AI Verified</TechBadge>
+          <TechBadge color="gray">Self-Assessed</TechBadge>
+        </div>
+      )}
       <SkillTreeView
         userSkills={userSkills}
         categories={categories}

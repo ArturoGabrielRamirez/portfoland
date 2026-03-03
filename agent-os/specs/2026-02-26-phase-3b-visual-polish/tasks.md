@@ -593,7 +593,7 @@ to avoid merge conflicts on types files.
 
 #### Task Group 4: Timeline Sidebar Implementation
 
-- [ ] 4.1 Add `focusedExperienceId` prop support to `TimelineMap`
+- [x] 4.1 Add `focusedExperienceId` prop support to `TimelineMap`
   - In the `TimelineMap` component (locate file in `features/timeline/` or within the timeline route):
     - Add optional prop `focusedExperienceId?: string`
     - When `focusedExperienceId` changes, pan the Google Maps instance to the corresponding pin using
@@ -602,12 +602,12 @@ to avoid merge conflicts on types files.
     - Highlight the matching pin: increase its z-index and apply a brief scale animation or color change
       to distinguish it as "focused"
 
-- [ ] 4.2 Add sidebar state to `DashboardTimelineView`
+- [x] 4.2 Add sidebar state to `DashboardTimelineView`
   - In `DashboardTimelineView.tsx`:
     - Add state: `const [sidebarOpen, setSidebarOpen] = useState(true)`
     - The existing `selectedExperience` state is already present — wire sidebar clicks to it
 
-- [ ] 4.3 Create `TimelineSidebar` component
+- [x] 4.3 Create `TimelineSidebar` component
   - Create `features/timeline/components/TimelineSidebar.tsx` as a client component (`"use client"`)
   - Props type (add to `features/timeline/types/` or to `features/tech/types/dashboard.ts`):
     ```typescript
@@ -636,7 +636,7 @@ to avoid merge conflicts on types files.
         and `bg-[hsl(174,100%,50%,0.06)]` to the entry's className
   - The sidebar scrolls independently with `overflow-y-auto`
 
-- [ ] 4.4 Wire `TimelineSidebar` into `DashboardTimelineView`
+- [x] 4.4 Wire `TimelineSidebar` into `DashboardTimelineView`
   - In `DashboardTimelineView.tsx`:
     - Change the main layout from a single-column `TimelineMap` to a flex row:
       ```tsx

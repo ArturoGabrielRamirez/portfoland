@@ -58,6 +58,9 @@ function SkillHexagonNodeComponent({
   const glowFilter = LEVEL_GLOW_FILTERS[level];
   const particleCount = LEVEL_ANIMATIONS.particleCount[level];
 
+  // AI validation state — drives additive magenta/cyan drop-shadow and star mark
+  const isAIValidated = userSkill?.aiValidated === true;
+
   // Get skill name for display
   const skillName = userSkill?.skill?.name ?? suggestedSkillName ?? 'Unknown';
   const skillLetter = getSkillLetter(skillName);
@@ -72,6 +75,16 @@ function SkillHexagonNodeComponent({
   // Golden color for L5
   const isLegendary = level === 5;
   const legendaryColor = '#F59E0B';
+
+  // Base glow filter for this level (used when not AI-validated)
+  const baseLevelFilter = visualStyle.hasGlow
+    ? `drop-shadow(0 0 ${glowFilter.stdDeviation * 2}px ${isLegendary ? legendaryColor : categoryColor})`
+    : undefined;
+
+  // AI-validated nodes get an additive magenta/cyan double drop-shadow layered on top
+  const svgFilter = isAIValidated
+    ? `drop-shadow(0 0 10px #D946EF) drop-shadow(0 0 5px #00D4FF)`
+    : baseLevelFilter;
 
   const handleClick = () => {
     onClick?.();
@@ -107,9 +120,7 @@ function SkillHexagonNodeComponent({
         viewBox="0 0 48 56"
         className="absolute inset-0 w-full h-full"
         style={{
-          filter: visualStyle.hasGlow
-            ? `drop-shadow(0 0 ${glowFilter.stdDeviation * 2}px ${isLegendary ? legendaryColor : categoryColor})`
-            : undefined,
+          filter: svgFilter,
         }}
       >
         <defs>
@@ -160,6 +171,21 @@ function SkillHexagonNodeComponent({
           strokeOpacity={isEmpty ? 0.5 : visualStyle.strokeOpacity}
           className="transition-all duration-200"
         />
+
+        {/* AI-validated indicator mark — top-right corner within 48x56 viewBox */}
+        {isAIValidated && (
+          <text
+            x="42"
+            y="10"
+            fontSize="10"
+            fill="#D946EF"
+            opacity="0.9"
+            fontFamily="monospace"
+            textAnchor="middle"
+          >
+            ★
+          </text>
+        )}
       </svg>
 
       {/* Content: Icon or Letter */}

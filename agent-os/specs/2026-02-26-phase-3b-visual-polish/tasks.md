@@ -494,12 +494,12 @@ to avoid merge conflicts on types files.
 
 **File:** `features/skills/components/SkillHexagonNode.tsx`
 
-- [ ] 3-A.1 Read `userSkill.aiValidated` inside `SkillHexagonNode`
+- [x] 3-A.1 Read `userSkill.aiValidated` inside `SkillHexagonNode`
   - The `userSkill` object is already passed via props through the Prisma type — confirm the prop path:
     likely `props.userSkill.aiValidated` or `props.skill.aiValidated` depending on component structure
   - Add: `const isAIValidated = userSkill?.aiValidated === true`
 
-- [ ] 3-A.2 Apply additive CSS `drop-shadow` filter for AI-validated nodes
+- [x] 3-A.2 Apply additive CSS `drop-shadow` filter for AI-validated nodes
   - On the hex polygon element (the primary `<polygon>` or `<path>` that renders the hexagon shape):
     ```tsx
     style={{
@@ -512,7 +512,7 @@ to avoid merge conflicts on types files.
     glow without replacing it. Inspect the current `filter` prop to ensure the non-validated path still
     receives the original `LEVEL_GLOW_FILTERS` value.
 
-- [ ] 3-A.3 Add AI indicator mark `★` to the SVG
+- [x] 3-A.3 Add AI indicator mark `★` to the SVG
   - Inside the `<svg>` element of `SkillHexagonNode`, add conditionally after the hex polygon:
     ```tsx
     {isAIValidated && (
@@ -542,14 +542,14 @@ to avoid merge conflicts on types files.
 
 **File:** `features/skills/components/CategoryCluster.tsx`
 
-- [ ] 3-B.1 Update ring2 radius in `calculateHexagonPositions`
+- [x] 3-B.1 Update ring2 radius in `calculateHexagonPositions`
   - Locate the `calculateHexagonPositions` function (or equivalent) inside `CategoryCluster.tsx`
   - Change the ring2 radius from `spacing * 1.9` to `spacing * 2.1`
   - The even/odd honeycomb stagger (`angle + 15deg` for even, `angle - 15deg` for odd) — verify it is
     already applied via `i * 30 + 15` offsets; if the existing ring2 loop uses `i * 30` flat, add the
     stagger: `const angle = i * 30 + (i % 2 === 0 ? 15 : -15)` for a beehive row offset
 
-- [ ] 3-B.2 Add ring3 for 19+ skills
+- [x] 3-B.2 Add ring3 for 19+ skills
   - After the ring2 block, add a ring3 block inside `calculateHexagonPositions`:
     ```typescript
     // Ring 3: 18 positions at spacing * 3.3, triggered when skillCount >= 19
@@ -565,7 +565,7 @@ to avoid merge conflicts on types files.
     ```
   - The function signature stays unchanged — only the internal position array grows
 
-- [ ] 3-B.3 Verify cable connections are unaffected
+- [x] 3-B.3 Verify cable connections are unaffected
   - Open `features/skills/components/SkillConnections.tsx` and confirm it draws cables between
     cluster-center positions (not individual node positions within a cluster)
   - If `SkillConnections` uses per-node positions from `calculateHexagonPositions`, verify the first

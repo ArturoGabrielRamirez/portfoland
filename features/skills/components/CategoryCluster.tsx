@@ -40,6 +40,12 @@ interface CategoryClusterProps {
  * Calculate hexagon positions in a cluster formation
  * Core skill at center, others arranged in concentric rings
  * Spacing is dynamic based on zoom level for smooth transitions
+ *
+ * Ring layout:
+ *   Ring 0 (center): 1 position
+ *   Ring 1: 6 positions at spacing * 1.0 (always present)
+ *   Ring 2: 12 positions at spacing * 2.1 (triggered when skillCount >= 7)
+ *   Ring 3: 18 positions at spacing * 3.3 (triggered when skillCount >= 19)
  */
 function calculateHexagonPositions(
   skillCount: number,
@@ -56,7 +62,7 @@ function calculateHexagonPositions(
   const normalizedZoom = Math.max(0.7, Math.min(1.5, zoomLevel));
   const spacing = minSpacing + ((normalizedZoom - 0.7) / 0.8) * (maxSpacing - minSpacing);
 
-  // Center position
+  // Center position (index 0 — cable connections reference this)
   positions.push({ x: 0, y: 0 });
 
   // Always generate first ring (6 positions) for skills + empty slot
@@ -69,14 +75,26 @@ function calculateHexagonPositions(
     });
   }
 
-  // Second ring if needed (12 positions)
+  // Ring 2: 12 positions at spacing * 2.1 with honeycomb stagger
+  // The +15 offset on all positions creates the beehive row stagger already
   if (skillCount >= 7) {
-    const ring2Radius = spacing * 1.9;
+    const ring2Radius = spacing * 2.1;
     for (let i = 0; i < 12; i++) {
       const angle = ((i * 30 + 15) * Math.PI) / 180;
       positions.push({
         x: Math.cos(angle) * ring2Radius,
         y: Math.sin(angle) * ring2Radius,
+      });
+    }
+  }
+
+  // Ring 3: 18 positions at spacing * 3.3, triggered when skillCount >= 19
+  if (skillCount >= 19) {
+    for (let i = 0; i < 18; i++) {
+      const angle = (i * 20) * (Math.PI / 180);
+      positions.push({
+        x: Math.cos(angle) * spacing * 3.3,
+        y: Math.sin(angle) * spacing * 3.3,
       });
     }
   }

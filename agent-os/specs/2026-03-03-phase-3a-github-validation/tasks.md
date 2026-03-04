@@ -593,13 +593,13 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
 #### Task Group 8: GitHubSyncPanel Component
 **Dependencies:** TG3 (action), TG6 (searching state props shape), TG4 (messages)
 
-- [ ] 8.0 Create `features/github/components/GitHubSyncPanel.tsx`
-  - [ ] 8.1 Write 3 focused tests
+- [x] 8.0 Create `features/github/components/GitHubSyncPanel.tsx`
+  - [x] 8.1 Write 3 focused tests
     - Test: when `githubSyncedAt` is `null`, the panel renders the "Expansion Module" pre-connection state with `[EXPANSION_MODULE]: github_validator.exe` label visible
     - Test: when `githubSyncedAt` is a `Date` and `githubStats` has data, the panel renders the post-connection "Sync Status Panel" with `SKILLS_VALIDATED: {count}` visible
     - Test: when the "Re-Sync" button is clicked, `onSearchingStateChange(true)` is called immediately (mock the server action)
     - File: `features/github/__tests__/GitHubSyncPanel.test.tsx`
-  - [ ] 8.2 Create `features/github/components/GitHubSyncPanel.tsx`
+  - [x] 8.2 Create `features/github/components/GitHubSyncPanel.tsx`
     - `'use client'` directive at top
     - Import `GitHubSyncPanelProps` from `../types/github`
     - Import `syncGitHubAction` from `../actions/syncGitHub.action`
@@ -665,9 +665,9 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
         ```
     - Add `useState<boolean>` for `showReauthModal` (used by TG10 `GitHubReauthModal`)
     - Render `<GitHubReauthModal isOpen={showReauthModal} onClose={() => setShowReauthModal(false)} />` at the bottom (import from TG10 once complete; use a conditional placeholder for now)
-  - [ ] 8.3 Create `features/github/components/index.ts` barrel export
+  - [x] 8.3 Create `features/github/components/index.ts` barrel export
     - Export `GitHubSyncPanel` from `./GitHubSyncPanel`
-  - [ ] 8.4 Run the 3 tests written in 8.1 and confirm they pass
+  - [x] 8.4 Run the 3 tests written in 8.1 and confirm they pass
     - Command: `npx jest features/github/__tests__/GitHubSyncPanel.test.tsx --no-coverage`
 
 **Acceptance Criteria:**

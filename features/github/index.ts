@@ -1,11 +1,11 @@
 /**
  * GitHub Feature Barrel Export
  *
- * Re-exports all public constants, types, actions, and API functions for the
- * GitHub integration feature. Components (e.g., GitHubSyncPanel) will be added
- * in TG8.
+ * Re-exports all public constants, types, actions, API functions, and
+ * components for the GitHub integration feature.
  */
 
-export * from './constants'
-export * from './types'
-export * from './actions'
+export * from './constants';
+export * from './types';
+export * from './actions';
+export * from './components';

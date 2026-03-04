@@ -28,9 +28,19 @@ export interface GitHubStats {
  * Defined here so TG8 can import from `@/features/github` without circular deps.
  */
 export interface GitHubSyncPanelProps {
-  githubSyncedAt: Date | null
-  githubStats: GitHubStats | null
-  onSearchingStateChange?: (active: boolean) => void
+  /** The authenticated user's ID — used for re-validation after sync */
+  userId: string
+  /** When the user last synced GitHub. Null means never synced / not yet connected */
+  githubSyncedAt?: Date | null
+  /** Persisted summary stats from the last sync. Null means no sync has run */
+  githubStats?: GitHubStats | null
+  /** True when an Account record with providerId='github' exists for the user */
+  isGitHubConnected: boolean
+  /** Called when sync succeeds — parent increments xpGainTrigger to drive AIEye xp_gain */
   onXPGainTrigger?: () => void
+  /** Called when sync fails — parent increments lifeLossTrigger to drive AIEye life_loss */
   onLifeLossTrigger?: () => void
+  /** Called when sync starts — parent sets AIEye to searching state */
+  onSearchingTrigger?: () => void
+  className?: string
 }

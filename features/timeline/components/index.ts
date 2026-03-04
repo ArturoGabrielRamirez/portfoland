@@ -11,6 +11,7 @@ export { TimelineConnections } from './TimelineConnections';
 export { TimelineFilter } from './TimelineFilter';
 export { TimelineStats } from './TimelineStats';
 export { MobileTimelineEvent } from './MobileTimelineEvent';
+export { TimelineSidebar } from './TimelineSidebar';
 
 // Map components
 export { TimelineMap } from './TimelineMap';

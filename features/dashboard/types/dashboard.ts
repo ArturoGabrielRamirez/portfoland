@@ -82,3 +82,50 @@ export interface ActivityItem {
   time: string
   color: 'primary' | 'secondary' | 'success' | 'warning'
 }
+
+/**
+ * Computed real stats for the Tech Mode dashboard.
+ * Returned by getUserDashboardStats and passed to DashboardRow1 and HexStatGrid.
+ */
+export interface DashboardStats {
+  totalXP: number
+  level: number
+  xpToNextLevel: number
+  currentLevelXP: number
+  nextLevelXP: number
+  experiencesCount: number
+  achievements: { current: number; total: number }
+  currentStreak: number
+  /** Total number of skills the user has added (AI-validated + manual) */
+  activeSkillsCount: number
+  /** Date of the last streak activity, used to compute the heatmap window */
+  lastStreakDate: Date | null
+}
+
+// =============================================================================
+// Activity Event Types (SYS_LOG — TG2-A)
+// =============================================================================
+
+/**
+ * Discriminated type for the different kinds of user activity events
+ * that can appear in the SYS_LOG panel.
+ */
+export type ActivityEventType =
+  | "experience"
+  | "project_completed"
+  | "skill_ai"
+  | "skill_manual"
+  | "experience_updated"
+  | "skill_github"
+
+/**
+ * A single user activity event as returned by getRecentUserActivity.
+ * The timestamp is a raw Date; formatting is done at render time.
+ */
+export interface ActivityEvent {
+  id: string
+  title: string
+  xp: number
+  type: ActivityEventType
+  timestamp: Date
+}

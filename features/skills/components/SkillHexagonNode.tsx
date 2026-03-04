@@ -5,6 +5,11 @@
  *
  * Hexagonal node for skill visualization in the skill tree.
  * Adapted from Timeline HexagonNode with level-based styling.
+ *
+ * TG7 (Phase 3A): Added dual-validation visuals.
+ * - AI-only: magenta/cyan drop-shadow + ★ mark (top-right)
+ * - GitHub-only: green drop-shadow + ⬡ mark (top-left)
+ * - Both validated: gold drop-shadow + gold ⬡ + magenta ★ + gold pulsing ring
  */
 
 import { memo } from 'react';
@@ -58,6 +63,17 @@ function SkillHexagonNodeComponent({
   const glowFilter = LEVEL_GLOW_FILTERS[level];
   const particleCount = LEVEL_ANIMATIONS.particleCount[level];
 
+  // AI validation state — drives additive magenta/cyan drop-shadow and star mark
+  const isAIValidated = userSkill?.aiValidated === true;
+
+  // GitHub validation state (TG7) — drives green drop-shadow and ⬡ mark
+  const isGithubValidated = userSkill?.githubValidated === true;
+
+  // Compound validation states (TG7)
+  const isAIOnly = isAIValidated && !isGithubValidated;
+  const isGithubOnly = isGithubValidated && !isAIValidated;
+  const isBothValidated = isAIValidated && isGithubValidated;
+
   // Get skill name for display
   const skillName = userSkill?.skill?.name ?? suggestedSkillName ?? 'Unknown';
   const skillLetter = getSkillLetter(skillName);
@@ -73,14 +89,38 @@ function SkillHexagonNodeComponent({
   const isLegendary = level === 5;
   const legendaryColor = '#F59E0B';
 
+  // Base glow filter for this level (used when not validation-styled)
+  const baseLevelFilter = visualStyle.hasGlow
+    ? `drop-shadow(0 0 ${glowFilter.stdDeviation * 2}px ${isLegendary ? legendaryColor : categoryColor})`
+    : undefined;
+
+  // Validation-aware filter:
+  //   isBothValidated → gold (dual-validation legendary effect)
+  //   isGithubOnly    → green
+  //   isAIOnly        → magenta/cyan
+  //   none            → level-based glow
+  const svgFilter = isBothValidated
+    ? `drop-shadow(0 0 12px #FFD700) drop-shadow(0 0 6px #FFA500)`
+    : isGithubOnly
+      ? `drop-shadow(0 0 10px #22C55E) drop-shadow(0 0 5px #16A34A)`
+      : isAIOnly
+        ? `drop-shadow(0 0 10px #D946EF) drop-shadow(0 0 5px #00D4FF)`
+        : baseLevelFilter;
+
   const handleClick = () => {
     onClick?.();
   };
 
-  // Aria label
+  // Aria label reflects all possible validation states
   const ariaLabel = isEmpty
     ? `Add ${suggestedSkillName ?? 'new'} skill`
-    : `${skillName} - Level ${level} ${visualStyle.name}`;
+    : isBothValidated
+      ? `${skillName} - Level ${level} ${visualStyle.name} - AI & GitHub Verified`
+      : isGithubValidated
+        ? `${skillName} - Level ${level} ${visualStyle.name} - GitHub Verified`
+        : isAIValidated
+          ? `${skillName} - Level ${level} ${visualStyle.name} - AI Verified`
+          : `${skillName} - Level ${level} ${visualStyle.name}`;
 
   return (
     <motion.button
@@ -107,9 +147,7 @@ function SkillHexagonNodeComponent({
         viewBox="0 0 48 56"
         className="absolute inset-0 w-full h-full"
         style={{
-          filter: visualStyle.hasGlow
-            ? `drop-shadow(0 0 ${glowFilter.stdDeviation * 2}px ${isLegendary ? legendaryColor : categoryColor})`
-            : undefined,
+          filter: svgFilter,
         }}
       >
         <defs>
@@ -160,6 +198,37 @@ function SkillHexagonNodeComponent({
           strokeOpacity={isEmpty ? 0.5 : visualStyle.strokeOpacity}
           className="transition-all duration-200"
         />
+
+        {/* AI-validated indicator mark — top-right corner within 48x56 viewBox */}
+        {isAIValidated && (
+          <text
+            x="42"
+            y="10"
+            fontSize="10"
+            fill="#D946EF"
+            opacity="0.9"
+            fontFamily="monospace"
+            textAnchor="middle"
+          >
+            ★
+          </text>
+        )}
+
+        {/* GitHub-validated indicator mark — top-left corner (TG7) */}
+        {/* When both are validated, render ⬡ in gold to unify the dual-validation aesthetic */}
+        {isGithubValidated && (
+          <text
+            x="8"
+            y="10"
+            fontSize="8"
+            fill={isBothValidated ? '#FFD700' : '#22C55E'}
+            opacity="0.9"
+            fontFamily="monospace"
+            textAnchor="middle"
+          >
+            ⬡
+          </text>
+        )}
       </svg>
 
       {/* Content: Icon or Letter */}
@@ -237,6 +306,23 @@ function SkillHexagonNodeComponent({
           }}
           transition={{
             duration: LEVEL_ANIMATIONS.pulseSpeed[level] / 1000,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+      )}
+
+      {/* Gold pulsing ring for dual-validated nodes (TG7) — layered above level ring */}
+      {isBothValidated && !isEmpty && (
+        <motion.div
+          className="absolute inset-0 rounded-full pointer-events-none"
+          style={{ border: '1px solid #FFD700' }}
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.8, 0, 0.8],
+          }}
+          transition={{
+            duration: 1.5,
             repeat: Infinity,
             ease: 'easeInOut',
           }}

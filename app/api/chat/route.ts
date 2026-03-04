@@ -212,7 +212,9 @@ export async function POST(req: Request) {
                                 category: us.skill.category.name,
                                 selfAssessmentLevel: getSelfAssessmentLevel(us.sources),
                                 totalXP: us.totalXP,
-                                githubValidated: hasGitHubValidation(us.sources),
+                                // hasGitHubValidation now reads the real githubValidated field
+                                // from the UserSkill Prisma model (added in TG1 schema change)
+                                githubValidated: hasGitHubValidation(us),
                                 manuallyAdded: us.sources.some(s => s.sourceType === 'MANUAL'),
                                 experienceBased: us.sources.some(s => s.sourceType === 'EXPERIENCE'),
                                 sourcesCount: us.sources.length,

@@ -28,6 +28,7 @@ import {
   ExperienceFormModal,
   DeleteConfirmModal,
   ExperienceCard,
+  TimelineSidebar,
 } from '@/features/timeline/components';
 import {
   createExperience,
@@ -61,6 +62,8 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
   const [editingExperience, setEditingExperience] = useState<Experience | undefined>();
   const [deletingExperience, setDeletingExperience] = useState<Experience | null>(null);
   const [isPending, startTransition] = useTransition();
+  // Task 4.2: sidebar open/collapsed state (open by default)
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   // Filter experiences by type
   const filteredExperiences = useMemo(() => {
@@ -69,6 +72,15 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
     }
     return data.experiences.filter((exp) => exp.type === activeFilter);
   }, [data.experiences, activeFilter]);
+
+  // Experiences sorted newest-first for the sidebar
+  const sortedExperiences = useMemo(
+    () =>
+      [...filteredExperiences].sort(
+        (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+      ),
+    [filteredExperiences]
+  );
 
   // Calculate filter counts
   const filterCounts = useMemo(() => {
@@ -170,7 +182,7 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
   }, [deletingExperience, t]);
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A] font-mono">
+    <div className="min-h-screen bg-[#0A0E1A] font-mono flex flex-col">
       {/* Main Navigation */}
       <DashboardNav locale={locale} user={user} />
 
@@ -240,28 +252,44 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
       </div>
 
       {/* Main content */}
-      <main className="relative">
-        {/* Desktop: Map view */}
-        <div className="hidden lg:block h-[calc(100vh-380px)] min-h-[500px]">
-          <TimelineMap
-            experiences={filteredExperiences}
-            selectedExperience={selectedExperience}
-            onExperienceSelect={handleExperienceSelect}
-            isEditable={true}
-          />
+      <main className="flex-1 flex flex-col min-h-0">
+        {/* Desktop: Map + Sidebar flex row */}
+        <div
+          className="hidden lg:flex flex-1 min-h-0"
+          style={{ minHeight: '500px', maxHeight: 'calc(100vh - 380px)' }}
+        >
+          {/* Map container — relative so the ExperienceCard overlay anchors here */}
+          <div className="relative flex-1 min-h-0 min-w-0">
+            <TimelineMap
+              experiences={filteredExperiences}
+              selectedExperience={selectedExperience}
+              onExperienceSelect={handleExperienceSelect}
+              isEditable={true}
+              focusedExperienceId={selectedExperience?.id}
+            />
 
-          {/* Experience card with edit/delete */}
-          {selectedExperience && (
-            <div className="absolute top-4 right-4 z-10">
-              <ExperienceCard
-                experience={selectedExperience}
-                isEditable={true}
-                onEdit={handleOpenEdit}
-                onDelete={handleOpenDelete}
-                onClose={() => setSelectedExperience(null)}
-              />
-            </div>
-          )}
+            {/* Experience card with edit/delete */}
+            {selectedExperience && (
+              <div className="absolute top-4 right-4 z-10">
+                <ExperienceCard
+                  experience={selectedExperience}
+                  isEditable={true}
+                  onEdit={handleOpenEdit}
+                  onDelete={handleOpenDelete}
+                  onClose={() => setSelectedExperience(null)}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Task 4.4: Chronological sidebar */}
+          <TimelineSidebar
+            experiences={sortedExperiences}
+            selectedExperienceId={selectedExperience?.id}
+            onSelect={(exp) => setSelectedExperience(exp)}
+            isOpen={sidebarOpen}
+            onToggle={() => setSidebarOpen((o) => !o)}
+          />
         </div>
 
         {/* Mobile: List view */}

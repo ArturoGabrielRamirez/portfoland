@@ -9,7 +9,20 @@ import { motion, AnimatePresence } from "framer-motion"
 // Types
 // =============================================================================
 
-type AIState = "sleeping" | "waking" | "drowsy" | "awake" | "listening" | "thinking" | "ready" | "success"
+// TG1-A: Extended AIState union with xp_gain and life_loss transient states
+// TG6: Added "searching" sustained state for GitHub sync scanning animation
+type AIState =
+  | "sleeping"
+  | "waking"
+  | "drowsy"
+  | "awake"
+  | "listening"
+  | "thinking"
+  | "ready"
+  | "success"
+  | "xp_gain"
+  | "life_loss"
+  | "searching"
 
 export type { AIState }
 
@@ -20,6 +33,22 @@ interface CRTWithAIProps {
     idleTimeout?: number
     /** Callback fired when AI state changes */
     onAIStateChange?: (state: AIState) => void
+    /**
+     * TG1-A: Increment this counter to trigger the XP gain eye animation.
+     * The component fires the animation when this value changes.
+     */
+    xpGainTrigger?: number
+    /**
+     * TG1-A: Increment this counter to trigger the life loss eye animation.
+     * The component fires the animation when this value changes.
+     */
+    lifeLossTrigger?: number
+    /**
+     * TG6: Increment this counter to trigger the sustained `searching` eye state.
+     * The parent component (GitHubSyncPanel) drives the return transition by firing
+     * `xpGainTrigger` or `lifeLossTrigger` after the action resolves.
+     */
+    searchingTrigger?: number
 }
 
 interface ConsoleLine {
@@ -38,8 +67,21 @@ interface ChatMessage {
 // =============================================================================
 
 const IDLE_TIMEOUT_MS = 60 * 1000
-const INACTIVITY_RETURN_MS = 5000 // Return to stats after 5s
+const INACTIVITY_RETURN_MS = 8000  // Normal inactivity before drowsy
 const AUTONOMOUS_IDLE_MS = 3000
+// After a sync completes (xp_gain), eye stays in curious/awake mode this long
+// before the inactivity sequence kicks in
+const POST_SYNC_CURIOUS_MS = 28_000
+const AI_INTERACTED_KEY = "portfoland_ai_interacted"
+
+// Transient states that auto-return via a timer and do NOT update prevStateRef
+// TG6: "searching" is parent-driven (sustained), so it is NOT in this list;
+// prevStateRef exclusion is handled separately in the effect below
+const TRANSIENT_STATES: AIState[] = ["xp_gain", "life_loss"]
+
+// States that do not constitute a "meaningful previous state" for auto-return
+// Includes the auto-returning transient states AND the sustained searching state
+const NON_PREV_STATES: AIState[] = [...TRANSIENT_STATES, "searching"]
 
 const BOOT_LINES: ConsoleLine[] = [
     { text: "session_stats --display --verbose", color: "white", prefix: "$ " },
@@ -120,21 +162,35 @@ function AIEye({
     const isDrowsy = state === "drowsy"
     const isListening = state === "listening"
     const isReady = state === "ready"
+    // TG1-A: new state flags
+    const isXPGain = state === "xp_gain"
+    const isLifeLoss = state === "life_loss"
+    // TG6: searching state flag — amber/orange iris, left-right scan animation
+    const isSearching = state === "searching"
+
     const isAsleepLike = isSleeping
 
-    const mainColor = isSuccess
-        ? "hsl(150,100%,45%)"
-        : isReady
-            ? "hsl(150,100%,50%)"
-            : isThinking
-                ? "hsl(330,100%,65%)"
-                : isListening
-                    ? "hsl(200,100%,60%)"
-                    : (isSleeping || isDrowsy)
-                        ? "hsl(0,80%,55%)"
-                        : isWaking
-                            ? "hsl(30,100%,50%)"
-                            : "hsl(174,100%,50%)"
+    // TG6: searching amber/orange inserted before the default awake cyan
+    // TG1-A: mainColor switch — new states have highest specificity before default cyan
+    const mainColor = isXPGain
+        ? "hsl(150,100%,45%)"   // green — XP gain
+        : isLifeLoss
+            ? "hsl(0,80%,55%)"  // red — life loss
+            : isSearching
+                ? "hsl(38,100%,55%)"    // amber/orange — external data wait / GitHub sync
+                : isSuccess
+                    ? "hsl(150,100%,45%)"
+                    : isReady
+                        ? "hsl(150,100%,50%)"
+                        : isThinking
+                            ? "hsl(330,100%,65%)"
+                            : isListening
+                                ? "hsl(200,100%,60%)"
+                                : (isSleeping || isDrowsy)
+                                    ? "hsl(0,80%,55%)"
+                                    : isWaking
+                                        ? "hsl(30,100%,50%)"
+                                        : "hsl(174,100%,50%)"
 
     // Pupil Jitter for Thinking
     const [jitter, setJitter] = useState({ x: 0, y: 0 })
@@ -164,10 +220,30 @@ function AIEye({
         return () => clearInterval(interval)
     }, [isListening])
 
+    // TG6: Searching — oscillate pupil x position left → right → left rhythmically
+    const [scanPupilX, setScanPupilX] = useState(0)
+    useEffect(() => {
+        if (!isSearching) {
+            setScanPupilX(0)
+            return
+        }
+        let direction = 1
+        const scanInterval = setInterval(() => {
+            setScanPupilX(prev => {
+                const next = prev + direction * 4
+                if (next >= 8 || next <= -8) direction *= -1
+                return next
+            })
+        }, 400)
+        return () => clearInterval(scanInterval)
+    }, [isSearching])
+
     // Pupil position: drowsy stays heavy/low, waking slowly centers
+    // TG6: searching uses scanPupilX for horizontal scan, no vertical movement
     const basePupilX = isAsleepLike ? 0
         : isWaking ? 0
         : isDrowsy ? 0
+        : isSearching ? scanPupilX
         : isListening ? listenOrbit.x * 6
         : Math.max(-6, Math.min(6, mouseOffset.x * 6)) + jitter.x
 
@@ -177,22 +253,23 @@ function AIEye({
         : isListening ? listenOrbit.y * 6
         : Math.max(-6, Math.min(6, mouseOffset.y * 6)) + jitter.y
 
-    // Iris opening: sleeping=0, waking=7 (half), drowsy=10 (heavy-lidded), full=13
+    // TG1-B: iris ry — isDrowsy now animates to 4 (fully closed), handled by Framer Motion tween
+    // TG1-A: xp_gain and life_loss keep iris fully open (ry=13) for visibility
     const irisRY = isSleeping ? 0
         : isWaking ? 7
-        : isDrowsy ? 10
+        : isDrowsy ? 4  // TG1-B: was 10, now 4 so Framer Motion drives it closed over 3s
         : 13
     const irisStrokeOpacity = 0.6
 
     // Pupil size varies by state
-    const pupilRadius = isReady ? 9 : isListening ? 7 : isSuccess ? 9 : 8
+    const pupilRadius = isReady ? 9 : isListening ? 7 : isSuccess ? 9 : isXPGain ? 10 : 8
 
-    // Show pupil: always show during drowsy blinks (no snap to center)
-    const showPupil = !isSleeping && !(isBlinking && !isDrowsy)
-    // Show closed-eye line: sleeping OR non-drowsy blinks
+    // Show iris+pupil group: hide only during sleeping or standard blinks
+    // Drowsy keeps the group visible so the iris closing tween plays
+    const showPupil = !isSleeping && !isBlinking
+    // Show closed-eye line: sleeping OR standard (non-drowsy) blinks
     const showClosedLine = isSleeping || (isBlinking && !isDrowsy)
-    // Drowsy blink: dim the pupil instead of hiding
-    const drowsyBlinkDim = isDrowsy && isBlinking
+    const drowsyBlinkDim = false
 
     return (
         <svg
@@ -208,12 +285,20 @@ function AIEye({
                 stroke={mainColor}
                 strokeWidth={isListening ? 1.5 : 0.8}
                 animate={{
-                    opacity: isListening ? [0.3, 0.7, 0.3] : isSuccess ? 0.6 : 0.2,
+                    opacity: isListening
+                        ? [0.3, 0.7, 0.3]
+                        : isSuccess
+                            ? 0.6
+                            : isXPGain
+                                ? [0.4, 0.9, 0.4]  // TG1-A: green glow pulse for xp_gain
+                                : 0.2,
                     r: isListening ? [44, 46, 44] : 46,
                 }}
                 transition={isListening
                     ? { duration: 1.5, repeat: Infinity, ease: "easeInOut" }
-                    : { duration: 0.7 }
+                    : isXPGain
+                        ? { duration: 0.6, repeat: 1, ease: "easeInOut" }
+                        : { duration: 0.7 }
                 }
                 className={!isBlinking && !isListening ? (isSuccess ? "animate-pulse" : "animate-hex-idle-breathe") : ""}
             />
@@ -235,13 +320,19 @@ function AIEye({
             )}
 
             {/* Outer hex border — ALWAYS VISIBLE */}
+            {/* TG1-A: life_loss pulses strokeWidth 2→4→2 once (red pulse) */}
             <motion.path
                 d="M50 5 L90 27.5 L90 72.5 L50 95 L10 72.5 L10 27.5 Z"
                 fill="none"
                 stroke={mainColor}
-                strokeWidth="2"
-                animate={{ opacity: isAsleepLike ? 0.4 : isWaking ? 0.6 : 0.8 }}
-                transition={{ duration: 0.7 }}
+                animate={{
+                    opacity: isAsleepLike ? 0.4 : isWaking ? 0.6 : 0.8,
+                    strokeWidth: isLifeLoss ? [2, 4, 2] : 2,
+                }}
+                transition={isLifeLoss
+                    ? { duration: 1, repeat: 0, ease: "easeInOut" }
+                    : { duration: 0.7 }
+                }
                 className={cn("transition-all duration-700", isThinking ? "animate-hex-active-pulse" : "")}
                 style={{ filter: !isSleeping ? `drop-shadow(0 0 4px ${mainColor})` : "none" }}
             />
@@ -263,12 +354,28 @@ function AIEye({
                 />
             )}
 
+            {/* TG6: Searching — wider dashed orbit ring (r=38 vs thinking's r=33) communicating
+                external data wait. Rotates continuously until GitHubSyncPanel fires the exit trigger. */}
+            {isSearching && (
+                <motion.circle
+                    cx="50" cy="50" r="38"
+                    fill="none"
+                    stroke={mainColor}
+                    strokeWidth="1"
+                    strokeOpacity="0.5"
+                    strokeDasharray="6 12"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                    style={{ transformOrigin: '50% 50%' }}
+                />
+            )}
+
             {/* Inner hex area background */}
             <motion.path
                 d="M50 15 L80 32.5 L80 67.5 L50 85 L20 67.5 L20 32.5 Z"
                 fill={mainColor}
                 animate={{
-                    fillOpacity: isSuccess ? 0.15 : isReady ? 0.08 : 0.05,
+                    fillOpacity: isSuccess ? 0.15 : isReady ? 0.08 : isXPGain ? 0.12 : 0.05,
                     opacity: isAsleepLike ? 0.1 : isWaking ? 0.2 : 0.3,
                 }}
                 transition={{ duration: 0.7 }}
@@ -293,36 +400,41 @@ function AIEye({
             {/* === PUPIL + IRIS — Shown in awake states, AND during drowsy blinks (dimmed) === */}
             {showPupil && (
                 <motion.g animate={{ opacity: drowsyBlinkDim ? 0.15 : 1 }} transition={{ duration: 0.15 }}>
-                    {/* Iris Ellipse — Animated ry for smooth open/close */}
+                    {/* Iris Ellipse — Animated ry for smooth open/close
+                        TG1-B: when isDrowsy, use a 3s tween (not spring) to smoothly close iris to ry=4 */}
                     <motion.ellipse
                         cx="50" cy="50" rx="20"
                         animate={{ ry: irisRY, opacity: irisStrokeOpacity }}
-                        transition={{ type: "spring", stiffness: 80, damping: 15 }}
+                        transition={isDrowsy
+                            ? { type: "tween", duration: 3, ease: "easeInOut" }
+                            : { type: "spring", stiffness: 80, damping: 15 }
+                        }
                         fill={mainColor}
                         fillOpacity="0.1"
                         stroke={mainColor}
                         strokeWidth="1"
                     />
 
-                    {/* Drowsy half-lid overlay */}
-                    {isDrowsy && (
-                        <motion.rect
-                            x="30" y="37"
-                            width="40" height="8"
-                            fill="hsl(200,30%,5%)"
-                            animate={{ opacity: [0.3, 0.5, 0.3], height: [6, 10, 6] }}
-                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                        />
-                    )}
-
-                    {/* Pupil group — follows mouse + jitter, stays in place during drowsy */}
+                    {/* Pupil group — fades out as iris closes during drowsy state */}
                     <motion.g
-                        animate={{ x: basePupilX, y: basePupilY, scale: 1, opacity: 1 }}
+                        animate={{
+                            x: basePupilX,
+                            y: basePupilY,
+                            scale: 1,
+                            opacity: isDrowsy ? 0 : 1,
+                        }}
                         transition={isThinking
                             ? { duration: 0 }
                             : isDrowsy
-                                ? { type: "tween", duration: 0.8, ease: "easeInOut" }
-                                : { type: "spring", stiffness: 200, damping: 20 }
+                                ? {
+                                    x: { type: "spring", stiffness: 200, damping: 20 },
+                                    y: { type: "spring", stiffness: 200, damping: 20 },
+                                    opacity: { type: "tween", duration: 2.5, ease: "easeInOut" },
+                                }
+                                : isSearching
+                                    // TG6: smooth tween for horizontal scan, no spring bounce
+                                    ? { type: "tween", duration: 0.35, ease: "easeInOut" }
+                                    : { type: "spring", stiffness: 200, damping: 20 }
                         }
                     >
                         <circle
@@ -379,7 +491,15 @@ function AIEye({
 // Main Component
 // =============================================================================
 
-export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS, onAIStateChange }: CRTWithAIProps) {
+export function CRTWithAI({
+    userName,
+    className,
+    idleTimeout = IDLE_TIMEOUT_MS,
+    onAIStateChange,
+    xpGainTrigger,
+    lifeLossTrigger,
+    searchingTrigger,
+}: CRTWithAIProps) {
     const [aiState, setAIState] = useState<AIState>("sleeping")
     const [visibleLines, setVisibleLines] = useState(0)
     const [cursorVisible, setCursorVisible] = useState(true)
@@ -393,18 +513,105 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS, 
     const autonomousTimer = useRef<NodeJS.Timeout | null>(null)
     const inactivityTimer = useRef<NodeJS.Timeout | null>(null)
     const blinkTimer = useRef<NodeJS.Timeout | null>(null)
-    const drowsyBlinkInterval = useRef<NodeJS.Timeout | null>(null)
+    // TG1-B: drowsyBlinkInterval ref removed — replaced by Framer Motion tween on the iris ellipse
     const scanningInterval = useRef<NodeJS.Timeout | null>(null)
     const scrollRef = useRef<HTMLDivElement>(null)
-
     const containerRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
     const eyeRef = useRef<HTMLDivElement>(null)
+
+    // TG1-A: Track previous (non-transient) state for auto-return after xp_gain / life_loss
+    const prevStateRef = useRef<AIState>("awake")
+    // Post-sync: true while the eye is in the 28s "curious" window after a successful sync.
+    // During this window, inactivity uses POST_SYNC_CURIOUS_MS instead of INACTIVITY_RETURN_MS.
+    const postSyncRef = useRef(false)
+    const postSyncTimer = useRef<NodeJS.Timeout | null>(null)
+    // Stable ref to startScanning — allows xpGainTrigger effect to call it before
+    // the useCallback declaration (hooks can't be forward-referenced).
+    const startScanningRef = useRef<() => void>(() => {})
 
     // --- Notify parent of AI state changes ---
     useEffect(() => {
         onAIStateChange?.(aiState)
     }, [aiState, onAIStateChange])
+
+    // TG1-A: Keep prevStateRef updated to the last non-transient state
+    // TG6: "searching" is also excluded — it's a sustained external-data-wait state,
+    // not a permanent baseline. The previous meaningful state is preserved for the return transition.
+    useEffect(() => {
+        if (!NON_PREV_STATES.includes(aiState)) {
+            prevStateRef.current = aiState
+        }
+    }, [aiState])
+
+    // TG1-A: xp_gain trigger — fires double-blink + green iris, then enters 28s curious mode.
+    // After the flash, the eye wakes up fully (awake) and starts autonomous scanning to
+    // "review" the data it fetched. It stays in this curious mode for POST_SYNC_CURIOUS_MS
+    // before the normal inactivity sequence (drowsy → sleeping) can begin.
+    useEffect(() => {
+        if (!xpGainTrigger) return
+        setAIState("xp_gain")
+
+        // Double-blink: t=0ms close, t=80ms open, t=200ms close, t=280ms open
+        setIsBlinking(true)
+        const t1 = setTimeout(() => setIsBlinking(false), 80)
+        const t2 = setTimeout(() => setIsBlinking(true), 200)
+        const t3 = setTimeout(() => setIsBlinking(false), 280)
+
+        // After flash: wake up in curious mode and start scanning the data
+        const ret = setTimeout(() => {
+            setAIState("awake")
+            startScanningRef.current()
+            // Enter post-sync curious window — inactivity timer will use the long delay
+            postSyncRef.current = true
+            if (postSyncTimer.current) clearTimeout(postSyncTimer.current)
+            postSyncTimer.current = setTimeout(() => {
+                postSyncRef.current = false
+            }, POST_SYNC_CURIOUS_MS)
+        }, 1200)
+
+        return () => {
+            clearTimeout(t1)
+            clearTimeout(t2)
+            clearTimeout(t3)
+            clearTimeout(ret)
+        }
+    }, [xpGainTrigger])
+
+    // TG1-A: life_loss trigger — fires slow single blink + red hex pulse, auto-returns after 2000ms
+    useEffect(() => {
+        if (!lifeLossTrigger) return
+        setAIState("life_loss")
+
+        // Single slow blink: close over ~300ms (done by marking blinking=true),
+        // hold for 400ms, open over ~300ms
+        setIsBlinking(true)
+        const tHold = setTimeout(() => {
+            // Still blinking at 300ms (hold phase)
+        }, 300)
+        const tOpen = setTimeout(() => setIsBlinking(false), 700)
+
+        // Auto-return to previous state after 2000ms
+        const ret = setTimeout(() => {
+            setAIState(prevStateRef.current)
+        }, 2000)
+
+        return () => {
+            clearTimeout(tHold)
+            clearTimeout(tOpen)
+            clearTimeout(ret)
+        }
+    }, [lifeLossTrigger])
+
+    // TG6: searching trigger — sets the AIEye into the sustained amber/orange scanning state.
+    // No auto-return: the caller (GitHubSyncPanel) drives exit via xpGainTrigger or lifeLossTrigger
+    // once the sync action resolves.
+    // Also marks the user as having interacted so the eye starts awake on future visits.
+    useEffect(() => {
+        if (!searchingTrigger) return
+        setAIState("searching")
+        localStorage.setItem(AI_INTERACTED_KEY, "1")
+    }, [searchingTrigger])
 
     // --- Auto-scroll to bottom ---
     useEffect(() => {
@@ -422,6 +629,14 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS, 
         }
     }, [])
 
+    // If the user has interacted before, start awake instead of in eternal sleep.
+    // "Eternal sleep" is reserved for first-time users who've never triggered the eye.
+    useEffect(() => {
+        if (localStorage.getItem(AI_INTERACTED_KEY)) {
+            setAIState("awake")
+        }
+    }, [])
+
     useEffect(() => {
         if (messages.length > 0) {
             localStorage.setItem("ai_chat_history", JSON.stringify({ messages }))
@@ -433,8 +648,13 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS, 
         if (inactivityTimer.current) clearTimeout(inactivityTimer.current)
         if (aiState === "sleeping") return
 
+        // During the post-sync curious window, use the extended delay so the eye
+        // stays awake long enough to "review" the data it fetched.
+        const delay = postSyncRef.current ? POST_SYNC_CURIOUS_MS : INACTIVITY_RETURN_MS
+
         inactivityTimer.current = setTimeout(() => {
             // When inactivity hits: return to info + start drowsy sequence
+            postSyncRef.current = false
             setShowingChat(false)
             setAIState("drowsy")
 
@@ -442,30 +662,33 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS, 
             setTimeout(() => {
                 setAIState("sleeping")
             }, 4000)
-        }, INACTIVITY_RETURN_MS)
+        }, delay)
     }, [aiState])
 
     useEffect(() => {
-        if (aiState !== "sleeping" && aiState !== "thinking" && aiState !== "success") {
+        // Don't start inactivity timer while the eye is busy:
+        // - "searching": parent-driven state (GitHub sync in progress), must not sleep mid-scan
+        // - "thinking" / "success": active AI response cycle
+        if (
+            aiState !== "sleeping" &&
+            aiState !== "thinking" &&
+            aiState !== "success" &&
+            aiState !== "searching"
+        ) {
             resetInactivity()
+        }
+        // Clear any running inactivity timer when entering searching so the eye
+        // won't go drowsy while a sync is in progress.
+        if (aiState === "searching" && inactivityTimer.current) {
+            clearTimeout(inactivityTimer.current)
         }
         return () => { if (inactivityTimer.current) clearTimeout(inactivityTimer.current) }
     }, [resetInactivity, message, aiState])
 
-    // --- Drowsy Blinks (parpadeos rápidos repetidos, como luchando contra el sueño) ---
-    useEffect(() => {
-        if (aiState === "drowsy") {
-            const runDrowsyBlink = () => {
-                setIsBlinking(true)
-                setTimeout(() => setIsBlinking(false), 180)
-                drowsyBlinkInterval.current = setTimeout(runDrowsyBlink, 650)
-            }
-            drowsyBlinkInterval.current = setTimeout(runDrowsyBlink, 600)
-        } else {
-            if (drowsyBlinkInterval.current) clearTimeout(drowsyBlinkInterval.current)
-        }
-        return () => { if (drowsyBlinkInterval.current) clearTimeout(drowsyBlinkInterval.current) }
-    }, [aiState])
+    // TG1-B: drowsyBlinkInterval useEffect REMOVED.
+    // The drowsy state animation is now handled by the Framer Motion tween on the iris ellipse
+    // (transition changes to { type: "tween", duration: 3, ease: "easeInOut" } when isDrowsy=true)
+    // and the half-lid motion.rect is a static opacity=0.4 bar.
 
     // --- Autonomous scanning ---
     const startScanning = useCallback(() => {
@@ -478,6 +701,8 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS, 
             })
         }, 1500)
     }, [])
+    // Keep the ref in sync so effects defined before this useCallback can call it
+    startScanningRef.current = startScanning
 
     const stopScanning = useCallback(() => {
         setIsAutonomous(false)
@@ -491,7 +716,9 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS, 
             if (isAutonomous) stopScanning()
             if (autonomousTimer.current) clearTimeout(autonomousTimer.current)
             autonomousTimer.current = setTimeout(() => {
-                if (!["sleeping", "thinking", "listening", "success", "drowsy"].includes(aiState)) startScanning()
+                // TG6: "searching" added to exclusion list — autonomous scanning must not
+                // override the left-right scan animation driven by the searching state
+                if (!["sleeping", "thinking", "listening", "success", "drowsy", "searching"].includes(aiState)) startScanning()
             }, AUTONOMOUS_IDLE_MS)
 
             const rect = eyeRef.current.getBoundingClientRect()
@@ -567,7 +794,14 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS, 
         }, 800)
     }
 
-    const borderColor = (aiState === "sleeping" || aiState === "drowsy") ? "hsl(0,80%,55%,0.2)" : (aiState === "success" ? "hsl(150,100%,45%,0.3)" : "hsl(174,100%,50%,0.2)")
+    // TG6: searching gets its own amber border color
+    const borderColor = (aiState === "sleeping" || aiState === "drowsy" || aiState === "life_loss")
+        ? "hsl(0,80%,55%,0.2)"
+        : (aiState === "success" || aiState === "xp_gain")
+            ? "hsl(150,100%,45%,0.3)"
+            : aiState === "searching"
+                ? "hsl(38,100%,55%,0.2)"
+                : "hsl(174,100%,50%,0.2)"
 
     return (
         <div
@@ -591,11 +825,30 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS, 
             {/* Header */}
             <div className="flex items-center justify-between px-3 py-2 border-b bg-[hsl(200,30%,8%)]" style={{ borderColor }}>
                 <div className="flex items-center gap-2">
-                    <div className={cn("w-1.5 h-1.5 rounded-full shadow-[0_0_4px]", aiState === "success" ? "bg-green-500 shadow-green-500" : (aiState === "sleeping" || aiState === "drowsy" ? "bg-red-500 shadow-red-500" : "bg-cyan-500 shadow-cyan-500"))} />
+                    {/* TG6: searching gets amber status dot */}
+                    <div className={cn(
+                        "w-1.5 h-1.5 rounded-full shadow-[0_0_4px]",
+                        aiState === "success" || aiState === "xp_gain"
+                            ? "bg-green-500 shadow-green-500"
+                            : (aiState === "sleeping" || aiState === "drowsy" || aiState === "life_loss")
+                                ? "bg-red-500 shadow-red-500"
+                                : aiState === "searching"
+                                    ? "bg-[hsl(38,100%,55%)] shadow-[hsl(38,100%,55%)]"
+                                    : "bg-cyan-500 shadow-cyan-500"
+                    )} />
                     <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground/60">SYS_CONSOLE v3.10_AI</span>
                 </div>
                 <div className="flex gap-3 text-[9px] font-mono">
-                    <span className={cn(aiState === "sleeping" || aiState === "drowsy" ? "text-red-500" : "text-cyan-400")}>
+                    {/* TG6: searching gets amber STATUS label */}
+                    <span className={cn(
+                        aiState === "sleeping" || aiState === "drowsy" || aiState === "life_loss"
+                            ? "text-red-500"
+                            : aiState === "xp_gain"
+                                ? "text-[hsl(150,100%,45%)]"
+                                : aiState === "searching"
+                                    ? "text-[hsl(38,100%,55%)]"
+                                    : "text-cyan-400"
+                    )}>
                         STATUS: {aiState.toUpperCase()}
                     </span>
                 </div>
@@ -699,16 +952,19 @@ export function CRTWithAI({ userName, className, idleTimeout = IDLE_TIMEOUT_MS, 
                 {/* Eye Side */}
                 <div ref={eyeRef} className="w-[120px] flex flex-col items-center justify-center border-l bg-[hsl(200,30%,4%)]" style={{ borderColor }}>
                     <AIEye state={aiState} mouseOffset={mouseOffset} isBlinking={isBlinking} />
+                    {/* TG6: searching state label renders in amber */}
                     <span
                         className="text-[8px] font-mono mt-2 opacity-50 uppercase tracking-[0.2em]"
                         style={{
-                            color: aiState === "success"
+                            color: aiState === "success" || aiState === "xp_gain"
                                 ? "hsl(150,100%,45%)"
                                 : aiState === "thinking"
                                     ? "hsl(330,100%,65%)"
-                                    : (aiState === "sleeping" || aiState === "drowsy")
-                                        ? "hsl(0,80%,55%)"
-                                        : "hsl(174,100%,50%)"
+                                    : aiState === "searching"
+                                        ? "hsl(38,100%,55%)"
+                                        : (aiState === "sleeping" || aiState === "drowsy" || aiState === "life_loss")
+                                            ? "hsl(0,80%,55%)"
+                                            : "hsl(174,100%,50%)"
                         }}
                     >
                         {aiState}

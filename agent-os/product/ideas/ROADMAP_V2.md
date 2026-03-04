@@ -130,7 +130,8 @@
 
 **Tasks:**
 
-**Spec 3A: GitHub Validation**
+**Spec 3A: GitHub Validation** COMPLETED 2026-03-04
+**Spec:** `agent-os/specs/2026-03-03-phase-3a-github-validation/`
 - Conectar cuenta GitHub (OAuth ya existe via Better Auth)
 - Obtener repos, languages, commit activity
 - Auto-validar skills basado en repos (`TypeScript` si tiene repos con >60% TS)

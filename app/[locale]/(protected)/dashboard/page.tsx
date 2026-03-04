@@ -25,7 +25,10 @@ import {
   TopRunnersPanel,
   QuickActionsBar,
 } from '@/features/tech'
+import { SysLogPanel } from '@/features/tech/components/sys-log-panel'
 import type { DashboardPageProps } from '@/features/dashboard/types/dashboard'
+import { getUserDashboardStats } from '@/features/dashboard/data/getUserDashboardStats.data'
+import { getTopRunners } from '@/features/dashboard/data/getTopRunners.data'
 
 // =============================================================================
 // Helpers
@@ -80,15 +83,22 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   const displayName = getDisplayName(userData.name, userData.email)
   const initials = getInitials(userData.name, userData.email)
 
-  // --- Mock stats (replace with real DB queries) ---
-  const userStats = {
-    currentXP: 1900,
-    maxXP: 2450,
-    level: 18,
-    streakDays: 12,
-    experiences: 7,
-    achievements: { current: 18, total: 42 },
-  }
+  // Fetch stats and top runners in parallel for optimal performance
+  const [stats, runners] = await Promise.all([
+    getUserDashboardStats(user.id),
+    getTopRunners(user.id),
+  ])
+
+  // Map TopRunner[] to the Runner[] shape expected by TopRunnersPanel
+  const rankedRunners = runners.map((runner, i) => ({
+    id: runner.id,
+    rank: i + 1,
+    name: runner.name,
+    username: runner.username,
+    image: runner.image,
+    xp: runner.totalXP,
+    isCurrentUser: runner.isCurrentUser,
+  }))
 
   return (
     <div
@@ -105,18 +115,19 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
           userName={displayName}
           userInitial={initials}
           userImage={userData.image}
-          level={userStats.level}
-          currentXP={userStats.currentXP}
-          maxXP={userStats.maxXP}
-          streakDays={userStats.streakDays}
+          level={stats.level}
+          currentXP={stats.totalXP}
+          maxXP={stats.nextLevelXP}
+          streakDays={stats.currentStreak}
+          activeSkillsCount={stats.activeSkillsCount}
           translations={{
             welcomeTitle: tWelcomeMsg('welcome', { name: displayName }),
             welcomeSubtitle: tWelcomeMsg('welcomeSubtitle'),
-            streak: tWelcome('streak', { count: userStats.streakDays }),
+            streak: tWelcome('streak', { count: stats.currentStreak }),
             quickActionsTitle: tWelcome('quickActions'),
             xpToLevel: tWelcome('xpToLevel', {
-              xp: userStats.maxXP - userStats.currentXP,
-              level: userStats.level + 1,
+              xp: stats.xpToNextLevel,
+              level: stats.level + 1,
             }),
           }}
         />
@@ -124,39 +135,10 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
         {/* ── ROW 2: Missions+SysLog | HEX DIAMOND + Actions + Heatmap | Skills+Runners ── */}
         <div className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_minmax(0,1fr)] gap-2">
 
-          {/* Left column: Active Missions + SYS_LOG */}
+          {/* Left column: Active Missions + SYS_LOG (real activity events) */}
           <div className="flex flex-col gap-2 min-h-0">
             <ActiveMissionsPanel className="flex-1 min-h-[140px]" />
-            {/* SYS_LOG — recent activity feed */}
-            <div className="border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,6%)] p-3 flex-1 min-h-[120px]">
-              <div className="flex items-center justify-between mb-2.5">
-                <span className="text-[10px] font-mono uppercase tracking-[0.15em] text-muted-foreground/60">SYS_LOG</span>
-                <span className="text-[8px] font-mono text-muted-foreground/30">last 48h</span>
-              </div>
-              <div className="space-y-2.5">
-                <div className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[hsl(150,100%,45%)] mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="text-[10px] font-mono text-foreground/80">Deployed v2.0 to Production</p>
-                    <p className="text-[8px] font-mono text-muted-foreground/40">2 hours ago</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[hsl(174,100%,50%)] mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="text-[10px] font-mono text-foreground/80">Completed &quot;React Hooks&quot; module</p>
-                    <p className="text-[8px] font-mono text-muted-foreground/40">Yesterday</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[hsl(52,100%,50%)] mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="text-[10px] font-mono text-foreground/80">Earned &quot;Fast Learner&quot; badge</p>
-                    <p className="text-[8px] font-mono text-muted-foreground/40">2 days ago</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <SysLogPanel userId={user.id} className="flex-1 min-h-[120px]" />
           </div>
 
           {/* CENTER: Section header + Hex Diamond + Quick Actions + Heatmap */}
@@ -170,18 +152,22 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
 
             <HexStatGrid
               stats={{
-                xp: { current: userStats.currentXP, max: userStats.maxXP },
-                level: userStats.level,
-                experiences: userStats.experiences,
-                achievements: userStats.achievements,
+                xp: { current: stats.totalXP, max: stats.nextLevelXP },
+                level: stats.level,
+                experiences: stats.experiencesCount,
+                achievements: stats.achievements,
               }}
-              streakDays={userStats.streakDays}
+              streakDays={stats.currentStreak}
             />
 
             {/* Quick Actions hex row */}
             <QuickActionsBar />
 
-            <ActivityHeatmap />
+            {/* Activity heatmap with real streak data */}
+            <ActivityHeatmap
+              currentStreak={stats.currentStreak}
+              lastStreakDate={stats.lastStreakDate}
+            />
 
             {/* Bottom data readout */}
             <div className="w-full flex items-center justify-between px-3 text-[7px] font-mono text-muted-foreground/25 uppercase">
@@ -191,10 +177,10 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
             </div>
           </div>
 
-          {/* Right column: Skills + Top Runners stacked */}
+          {/* Right column: Skills + Top Runners stacked (real leaderboard data) */}
           <div className="flex flex-col gap-2 min-h-0">
             <SkillRadarPanel className="flex-1 min-h-[160px]" />
-            <TopRunnersPanel className="flex-1 min-h-[160px]" />
+            <TopRunnersPanel runners={rankedRunners} className="flex-1 min-h-[160px]" />
           </div>
         </div>
       </div>

@@ -14,6 +14,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './'),
+      // Stub Next.js server-only marker so Prisma imports work in Vitest (jsdom env)
+      'server-only': path.resolve(__dirname, './vitest.server-only-stub.ts'),
     },
   },
 });

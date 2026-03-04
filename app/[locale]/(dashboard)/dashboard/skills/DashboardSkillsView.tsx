@@ -4,6 +4,7 @@
  * DashboardSkillsView Component - Cyberpunk V2
  *
  * Client component for the dashboard skills page with cyberpunk hexagonal design.
+ * Includes the GitHubSyncPanel (TG9) between the legend row and the skill tree.
  */
 
 import { useCallback, useTransition, useState } from 'react';
@@ -14,12 +15,15 @@ import { useParams } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import { HexBadge, DashboardNav } from '@/features/tech';
+import { CRTWithAI } from '@/features/tech/components/crt-with-ai';
 import {
   SkillTreeView,
   ManualSkillModal
 } from '@/features/skills/components';
+import { GitHubSyncPanel } from '@/features/github/components';
 import type { UserSkillWithDetails, SkillCategory } from '@/features/skills/types/skill';
 import type { PortfolioMode } from '@/features/portfolio/types/portfolio';
+import type { GitHubStats } from '@/features/github/types/github';
 
 // =============================================================================
 // Types
@@ -42,6 +46,12 @@ interface DashboardSkillsViewProps {
     image: string | null;
     portfolioMode: PortfolioMode;
   };
+  /** Timestamp of the last GitHub sync; null if never synced (TG9) */
+  githubSyncedAt: Date | null;
+  /** Persisted summary stats from the last GitHub sync; null if no sync has run (TG9) */
+  githubStats: GitHubStats | null;
+  /** True when an Account record with providerId='github' exists for the user (TG9) */
+  isGitHubConnected: boolean;
 }
 
 // =============================================================================
@@ -53,6 +63,9 @@ export function DashboardSkillsView({
   categories,
   stats,
   user,
+  githubSyncedAt,
+  githubStats,
+  isGitHubConnected,
 }: DashboardSkillsViewProps) {
   const params = useParams();
   const locale = params.locale as string;
@@ -61,6 +74,16 @@ export function DashboardSkillsView({
   const tStats = useTranslations('dashboard.skills.stats');
   const [isPending, startTransition] = useTransition();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // ---------------------------------------------------------------------------
+  // TG9: AIEye trigger counters for GitHub sync state transitions.
+  // These are lifted state values that GitHubSyncPanel callbacks increment.
+  // If CRTWithAI is added to this page in a future iteration, these props
+  // can be passed directly to drive the eye animations.
+  // ---------------------------------------------------------------------------
+  const [xpGainTrigger, setXpGainTrigger] = useState(0);
+  const [lifeLossTrigger, setLifeLossTrigger] = useState(0);
+  const [searchingTrigger, setSearchingTrigger] = useState(0);
 
   // Handle add skill callback
   const handleAddSkill = useCallback(() => {
@@ -176,6 +199,28 @@ export function DashboardSkillsView({
         <span className="text-[9px] font-mono text-muted-foreground">
           {skills.length} skills &middot; {stats.totalXP.toLocaleString()} XP
         </span>
+      </div>
+
+      {/* GITHUB_VALIDATOR — GitHub Expansion Module / Sync Status Panel + AIEye (TG9) */}
+      <div className="px-6 py-3 border-b border-[hsl(174,100%,50%,0.1)]">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_280px] gap-3">
+          <GitHubSyncPanel
+            userId={user.id}
+            isGitHubConnected={isGitHubConnected}
+            githubSyncedAt={githubSyncedAt}
+            githubStats={githubStats}
+            onSearchingTrigger={() => setSearchingTrigger((c) => c + 1)}
+            onXPGainTrigger={() => setXpGainTrigger((c) => c + 1)}
+            onLifeLossTrigger={() => setLifeLossTrigger((c) => c + 1)}
+          />
+          <CRTWithAI
+            userName={user.name}
+            className="min-h-[140px]"
+            xpGainTrigger={xpGainTrigger}
+            lifeLossTrigger={lifeLossTrigger}
+            searchingTrigger={searchingTrigger}
+          />
+        </div>
       </div>
 
       {/* Main Content - Skill Tree View */}

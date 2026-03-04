@@ -683,12 +683,12 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
 #### Task Group 10: Re-authorization Modal
 **Dependencies:** TG8 (GitHubSyncPanel owns modal state), TG6 (life_loss trigger)
 
-- [ ] 10.0 Create `features/github/components/GitHubReauthModal.tsx`
-  - [ ] 10.1 Write 2 focused tests
+- [x] 10.0 Create `features/github/components/GitHubReauthModal.tsx`
+  - [x] 10.1 Write 2 focused tests
     - Test: when `isOpen` is `true`, the modal renders with the message "Enlace perdido con la base de datos de GitHub. Reautoriza para continuar."
     - Test: when `isOpen` is `false`, the modal is not visible (Dialog is closed)
     - File: `features/github/__tests__/GitHubReauthModal.test.tsx`
-  - [ ] 10.2 Create `features/github/components/GitHubReauthModal.tsx`
+  - [x] 10.2 Create `features/github/components/GitHubReauthModal.tsx`
     - `'use client'` directive
     - Props: `{ isOpen: boolean; onClose: () => void }`
     - Use shadcn `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle` from `@/features/shadcn/ui/dialog`
@@ -718,10 +718,10 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
       </DialogContent>
       ```
     - `handleReconnect`: trigger Better Auth GitHub reconnect (same method as `GitHubSyncPanel.handleConnectGitHub`), then call `onClose()`
-  - [ ] 10.3 Update `features/github/components/index.ts` to also export `GitHubReauthModal`
-  - [ ] 10.4 Update `features/github/components/GitHubSyncPanel.tsx` — replace the placeholder with the real import
+  - [x] 10.3 Update `features/github/components/index.ts` to also export `GitHubReauthModal`
+  - [x] 10.4 Update `features/github/components/GitHubSyncPanel.tsx` — replace the placeholder with the real import
     - Add `import { GitHubReauthModal } from './GitHubReauthModal'` and uncomment the render
-  - [ ] 10.5 Run the 2 tests written in 10.1 and confirm they pass
+  - [x] 10.5 Run the 2 tests written in 10.1 and confirm they pass
     - Command: `npx jest features/github/__tests__/GitHubReauthModal.test.tsx --no-coverage`
 
 **Acceptance Criteria:**

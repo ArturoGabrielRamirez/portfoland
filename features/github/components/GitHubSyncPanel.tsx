@@ -22,60 +22,7 @@ import { formatTimeAgo } from '@/lib/utils/format';
 import { syncGitHubAction } from '../actions/syncGitHub.action';
 import { GITHUB_MESSAGES } from '../constants/messages';
 import type { GitHubSyncPanelProps } from '../types/github';
-
-// =============================================================================
-// Placeholder for GitHubReauthModal — wired in TG10
-// =============================================================================
-
-/** Temporary stub rendered until TG10 creates the real modal component */
-function GitHubReauthModalPlaceholder({
-  isOpen,
-  onClose,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-}) {
-  if (!isOpen) return null;
-
-  return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="GitHub re-authorization required"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
-    >
-      <div className="bg-[hsl(200,30%,8%)] border border-[hsl(0,80%,55%,0.4)] font-mono p-6 max-w-sm w-full mx-4">
-        {/* Angular top-left corner accent */}
-        <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-[hsl(0,80%,55%,0.6)]" />
-        {/* Angular bottom-right corner accent */}
-        <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-[hsl(0,80%,55%,0.6)]" />
-
-        <p className="text-[10px] font-mono text-[hsl(0,80%,55%)] opacity-70 mb-2 uppercase tracking-widest">
-          [SYS_ERR]: auth_failure
-        </p>
-        <p className="text-xs font-mono text-gray-300 mb-4">
-          {GITHUB_MESSAGES.AUTH_ERROR}
-        </p>
-        <div className="flex gap-2">
-          <button
-            onClick={() =>
-              signIn.social({ provider: 'github', callbackURL: '/dashboard/skills' })
-            }
-            className="flex-1 font-mono text-[11px] py-2 border border-[hsl(174,100%,50%,0.4)] text-[hsl(174,100%,50%)] hover:bg-[hsl(174,100%,50%,0.08)] transition-colors"
-          >
-            [ RECONECTAR GITHUB ]
-          </button>
-          <button
-            onClick={onClose}
-            className="font-mono text-[11px] py-2 px-3 border border-gray-700 text-gray-500 hover:text-gray-400 transition-colors"
-          >
-            [ CANCELAR ]
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
+import { GitHubReauthModal } from './GitHubReauthModal';
 
 // =============================================================================
 // Main Component
@@ -286,8 +233,8 @@ export function GitHubSyncPanel({
         </button>
       </div>
 
-      {/* Re-authorization modal — replaced by GitHubReauthModal in TG10 */}
-      <GitHubReauthModalPlaceholder
+      {/* Re-authorization modal — shown when token is expired or revoked */}
+      <GitHubReauthModal
         isOpen={showReauthModal}
         onClose={() => setShowReauthModal(false)}
       />

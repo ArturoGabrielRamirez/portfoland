@@ -502,13 +502,13 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
 #### Task Group 7: SkillHexagonNode Visual Extensions
 **Dependencies:** TG1 (schema must expose `githubValidated` on `UserSkill`)
 
-- [ ] 7.0 Extend `features/skills/components/SkillHexagonNode.tsx` with GitHub and dual-validation visuals
-  - [ ] 7.1 Write 3 focused tests
+- [x] 7.0 Extend `features/skills/components/SkillHexagonNode.tsx` with GitHub and dual-validation visuals
+  - [x] 7.1 Write 3 focused tests
     - Test: given `userSkill.githubValidated = true, userSkill.aiValidated = false`, the rendered SVG has `drop-shadow(0 0 10px #22C55E)` in the `filter` style (render with React Testing Library)
     - Test: given both `aiValidated = true` AND `githubValidated = true`, the rendered SVG has `drop-shadow(0 0 12px #FFD700)` and the gold pulsing ring `motion.div` is present
     - Test: the `aria-label` includes `"AI & GitHub Verified"` when both flags are true
     - File: `features/github/__tests__/SkillHexagonNode.github.test.tsx`
-  - [ ] 7.2 Extend the validation state block in `SkillHexagonNodeComponent` (after line 62 — `isAIValidated` declaration)
+  - [x] 7.2 Extend the validation state block in `SkillHexagonNodeComponent` (after line 62 — `isAIValidated` declaration)
     - Add:
       ```typescript
       const isGithubValidated = userSkill?.githubValidated === true;
@@ -516,7 +516,7 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
       const isGithubOnly = isGithubValidated && !isAIValidated;
       const isBothValidated = isAIValidated && isGithubValidated;
       ```
-  - [ ] 7.3 Update the `svgFilter` string (lines 85–87) to handle all three new compound states
+  - [x] 7.3 Update the `svgFilter` string (lines 85–87) to handle all three new compound states
     - Replace the current two-branch conditional with a four-branch:
       ```typescript
       const svgFilter = isBothValidated
@@ -527,7 +527,7 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
             ? `drop-shadow(0 0 10px #D946EF) drop-shadow(0 0 5px #00D4FF)` // magenta/cyan ai-only
             : baseLevelFilter;
       ```
-  - [ ] 7.4 Add the GitHub `⬡` mark SVG text element (in the SVG, after the existing AI `★` mark block)
+  - [x] 7.4 Add the GitHub `⬡` mark SVG text element (in the SVG, after the existing AI `★` mark block)
     - Render when `isGithubValidated` is true:
       ```tsx
       {isGithubValidated && (
@@ -546,7 +546,7 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
       ```
     - Position `x="8", y="10"` places it at top-left, distinct from the AI `★` at `x="42", y="10"` (top-right)
     - When `isBothValidated`, the `⬡` renders in gold `#FFD700` to unify the dual-validation aesthetic
-  - [ ] 7.5 Add the gold dual-validated pulsing ring `motion.div` (after the existing L4/L5 pulsing ring block, around line 270)
+  - [x] 7.5 Add the gold dual-validated pulsing ring `motion.div` (after the existing L4/L5 pulsing ring block, around line 270)
     - Render only when `isBothValidated && !isEmpty`:
       ```tsx
       {isBothValidated && !isEmpty && (
@@ -565,7 +565,7 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
         />
       )}
       ```
-  - [ ] 7.6 Update the `ariaLabel` string (line 94–96) to reflect the validation state
+  - [x] 7.6 Update the `ariaLabel` string (line 94–96) to reflect the validation state
     - Replace the current two-branch label with:
       ```typescript
       const ariaLabel = isEmpty
@@ -578,7 +578,7 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
               ? `${skillName} - Level ${level} ${visualStyle.name} - AI Verified`
               : `${skillName} - Level ${level} ${visualStyle.name}`;
       ```
-  - [ ] 7.7 Run the 3 tests written in 7.1 and confirm they pass
+  - [x] 7.7 Run the 3 tests written in 7.1 and confirm they pass
     - Command: `npx jest features/github/__tests__/SkillHexagonNode.github.test.tsx --no-coverage`
 
 **Acceptance Criteria:**

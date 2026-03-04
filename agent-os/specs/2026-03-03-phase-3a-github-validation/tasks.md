@@ -139,15 +139,15 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
 #### Task Group 2: GitHub API Data Layer
 **Dependencies:** TG1 (needs Prisma `Account` model with `accessToken`)
 
-- [ ] 2.0 Create `features/github/api/` and `features/github/data/` directories with all API and data functions
-  - [ ] 2.1 Write 4 focused tests for the GitHub API layer
+- [x] 2.0 Create `features/github/api/` and `features/github/data/` directories with all API and data functions
+  - [x] 2.1 Write 4 focused tests for the GitHub API layer
     - Test `fetchUserRepos`: mock `fetch`, verify it filters repos where `fork === true` from the result set
     - Test `fetchRepoLanguages`: mock `fetch`, verify it aggregates byte counts across multiple calls (two repos, same language accumulates)
     - Test `fetchCommitCount`: mock `fetch` for GraphQL endpoint, verify it returns `totalCommitContributions` from the response
     - Test that `fetchUserRepos` throws a typed `GitHubAuthError` when the mocked response status is 401
     - File: `features/github/__tests__/github.api.test.ts`
     - All tests mock `fetch` — no real network calls
-  - [ ] 2.2 Create `features/github/api/github.api.ts`
+  - [x] 2.2 Create `features/github/api/github.api.ts`
     - Define and export `GitHubAuthError` class extending `Error`:
       ```typescript
       export class GitHubAuthError extends Error {
@@ -185,7 +185,7 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
       - Iterates over each non-fork repo, calls `fetchRepoLanguages` for each
       - Aggregates total bytes per language: `{ TypeScript: 90000, Python: 30000 }`
       - Returns the merged aggregate object
-  - [ ] 2.3 Create `features/github/data/getGitHubToken.data.ts`
+  - [x] 2.3 Create `features/github/data/getGitHubToken.data.ts`
     - Single Prisma query:
       ```typescript
       export async function getGitHubToken(userId: string): Promise<string | null> {
@@ -198,9 +198,9 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
       ```
     - Import `prisma` from `@/lib/prisma`
     - Add JSDoc: "Retrieves the GitHub OAuth access token for the user from the Better Auth Account record. Returns null if no GitHub account is connected."
-  - [ ] 2.4 Create `features/github/api/index.ts` barrel export
+  - [x] 2.4 Create `features/github/api/index.ts` barrel export
     - Re-export `GitHubAuthError`, `fetchUserRepos`, `fetchRepoLanguages`, `fetchCommitCount`, `aggregateLanguageBytes` from `./github.api`
-  - [ ] 2.5 Run the 4 tests written in 2.1 and confirm they pass
+  - [x] 2.5 Run the 4 tests written in 2.1 and confirm they pass
     - Command: `npx jest features/github/__tests__/github.api.test.ts --no-coverage`
 
 **Acceptance Criteria:**

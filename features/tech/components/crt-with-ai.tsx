@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from "framer-motion"
 // =============================================================================
 
 // TG1-A: Extended AIState union with xp_gain and life_loss transient states
+// TG6: Added "searching" sustained state for GitHub sync scanning animation
 type AIState =
   | "sleeping"
   | "waking"
@@ -21,6 +22,7 @@ type AIState =
   | "success"
   | "xp_gain"
   | "life_loss"
+  | "searching"
 
 export type { AIState }
 
@@ -41,6 +43,12 @@ interface CRTWithAIProps {
      * The component fires the animation when this value changes.
      */
     lifeLossTrigger?: number
+    /**
+     * TG6: Increment this counter to trigger the sustained `searching` eye state.
+     * The parent component (GitHubSyncPanel) drives the return transition by firing
+     * `xpGainTrigger` or `lifeLossTrigger` after the action resolves.
+     */
+    searchingTrigger?: number
 }
 
 interface ConsoleLine {
@@ -62,8 +70,14 @@ const IDLE_TIMEOUT_MS = 60 * 1000
 const INACTIVITY_RETURN_MS = 5000 // Return to stats after 5s
 const AUTONOMOUS_IDLE_MS = 3000
 
-// Transient states that do NOT update prevStateRef (they auto-return)
+// Transient states that auto-return via a timer and do NOT update prevStateRef
+// TG6: "searching" is parent-driven (sustained), so it is NOT in this list;
+// prevStateRef exclusion is handled separately in the effect below
 const TRANSIENT_STATES: AIState[] = ["xp_gain", "life_loss"]
+
+// States that do not constitute a "meaningful previous state" for auto-return
+// Includes the auto-returning transient states AND the sustained searching state
+const NON_PREV_STATES: AIState[] = [...TRANSIENT_STATES, "searching"]
 
 const BOOT_LINES: ConsoleLine[] = [
     { text: "session_stats --display --verbose", color: "white", prefix: "$ " },
@@ -147,27 +161,32 @@ function AIEye({
     // TG1-A: new state flags
     const isXPGain = state === "xp_gain"
     const isLifeLoss = state === "life_loss"
+    // TG6: searching state flag — amber/orange iris, left-right scan animation
+    const isSearching = state === "searching"
 
     const isAsleepLike = isSleeping
 
+    // TG6: searching amber/orange inserted before the default awake cyan
     // TG1-A: mainColor switch — new states have highest specificity before default cyan
     const mainColor = isXPGain
         ? "hsl(150,100%,45%)"   // green — XP gain
         : isLifeLoss
             ? "hsl(0,80%,55%)"  // red — life loss
-            : isSuccess
-                ? "hsl(150,100%,45%)"
-                : isReady
-                    ? "hsl(150,100%,50%)"
-                    : isThinking
-                        ? "hsl(330,100%,65%)"
-                        : isListening
-                            ? "hsl(200,100%,60%)"
-                            : (isSleeping || isDrowsy)
-                                ? "hsl(0,80%,55%)"
-                                : isWaking
-                                    ? "hsl(30,100%,50%)"
-                                    : "hsl(174,100%,50%)"
+            : isSearching
+                ? "hsl(38,100%,55%)"    // amber/orange — external data wait / GitHub sync
+                : isSuccess
+                    ? "hsl(150,100%,45%)"
+                    : isReady
+                        ? "hsl(150,100%,50%)"
+                        : isThinking
+                            ? "hsl(330,100%,65%)"
+                            : isListening
+                                ? "hsl(200,100%,60%)"
+                                : (isSleeping || isDrowsy)
+                                    ? "hsl(0,80%,55%)"
+                                    : isWaking
+                                        ? "hsl(30,100%,50%)"
+                                        : "hsl(174,100%,50%)"
 
     // Pupil Jitter for Thinking
     const [jitter, setJitter] = useState({ x: 0, y: 0 })
@@ -197,10 +216,30 @@ function AIEye({
         return () => clearInterval(interval)
     }, [isListening])
 
+    // TG6: Searching — oscillate pupil x position left → right → left rhythmically
+    const [scanPupilX, setScanPupilX] = useState(0)
+    useEffect(() => {
+        if (!isSearching) {
+            setScanPupilX(0)
+            return
+        }
+        let direction = 1
+        const scanInterval = setInterval(() => {
+            setScanPupilX(prev => {
+                const next = prev + direction * 4
+                if (next >= 8 || next <= -8) direction *= -1
+                return next
+            })
+        }, 400)
+        return () => clearInterval(scanInterval)
+    }, [isSearching])
+
     // Pupil position: drowsy stays heavy/low, waking slowly centers
+    // TG6: searching uses scanPupilX for horizontal scan, no vertical movement
     const basePupilX = isAsleepLike ? 0
         : isWaking ? 0
         : isDrowsy ? 0
+        : isSearching ? scanPupilX
         : isListening ? listenOrbit.x * 6
         : Math.max(-6, Math.min(6, mouseOffset.x * 6)) + jitter.x
 
@@ -311,6 +350,22 @@ function AIEye({
                 />
             )}
 
+            {/* TG6: Searching — wider dashed orbit ring (r=38 vs thinking's r=33) communicating
+                external data wait. Rotates continuously until GitHubSyncPanel fires the exit trigger. */}
+            {isSearching && (
+                <motion.circle
+                    cx="50" cy="50" r="38"
+                    fill="none"
+                    stroke={mainColor}
+                    strokeWidth="1"
+                    strokeOpacity="0.5"
+                    strokeDasharray="6 12"
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                    style={{ transformOrigin: '50% 50%' }}
+                />
+            )}
+
             {/* Inner hex area background */}
             <motion.path
                 d="M50 15 L80 32.5 L80 67.5 L50 85 L20 67.5 L20 32.5 Z"
@@ -372,7 +427,10 @@ function AIEye({
                                     y: { type: "spring", stiffness: 200, damping: 20 },
                                     opacity: { type: "tween", duration: 2.5, ease: "easeInOut" },
                                 }
-                                : { type: "spring", stiffness: 200, damping: 20 }
+                                : isSearching
+                                    // TG6: smooth tween for horizontal scan, no spring bounce
+                                    ? { type: "tween", duration: 0.35, ease: "easeInOut" }
+                                    : { type: "spring", stiffness: 200, damping: 20 }
                         }
                     >
                         <circle
@@ -436,6 +494,7 @@ export function CRTWithAI({
     onAIStateChange,
     xpGainTrigger,
     lifeLossTrigger,
+    searchingTrigger,
 }: CRTWithAIProps) {
     const [aiState, setAIState] = useState<AIState>("sleeping")
     const [visibleLines, setVisibleLines] = useState(0)
@@ -466,8 +525,10 @@ export function CRTWithAI({
     }, [aiState, onAIStateChange])
 
     // TG1-A: Keep prevStateRef updated to the last non-transient state
+    // TG6: "searching" is also excluded — it's a sustained external-data-wait state,
+    // not a permanent baseline. The previous meaningful state is preserved for the return transition.
     useEffect(() => {
-        if (!TRANSIENT_STATES.includes(aiState)) {
+        if (!NON_PREV_STATES.includes(aiState)) {
             prevStateRef.current = aiState
         }
     }, [aiState])
@@ -520,6 +581,14 @@ export function CRTWithAI({
             clearTimeout(ret)
         }
     }, [lifeLossTrigger])
+
+    // TG6: searching trigger — sets the AIEye into the sustained amber/orange scanning state.
+    // No auto-return: the caller (GitHubSyncPanel) drives exit via xpGainTrigger or lifeLossTrigger
+    // once the sync action resolves.
+    useEffect(() => {
+        if (!searchingTrigger) return
+        setAIState("searching")
+    }, [searchingTrigger])
 
     // --- Auto-scroll to bottom ---
     useEffect(() => {
@@ -596,7 +665,9 @@ export function CRTWithAI({
             if (isAutonomous) stopScanning()
             if (autonomousTimer.current) clearTimeout(autonomousTimer.current)
             autonomousTimer.current = setTimeout(() => {
-                if (!["sleeping", "thinking", "listening", "success", "drowsy"].includes(aiState)) startScanning()
+                // TG6: "searching" added to exclusion list — autonomous scanning must not
+                // override the left-right scan animation driven by the searching state
+                if (!["sleeping", "thinking", "listening", "success", "drowsy", "searching"].includes(aiState)) startScanning()
             }, AUTONOMOUS_IDLE_MS)
 
             const rect = eyeRef.current.getBoundingClientRect()
@@ -672,11 +743,14 @@ export function CRTWithAI({
         }, 800)
     }
 
+    // TG6: searching gets its own amber border color
     const borderColor = (aiState === "sleeping" || aiState === "drowsy" || aiState === "life_loss")
         ? "hsl(0,80%,55%,0.2)"
         : (aiState === "success" || aiState === "xp_gain")
             ? "hsl(150,100%,45%,0.3)"
-            : "hsl(174,100%,50%,0.2)"
+            : aiState === "searching"
+                ? "hsl(38,100%,55%,0.2)"
+                : "hsl(174,100%,50%,0.2)"
 
     return (
         <div
@@ -700,23 +774,29 @@ export function CRTWithAI({
             {/* Header */}
             <div className="flex items-center justify-between px-3 py-2 border-b bg-[hsl(200,30%,8%)]" style={{ borderColor }}>
                 <div className="flex items-center gap-2">
+                    {/* TG6: searching gets amber status dot */}
                     <div className={cn(
                         "w-1.5 h-1.5 rounded-full shadow-[0_0_4px]",
                         aiState === "success" || aiState === "xp_gain"
                             ? "bg-green-500 shadow-green-500"
                             : (aiState === "sleeping" || aiState === "drowsy" || aiState === "life_loss")
                                 ? "bg-red-500 shadow-red-500"
-                                : "bg-cyan-500 shadow-cyan-500"
+                                : aiState === "searching"
+                                    ? "bg-[hsl(38,100%,55%)] shadow-[hsl(38,100%,55%)]"
+                                    : "bg-cyan-500 shadow-cyan-500"
                     )} />
                     <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground/60">SYS_CONSOLE v3.10_AI</span>
                 </div>
                 <div className="flex gap-3 text-[9px] font-mono">
+                    {/* TG6: searching gets amber STATUS label */}
                     <span className={cn(
                         aiState === "sleeping" || aiState === "drowsy" || aiState === "life_loss"
                             ? "text-red-500"
                             : aiState === "xp_gain"
                                 ? "text-[hsl(150,100%,45%)]"
-                                : "text-cyan-400"
+                                : aiState === "searching"
+                                    ? "text-[hsl(38,100%,55%)]"
+                                    : "text-cyan-400"
                     )}>
                         STATUS: {aiState.toUpperCase()}
                     </span>
@@ -821,6 +901,7 @@ export function CRTWithAI({
                 {/* Eye Side */}
                 <div ref={eyeRef} className="w-[120px] flex flex-col items-center justify-center border-l bg-[hsl(200,30%,4%)]" style={{ borderColor }}>
                     <AIEye state={aiState} mouseOffset={mouseOffset} isBlinking={isBlinking} />
+                    {/* TG6: searching state label renders in amber */}
                     <span
                         className="text-[8px] font-mono mt-2 opacity-50 uppercase tracking-[0.2em]"
                         style={{
@@ -828,9 +909,11 @@ export function CRTWithAI({
                                 ? "hsl(150,100%,45%)"
                                 : aiState === "thinking"
                                     ? "hsl(330,100%,65%)"
-                                    : (aiState === "sleeping" || aiState === "drowsy" || aiState === "life_loss")
-                                        ? "hsl(0,80%,55%)"
-                                        : "hsl(174,100%,50%)"
+                                    : aiState === "searching"
+                                        ? "hsl(38,100%,55%)"
+                                        : (aiState === "sleeping" || aiState === "drowsy" || aiState === "life_loss")
+                                            ? "hsl(0,80%,55%)"
+                                            : "hsl(174,100%,50%)"
                         }}
                     >
                         {aiState}

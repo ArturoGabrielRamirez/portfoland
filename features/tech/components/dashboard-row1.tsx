@@ -21,6 +21,7 @@ export function DashboardRow1({
   translations,
   onXPGain,
   onLifeLoss,
+  onSearching,
 }: DashboardRow1Props) {
   const [aiActive, setAiActive] = useState(false)
 
@@ -28,6 +29,8 @@ export function DashboardRow1({
   // Incrementing each counter fires the corresponding eye animation once.
   const [xpGainTrigger, setXPGainTrigger] = useState(0)
   const [lifeLossTrigger, setLifeLossTrigger] = useState(0)
+  // TG6: Counter-based trigger for the searching (GitHub sync) state.
+  const [searchingTrigger, setSearchingTrigger] = useState(0)
 
   const handleAIStateChange = useCallback((state: AIState) => {
     setAiActive(AI_ACTIVE_STATES.includes(state))
@@ -44,6 +47,13 @@ export function DashboardRow1({
     setLifeLossTrigger(n => n + 1)
     onLifeLoss?.()
   }, [onLifeLoss])
+
+  // TG6: Exposed handler for triggering the searching animation.
+  // GitHubSyncPanel calls this when a sync begins; exit is driven by xpGainTrigger or lifeLossTrigger.
+  const handleSearching = useCallback(() => {
+    setSearchingTrigger(n => n + 1)
+    onSearching?.()
+  }, [onSearching])
 
   return (
     <div className="flex-shrink-0 grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] gap-2">
@@ -65,6 +75,7 @@ export function DashboardRow1({
         onAIStateChange={handleAIStateChange}
         xpGainTrigger={xpGainTrigger}
         lifeLossTrigger={lifeLossTrigger}
+        searchingTrigger={searchingTrigger}
       />
     </div>
   )

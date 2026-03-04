@@ -430,12 +430,12 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
 #### Task Group 6: New `searching` AIEye State in CRTWithAI
 **Dependencies:** None (additive change to existing component — can run in parallel with TG5)
 
-- [ ] 6.0 Extend `features/tech/components/crt-with-ai.tsx` with the `searching` AIState
-  - [ ] 6.1 Write 2 focused tests
+- [x] 6.0 Extend `features/tech/components/crt-with-ai.tsx` with the `searching` AIState
+  - [x] 6.1 Write 2 focused tests
     - Test that when `searchingTrigger` prop changes, the component enters the `"searching"` state (use React Testing Library, mock `setAIState`)
     - Test that `"searching"` is NOT in `TRANSIENT_STATES` (verify it does not auto-return after a timer)
     - File: `features/github/__tests__/crtWithAI.searching.test.tsx`
-  - [ ] 6.2 Add `"searching"` to the `AIState` union type (line 13) in `crt-with-ai.tsx`
+  - [x] 6.2 Add `"searching"` to the `AIState` union type (line 13) in `crt-with-ai.tsx`
     - New union:
       ```typescript
       type AIState =
@@ -445,18 +445,18 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
         | "searching"
       ```
     - `"searching"` is NOT added to `TRANSIENT_STATES` — it is sustained and parent-driven
-  - [ ] 6.3 Add `searchingTrigger?: number` prop to `CRTWithAIProps` interface (after `lifeLossTrigger`)
+  - [x] 6.3 Add `searchingTrigger?: number` prop to `CRTWithAIProps` interface (after `lifeLossTrigger`)
     - JSDoc: "Increment this counter to trigger the sustained `searching` eye state. The parent component (GitHubSyncPanel) drives the return transition by firing `xpGainTrigger` or `lifeLossTrigger` after the action resolves."
-  - [ ] 6.4 Add `isSearching` flag in `AIEye` function (alongside `isXPGain`, `isLifeLoss`)
+  - [x] 6.4 Add `isSearching` flag in `AIEye` function (alongside `isXPGain`, `isLifeLoss`)
     - `const isSearching = state === "searching"`
-  - [ ] 6.5 Add `searching` branch to the `mainColor` switch expression in `AIEye` (before the default cyan)
+  - [x] 6.5 Add `searching` branch to the `mainColor` switch expression in `AIEye` (before the default cyan)
     - Insert after `isLifeLoss` branch:
       ```typescript
       : isSearching
           ? "hsl(38,100%,55%)"   // amber/orange — external data wait
       ```
     - The amber color communicates "waiting for external data" distinct from `thinking`'s magenta
-  - [ ] 6.6 Add `searching` visual elements to the `AIEye` SVG render
+  - [x] 6.6 Add `searching` visual elements to the `AIEye` SVG render
     - Add `isSearching` to the left-right scanning pupil effect: when `isSearching`, set `basePupilX` to animate `Math.sin(Date.now() / 500) * 5` (use a `useEffect` with `setInterval` similar to `listenOrbit` — add `searchOrbit` state)
     - Add a wider dashed orbit ring rendered when `isSearching`:
       ```tsx
@@ -471,11 +471,11 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
       )}
       ```
     - Note: `r=38` is wider than `thinking`'s `r=33` as specified
-  - [ ] 6.7 Add `"searching"` to all color-switch expressions in the `CRTWithAI` main component body
+  - [x] 6.7 Add `"searching"` to all color-switch expressions in the `CRTWithAI` main component body
     - `borderColor` switch: add `aiState === "searching"` to the amber branch (group with no existing state; create a new branch returning `"hsl(38,100%,55%,0.2)"`)
     - Status dot `className` switch (line 705–709): add `aiState === "searching"` → use an amber class `bg-[hsl(38,100%,55%)] shadow-[hsl(38,100%,55%)]`
     - Status label color style (line 827–833): add `aiState === "searching"` → `"hsl(38,100%,55%)"`
-  - [ ] 6.8 Add `searchingTrigger` `useEffect` to the `CRTWithAI` main component (after the `lifeLossTrigger` effect)
+  - [x] 6.8 Add `searchingTrigger` `useEffect` to the `CRTWithAI` main component (after the `lifeLossTrigger` effect)
     - Pattern mirrors `xpGainTrigger` effect but does NOT auto-return:
       ```typescript
       useEffect(() => {
@@ -484,9 +484,9 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
         // No auto-return timer — GitHubSyncPanel drives the return via xpGainTrigger / lifeLossTrigger
       }, [searchingTrigger]);
       ```
-  - [ ] 6.9 Add `searching` to the `autonomousTimer` exclusion list in the mouse-move handler (line 599)
+  - [x] 6.9 Add `searching` to the `autonomousTimer` exclusion list in the mouse-move handler (line 599)
     - Change `["sleeping", "thinking", "listening", "success", "drowsy"]` to include `"searching"` so the eye does not switch to autonomous scanning during a sync
-  - [ ] 6.10 Run the 2 tests written in 6.1 and confirm they pass
+  - [x] 6.10 Run the 2 tests written in 6.1 and confirm they pass
     - Command: `npx jest features/github/__tests__/crtWithAI.searching.test.tsx --no-coverage`
 
 **Acceptance Criteria:**

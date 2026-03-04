@@ -65,6 +65,12 @@ export interface DashboardRow1Props {
   onXPGain?: () => void
   /** Increment to trigger life loss animation on the AIEye */
   onLifeLoss?: () => void
+  /**
+   * TG6: Callback to trigger the searching (amber/orange scanning) animation on the AIEye.
+   * Call this when a GitHub sync begins. Exit is driven by xpGainTrigger or lifeLossTrigger
+   * when the sync completes.
+   */
+  onSearching?: () => void
 }
 
 // =============================================================================
@@ -85,7 +91,7 @@ export interface SysLogPanelProps {
 
 /**
  * Props for the ActivityHeatmap component.
- * Real streak data replaces the previous random data generation.
+ * Real streak data replaces the previous previous data generation.
  */
 export interface ActivityHeatmapProps {
   currentStreak: number

@@ -5,3 +5,5 @@
  */
 
 export { syncGitHubAction } from './syncGitHub.action'
+export { addGitHubSuggestedSkillsAction } from './addGitHubSuggestedSkills.action'
+export type { AddGitHubSuggestedSkillsInput } from './addGitHubSuggestedSkills.action'

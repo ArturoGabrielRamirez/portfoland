@@ -843,8 +843,8 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
 #### Task Group 11: Test Review and Gap Analysis
 **Dependencies:** TG4, TG1, TG2, TG3, TG5, TG6, TG7, TG8, TG10, TG9 (all task groups complete)
 
-- [ ] 11.0 Review all feature-specific tests and fill critical gaps only
-  - [ ] 11.1 Review all tests written across TG4, TG1, TG2, TG3, TG5, TG6, TG7, TG8, TG10, TG9
+- ⚠️ 11.0 Review all feature-specific tests and fill critical gaps only
+  - ⚠️ 11.1 Review all tests written across TG4, TG1, TG2, TG3, TG5, TG6, TG7, TG8, TG10, TG9
     - TG4 wrote 2 tests (constants correctness)
     - TG1 wrote 3 tests (schema fields exist)
     - TG2 wrote 4 tests (GitHub API layer)
@@ -856,18 +856,18 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
     - TG10 wrote 2 tests (ReauthModal)
     - TG9 wrote 3 tests (integration — DashboardSkillsView + TechSkills)
     - Total existing tests: **29 tests**
-  - [ ] 11.2 Identify critical gaps for THIS feature only
+  - ⚠️ 11.2 Identify critical gaps for THIS feature only
     - Primary gap candidate: end-to-end sync flow — the transition from `searching` → `xp_gain` via trigger props (wiring between panel and CRT)
     - Primary gap candidate: the 60% threshold boundary condition (exactly 60% validates, 59.9% does not)
     - Primary gap candidate: `getGitHubToken` returning `null` at the action level (currently tested at service level, add an action-level check)
     - Skip: accessibility, performance, edge cases on all 19 language entries, rate limiting behavior
-  - [ ] 11.3 Write up to 5 additional strategic tests maximum to fill the critical gaps
+  - ⚠️ 11.3 Write up to 5 additional strategic tests maximum to fill the critical gaps
     - Test the 60% threshold boundary: 60% validates, 59% does not (unit test of the service's threshold logic)
     - Test the `onSearchingStateChange → xpGainTrigger` wiring in `DashboardSkillsView` (React Testing Library)
     - Test that `syncGitHubAction` returns `{ success: false }` payload (not a thrown error) when the service throws `GitHubAuthError`
     - File: `features/github/__tests__/integration.critical.test.ts`
     - Maximum 3 additional tests (critical gaps do not warrant the full 5-test allowance)
-  - [ ] 11.4 Run all feature-specific tests
+  - ⚠️ 11.4 Run all feature-specific tests
     - Command: `npx jest features/github/ --no-coverage`
     - Expected: approximately 32 total tests (29 from TG1–TG9 + 3 gap tests)
     - Do NOT run the entire application test suite

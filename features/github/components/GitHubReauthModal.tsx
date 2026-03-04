@@ -17,7 +17,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/features/shadcn/ui/dialog';
-import { signIn } from '@/lib/auth-client';
+import { linkSocial } from '@/lib/auth-client';
 
 import { GITHUB_MESSAGES } from '../constants/messages';
 
@@ -43,9 +43,10 @@ interface GitHubReauthModalProps {
 export function GitHubReauthModal({ isOpen, onClose }: GitHubReauthModalProps) {
   /** Triggers Better Auth social sign-in for GitHub, then returns to skills page */
   const handleReconnect = () => {
-    signIn.social({
+    linkSocial({
       provider: 'github',
       callbackURL: '/dashboard/skills',
+      scopes: ['user:email', 'read:user', 'repo'],
     });
   };
 

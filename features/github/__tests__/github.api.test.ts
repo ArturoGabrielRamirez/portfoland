@@ -49,6 +49,7 @@ const ownedRepo: GitHubRepo = {
   fork: false,
   stargazers_count: 10,
   language: 'TypeScript',
+  created_at: '2022-01-01T00:00:00Z',
 }
 
 const forkedRepo: GitHubRepo = {
@@ -59,6 +60,7 @@ const forkedRepo: GitHubRepo = {
   fork: true,
   stargazers_count: 0,
   language: 'JavaScript',
+  created_at: '2023-06-15T00:00:00Z',
 }
 
 // =============================================================================
@@ -133,7 +135,7 @@ describe('aggregateLanguages', () => {
         .mockResolvedValueOnce(mockResponse({ TypeScript: 500, JavaScript: 200 }))
     )
 
-    const totals = await aggregateLanguages(FAKE_TOKEN, [repo1, repo2])
+    const { totals } = await aggregateLanguages(FAKE_TOKEN, [repo1, repo2])
 
     expect(totals['TypeScript']).toBe(1500)
     expect(totals['JavaScript']).toBe(200)

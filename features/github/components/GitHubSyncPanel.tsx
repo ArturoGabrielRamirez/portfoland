@@ -14,14 +14,17 @@
  */
 
 import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { cn } from '@/lib/utils';
-import { signIn } from '@/lib/auth-client';
+import { linkSocial } from '@/lib/auth-client';
 import { formatTimeAgo } from '@/lib/utils/format';
 import { syncGitHubAction } from '../actions/syncGitHub.action';
+import { addGitHubSuggestedSkillsAction } from '../actions/addGitHubSuggestedSkills.action';
 import { GITHUB_MESSAGES } from '../constants/messages';
 import type { GitHubSyncPanelProps } from '../types/github';
+import type { GitHubSuggestedSkill } from '../types/sync';
 import { GitHubReauthModal } from './GitHubReauthModal';
 
 // =============================================================================
@@ -51,16 +54,20 @@ export function GitHubSyncPanel({
 }: GitHubSyncPanelProps) {
   const [isPending, startTransition] = useTransition();
   const [showReauthModal, setShowReauthModal] = useState(false);
+  const [suggestedSkills, setSuggestedSkills] = useState<GitHubSuggestedSkill[]>([]);
+  const [isAddingSkills, setIsAddingSkills] = useState(false);
+  const router = useRouter();
 
   // ---------------------------------------------------------------------------
   // Event handlers
   // ---------------------------------------------------------------------------
 
-  /** Initiates GitHub OAuth connect flow via Better Auth client */
+  /** Links GitHub to the current account without replacing the active session */
   const handleConnectGitHub = () => {
-    signIn.social({
+    linkSocial({
       provider: 'github',
       callbackURL: '/dashboard/skills',
+      scopes: ['user:email', 'read:user', 'repo'],
     });
   };
 
@@ -82,9 +89,15 @@ export function GitHubSyncPanel({
       const result = await syncGitHubAction();
 
       if (!result.hasError) {
-        // Sync succeeded — fire xp_gain animation and notify user
+        // Sync succeeded — fire xp_gain animation, notify user, and refresh
+        // server component data so hexagons show updated githubValidated flags.
         onXPGainTrigger?.();
         toast.success(GITHUB_MESSAGES.SYNC_SUCCESS);
+        router.refresh();
+        // Surface any skills found in GitHub but not yet in the profile
+        const suggested = (result.payload as { suggestedSkills?: GitHubSuggestedSkill[] } | null)
+          ?.suggestedSkills ?? [];
+        setSuggestedSkills(suggested);
       } else {
         // Sync failed — fire life_loss animation for all error types
         onLifeLossTrigger?.();
@@ -102,6 +115,23 @@ export function GitHubSyncPanel({
         }
       }
     });
+  };
+
+  /** Adds all (or a subset of) suggested skills to the user's profile */
+  const handleAddSuggestedSkills = async (skills: GitHubSuggestedSkill[]) => {
+    setIsAddingSkills(true);
+    try {
+      const result = await addGitHubSuggestedSkillsAction({ skills });
+      if (!result.hasError) {
+        toast.success(result.message ?? 'Skills added');
+        setSuggestedSkills([]);
+        router.refresh();
+      } else {
+        toast.error('Could not add skills. Try again.');
+      }
+    } finally {
+      setIsAddingSkills(false);
+    }
   };
 
   // ---------------------------------------------------------------------------
@@ -222,6 +252,43 @@ export function GitHubSyncPanel({
         <p className="font-mono text-[9px] text-muted-foreground/50 mb-4 leading-relaxed">
           {GITHUB_MESSAGES.PRIVACY_NOTICE}
         </p>
+
+        {/* Suggested skills — shown after sync when new skills are detected */}
+        {suggestedSkills.length > 0 && (
+          <div className="mb-3 border border-dashed border-[hsl(52,100%,50%,0.3)] p-2">
+            <p className="font-mono text-[9px] text-[hsl(52,100%,50%)] opacity-70 mb-2 uppercase tracking-widest">
+              // NEW_SKILLS_DETECTED
+            </p>
+            <div className="space-y-1 mb-2">
+              {suggestedSkills.map((s) => (
+                <div key={s.slug} className="flex items-center justify-between">
+                  <span className="font-mono text-[10px] text-gray-300">{s.name}</span>
+                  {s.firstSeen && (
+                    <span className="font-mono text-[9px] text-gray-600">
+                      since {new Date(s.firstSeen).getFullYear()}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => handleAddSuggestedSkills(suggestedSkills)}
+                disabled={isAddingSkills}
+                className="flex-1 font-mono text-[10px] py-1 border border-[hsl(52,100%,50%,0.4)] text-[hsl(52,100%,50%)] hover:bg-[hsl(52,100%,50%,0.08)] disabled:opacity-40 transition-colors"
+              >
+                {isAddingSkills ? '[ ADDING... ]' : '[ ADD ALL ]'}
+              </button>
+              <button
+                onClick={() => setSuggestedSkills([])}
+                disabled={isAddingSkills}
+                className="font-mono text-[10px] px-3 py-1 border border-gray-700 text-gray-600 hover:text-gray-400 transition-colors"
+              >
+                [ SKIP ]
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Re-sync button */}
         <button

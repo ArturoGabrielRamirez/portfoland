@@ -67,8 +67,12 @@ interface ChatMessage {
 // =============================================================================
 
 const IDLE_TIMEOUT_MS = 60 * 1000
-const INACTIVITY_RETURN_MS = 5000 // Return to stats after 5s
+const INACTIVITY_RETURN_MS = 8000  // Normal inactivity before drowsy
 const AUTONOMOUS_IDLE_MS = 3000
+// After a sync completes (xp_gain), eye stays in curious/awake mode this long
+// before the inactivity sequence kicks in
+const POST_SYNC_CURIOUS_MS = 28_000
+const AI_INTERACTED_KEY = "portfoland_ai_interacted"
 
 // Transient states that auto-return via a timer and do NOT update prevStateRef
 // TG6: "searching" is parent-driven (sustained), so it is NOT in this list;
@@ -518,6 +522,13 @@ export function CRTWithAI({
 
     // TG1-A: Track previous (non-transient) state for auto-return after xp_gain / life_loss
     const prevStateRef = useRef<AIState>("awake")
+    // Post-sync: true while the eye is in the 28s "curious" window after a successful sync.
+    // During this window, inactivity uses POST_SYNC_CURIOUS_MS instead of INACTIVITY_RETURN_MS.
+    const postSyncRef = useRef(false)
+    const postSyncTimer = useRef<NodeJS.Timeout | null>(null)
+    // Stable ref to startScanning — allows xpGainTrigger effect to call it before
+    // the useCallback declaration (hooks can't be forward-referenced).
+    const startScanningRef = useRef<() => void>(() => {})
 
     // --- Notify parent of AI state changes ---
     useEffect(() => {
@@ -533,7 +544,10 @@ export function CRTWithAI({
         }
     }, [aiState])
 
-    // TG1-A: xp_gain trigger — fires double-blink + green iris, auto-returns after 1200ms
+    // TG1-A: xp_gain trigger — fires double-blink + green iris, then enters 28s curious mode.
+    // After the flash, the eye wakes up fully (awake) and starts autonomous scanning to
+    // "review" the data it fetched. It stays in this curious mode for POST_SYNC_CURIOUS_MS
+    // before the normal inactivity sequence (drowsy → sleeping) can begin.
     useEffect(() => {
         if (!xpGainTrigger) return
         setAIState("xp_gain")
@@ -544,9 +558,16 @@ export function CRTWithAI({
         const t2 = setTimeout(() => setIsBlinking(true), 200)
         const t3 = setTimeout(() => setIsBlinking(false), 280)
 
-        // Auto-return to previous state after 1200ms
+        // After flash: wake up in curious mode and start scanning the data
         const ret = setTimeout(() => {
-            setAIState(prevStateRef.current)
+            setAIState("awake")
+            startScanningRef.current()
+            // Enter post-sync curious window — inactivity timer will use the long delay
+            postSyncRef.current = true
+            if (postSyncTimer.current) clearTimeout(postSyncTimer.current)
+            postSyncTimer.current = setTimeout(() => {
+                postSyncRef.current = false
+            }, POST_SYNC_CURIOUS_MS)
         }, 1200)
 
         return () => {
@@ -585,9 +606,11 @@ export function CRTWithAI({
     // TG6: searching trigger — sets the AIEye into the sustained amber/orange scanning state.
     // No auto-return: the caller (GitHubSyncPanel) drives exit via xpGainTrigger or lifeLossTrigger
     // once the sync action resolves.
+    // Also marks the user as having interacted so the eye starts awake on future visits.
     useEffect(() => {
         if (!searchingTrigger) return
         setAIState("searching")
+        localStorage.setItem(AI_INTERACTED_KEY, "1")
     }, [searchingTrigger])
 
     // --- Auto-scroll to bottom ---
@@ -606,6 +629,14 @@ export function CRTWithAI({
         }
     }, [])
 
+    // If the user has interacted before, start awake instead of in eternal sleep.
+    // "Eternal sleep" is reserved for first-time users who've never triggered the eye.
+    useEffect(() => {
+        if (localStorage.getItem(AI_INTERACTED_KEY)) {
+            setAIState("awake")
+        }
+    }, [])
+
     useEffect(() => {
         if (messages.length > 0) {
             localStorage.setItem("ai_chat_history", JSON.stringify({ messages }))
@@ -617,8 +648,13 @@ export function CRTWithAI({
         if (inactivityTimer.current) clearTimeout(inactivityTimer.current)
         if (aiState === "sleeping") return
 
+        // During the post-sync curious window, use the extended delay so the eye
+        // stays awake long enough to "review" the data it fetched.
+        const delay = postSyncRef.current ? POST_SYNC_CURIOUS_MS : INACTIVITY_RETURN_MS
+
         inactivityTimer.current = setTimeout(() => {
             // When inactivity hits: return to info + start drowsy sequence
+            postSyncRef.current = false
             setShowingChat(false)
             setAIState("drowsy")
 
@@ -626,12 +662,25 @@ export function CRTWithAI({
             setTimeout(() => {
                 setAIState("sleeping")
             }, 4000)
-        }, INACTIVITY_RETURN_MS)
+        }, delay)
     }, [aiState])
 
     useEffect(() => {
-        if (aiState !== "sleeping" && aiState !== "thinking" && aiState !== "success") {
+        // Don't start inactivity timer while the eye is busy:
+        // - "searching": parent-driven state (GitHub sync in progress), must not sleep mid-scan
+        // - "thinking" / "success": active AI response cycle
+        if (
+            aiState !== "sleeping" &&
+            aiState !== "thinking" &&
+            aiState !== "success" &&
+            aiState !== "searching"
+        ) {
             resetInactivity()
+        }
+        // Clear any running inactivity timer when entering searching so the eye
+        // won't go drowsy while a sync is in progress.
+        if (aiState === "searching" && inactivityTimer.current) {
+            clearTimeout(inactivityTimer.current)
         }
         return () => { if (inactivityTimer.current) clearTimeout(inactivityTimer.current) }
     }, [resetInactivity, message, aiState])
@@ -652,6 +701,8 @@ export function CRTWithAI({
             })
         }, 1500)
     }, [])
+    // Keep the ref in sync so effects defined before this useCallback can call it
+    startScanningRef.current = startScanning
 
     const stopScanning = useCallback(() => {
         setIsAutonomous(false)

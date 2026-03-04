@@ -70,6 +70,7 @@ export const syncGitHubAction = async (): Promise<
             validatedSkillsCount: 0,
             stars: 0,
             totalCommits: 0,
+            suggestedSkills: [],
             errorType: error.type,
           },
           message: error.type === 'auth'
@@ -99,6 +100,7 @@ export const syncGitHubAction = async (): Promise<
         validatedSkillsCount: syncResult.validatedSlugs.length,
         stars: syncResult.totalStars,
         totalCommits: syncResult.contributions ?? 0,
+        suggestedSkills: syncResult.suggestedSkills,
       },
       message: GITHUB_MESSAGES.SYNC_SUCCESS,
     };

@@ -35,3 +35,53 @@ export const GITHUB_LANGUAGE_MAP: Record<string, string> = {
   Svelte: 'svelte',
   Dart: 'dart',
 } as const;
+
+// =============================================================================
+// Display names (slug → human-readable label for the "Add Skills" suggestion UI)
+// =============================================================================
+
+export const GITHUB_SKILL_DISPLAY_NAMES: Record<string, string> = {
+  typescript: 'TypeScript',
+  javascript: 'JavaScript',
+  python: 'Python',
+  bash: 'Bash / Shell',
+  cpp: 'C++',
+  c: 'C',
+  go: 'Go',
+  rust: 'Rust',
+  java: 'Java',
+  kotlin: 'Kotlin',
+  swift: 'Swift',
+  ruby: 'Ruby',
+  php: 'PHP',
+  css: 'CSS',
+  html: 'HTML',
+  vue: 'Vue.js',
+  svelte: 'Svelte',
+  dart: 'Dart',
+}
+
+// =============================================================================
+// Default category per skill slug (used when auto-adding from GitHub)
+// =============================================================================
+
+export const GITHUB_SKILL_CATEGORY_SLUG: Record<string, string> = {
+  typescript: 'core',
+  javascript: 'core',
+  html: 'core',
+  css: 'core',
+  python: 'backend',
+  bash: 'devops',
+  cpp: 'backend',
+  c: 'backend',
+  go: 'backend',
+  rust: 'backend',
+  java: 'backend',
+  kotlin: 'backend',
+  swift: 'backend',
+  ruby: 'backend',
+  php: 'backend',
+  vue: 'frontend',
+  svelte: 'frontend',
+  dart: 'devops',
+}

@@ -155,8 +155,9 @@ export async function fetchRepoLanguages(
 export async function aggregateLanguages(
   token: string,
   repos: GitHubRepo[]
-): Promise<Record<string, number>> {
+): Promise<{ totals: Record<string, number>; firstSeen: Record<string, string> }> {
   const totals: Record<string, number> = {}
+  const firstSeen: Record<string, string> = {}
 
   // Sequential processing to avoid GitHub rate limiting
   for (const repo of repos) {
@@ -164,10 +165,15 @@ export async function aggregateLanguages(
 
     for (const [language, bytes] of Object.entries(languages)) {
       totals[language] = (totals[language] ?? 0) + bytes
+
+      // Track the earliest repo date as "first used" approximation
+      if (!firstSeen[language] || repo.created_at < firstSeen[language]) {
+        firstSeen[language] = repo.created_at
+      }
     }
   }
 
-  return totals
+  return { totals, firstSeen }
 }
 
 // =============================================================================
@@ -259,8 +265,8 @@ export async function fetchGitHubSyncData(token: string): Promise<GitHubSyncData
   const repos = await fetchUserRepos(token)
   const totalStars = repos.reduce((sum, repo) => sum + repo.stargazers_count, 0)
 
-  // Step 2: Aggregate language bytes across all non-fork repos
-  const languageTotals = await aggregateLanguages(token, repos)
+  // Step 2: Aggregate language bytes and first-seen dates across all non-fork repos
+  const { totals: languageTotals, firstSeen: languageFirstSeen } = await aggregateLanguages(token, repos)
 
   // Step 3: Fetch contributions — non-critical, failure returns null
   let contributions: GitHubContributions | null = null
@@ -274,6 +280,7 @@ export async function fetchGitHubSyncData(token: string): Promise<GitHubSyncData
   return {
     repos,
     languageTotals,
+    languageFirstSeen,
     totalStars,
     contributions,
   }

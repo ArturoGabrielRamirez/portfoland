@@ -15,6 +15,7 @@ import { useParams } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import { HexBadge, DashboardNav } from '@/features/tech';
+import { CRTWithAI } from '@/features/tech/components/crt-with-ai';
 import {
   SkillTreeView,
   ManualSkillModal
@@ -200,17 +201,26 @@ export function DashboardSkillsView({
         </span>
       </div>
 
-      {/* GITHUB_VALIDATOR — GitHub Expansion Module / Sync Status Panel (TG9) */}
+      {/* GITHUB_VALIDATOR — GitHub Expansion Module / Sync Status Panel + AIEye (TG9) */}
       <div className="px-6 py-3 border-b border-[hsl(174,100%,50%,0.1)]">
-        <GitHubSyncPanel
-          userId={user.id}
-          isGitHubConnected={isGitHubConnected}
-          githubSyncedAt={githubSyncedAt}
-          githubStats={githubStats}
-          onSearchingTrigger={() => setSearchingTrigger((c) => c + 1)}
-          onXPGainTrigger={() => setXpGainTrigger((c) => c + 1)}
-          onLifeLossTrigger={() => setLifeLossTrigger((c) => c + 1)}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_280px] gap-3">
+          <GitHubSyncPanel
+            userId={user.id}
+            isGitHubConnected={isGitHubConnected}
+            githubSyncedAt={githubSyncedAt}
+            githubStats={githubStats}
+            onSearchingTrigger={() => setSearchingTrigger((c) => c + 1)}
+            onXPGainTrigger={() => setXpGainTrigger((c) => c + 1)}
+            onLifeLossTrigger={() => setLifeLossTrigger((c) => c + 1)}
+          />
+          <CRTWithAI
+            userName={user.name}
+            className="min-h-[140px]"
+            xpGainTrigger={xpGainTrigger}
+            lifeLossTrigger={lifeLossTrigger}
+            searchingTrigger={searchingTrigger}
+          />
+        </div>
       </div>
 
       {/* Main Content - Skill Tree View */}

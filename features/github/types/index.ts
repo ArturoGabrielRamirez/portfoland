@@ -21,6 +21,8 @@ export interface GitHubRepo {
   fork: boolean
   stargazers_count: number
   language: string | null
+  /** ISO 8601 date string — when the repo was created on GitHub */
+  created_at: string
 }
 
 /**
@@ -57,6 +59,8 @@ export interface GitHubSyncData {
   repos: GitHubRepo[]
   /** Total bytes per language summed across all non-fork repos */
   languageTotals: Record<string, number>
+  /** Earliest repo created_at date per language (ISO 8601) — approximation of "since when" */
+  languageFirstSeen: Record<string, string>
   totalStars: number
   /** Null if the GraphQL contributions call fails — non-critical */
   contributions: GitHubContributions | null

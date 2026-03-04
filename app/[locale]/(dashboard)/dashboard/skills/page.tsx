@@ -7,14 +7,12 @@
 
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
 
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getUserSkillsData, getSkillCategoriesData } from '@/features/skills/data';
 import { checkOnboarding } from '@/features/onboarding/utils/checkOnboarding';
 import { getGitHubConnectionStatus } from '@/features/github/data/getGitHubConnectionStatus.data';
-import type { GitHubStats } from '@/features/github/types/github';
 import { DashboardSkillsView } from './DashboardSkillsView';
 
 export default async function DashboardSkillsPage() {
@@ -28,9 +26,6 @@ export default async function DashboardSkillsPage() {
   }
 
   await checkOnboarding(session.user.id);
-
-  // Get translations
-  const t = await getTranslations('skills');
 
   // Fetch user with complete data — includes GitHub sync fields added in TG1
   const [dbUser, githubStatus] = await Promise.all([

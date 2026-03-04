@@ -14,8 +14,8 @@
 import { prisma } from '@/lib/prisma'
 import { getGitHubToken } from '../data/getGitHubToken.data'
 import { fetchGitHubSyncData } from '../api/github.api'
-import { GITHUB_LANGUAGE_MAP } from '../constants/github-mappings'
-import type { GitHubSyncResult } from '../types/sync'
+import { GITHUB_LANGUAGE_MAP, GITHUB_SKILL_DISPLAY_NAMES } from '../constants/github-mappings'
+import type { GitHubSyncResult, GitHubSuggestedSkill } from '../types/sync'
 
 // =============================================================================
 // Constants
@@ -25,7 +25,10 @@ import type { GitHubSyncResult } from '../types/sync'
  * Minimum language percentage required for a skill to be considered "validated".
  * A language must represent at least 60% of total code bytes across all repos.
  */
-const VALIDATION_THRESHOLD_PERCENT = 60
+// 10% threshold: a language that represents ≥10% of your total code bytes is
+// strong enough evidence that you genuinely use it. The 60% original threshold
+// was too strict for mixed-language repos (TS + CSS + HTML + JS, etc.).
+const VALIDATION_THRESHOLD_PERCENT = 10
 
 // =============================================================================
 // Service Function
@@ -61,7 +64,7 @@ export async function syncGitHubService(userId: string): Promise<GitHubSyncResul
 
   // -------------------------------------------------------------------------
   // Step 3: Compute language percentages and derive validated slugs
-  // A language qualifies if it accounts for ≥ 60% of total bytes
+  // A language qualifies if it accounts for ≥ 10% of total bytes
   // -------------------------------------------------------------------------
   const totalBytes = Object.values(syncData.languageTotals).reduce(
     (sum, bytes) => sum + bytes,
@@ -97,39 +100,67 @@ export async function syncGitHubService(userId: string): Promise<GitHubSyncResul
     },
   })
 
-  // Derive which userSkill slugs overlap with the validated set
-  const userSkillSlugs = userSkills
-    .map((us) => us.skill.slug)
-    .filter((slug): slug is string => slug !== null)
+  // Normalize slugs for fuzzy matching: remove hyphens and lowercase.
+  // This handles cases where the same skill has different slug formats
+  // e.g. "java-script" (created with a space) vs "javascript" (from GitHub map).
+  const normalize = (slug: string) => slug.replace(/-/g, '').toLowerCase()
+  const normalizedValidated = new Set(validatedSlugs.map(normalize))
 
-  const matchingSlugs = validatedSlugs.filter((slug) => userSkillSlugs.includes(slug))
+  // Find which of the user's skill IDs correspond to validated slugs.
+  // NOTE: MongoDB Prisma does NOT support relation filters in updateMany,
+  // so we resolve the IDs here and filter by scalar `id` instead.
+  const matchingUserSkillIds = userSkills
+    .filter((us) => us.skill.slug !== null && normalizedValidated.has(normalize(us.skill.slug)))
+    .map((us) => us.id)
 
-  if (matchingSlugs.length > 0) {
+  // Derive slug list for the stats counter (slugs that matched user's own skills)
+  const matchingSlugs = userSkills
+    .filter((us) => us.skill.slug !== null && normalizedValidated.has(normalize(us.skill.slug)))
+    .map((us) => us.skill.slug as string)
+
+  console.log('[GitHub Sync] validatedSlugs:', validatedSlugs)
+  console.log('[GitHub Sync] userSkillSlugs in DB:', userSkills.map(us => us.skill.slug))
+  console.log('[GitHub Sync] matchingUserSkillIds:', matchingUserSkillIds)
+
+  if (matchingUserSkillIds.length > 0) {
     await prisma.userSkill.updateMany({
-      where: {
-        userId,
-        skill: { slug: { in: matchingSlugs } },
-      },
-      data: {
-        githubValidated: true,
-      },
+      where: { id: { in: matchingUserSkillIds } },
+      data: { githubValidated: true },
     })
   }
 
   // -------------------------------------------------------------------------
+  // Step 4b: Compute suggestedSkills — validated slugs NOT yet in user profile
+  // -------------------------------------------------------------------------
+  const userSkillSlugsNormalized = new Set(
+    userSkills
+      .filter((us) => us.skill.slug !== null)
+      .map((us) => normalize(us.skill.slug!))
+  )
+
+  const suggestedSkills: GitHubSuggestedSkill[] = validatedSlugs
+    .filter((slug) => !userSkillSlugsNormalized.has(normalize(slug)))
+    .map((slug) => ({
+      slug,
+      name: GITHUB_SKILL_DISPLAY_NAMES[slug] ?? slug,
+      firstSeen: syncData.languageFirstSeen[
+        // reverse-map slug back to GitHub language name to find the date
+        Object.entries(GITHUB_LANGUAGE_MAP).find(([, s]) => s === slug)?.[0] ?? ''
+      ],
+    }))
+    .filter((s) => s.firstSeen !== undefined || true) // keep all, firstSeen is optional
+
+  // -------------------------------------------------------------------------
   // Step 5: Persist sync stats to the User record
   // -------------------------------------------------------------------------
-  const contributions = syncData.contributions?.totalCommitContributions ?? null
-
   await prisma.user.update({
     where: { id: userId },
     data: {
       githubSyncedAt: new Date(),
       githubStats: {
-        repos: syncData.repos.length,
         stars: syncData.totalStars,
-        contributions,
-        validatedSkillSlugs: validatedSlugs,
+        totalCommits: syncData.contributions?.totalCommitContributions ?? 0,
+        validatedSkillsCount: matchingSlugs.length,
       },
     },
   })
@@ -139,8 +170,9 @@ export async function syncGitHubService(userId: string): Promise<GitHubSyncResul
   // -------------------------------------------------------------------------
   return {
     validatedSlugs,
+    suggestedSkills,
     totalRepos: syncData.repos.length,
     totalStars: syncData.totalStars,
-    contributions,
+    contributions: syncData.contributions?.totalCommitContributions ?? null,
   }
 }

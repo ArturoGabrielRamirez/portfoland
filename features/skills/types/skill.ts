@@ -114,11 +114,12 @@ export type UserSkillWithDetails = Prisma.UserSkillGetPayload<{
 
 /**
  * Extended UserSkill with computed fields
- * Adds selfAssessmentLevel and githubValidated computed from sources/metadata
+ * Adds selfAssessmentLevel computed from sources/metadata.
+ * Note: githubValidated is now a real Prisma field on UserSkill (TG1 schema change),
+ * so it is available directly via userSkill.githubValidated rather than as a computed field.
  */
 export type UserSkillWithComputed = UserSkillWithDetails & {
   selfAssessmentLevel?: SelfAssessmentLevel;
-  githubValidated?: boolean;
 };
 
 /**
@@ -134,11 +135,12 @@ export function getSelfAssessmentLevel(sources: UserSkillWithDetails['sources'])
 }
 
 /**
- * Check if skill has GitHub validation
- * Currently returns false as githubValidated is not implemented
+ * Check if skill has GitHub validation.
+ * Reads the real `githubValidated` field from the UserSkill Prisma model.
+ * This field was added to the schema in TG1 (Phase 3A) and defaults to false.
  */
-export function hasGitHubValidation(sources: UserSkillWithDetails['sources']): boolean {
-  return false;
+export function hasGitHubValidation(userSkill: Pick<UserSkill, 'githubValidated'>): boolean {
+  return userSkill.githubValidated;
 }
 
 /**

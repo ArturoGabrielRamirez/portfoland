@@ -85,14 +85,14 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
 #### Task Group 1: Prisma Schema Changes
 **Dependencies:** None (TG4 can run in parallel)
 
-- [ ] 1.0 Extend Prisma schema with GitHub fields and regenerate the client
-  - [ ] 1.1 Write 3 focused tests for schema behavior (run after `prisma generate` in 1.6)
+- [x] 1.0 Extend Prisma schema with GitHub fields and regenerate the client
+  - [x] 1.1 Write 3 focused tests for schema behavior (run after `prisma generate` in 1.6)
     - Test that `UserSkill` model accepts `githubValidated: false` as default (create a UserSkill and verify field exists)
     - Test that `User` model accepts `githubSyncedAt: null` and `githubStats: null` as defaults
     - Test that `SourceType` enum includes `GITHUB` variant alongside `EXPERIENCE` and `MANUAL`
     - File: `features/github/__tests__/schema.test.ts`
     - Mock Prisma client for unit-level testing; do not hit the live DB
-  - [ ] 1.2 Edit `prisma/schema.prisma` — extend the `SourceType` enum (line 182–185)
+  - [x] 1.2 Edit `prisma/schema.prisma` — extend the `SourceType` enum (line 182–185)
     - Add `GITHUB` variant:
       ```prisma
       enum SourceType {
@@ -101,28 +101,28 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
         GITHUB
       }
       ```
-  - [ ] 1.3 Edit `prisma/schema.prisma` — add `githubValidated` to the `UserSkill` model (after `aiValidated` on line 228)
+  - [x] 1.3 Edit `prisma/schema.prisma` — add `githubValidated` to the `UserSkill` model (after `aiValidated` on line 228)
     - Add immediately after `aiValidated Boolean @default(false)`:
       ```prisma
       githubValidated Boolean @default(false)
       ```
     - No index needed; this field is read alongside `aiValidated` in existing select queries
-  - [ ] 1.4 Edit `prisma/schema.prisma` — add three new fields to the `User` model (after `lastStreakDate` on line 35)
+  - [x] 1.4 Edit `prisma/schema.prisma` — add three new fields to the `User` model (after `lastStreakDate` on line 35)
     - Add:
       ```prisma
       githubSyncedAt  DateTime?
       githubStats     Json?
       ```
     - `githubStats` stores `{ stars: number; totalCommits: number; validatedSkillsCount: number }` as MongoDB JSON
-  - [ ] 1.5 Edit `features/skills/types/skill.ts` — update the `hasGitHubValidation` stub (line 140–142)
+  - [x] 1.5 Edit `features/skills/types/skill.ts` — update the `hasGitHubValidation` stub (line 140–142)
     - Change the function signature to accept a `userSkill: { githubValidated: boolean }` parameter instead of `sources`
     - Replace stub body `return false` with `return userSkill.githubValidated === true`
     - Update JSDoc to remove "Currently returns false" and add "Reads `githubValidated` from the Prisma model"
     - Note: after `prisma generate`, `UserSkill` will include `githubValidated: boolean`
-  - [ ] 1.6 Run `npx prisma generate` (no migration needed — MongoDB, nullable fields default to null, booleans default to false)
+  - [x] 1.6 Run `npx prisma generate` (no migration needed — MongoDB, nullable fields default to null, booleans default to false)
     - Verify no TypeScript errors in `app/generated/prisma/`
     - Command: `cd C:/Users/user/code/nextjs/portfoland && npx prisma generate`
-  - [ ] 1.7 Run the 3 tests written in 1.1 and confirm they pass
+  - [x] 1.7 Run the 3 tests written in 1.1 and confirm they pass
 
 **Acceptance Criteria:**
 - All 3 tests written in 1.1 pass

@@ -13,6 +13,8 @@ import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getUserSkillsData, getSkillCategoriesData } from '@/features/skills/data';
 import { checkOnboarding } from '@/features/onboarding/utils/checkOnboarding';
+import { getGitHubConnectionStatus } from '@/features/github/data/getGitHubConnectionStatus.data';
+import type { GitHubStats } from '@/features/github/types/github';
 import { DashboardSkillsView } from './DashboardSkillsView';
 
 export default async function DashboardSkillsPage() {
@@ -30,18 +32,23 @@ export default async function DashboardSkillsPage() {
   // Get translations
   const t = await getTranslations('skills');
 
-  // Fetch user with complete data
-  const dbUser = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      username: true,
-      image: true,
-      portfolioMode: true,
-    },
-  });
+  // Fetch user with complete data — includes GitHub sync fields added in TG1
+  const [dbUser, githubStatus] = await Promise.all([
+    prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        username: true,
+        image: true,
+        portfolioMode: true,
+        githubSyncedAt: true,
+        githubStats: true,
+      },
+    }),
+    getGitHubConnectionStatus(session.user.id),
+  ]);
 
   // Fetch user's skills and categories data
   const [skills, categories] = await Promise.all([
@@ -73,6 +80,9 @@ export default async function DashboardSkillsPage() {
         image: dbUser?.image ?? session.user.image ?? null,
         portfolioMode: (dbUser?.portfolioMode ?? 'classic') as 'classic' | 'tech',
       }}
+      githubSyncedAt={githubStatus.syncedAt}
+      githubStats={githubStatus.stats}
+      isGitHubConnected={githubStatus.isConnected}
     />
   );
 }

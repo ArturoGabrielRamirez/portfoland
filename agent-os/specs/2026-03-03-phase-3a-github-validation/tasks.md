@@ -736,13 +736,13 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
 #### Task Group 9: DashboardSkillsView and Portfolio Integration
 **Dependencies:** TG3, TG6, TG7, TG8, TG10 (all frontend components must be complete)
 
-- [ ] 9.0 Wire everything together in the dashboard skills page and extend the public portfolio
-  - [ ] 9.1 Write 3 focused tests
+- [x] 9.0 Wire everything together in the dashboard skills page and extend the public portfolio
+  - [x] 9.1 Write 3 focused tests
     - Test: `DashboardSkillsView` renders the `GitHubSyncPanel` when it receives `githubSyncedAt` and `githubStats` props
     - Test: `TechSkills` renders a `⬡ GitHub Verified` badge when at least one `userSkill.githubValidated === true`
     - Test: `TechSkills` renders a `✦ Elite Verified` badge when at least one skill has both `aiValidated` and `githubValidated` true
     - File: `features/github/__tests__/integration.skills.test.tsx`
-  - [ ] 9.2 Edit `app/[locale]/(dashboard)/dashboard/skills/page.tsx`
+  - [x] 9.2 Edit `app/[locale]/(dashboard)/dashboard/skills/page.tsx`
     - Extend the `prisma.user.findUnique` select to include `githubSyncedAt` and `githubStats`:
       ```typescript
       select: {
@@ -765,7 +765,7 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
       />
       ```
     - Import `GitHubStats` type from `@/features/github/types/github`
-  - [ ] 9.3 Edit `app/[locale]/(dashboard)/dashboard/skills/DashboardSkillsView.tsx`
+  - [x] 9.3 Edit `app/[locale]/(dashboard)/dashboard/skills/DashboardSkillsView.tsx`
     - Extend `DashboardSkillsViewProps` interface to add:
       ```typescript
       githubSyncedAt: Date | null;
@@ -800,7 +800,7 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
       - `lifeLossTrigger={lifeLossTrigger}`
       - `searchingTrigger={searchingTrigger}`
     - Note: if `CRTWithAI` is not currently rendered in `DashboardSkillsView` but in a parent layout, the trigger state must be lifted to the appropriate level — inspect `app/[locale]/(dashboard)/layout.tsx` and adjust accordingly
-  - [ ] 9.4 Edit `features/portfolio/components/tech/TechSkills.tsx`
+  - [x] 9.4 Edit `features/portfolio/components/tech/TechSkills.tsx`
     - The `userSkills` data must include `githubValidated` — verify the portfolio data query includes it (see 9.5)
     - Replace the current badge legend block with:
       ```tsx
@@ -822,10 +822,10 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
       )}
       ```
     - Note: `TechBadge` must accept `color="green"` and `color="yellow"` — check `features/tech/components/` for the `TechBadge` component and add those variants if missing
-  - [ ] 9.5 Verify the portfolio data query includes `githubValidated` in `userSkills` select
+  - [x] 9.5 Verify the portfolio data query includes `githubValidated` in `userSkills` select
     - Find the data fetching function used by `TechSkills` (search for `PortfolioSectionProps` usage — likely in `features/portfolio/data/` or the portfolio page)
     - Ensure `githubValidated: true` is in the `userSkills` Prisma select so `SkillHexagonNode` and `TechSkills` receive the field
-  - [ ] 9.6 Run the 3 tests written in 9.1 and confirm they pass
+  - [x] 9.6 Run the 3 tests written in 9.1 and confirm they pass
     - Command: `npx jest features/github/__tests__/integration.skills.test.tsx --no-coverage`
 
 **Acceptance Criteria:**

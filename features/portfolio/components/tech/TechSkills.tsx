@@ -21,13 +21,29 @@ export function TechSkills({ data, className }: PortfolioSectionProps) {
     );
   }
 
+  // Determine which validation states are present across all skills
+  const hasAIValidated = userSkills.some((s) => s.aiValidated);
+  const hasGitHubValidated = userSkills.some((s) => s.githubValidated);
+  const hasDualValidated = userSkills.some((s) => s.aiValidated && s.githubValidated);
+  const hasSelfAssessed = userSkills.some((s) => !s.aiValidated);
+
   return (
     <div className={cn('h-full', className)} data-testid="tech-skills">
-      {/* AI-validated badge legend — only renders when at least one skill is AI-validated */}
-      {userSkills.some(s => s.aiValidated) && (
-        <div className="flex items-center gap-3 mb-4 px-2">
-          <TechBadge color="magenta">★ AI Verified</TechBadge>
-          <TechBadge color="gray">Self-Assessed</TechBadge>
+      {/* Validation badge legend — renders only when at least one validation type is present (TG9) */}
+      {(hasAIValidated || hasGitHubValidated) && (
+        <div className="flex items-center gap-3 mb-4 px-2 flex-wrap">
+          {hasAIValidated && (
+            <TechBadge color="magenta">&#9733; AI Verified</TechBadge>
+          )}
+          {hasGitHubValidated && (
+            <TechBadge color="green">&#x2B21; GitHub Verified</TechBadge>
+          )}
+          {hasDualValidated && (
+            <TechBadge color="yellow">&#10022; Elite Verified</TechBadge>
+          )}
+          {hasSelfAssessed && (
+            <TechBadge color="gray">Self-Assessed</TechBadge>
+          )}
         </div>
       )}
       <SkillTreeView

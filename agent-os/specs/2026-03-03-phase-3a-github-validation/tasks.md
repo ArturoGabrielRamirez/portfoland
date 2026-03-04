@@ -215,18 +215,18 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
 #### Task Group 3: GitHub Sync Service and Server Action
 **Dependencies:** TG1, TG2, TG4 (all must be complete)
 
-- [ ] 3.0 Create the three-layer GitHub sync: service, action, and Yup schema
-  - [ ] 3.1 Write 4 focused tests for the sync service and action
+- [x] 3.0 Create the three-layer GitHub sync: service, action, and Yup schema
+  - [x] 3.1 Write 4 focused tests for the sync service and action
     - Test `syncGitHubService`: mock `getGitHubToken` returning a token, mock GitHub API functions returning `{ TypeScript: 80000, Python: 10000 }` aggregate (TypeScript is 88.8%, above 60%), mock `prisma.userSkill.findMany` returning a skill with slug `typescript`, verify `prisma.userSkill.update` is called with `{ githubValidated: true }` for that skill
     - Test `syncGitHubService`: mock language aggregate where all languages are below 60% threshold, verify `prisma.userSkill.update` is NOT called
     - Test `syncGitHubService`: mock `getGitHubToken` returning `null`, verify it throws an error with message matching `NO_GITHUB_ACCOUNT`
     - Test `syncGitHubAction`: mock the session returning no user, verify the action returns an error payload (not a thrown exception)
     - File: `features/github/__tests__/syncGitHub.service.test.ts`
-  - [ ] 3.2 Create `features/github/schemas/syncGitHub.schema.ts`
+  - [x] 3.2 Create `features/github/schemas/syncGitHub.schema.ts`
     - Yup schema for action input validation (input is `{}` — no user input required beyond the session)
     - Export `syncGitHubSchema` using Yup `object().shape({})` — the only validation is session-based
     - Mirror pattern from `features/skills/schemas/skill.schema.ts`
-  - [ ] 3.3 Create `features/github/services/syncGitHub.service.ts`
+  - [x] 3.3 Create `features/github/services/syncGitHub.service.ts`
     - Export `syncGitHubService(userId: string): Promise<SyncGitHubResult>` where `SyncGitHubResult = { validatedSkillsCount: number; stars: number; totalCommits: number }`
     - Implementation steps (in order):
       1. Call `getGitHubToken(userId)` — if null, throw `new Error(GITHUB_MESSAGES.NO_GITHUB_ACCOUNT)`
@@ -247,7 +247,7 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
     - Import `GitHubAuthError`, `fetchUserRepos`, `aggregateLanguageBytes`, `fetchCommitCount` from `features/github/api`
     - Import `getGitHubToken` from `features/github/data/getGitHubToken.data`
     - Import `prisma` from `@/lib/prisma`
-  - [ ] 3.4 Create `features/github/types/github.ts`
+  - [x] 3.4 Create `features/github/types/github.ts`
     - Export `SyncGitHubResult`:
       ```typescript
       export interface SyncGitHubResult {
@@ -282,7 +282,7 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
         onLifeLossTrigger?: () => void;
       }
       ```
-  - [ ] 3.5 Create `features/github/actions/syncGitHub.action.ts`
+  - [x] 3.5 Create `features/github/actions/syncGitHub.action.ts`
     - `'use server'` directive at top
     - Mirror the exact pattern from `features/skills/actions/syncSkillsFromExperience.ts`:
       ```typescript
@@ -317,10 +317,10 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
     - Import `GITHUB_MESSAGES` from `../constants/messages`
     - Import `GitHubAuthError` from `../api`
     - Import types from `../types/github`
-  - [ ] 3.6 Create `features/github/actions/index.ts` and `features/github/index.ts` barrel exports
+  - [x] 3.6 Create `features/github/actions/index.ts` and `features/github/index.ts` barrel exports
     - `features/github/actions/index.ts`: export `syncGitHubAction` from `./syncGitHub.action`
     - `features/github/index.ts`: export from `./actions`, `./constants`, `./types`, `./api`
-  - [ ] 3.7 Run the 4 tests written in 3.1 and confirm they pass
+  - [x] 3.7 Run the 4 tests written in 3.1 and confirm they pass
     - Command: `npx jest features/github/__tests__/syncGitHub.service.test.ts --no-coverage`
 
 **Acceptance Criteria:**

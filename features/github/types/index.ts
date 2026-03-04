@@ -87,3 +87,15 @@ export class GitHubAuthError extends Error {
     this.type = type
   }
 }
+
+// =============================================================================
+// Sync Result Types
+// =============================================================================
+
+export type { GitHubSyncResult, SyncGitHubResponse } from './sync'
+
+// =============================================================================
+// Stats and Component Types
+// =============================================================================
+
+export type { GitHubStats, GitHubSyncPanelProps } from './github'

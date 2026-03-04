@@ -11,6 +11,7 @@ import { unstable_cache } from 'next/cache';
 import { calculateMonthsDuration } from '@/features/skills/constants/xp';
 import { calculateGlobalLevel } from '@/lib/utils/xp';
 import type { DashboardStats } from '@/features/dashboard/types/dashboard';
+import { GITHUB_XP_MULTIPLIER } from '@/features/github/constants/xp';
 
 // =============================================================================
 // Constants
@@ -47,7 +48,7 @@ async function fetchDashboardStats(userId: string): Promise<DashboardStats> {
       },
       userSkills: {
         where: { aiValidated: true },
-        select: { totalXP: true },
+        select: { totalXP: true, githubValidated: true },
       },
       _count: {
         select: {
@@ -73,8 +74,12 @@ async function fetchDashboardStats(userId: string): Promise<DashboardStats> {
     (project) => PROJECT_XP[project.status as keyof typeof PROJECT_XP] ?? 0
   );
 
-  // Skill XP: only AI-validated skills; use stored totalXP directly
-  const skillXPs = user.userSkills.map((skill) => skill.totalXP);
+  // Skill XP: AI-validated skills with 1.3x multiplier for GitHub-validated skills
+  // The multiplier is applied at read time only — never stored in the DB
+  const skillXPs = user.userSkills.map((userSkill) => {
+    const rawSkillXP = userSkill.totalXP;
+    return Math.round(rawSkillXP * (userSkill.githubValidated ? GITHUB_XP_MULTIPLIER : 1));
+  });
 
   const totalXP =
     experienceXPs.reduce((sum, xp) => sum + xp, 0) +

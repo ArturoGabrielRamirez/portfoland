@@ -8,6 +8,7 @@
 
 import { prisma } from '@/lib/prisma'
 import type { ActivityEvent } from '@/features/dashboard/types/dashboard'
+import { GITHUB_XP_MULTIPLIER } from '@/features/github/constants/xp'
 
 // =============================================================================
 // Inner helper — 1-second threshold for "created vs updated" detection
@@ -47,6 +48,8 @@ export async function getRecentUserActivity(userId: string): Promise<ActivityEve
         id: true,
         skill: { select: { name: true } },
         aiValidated: true,
+        githubValidated: true,
+        totalXP: true,
         createdAt: true,
         updatedAt: true,
       },
@@ -88,15 +91,26 @@ export async function getRecentUserActivity(userId: string): Promise<ActivityEve
 
   // ---------------------------------------------------------------------------
   // Map user skills to ActivityEvent
+  // GitHub-validated skills: 1.3x XP multiplier applied at read time, type = 'skill_github'.
+  // Falls back to heuristic XP for older records where totalXP may be 0.
   // ---------------------------------------------------------------------------
 
-  const skillEvents: ActivityEvent[] = userSkills.map((userSkill) => ({
-    id: userSkill.id,
-    title: userSkill.skill.name,
-    xp: userSkill.aiValidated ? 150 : 50,
-    type: userSkill.aiValidated ? 'skill_ai' : 'skill_manual',
-    timestamp: userSkill.updatedAt,
-  }))
+  const skillEvents: ActivityEvent[] = userSkills.map((userSkill) => {
+    const isGitHub = userSkill.githubValidated
+    const isAI = userSkill.aiValidated
+    // Fall back to heuristic for older records where totalXP may be 0
+    const baseXP = userSkill.totalXP > 0 ? userSkill.totalXP : (isAI ? 150 : 50)
+    // Apply 1.3x multiplier at read time for GitHub-validated skills only
+    const effectiveXP = isGitHub ? Math.round(baseXP * GITHUB_XP_MULTIPLIER) : baseXP
+
+    return {
+      id: userSkill.id,
+      title: userSkill.skill.name,
+      xp: effectiveXP,
+      type: isGitHub ? 'skill_github' : (isAI ? 'skill_ai' : 'skill_manual'),
+      timestamp: userSkill.updatedAt,
+    }
+  })
 
   // ---------------------------------------------------------------------------
   // Merge, sort by timestamp descending, return top 5

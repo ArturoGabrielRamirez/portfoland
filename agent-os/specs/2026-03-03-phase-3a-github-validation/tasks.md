@@ -337,13 +337,13 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
 #### Task Group 5: XP Read-Time Multiplier Across Data Layer
 **Dependencies:** TG1 (schema must be generated), TG4 (needs `GITHUB_XP_MULTIPLIER` constant)
 
-- [ ] 5.0 Apply the 1.3x GitHub XP multiplier across all three dashboard data files
-  - [ ] 5.1 Write 3 focused tests for the multiplier behavior
+- [x] 5.0 Apply the 1.3x GitHub XP multiplier across all three dashboard data files
+  - [x] 5.1 Write 3 focused tests for the multiplier behavior
     - Test `getUserDashboardStats` (mock Prisma): given a userSkill with `totalXP: 100` and `githubValidated: true`, verify the returned `totalXP` includes `Math.round(100 * 1.3) = 130` rather than `100`
     - Test `getTopRunners` (mock Prisma): given a user with one skill `totalXP: 100, githubValidated: true`, verify the runner's `totalXP` reflects the 1.3x boost
     - Test `getRecentUserActivity` (mock Prisma): given a userSkill with `aiValidated: false, githubValidated: true, totalXP: 200`, verify the activity event `xp` is `Math.round(200 * 1.3) = 260` and `type` is `'skill_github'`
     - File: `features/github/__tests__/xpMultiplier.test.ts`
-  - [ ] 5.2 Edit `features/dashboard/data/getUserDashboardStats.data.ts`
+  - [x] 5.2 Edit `features/dashboard/data/getUserDashboardStats.data.ts`
     - Add `import { GITHUB_XP_MULTIPLIER } from '@/features/github/constants/xp'` at the top
     - Change the `userSkills` Prisma select from `{ where: { aiValidated: true }, select: { totalXP: true } }` to:
       ```typescript
@@ -360,7 +360,7 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
           : skill.totalXP
       );
       ```
-  - [ ] 5.3 Edit `features/dashboard/data/getTopRunners.data.ts`
+  - [x] 5.3 Edit `features/dashboard/data/getTopRunners.data.ts`
     - Add `import { GITHUB_XP_MULTIPLIER } from '@/features/github/constants/xp'` at the top
     - Change the `userSkills` select from `{ select: { aiValidated: true } }` to:
       ```typescript
@@ -379,7 +379,7 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
       }, 0)
       ```
     - Note: `totalXP` may be `0` for older records — fall back to the heuristic for those to avoid regression
-  - [ ] 5.4 Edit `features/dashboard/data/getRecentUserActivity.data.ts`
+  - [x] 5.4 Edit `features/dashboard/data/getRecentUserActivity.data.ts`
     - Add `import { GITHUB_XP_MULTIPLIER } from '@/features/github/constants/xp'` at the top
     - Extend the `userSkill` select to add `githubValidated: true` and `totalXP: true`:
       ```typescript
@@ -410,9 +410,9 @@ Recommended execution order: TG4 → TG1 → TG2 → TG3 → TG5 → TG6 → TG7
       });
       ```
     - Note: `ActivityEvent.type` in `features/dashboard/types/dashboard.ts` must also be updated to include `'skill_github'` — add it to the union type in that file
-  - [ ] 5.5 Edit `features/dashboard/types/dashboard.ts` — extend the `ActivityEvent` type union
+  - [x] 5.5 Edit `features/dashboard/types/dashboard.ts` — extend the `ActivityEvent` type union
     - Find the `type` field in `ActivityEvent` and add `'skill_github'` to the union alongside `'skill_ai'` and `'skill_manual'`
-  - [ ] 5.6 Run the 3 tests written in 5.1 and confirm they pass
+  - [x] 5.6 Run the 3 tests written in 5.1 and confirm they pass
     - Command: `npx jest features/github/__tests__/xpMultiplier.test.ts --no-coverage`
 
 **Acceptance Criteria:**

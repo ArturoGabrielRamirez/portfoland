@@ -116,6 +116,7 @@ export type ActivityEventType =
   | "skill_ai"
   | "skill_manual"
   | "experience_updated"
+  | "skill_github"
 
 /**
  * A single user activity event as returned by getRecentUserActivity.

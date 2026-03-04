@@ -16,6 +16,7 @@ import type { SysLogPanelProps } from "@/features/tech/types/dashboard"
  *   project_completed               → cyan
  *   skill_ai                        → magenta
  *   skill_manual                    → yellow
+ *   skill_github                    → cyan (system-verified event)
  */
 function getDotColor(type: ActivityEventType): string {
   switch (type) {
@@ -28,6 +29,9 @@ function getDotColor(type: ActivityEventType): string {
       return "hsl(330,100%,65%)"
     case "skill_manual":
       return "hsl(52,100%,50%)"
+    case "skill_github":
+      // Cyan — same as project_completed, representing a "system-verified" event
+      return "hsl(174,100%,50%)"
     default:
       return "hsl(174,100%,50%)"
   }

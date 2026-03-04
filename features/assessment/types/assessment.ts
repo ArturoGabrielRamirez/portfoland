@@ -2,73 +2,22 @@
  * Assessment Types
  *
  * TypeScript types for the AI skill assessment feature.
- *
- * NOTE: The Prisma models SkillAssessment, AssessmentQuestion, AssessmentAttempt,
- * and AssessmentStatus enum are defined by TG1 (schema changes). Until TG1 runs
- * and `bunx prisma generate` is executed, those types are defined manually below
- * using the same shape as the planned Prisma schema. Once TG1 is complete, replace
- * the manual definitions with direct imports from `@/app/generated/prisma/client`.
+ * Prisma model types are imported directly from the generated client.
  */
 
 import type { UserSkillWithDetails } from '@/features/skills/types/skill';
+import type {
+  SkillAssessment,
+  AssessmentQuestion,
+  AssessmentAttempt,
+} from '@/app/generated/prisma/client';
 
 // =============================================================================
-// Prisma Type Placeholders
-// (Replace with imports from @/app/generated/prisma/client after TG1 + prisma generate)
+// Prisma Types (generated from schema — re-exported for consumers)
 // =============================================================================
 
-/**
- * Assessment completion status — mirrors the planned AssessmentStatus Prisma enum.
- * After TG1: import { AssessmentStatus } from '@/app/generated/prisma/client'
- */
-export type AssessmentStatus = 'PENDING' | 'PASSED' | 'FAILED';
-
-/**
- * SkillAssessment record — mirrors the planned Prisma model shape.
- * After TG1: import { SkillAssessment } from '@/app/generated/prisma/client'
- */
-export interface SkillAssessment {
-  id: string;
-  userId: string;
-  userSkillId: string;
-  skillSlug: string;
-  skillLevel: number;
-  status: AssessmentStatus;
-  score: number | null;
-  attemptNumber: number;
-  startedAt: Date;
-  completedAt: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-/**
- * AssessmentQuestion record — mirrors the planned Prisma model shape.
- * After TG1: import { AssessmentQuestion } from '@/app/generated/prisma/client'
- */
-export interface AssessmentQuestion {
-  id: string;
-  assessmentId: string;
-  questionIndex: number;
-  questionText: string;
-  options: string[];
-  correctIndex: number;
-  explanation: string;
-  createdAt: Date;
-}
-
-/**
- * AssessmentAttempt record — mirrors the planned Prisma model shape.
- * After TG1: import { AssessmentAttempt } from '@/app/generated/prisma/client'
- */
-export interface AssessmentAttempt {
-  id: string;
-  assessmentId: string;
-  questionIndex: number;
-  selectedIndex: number;
-  isCorrect: boolean;
-  answeredAt: Date;
-}
+export type { SkillAssessment, AssessmentQuestion, AssessmentAttempt };
+export { AssessmentStatus } from '@/app/generated/prisma/client';
 
 // =============================================================================
 // Client-Safe Types
@@ -79,10 +28,12 @@ export interface AssessmentAttempt {
  * Deliberately excludes `correctIndex` and `explanation` so the browser
  * never receives the answer key.
  */
-export type QuestionForClient = Pick<
-  AssessmentQuestion,
-  'id' | 'questionIndex' | 'questionText' | 'options'
->;
+export type QuestionForClient = {
+  id: string;
+  questionIndex: number;
+  questionText: string;
+  options: string[];
+};
 
 // =============================================================================
 // Result and State Types
@@ -158,8 +109,7 @@ export interface AssessmentModalProps {
 
 /**
  * SkillAssessment with its questions relation included.
- * Mirrors what Prisma.SkillAssessmentGetPayload<{ include: { questions: true } }> will return
- * once TG1 schema is applied and prisma generate runs.
+ * Uses Prisma.SkillAssessmentGetPayload shape — extend as needed for other relations.
  */
 export interface SkillAssessmentWithQuestions extends SkillAssessment {
   questions: AssessmentQuestion[];

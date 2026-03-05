@@ -1,14 +1,14 @@
 /**
  * Generate Assessment Questions Service
  *
- * Calls Claude via the AI SDK to produce exactly 5 multiple-choice questions
+ * Calls Gemini via the AI SDK to produce exactly 5 multiple-choice questions
  * for a given skill and level. Validates the raw JSON response before returning.
  *
  * NOTE: `correctIndex` and `explanation` are stored in the DB but NEVER returned
  * to the client — stripping happens in the action layer (startAssessment.action).
  */
 
-import { createAnthropic } from '@ai-sdk/anthropic';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { generateText } from 'ai';
 import { ASSESSMENT_MESSAGES } from '../constants/messages';
 import { QUESTIONS_PER_ASSESSMENT } from '../constants/tokens';
@@ -36,8 +36,8 @@ export interface GeneratedQuestion {
 // Client initialisation
 // =============================================================================
 
-const anthropic = createAnthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+const google = createGoogleGenerativeAI({
+  apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
 });
 
 // =============================================================================
@@ -82,7 +82,7 @@ export async function generateQuestionsService(
   levelName: string
 ): Promise<GeneratedQuestion[]> {
   const result = await generateText({
-    model: anthropic('claude-sonnet-4-6'),
+    model: google('gemini-2.0-flash'),
     system: SYSTEM_PROMPT,
     prompt: buildUserPrompt(skillName, levelName),
   });

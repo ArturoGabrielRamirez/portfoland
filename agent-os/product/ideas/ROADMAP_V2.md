@@ -182,6 +182,7 @@ Candidatos (no ordenados — depende de feedback):
 - Templates dentro de Classic Mode (photographer, designer, writer)
 - The Gridcn/Glitchcn adoption para Tech Mode v2
 - Mock interviews
+- **GitHub package.json Framework Detection** — Leer `package.json` de repos vía GitHub API para detectar dependencias (`react`, `next`, `vue`, `express`, etc.) y validar framework skills directamente. Más preciso que inferir por lenguaje. Requiere spec propia + tasks.
 
 ---
 

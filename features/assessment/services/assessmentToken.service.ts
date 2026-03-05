@@ -55,6 +55,26 @@ export async function consumeAssessmentToken(userId: string): Promise<ConsumeTok
 
   const today = new Date().toISOString().split('T')[0];
 
+  // Step 0: Initialize meta.assessmentTokens if the field has never been written.
+  // Without this, Step 2's $gt: 0 query won't match (non-existent field) and
+  // consumeAssessmentToken would return hasTokens: false for brand-new users.
+  await prisma.$runCommandRaw({
+    findAndModify: 'users',
+    query: {
+      _id: userId,
+      'meta.assessmentTokens': { $exists: false },
+    },
+    update: {
+      $set: {
+        'meta.assessmentTokens': {
+          remaining: DEFAULT_ASSESSMENT_TOKENS,
+          lastResetDate: today,
+        },
+      },
+    },
+    new: false,
+  });
+
   // Step 1: Atomic daily reset — only fires if lastResetDate !== today
   await prisma.$runCommandRaw({
     findAndModify: 'users',
@@ -139,4 +159,37 @@ export async function hasAssessmentTokens(userId: string): Promise<boolean> {
   }
 
   return tokenInfo.remaining > 0;
+}
+
+/**
+ * Refund one assessment token back to the user.
+ *
+ * Called when a token was consumed but the downstream operation (AI question
+ * generation, DB persist) failed — so the user is not charged for a broken attempt.
+ *
+ * No-ops for pro users. Caps at DEFAULT_ASSESSMENT_TOKENS to prevent over-refund.
+ *
+ * @param userId - The user ID
+ */
+export async function refundAssessmentToken(userId: string): Promise<void> {
+  const userRecord = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { meta: true },
+  });
+
+  const rawMeta = userRecord?.meta as { isPro?: boolean } | null;
+  if (rawMeta?.isPro === true) return;
+
+  // Increment remaining by 1, but only if currently below the daily cap
+  await prisma.$runCommandRaw({
+    findAndModify: 'users',
+    query: {
+      _id: userId,
+      'meta.assessmentTokens.remaining': { $lt: DEFAULT_ASSESSMENT_TOKENS },
+    },
+    update: {
+      $inc: { 'meta.assessmentTokens.remaining': 1 },
+    },
+    new: false,
+  });
 }

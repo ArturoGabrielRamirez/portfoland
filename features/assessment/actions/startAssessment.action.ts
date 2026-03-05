@@ -31,12 +31,13 @@ import {
   COOLDOWN_HOURS,
 } from '../constants/tokens';
 import { ASSESSMENT_SUPPORTED_SKILL_SLUGS } from '../constants/supportedSkills';
-import { consumeAssessmentToken } from '../services/assessmentToken.service';
+import { consumeAssessmentToken, refundAssessmentToken } from '../services/assessmentToken.service';
 import { generateQuestionsService } from '../services/generateQuestions.service';
 import { createAssessmentData } from '../data/createAssessment.data';
 import { getAttemptCountData } from '../data/getAttemptCount.data';
 import { SKILL_LEVEL_NAMES } from '@/features/skills/constants/xp';
 import type { QuestionForClient } from '../types/assessment';
+import type { GeneratedQuestion } from '../services/generateQuestions.service';
 
 // =============================================================================
 // Types
@@ -179,9 +180,16 @@ export const startAssessmentAction = async (
     const skillName = userSkill.skill.name;
 
     // -------------------------------------------------------------------------
-    // Step 6: Generate questions via Claude
+    // Step 6: Generate questions — refund token if generation fails so the
+    //         user is not charged for a broken AI response
     // -------------------------------------------------------------------------
-    const generatedQuestions = await generateQuestionsService(skillName, levelName);
+    let generatedQuestions: GeneratedQuestion[];
+    try {
+      generatedQuestions = await generateQuestionsService(skillName, levelName);
+    } catch (err) {
+      await refundAssessmentToken(userId);
+      throw err;
+    }
 
     // -------------------------------------------------------------------------
     // Step 7: Persist assessment + questions to DB

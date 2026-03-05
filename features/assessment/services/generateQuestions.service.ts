@@ -81,19 +81,30 @@ export async function generateQuestionsService(
   skillName: string,
   levelName: string
 ): Promise<GeneratedQuestion[]> {
-  const result = await generateText({
-    model: google('gemini-2.0-flash'),
-    system: SYSTEM_PROMPT,
-    prompt: buildUserPrompt(skillName, levelName),
-  });
+  let result;
+  try {
+    result = await generateText({
+      model: google('gemini-2.0-flash'),
+      system: SYSTEM_PROMPT,
+      prompt: buildUserPrompt(skillName, levelName),
+      maxRetries: 1,
+    });
+  } catch (err) {
+    console.error('[generateQuestionsService] Gemini API call failed:', err);
+    throw new Error(ASSESSMENT_MESSAGES.GENERATION_ERROR);
+  }
 
   // -------------------------------------------------------------------------
   // Parse — throw typed error so actionWrapper surfaces it cleanly
   // -------------------------------------------------------------------------
+  // Strip markdown code fences if Gemini wraps the response (e.g. ```json ... ```)
+  const rawText = result.text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/i, '').trim();
+
   let parsed: unknown;
   try {
-    parsed = JSON.parse(result.text);
-  } catch {
+    parsed = JSON.parse(rawText);
+  } catch (err) {
+    console.error('[generateQuestionsService] JSON.parse failed. Raw text:', rawText, err);
     throw new Error(ASSESSMENT_MESSAGES.GENERATION_ERROR);
   }
 
@@ -102,6 +113,12 @@ export async function generateQuestionsService(
   // items, each with 4 options and required fields
   // -------------------------------------------------------------------------
   if (!Array.isArray(parsed) || parsed.length !== QUESTIONS_PER_ASSESSMENT) {
+    console.error(
+      '[generateQuestionsService] Validation failed: not an array of',
+      QUESTIONS_PER_ASSESSMENT,
+      '. Got:',
+      JSON.stringify(parsed).slice(0, 300),
+    );
     throw new Error(ASSESSMENT_MESSAGES.GENERATION_ERROR);
   }
 
@@ -117,6 +134,7 @@ export async function generateQuestionsService(
       item.correctIndex > 3 ||
       typeof item.explanation !== 'string'
     ) {
+      console.error('[generateQuestionsService] Item failed validation:', JSON.stringify(item));
       throw new Error(ASSESSMENT_MESSAGES.GENERATION_ERROR);
     }
   }

@@ -4,7 +4,8 @@
  * DashboardSkillsView Component - Cyberpunk V2
  *
  * Client component for the dashboard skills page with cyberpunk hexagonal design.
- * Includes the GitHubSyncPanel (TG9) between the legend row and the skill tree.
+ * Includes the GitHubSyncPanel (TG9) and AssessmentWidget (TG10) between the
+ * legend row and the skill tree.
  */
 
 import { useCallback, useTransition, useState } from 'react';
@@ -21,9 +22,11 @@ import {
   ManualSkillModal
 } from '@/features/skills/components';
 import { GitHubSyncPanel } from '@/features/github/components';
+import { AssessmentWidget } from '@/features/assessment/components/AssessmentWidget';
 import type { UserSkillWithDetails, SkillCategory } from '@/features/skills/types/skill';
 import type { PortfolioMode } from '@/features/portfolio/types/portfolio';
 import type { GitHubStats } from '@/features/github/types/github';
+import type { AssessmentTokenInfo } from '@/features/assessment/types/assessment';
 
 // =============================================================================
 // Types
@@ -52,6 +55,10 @@ interface DashboardSkillsViewProps {
   githubStats: GitHubStats | null;
   /** True when an Account record with providerId='github' exists for the user (TG9) */
   isGitHubConnected: boolean;
+  /** Assessment token balance read from User.meta (TG10) */
+  assessmentTokens: AssessmentTokenInfo;
+  /** User skills pre-filtered to ASSESSMENT_SUPPORTED_SKILL_SLUGS (TG10) */
+  supportedUserSkills: UserSkillWithDetails[];
 }
 
 // =============================================================================
@@ -66,6 +73,8 @@ export function DashboardSkillsView({
   githubSyncedAt,
   githubStats,
   isGitHubConnected,
+  assessmentTokens,
+  supportedUserSkills,
 }: DashboardSkillsViewProps) {
   const params = useParams();
   const locale = params.locale as string;
@@ -76,10 +85,8 @@ export function DashboardSkillsView({
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   // ---------------------------------------------------------------------------
-  // TG9: AIEye trigger counters for GitHub sync state transitions.
-  // These are lifted state values that GitHubSyncPanel callbacks increment.
-  // If CRTWithAI is added to this page in a future iteration, these props
-  // can be passed directly to drive the eye animations.
+  // AIEye trigger counters for GitHub sync and assessment state transitions.
+  // These are lifted state values that panel/widget callbacks increment.
   // ---------------------------------------------------------------------------
   const [xpGainTrigger, setXpGainTrigger] = useState(0);
   const [lifeLossTrigger, setLifeLossTrigger] = useState(0);
@@ -99,6 +106,14 @@ export function DashboardSkillsView({
   const handleAddSuccess = useCallback(() => {
     handleCloseAddModal();
   }, [handleCloseAddModal]);
+
+  /**
+   * Fires when an assessment is passed.
+   * Increments xpGainTrigger to play the CRT AIEye xp_gain animation.
+   */
+  const handleAssessmentPass = useCallback(() => {
+    setXpGainTrigger((prev) => prev + 1);
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#0A0E1A] font-mono">
@@ -221,6 +236,15 @@ export function DashboardSkillsView({
             searchingTrigger={searchingTrigger}
           />
         </div>
+      </div>
+
+      {/* ASSESSMENT_MODULE — AI Skill Assessment Widget (TG10) */}
+      <div className="px-6 py-3 border-b border-[hsl(174,100%,50%,0.1)]">
+        <AssessmentWidget
+          userSkills={supportedUserSkills}
+          assessmentTokens={assessmentTokens}
+          onAssessmentPass={handleAssessmentPass}
+        />
       </div>
 
       {/* Main Content - Skill Tree View */}

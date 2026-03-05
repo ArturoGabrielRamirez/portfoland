@@ -13,10 +13,6 @@
  *
  * Tech Mode aesthetic — angular borders, monospace font, cyan palette.
  * Matches GitHubSyncPanel visual style for dashboard consistency.
- *
- * Note: AssessmentModal import and rendering is deferred to TG10 (dashboard
- * integration). State scaffolding is in place so TG10 only needs to uncomment
- * the modal JSX and add the import.
  */
 
 import { useState } from 'react';
@@ -27,6 +23,7 @@ import { DEFAULT_ASSESSMENT_TOKENS } from '../constants/tokens';
 import { SKILL_LEVEL_NAMES } from '@/features/skills/constants/xp';
 import type { AssessmentWidgetProps } from '../types/assessment';
 import type { UserSkillWithDetails } from '@/features/skills/types/skill';
+import { AssessmentModal } from './AssessmentModal';
 
 // =============================================================================
 // Local Types
@@ -35,7 +32,7 @@ import type { UserSkillWithDetails } from '@/features/skills/types/skill';
 /** Tracks the cooldown end time per skill slug, updated when action returns cooldown error */
 type CooldownMap = Record<string, Date>;
 
-/** Represents the skill selected for assessment — passed to the modal (TG10) */
+/** Represents the skill selected for assessment — passed to the modal */
 export interface ActiveSkill {
   skillSlug: string;
   skillName: string;
@@ -175,11 +172,11 @@ export function AssessmentWidget({
     ASSESSMENT_SUPPORTED_SKILL_SLUGS.includes(us.skill.slug),
   );
 
-  // Tracks which skill row triggered the modal (wired to modal in TG10)
+  // Tracks which skill row triggered the modal
   const [activeSkill, setActiveSkill] = useState<ActiveSkill | null>(null);
-  // Controls modal visibility (wired to modal in TG10)
+  // Controls modal visibility
   const [modalOpen, setModalOpen] = useState(false);
-  // Tracks cooldown end times keyed by skillSlug — updated via modal callback in TG10
+  // Tracks cooldown end times keyed by skillSlug — updated via modal callback
   const [cooldownMap, setCooldownMap] = useState<CooldownMap>({});
 
   const hasTokens = assessmentTokens.remaining > 0;
@@ -192,14 +189,6 @@ export function AssessmentWidget({
       skillLevel: userSkill.level,
     });
     setModalOpen(true);
-  };
-
-  /**
-   * Called by AssessmentModal (TG7/TG10) when a cooldown error is returned.
-   * Updates the local cooldown map so the skill row shows the correct disabled state.
-   */
-  const handleCooldownUpdate = (skillSlug: string, endsAt: Date) => {
-    setCooldownMap((prev) => ({ ...prev, [skillSlug]: endsAt }));
   };
 
   // ---------------------------------------------------------------------------
@@ -267,32 +256,16 @@ export function AssessmentWidget({
         </div>
       )}
 
-      {/*
-       * TODO (TG10): Wire AssessmentModal here.
-       *
-       * Import AssessmentModal from './AssessmentModal' and render:
-       *
-       *   <AssessmentModal
-       *     open={modalOpen}
-       *     onOpenChange={setModalOpen}
-       *     skillSlug={activeSkill?.skillSlug ?? ''}
-       *     skillName={activeSkill?.skillName ?? ''}
-       *     skillLevel={activeSkill?.skillLevel ?? 1}
-       *     onPassComplete={onAssessmentPass}
-       *     onCooldownUpdate={handleCooldownUpdate}
-       *   />
-       *
-       * State already in place: modalOpen, activeSkill, cooldownMap, handleCooldownUpdate.
-       * onAssessmentPass is already received as a prop and ready to forward.
-       */}
-
-      {/* Modal placeholder — wired in TG10 */}
+      {/* Assessment Modal — wired in TG10 */}
       {modalOpen && activeSkill && (
-        <span className="hidden" aria-hidden>
-          {activeSkill.skillSlug}
-          {String(typeof onAssessmentPass)}
-          {String(typeof handleCooldownUpdate)}
-        </span>
+        <AssessmentModal
+          open={modalOpen}
+          onOpenChange={setModalOpen}
+          skillSlug={activeSkill.skillSlug}
+          skillName={activeSkill.skillName}
+          skillLevel={activeSkill.skillLevel}
+          onPassComplete={onAssessmentPass}
+        />
       )}
     </div>
   );

@@ -101,6 +101,24 @@ vi.mock('@/lib/utils/format', () => ({
   formatTimeAgo: (date: Date) => date.toISOString(),
 }));
 
+// Stub assessment server actions — AssessmentWidget renders AssessmentModal which
+// calls these; stub them so no real server calls are made in jsdom.
+vi.mock('@/features/assessment/actions/startAssessment.action', () => ({
+  startAssessmentAction: vi.fn().mockResolvedValue({
+    hasError: true,
+    message: 'Test stub — not executing',
+    payload: null,
+  }),
+}));
+
+vi.mock('@/features/assessment/actions/submitAnswers.action', () => ({
+  submitAnswersAction: vi.fn().mockResolvedValue({
+    hasError: true,
+    message: 'Test stub — not executing',
+    payload: null,
+  }),
+}));
+
 // =============================================================================
 // Import components (must come after all vi.mock declarations)
 // =============================================================================
@@ -136,6 +154,7 @@ function makeUserSkill(overrides: {
     level,
     aiValidated,
     githubValidated,
+    aiAssessmentValidated: false,
     totalXP: 200,
     userId: 'user-1',
     skillId: `skilldef-${id}`,
@@ -204,7 +223,7 @@ function makePortfolioData(skills: any[]) {
   } as any;
 }
 
-/** Base props for DashboardSkillsView */
+/** Base props for DashboardSkillsView — includes TG10 required props */
 const baseDashboardProps = {
   skills: [],
   categories: [],
@@ -220,6 +239,9 @@ const baseDashboardProps = {
   isGitHubConnected: true,
   githubSyncedAt: new Date('2026-01-15T10:00:00Z'),
   githubStats: { stars: 12, totalCommits: 500, validatedSkillsCount: 3 },
+  // TG10 — assessment widget data
+  assessmentTokens: { remaining: 3, lastResetDate: '2026-03-05' },
+  supportedUserSkills: [],
 };
 
 // =============================================================================

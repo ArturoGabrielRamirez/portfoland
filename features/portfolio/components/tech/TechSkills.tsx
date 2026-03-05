@@ -25,6 +25,7 @@ export function TechSkills({ data, className }: PortfolioSectionProps) {
   const hasAIValidated = userSkills.some((s) => s.aiValidated);
   const hasGitHubValidated = userSkills.some((s) => s.githubValidated);
   const hasDualValidated = userSkills.some((s) => s.aiValidated && s.githubValidated);
+  const hasAssessmentValidated = userSkills.some((s) => s.aiAssessmentValidated);
   const hasSelfAssessed = userSkills.some((s) => !s.aiValidated);
 
   return (
@@ -40,6 +41,9 @@ export function TechSkills({ data, className }: PortfolioSectionProps) {
           )}
           {hasDualValidated && (
             <TechBadge color="yellow">&#10022; Elite Verified</TechBadge>
+          )}
+          {hasAssessmentValidated && (
+            <TechBadge color="cyan">&#9670; Assessment Verified</TechBadge>
           )}
           {hasSelfAssessed && (
             <TechBadge color="gray">Self-Assessed</TechBadge>

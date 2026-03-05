@@ -10,6 +10,9 @@
  * - AI-only: magenta/cyan drop-shadow + ★ mark (top-right)
  * - GitHub-only: green drop-shadow + ⬡ mark (top-left)
  * - Both validated: gold drop-shadow + gold ⬡ + magenta ★ + gold pulsing ring
+ *
+ * TG8 (Phase 4): Added AI assessment validation layer.
+ * - Assessment validated: cyan drop-shadow (additive, only when not already gold) + ◆ mark (bottom-right)
  */
 
 import { memo } from 'react';
@@ -74,6 +77,9 @@ function SkillHexagonNodeComponent({
   const isGithubOnly = isGithubValidated && !isAIValidated;
   const isBothValidated = isAIValidated && isGithubValidated;
 
+  // AI assessment validation state (TG8) — drives additive cyan drop-shadow and ◆ mark
+  const isAssessmentValidated = userSkill?.aiAssessmentValidated === true;
+
   // Get skill name for display
   const skillName = userSkill?.skill?.name ?? suggestedSkillName ?? 'Unknown';
   const skillLetter = getSkillLetter(skillName);
@@ -95,17 +101,20 @@ function SkillHexagonNodeComponent({
     : undefined;
 
   // Validation-aware filter:
-  //   isBothValidated → gold (dual-validation legendary effect)
-  //   isGithubOnly    → green
-  //   isAIOnly        → magenta/cyan
-  //   none            → level-based glow
+  //   isBothValidated         → gold (dual-validation legendary effect)
+  //   isGithubOnly            → green
+  //   isAIOnly                → magenta/cyan
+  //   isAssessmentValidated   → additive cyan (only when not already gold dual-validated)
+  //   none                    → level-based glow
   const svgFilter = isBothValidated
     ? `drop-shadow(0 0 12px #FFD700) drop-shadow(0 0 6px #FFA500)`
     : isGithubOnly
       ? `drop-shadow(0 0 10px #22C55E) drop-shadow(0 0 5px #16A34A)`
       : isAIOnly
         ? `drop-shadow(0 0 10px #D946EF) drop-shadow(0 0 5px #00D4FF)`
-        : baseLevelFilter;
+        : isAssessmentValidated && !isBothValidated
+          ? `drop-shadow(0 0 8px #00D4FF)${baseLevelFilter ? ` ${baseLevelFilter}` : ''}`
+          : baseLevelFilter;
 
   const handleClick = () => {
     onClick?.();
@@ -115,12 +124,14 @@ function SkillHexagonNodeComponent({
   const ariaLabel = isEmpty
     ? `Add ${suggestedSkillName ?? 'new'} skill`
     : isBothValidated
-      ? `${skillName} - Level ${level} ${visualStyle.name} - AI & GitHub Verified`
+      ? `${skillName} - Level ${level} ${visualStyle.name} - AI & GitHub Verified${isAssessmentValidated ? ' - AI Assessment Verified' : ''}`
       : isGithubValidated
-        ? `${skillName} - Level ${level} ${visualStyle.name} - GitHub Verified`
+        ? `${skillName} - Level ${level} ${visualStyle.name} - GitHub Verified${isAssessmentValidated ? ' - AI Assessment Verified' : ''}`
         : isAIValidated
-          ? `${skillName} - Level ${level} ${visualStyle.name} - AI Verified`
-          : `${skillName} - Level ${level} ${visualStyle.name}`;
+          ? `${skillName} - Level ${level} ${visualStyle.name} - AI Verified${isAssessmentValidated ? ' - AI Assessment Verified' : ''}`
+          : isAssessmentValidated
+            ? `${skillName} - Level ${level} ${visualStyle.name} - AI Assessment Verified`
+            : `${skillName} - Level ${level} ${visualStyle.name}`;
 
   return (
     <motion.button
@@ -227,6 +238,19 @@ function SkillHexagonNodeComponent({
             textAnchor="middle"
           >
             ⬡
+          </text>
+        )}
+
+        {/* AI assessment validated indicator mark — bottom-right corner (TG8) */}
+        {isAssessmentValidated && (
+          <text
+            x="60"
+            y="10"
+            fontSize="7"
+            fill="#00D4FF"
+            textAnchor="middle"
+          >
+            ◆
           </text>
         )}
       </svg>

@@ -8,10 +8,10 @@
 import { prisma } from '@/lib/prisma';
 
 const NARRATIVE_CACHE_KEYS = [
-  'meta.aiNarrative_gaming_en',
-  'meta.aiNarrative_gaming_es',
-  'meta.aiNarrative_professional_en',
-  'meta.aiNarrative_professional_es',
+  'meta.aiNarrative_tech_en',
+  'meta.aiNarrative_tech_es',
+  'meta.aiNarrative_classic_en',
+  'meta.aiNarrative_classic_es',
 ];
 
 /**

@@ -13,10 +13,10 @@ import { cn } from '@/lib/utils'
 import { cva, type VariantProps } from 'class-variance-authority'
 
 // =============================================================================
-// GAMING BUTTON
+// TECH BUTTON
 // =============================================================================
 
-const gamingButtonVariants = cva(
+const techButtonVariants = cva(
   'inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
@@ -52,7 +52,7 @@ const gamingButtonVariants = cva(
 
 export interface TechButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-  VariantProps<typeof gamingButtonVariants> { }
+  VariantProps<typeof techButtonVariants> { }
 
 export const TechButton = React.forwardRef<
   HTMLButtonElement,
@@ -60,7 +60,7 @@ export const TechButton = React.forwardRef<
 >(({ className, variant, size, ...props }, ref) => {
   return (
     <button
-      className={cn(gamingButtonVariants({ variant, size, className }))}
+      className={cn(techButtonVariants({ variant, size, className }))}
       ref={ref}
       {...props}
     />
@@ -69,7 +69,7 @@ export const TechButton = React.forwardRef<
 TechButton.displayName = 'TechButton'
 
 // =============================================================================
-// GAMING INPUT
+// TECH INPUT
 // =============================================================================
 
 export interface TechInputProps
@@ -105,10 +105,10 @@ export const TechInput = React.forwardRef<HTMLInputElement, TechInputProps>(
 TechInput.displayName = 'TechInput'
 
 // =============================================================================
-// GAMING CARD
+// TECH CARD
 // =============================================================================
 
-const gamingCardVariants = cva(
+const techCardVariants = cva(
   'rounded-sm border transition-all duration-300',
   {
     variants: {
@@ -132,14 +132,14 @@ const gamingCardVariants = cva(
 
 export interface TechCardProps
   extends React.HTMLAttributes<HTMLDivElement>,
-  VariantProps<typeof gamingCardVariants> { }
+  VariantProps<typeof techCardVariants> { }
 
 export const TechCard = React.forwardRef<HTMLDivElement, TechCardProps>(
   ({ className, variant, ...props }, ref) => {
     return (
       <div
         ref={ref}
-        className={cn(gamingCardVariants({ variant, className }), 'relative group')}
+        className={cn(techCardVariants({ variant, className }), 'relative group')}
         {...props}
       >
         {/* Decorative corner markers */}
@@ -455,7 +455,7 @@ export function LevelBadge({ level, size = 'md', className }: LevelBadgeProps) {
 }
 
 // =============================================================================
-// GAMING AVATAR
+// TECH AVATAR
 // =============================================================================
 
 interface TechAvatarProps {
@@ -519,7 +519,7 @@ export function TechAvatar({
 }
 
 // =============================================================================
-// GAMING BADGE
+// TECH BADGE
 // =============================================================================
 
 interface TechBadgeProps {

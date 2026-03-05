@@ -41,5 +41,12 @@ export async function getAssessmentTokensData(userId: string): Promise<Assessmen
     return { remaining: DEFAULT_ASSESSMENT_TOKENS, lastResetDate: today };
   }
 
+  // If the last reset was on a previous day, the tokens have refreshed.
+  // Return the full allowance so the widget displays correctly before the
+  // first consumption (which triggers the actual atomic reset in the service).
+  if (meta.assessmentTokens.lastResetDate !== today) {
+    return { remaining: DEFAULT_ASSESSMENT_TOKENS, lastResetDate: today };
+  }
+
   return meta.assessmentTokens;
 }

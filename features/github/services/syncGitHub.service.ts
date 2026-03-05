@@ -118,9 +118,6 @@ export async function syncGitHubService(userId: string): Promise<GitHubSyncResul
     .filter((us) => us.skill.slug !== null && normalizedValidated.has(normalize(us.skill.slug)))
     .map((us) => us.skill.slug as string)
 
-  console.log('[GitHub Sync] validatedSlugs:', validatedSlugs)
-  console.log('[GitHub Sync] userSkillSlugs in DB:', userSkills.map(us => us.skill.slug))
-  console.log('[GitHub Sync] matchingUserSkillIds:', matchingUserSkillIds)
 
   if (matchingUserSkillIds.length > 0) {
     await prisma.userSkill.updateMany({

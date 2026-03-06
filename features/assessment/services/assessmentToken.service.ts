@@ -11,6 +11,7 @@ import { prisma } from '@/lib/prisma';
 import { DEFAULT_ASSESSMENT_TOKENS } from '@/features/assessment/constants/tokens';
 import { ASSESSMENT_MESSAGES } from '@/features/assessment/constants/messages';
 import type { AssessmentTokenInfo } from '@/features/assessment/types/assessment';
+import { parseUserMeta } from '@/lib/user-meta';
 
 // =============================================================================
 // Types
@@ -47,7 +48,7 @@ export async function consumeAssessmentToken(userId: string): Promise<ConsumeTok
     select: { meta: true },
   });
 
-  const rawMeta = userRecord?.meta as { isPro?: boolean } | null;
+  const rawMeta = parseUserMeta(userRecord?.meta);
 
   if (rawMeta?.isPro === true) {
     return { hasTokens: true, remaining: Infinity };
@@ -140,10 +141,7 @@ export async function hasAssessmentTokens(userId: string): Promise<boolean> {
     return true;
   }
 
-  const meta = user.meta as {
-    isPro?: boolean;
-    assessmentTokens?: AssessmentTokenInfo;
-  };
+  const meta = parseUserMeta(user.meta);
 
   // Pro users always have access
   if (meta.isPro === true) {
@@ -177,7 +175,7 @@ export async function refundAssessmentToken(userId: string): Promise<void> {
     select: { meta: true },
   });
 
-  const rawMeta = userRecord?.meta as { isPro?: boolean } | null;
+  const rawMeta = parseUserMeta(userRecord?.meta);
   if (rawMeta?.isPro === true) return;
 
   // Increment remaining by 1, but only if currently below the daily cap

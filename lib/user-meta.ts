@@ -3,17 +3,19 @@
  *
  * User.meta is a freeform JSON blob in MongoDB that accumulates data from
  * multiple features. This file is the single source of truth for its shape.
- * All features should import from here instead of doing their own `as { ... }`
- * type casts against User.meta.
  *
- * Fields:
- *   remainingLives / lastResetDate  — AI quota (features/ai-quota)
- *   assessmentTokens                — Skill assessment tokens (features/assessment)
- *   isPro                           — Pro subscription flag
- *   aiNarrative_*                   — Cached AI narratives (features/ai-narrator)
+ * Usage: import { parseUserMeta } from '@/lib/user-meta'
+ *        const meta = parseUserMeta(user.meta)
+ *        meta.isPro / meta.assessmentTokens / etc.
  */
 
 import type { AssessmentTokenInfo } from '@/features/assessment/types/assessment';
+
+/** Shape of a cached AI narrative entry stored in User.meta */
+export interface CachedNarrative {
+  narrative: string;
+  timestamp: string;
+}
 
 export interface UserMeta {
   /** AI chat / content-improvement daily allowance */
@@ -28,8 +30,20 @@ export interface UserMeta {
   isPro?: boolean;
 
   /** Cached AI-generated narratives keyed by mode + locale */
-  aiNarrative_tech_en?: string;
-  aiNarrative_tech_es?: string;
-  aiNarrative_classic_en?: string;
-  aiNarrative_classic_es?: string;
+  aiNarrative_tech_en?: CachedNarrative;
+  aiNarrative_tech_es?: CachedNarrative;
+  aiNarrative_classic_en?: CachedNarrative;
+  aiNarrative_classic_es?: CachedNarrative;
+}
+
+/**
+ * Safely cast User.meta (Prisma JSON field) to the typed UserMeta shape.
+ * Use this instead of inline `as { ... }` casts across services.
+ *
+ * @example
+ *   const meta = parseUserMeta(user.meta)
+ *   if (meta.isPro) { ... }
+ */
+export function parseUserMeta(meta: unknown): UserMeta {
+  return ((meta ?? {}) as UserMeta);
 }

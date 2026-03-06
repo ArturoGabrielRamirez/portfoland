@@ -31,11 +31,16 @@ model User {
   emailVerified Boolean  @default(false)
   portfolioMode         String   @default("classic")
   onboardingCompleted   Boolean  @default(false)
+  lastStreakDate        DateTime?
+  currentStreak         Int      @default(0)
   bio               String?
   sectionOrder      String[] @default(["about", "experience", "skills", "projects"])
   contactLinks      Json     @default("{}")
   sectionVisibility Json     @default("{}")
   meta              Json     @default("{}")
+  // GitHub sync tracking fields
+  githubSyncedAt    DateTime?
+  githubStats       Json?
   createdAt         DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -50,6 +55,7 @@ model User {
   testimonials      Testimonial[]
   galleryItems      GalleryItem[]
   portfolioSettings PortfolioSettings?
+  skillAssessments  SkillAssessment[]
 
   @@map("users")
 }
@@ -180,6 +186,7 @@ model Project {
 enum SourceType {
   EXPERIENCE
   MANUAL
+  GITHUB
 }
 
 model Skill {
@@ -223,9 +230,13 @@ model UserSkill {
   skill     Skill    @relation(fields: [skillId], references: [id])
   totalXP   Int      @default(0)
   level     Int      @default(1)
+  aiValidated          Boolean @default(false)
+  githubValidated      Boolean @default(false)
+  aiAssessmentValidated Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   sources   SkillSource[]
+  assessments SkillAssessment[]
 
   @@unique([userId, skillId])
   @@index([userId])
@@ -247,6 +258,71 @@ model SkillSource {
   @@index([userSkillId])
   @@index([experienceId])
   @@map("skill_sources")
+}
+
+// =============================================================================
+// AI Assessment Feature Models
+// =============================================================================
+
+enum AssessmentStatus {
+  PENDING
+  PASSED
+  FAILED
+}
+
+model SkillAssessment {
+  id            String           @id @default(cuid()) @map("_id")
+  userId        String
+  userSkillId   String
+  skillSlug     String
+  skillLevel    Int
+  status        AssessmentStatus @default(PENDING)
+  score         Int?
+  attemptNumber Int
+  startedAt     DateTime         @default(now())
+  completedAt   DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userSkill   UserSkill           @relation(fields: [userSkillId], references: [id], onDelete: Cascade)
+  questions   AssessmentQuestion[]
+  attempts    AssessmentAttempt[]
+
+  @@index([userId])
+  @@index([userSkillId])
+  @@index([userId, skillSlug])
+  @@map("skill_assessments")
+}
+
+model AssessmentQuestion {
+  id            String          @id @default(cuid()) @map("_id")
+  assessmentId  String
+  questionIndex Int
+  questionText  String
+  options       String[]
+  correctIndex  Int
+  explanation   String
+  createdAt     DateTime        @default(now())
+
+  assessment SkillAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  @@index([assessmentId])
+  @@map("assessment_questions")
+}
+
+model AssessmentAttempt {
+  id            String          @id @default(cuid()) @map("_id")
+  assessmentId  String
+  questionIndex Int
+  selectedIndex Int
+  isCorrect     Boolean
+  answeredAt    DateTime        @default(now())
+
+  assessment SkillAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  @@index([assessmentId])
+  @@map("assessment_attempts")
 }
 
 // =============================================================================

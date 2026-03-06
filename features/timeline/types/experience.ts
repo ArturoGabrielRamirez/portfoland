@@ -135,6 +135,8 @@ export interface TimelineMapProps {
   selectedExperience?: ExperienceModel | null;
   onExperienceSelect?: (experience: ExperienceModel) => void;
   isEditable?: boolean;
+  /** When set, the map pans to the pin matching this experience id */
+  focusedExperienceId?: string;
   className?: string;
 }
 
@@ -189,4 +191,16 @@ export interface LocationPickerProps {
   };
   onChange: (location: { latitude: number; longitude: number; address: string }) => void;
   className?: string;
+}
+
+/**
+ * Props for TimelineSidebar component
+ */
+export interface TimelineSidebarProps {
+  /** Experiences sorted by startDate descending — sort in the parent */
+  experiences: ExperienceModel[];
+  selectedExperienceId?: string;
+  onSelect: (exp: ExperienceModel) => void;
+  isOpen: boolean;
+  onToggle: () => void;
 }

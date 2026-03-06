@@ -110,6 +110,9 @@ const mockUserSkill = {
   skillId: mockSkillId,
   totalXP: 500,
   level: 3,
+  aiValidated: false,
+  // githubValidated added in TG1 (Phase 3A schema change)
+  githubValidated: false,
   createdAt: new Date('2024-01-01'),
   updatedAt: new Date('2024-01-01'),
   skill: mockSkill,

@@ -36,10 +36,68 @@ export const auth = betterAuth({
     enabled: true,
   },
 
+  account: {
+    accountLinking: {
+      enabled: true,
+      trustedProviders: ['google', 'github'],
+      allowDifferentEmails: true,
+    },
+  },
+
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    },
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      scope: ['user:email', 'read:user', 'repo'],
+      getUserInfo: async (token) => {
+        // Fetch main profile
+        const profileRes = await fetch('https://api.github.com/user', {
+          headers: {
+            Authorization: `Bearer ${token.accessToken}`,
+            'User-Agent': 'portfoland',
+          },
+        })
+        if (!profileRes.ok) return null
+        const profile = await profileRes.json()
+
+        // Fetch emails separately (handles private emails)
+        let email = profile.email as string | null
+        if (!email) {
+          const emailsRes = await fetch('https://api.github.com/user/emails', {
+            headers: {
+              Authorization: `Bearer ${token.accessToken}`,
+              'User-Agent': 'portfoland',
+            },
+          })
+          if (emailsRes.ok) {
+            const emails = await emailsRes.json() as Array<{ email: string; primary: boolean; verified: boolean }>
+            email = emails.find(e => e.primary && e.verified)?.email
+              ?? emails.find(e => e.primary)?.email
+              ?? emails[0]?.email
+              ?? null
+          }
+        }
+
+        // Final fallback: GitHub noreply email (always unique)
+        if (!email) {
+          email = `${profile.id}+${profile.login}@users.noreply.github.com`
+        }
+
+        return {
+          user: {
+            id: String(profile.id),
+            name: profile.name || profile.login,
+            email,
+            image: profile.avatar_url,
+            emailVerified: true,
+          },
+          data: profile,
+        }
+      },
     },
   },
 

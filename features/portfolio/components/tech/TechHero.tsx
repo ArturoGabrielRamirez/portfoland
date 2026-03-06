@@ -8,6 +8,7 @@ import {
   TechBadge,
   LevelBadge,
 } from '@/features/tech';
+import { calculateGlobalLevel } from '@/lib/utils/xp';
 import type { PortfolioSectionProps } from '../../types/portfolio';
 
 function getInitials(name: string | null): string {
@@ -21,6 +22,9 @@ function getInitials(name: string | null): string {
 export function TechHero({ data, className }: PortfolioSectionProps) {
   const t = useTranslations('portfolio');
   const { user } = data;
+
+  // Compute real global level from skill stats XP
+  const globalLevel = calculateGlobalLevel(data.skills?.stats?.totalXP ?? 0);
 
   return (
     <TechCard variant="featured" className={cn('p-6', className)} data-testid="tech-hero-card">
@@ -36,9 +40,9 @@ export function TechHero({ data, className }: PortfolioSectionProps) {
           />
         </div>
 
-        {/* Level Badge */}
+        {/* Level Badge — computed from real XP */}
         <div className="animate-pulse">
-          <LevelBadge level={1} size="sm" />
+          <LevelBadge level={globalLevel} size="sm" />
         </div>
 
         {/* Name with glitch effect */}
@@ -53,6 +57,8 @@ export function TechHero({ data, className }: PortfolioSectionProps) {
         <p className="text-[#64748B] font-mono text-sm animate-digital-flicker tracking-widest">
           {'>'} USER_UID: @{user.username}
         </p>
+        {/* Terminal cursor — blinks via animate-pulse */}
+        <span className="font-mono text-[hsl(174,100%,50%)] animate-pulse ml-0.5">|</span>
 
         {/* Social link badges */}
         <div className="flex flex-wrap items-center justify-center gap-2">

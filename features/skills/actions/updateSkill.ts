@@ -7,7 +7,7 @@
 'use server';
 
 import { headers } from 'next/headers';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 import { auth } from '@/lib/auth';
 import { actionWrapper } from '@/features/core';
@@ -16,6 +16,7 @@ import type { SelfAssessmentLevel } from '../constants/xp';
 import { updateSkillSchema } from '../schemas/skill.schema';
 import { updateSkillService } from '../services/skill.service';
 import { SKILL_MESSAGES_EN } from '../constants/messages';
+import { updateStreak } from '@/features/dashboard/utils/updateStreak';
 
 /**
  * Update an existing skill
@@ -59,6 +60,12 @@ export async function updateSkill(
 
     // Revalidate cache
     revalidatePath('/dashboard/skills');
+    revalidateTag(`user-stats-${session.user.id}`, {});
+    try {
+      await updateStreak(session.user.id);
+    } catch {
+      // Streak update failure must never block the primary action
+    }
 
     return {
       payload: skill,

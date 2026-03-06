@@ -89,7 +89,7 @@
 **Tasks:**
 - [ ] User Schema: Agregar campo `portfolioMode` (`DIGITAL` | `TRADITIONAL`) `S`
 - [ ] AI Assistant: 4 system prompts (Digital-EN, Digital-ES, Traditional-EN, Traditional-ES) `M`
-- [ ] Onboarding: UI para selección de modo con preview de features `M`
+- [x] Onboarding: UI para selección de modo con preview de features `M`
 - [ ] API Integrations Hub: Sistema para conectar GitHub, YouTube, Behance, etc. (Digital Mode) `L`
 - [ ] Manual Upload System: Upload de imágenes/certificados con gallery (Traditional Mode) `M`
 - [ ] Portfolio Templates: Templates diferenciados por modo (más tech vs más visual) `M`
@@ -111,7 +111,7 @@
 
 31. [ ] Performance Optimization — Bundle size, lazy loading, caching `M`
 32. [ ] Mobile Refinement — Timeline y skill tree responsive `M`
-33. [ ] Onboarding Flow — Guia para nuevos usuarios `S`
+33. [x] Onboarding Flow — Guia para nuevos usuarios `S`
 34. [ ] Accessibility Audit — WCAG compliance, keyboard navigation `M`
 35. [ ] Analytics Dashboard — Metricas de portfolio views `S`
 36. [ ] Recruiter View Mode — Vista optimizada para recruiters revisando perfiles `M`

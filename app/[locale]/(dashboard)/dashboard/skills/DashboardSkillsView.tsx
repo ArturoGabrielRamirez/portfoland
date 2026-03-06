@@ -4,6 +4,8 @@
  * DashboardSkillsView Component - Cyberpunk V2
  *
  * Client component for the dashboard skills page with cyberpunk hexagonal design.
+ * Includes the GitHubSyncPanel (TG9) and AssessmentWidget (TG10) between the
+ * legend row and the skill tree.
  */
 
 import { useCallback, useTransition, useState } from 'react';
@@ -14,12 +16,17 @@ import { useParams } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import { HexBadge, DashboardNav } from '@/features/tech';
+import { CRTWithAI } from '@/features/tech/components/crt-with-ai';
 import {
   SkillTreeView,
   ManualSkillModal
 } from '@/features/skills/components';
+import { GitHubSyncPanel } from '@/features/github/components';
+import { AssessmentWidget } from '@/features/assessment/components/AssessmentWidget';
 import type { UserSkillWithDetails, SkillCategory } from '@/features/skills/types/skill';
 import type { PortfolioMode } from '@/features/portfolio/types/portfolio';
+import type { GitHubStats } from '@/features/github/types/github';
+import type { AssessmentTokenInfo } from '@/features/assessment/types/assessment';
 
 // =============================================================================
 // Types
@@ -42,6 +49,16 @@ interface DashboardSkillsViewProps {
     image: string | null;
     portfolioMode: PortfolioMode;
   };
+  /** Timestamp of the last GitHub sync; null if never synced (TG9) */
+  githubSyncedAt: Date | null;
+  /** Persisted summary stats from the last GitHub sync; null if no sync has run (TG9) */
+  githubStats: GitHubStats | null;
+  /** True when an Account record with providerId='github' exists for the user (TG9) */
+  isGitHubConnected: boolean;
+  /** Assessment token balance read from User.meta (TG10) */
+  assessmentTokens: AssessmentTokenInfo;
+  /** User skills pre-filtered to ASSESSMENT_SUPPORTED_SKILL_SLUGS (TG10) */
+  supportedUserSkills: UserSkillWithDetails[];
 }
 
 // =============================================================================
@@ -53,6 +70,11 @@ export function DashboardSkillsView({
   categories,
   stats,
   user,
+  githubSyncedAt,
+  githubStats,
+  isGitHubConnected,
+  assessmentTokens,
+  supportedUserSkills,
 }: DashboardSkillsViewProps) {
   const params = useParams();
   const locale = params.locale as string;
@@ -61,6 +83,14 @@ export function DashboardSkillsView({
   const tStats = useTranslations('dashboard.skills.stats');
   const [isPending, startTransition] = useTransition();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // ---------------------------------------------------------------------------
+  // AIEye trigger counters for GitHub sync and assessment state transitions.
+  // These are lifted state values that panel/widget callbacks increment.
+  // ---------------------------------------------------------------------------
+  const [xpGainTrigger, setXpGainTrigger] = useState(0);
+  const [lifeLossTrigger, setLifeLossTrigger] = useState(0);
+  const [searchingTrigger, setSearchingTrigger] = useState(0);
 
   // Handle add skill callback
   const handleAddSkill = useCallback(() => {
@@ -76,6 +106,14 @@ export function DashboardSkillsView({
   const handleAddSuccess = useCallback(() => {
     handleCloseAddModal();
   }, [handleCloseAddModal]);
+
+  /**
+   * Fires when an assessment is passed.
+   * Increments xpGainTrigger to play the CRT AIEye xp_gain animation.
+   */
+  const handleAssessmentPass = useCallback(() => {
+    setXpGainTrigger((prev) => prev + 1);
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#0A0E1A] font-mono">
@@ -176,6 +214,37 @@ export function DashboardSkillsView({
         <span className="text-[9px] font-mono text-muted-foreground">
           {skills.length} skills &middot; {stats.totalXP.toLocaleString()} XP
         </span>
+      </div>
+
+      {/* GITHUB_VALIDATOR — GitHub Expansion Module / Sync Status Panel + AIEye (TG9) */}
+      <div className="px-6 py-3 border-b border-[hsl(174,100%,50%,0.1)]">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_280px] gap-3">
+          <GitHubSyncPanel
+            userId={user.id}
+            isGitHubConnected={isGitHubConnected}
+            githubSyncedAt={githubSyncedAt}
+            githubStats={githubStats}
+            onSearchingTrigger={() => setSearchingTrigger((c) => c + 1)}
+            onXPGainTrigger={() => setXpGainTrigger((c) => c + 1)}
+            onLifeLossTrigger={() => setLifeLossTrigger((c) => c + 1)}
+          />
+          <CRTWithAI
+            userName={user.name}
+            className="min-h-[140px]"
+            xpGainTrigger={xpGainTrigger}
+            lifeLossTrigger={lifeLossTrigger}
+            searchingTrigger={searchingTrigger}
+          />
+        </div>
+      </div>
+
+      {/* ASSESSMENT_MODULE — AI Skill Assessment Widget (TG10) */}
+      <div className="px-6 py-3 border-b border-[hsl(174,100%,50%,0.1)]">
+        <AssessmentWidget
+          userSkills={supportedUserSkills}
+          assessmentTokens={assessmentTokens}
+          onAssessmentPass={handleAssessmentPass}
+        />
       </div>
 
       {/* Main Content - Skill Tree View */}

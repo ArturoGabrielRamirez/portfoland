@@ -40,6 +40,7 @@ function TimelineMapComponent({
   selectedExperience,
   onExperienceSelect,
   isEditable = false,
+  focusedExperienceId,
   className,
 }: TimelineMapProps) {
   const mapRef = useRef<google.maps.Map | null>(null);
@@ -77,6 +78,17 @@ function TimelineMapComponent({
     },
     [experiences]
   );
+
+  // Pan map to the focused experience when focusedExperienceId changes
+  useEffect(() => {
+    if (!focusedExperienceId || !mapRef.current) return;
+
+    const target = experiences.find((exp) => exp.id === focusedExperienceId);
+    if (target) {
+      mapRef.current.panTo({ lat: target.latitude, lng: target.longitude });
+      mapRef.current.setZoom(12);
+    }
+  }, [focusedExperienceId, experiences]);
 
   // Handle experience selection
   const handleExperienceClick = useCallback(
@@ -160,7 +172,10 @@ function TimelineMapComponent({
             >
               <HexagonNode
                 experience={experience}
-                isSelected={selectedExperience?.id === experience.id}
+                isSelected={
+                  selectedExperience?.id === experience.id ||
+                  focusedExperienceId === experience.id
+                }
                 isCurrent={isCurrentExperience(experience)}
                 onClick={handleExperienceClick}
               />

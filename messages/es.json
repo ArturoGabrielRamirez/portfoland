@@ -226,5 +226,76 @@
     "serviceDescription": "Fotógrafo, chef, arquitecto, coach, estilista",
     "continue": "Continuar",
     "changeLater": "Puedes cambiar esto después en ajustes"
+  },
+  "landing": {
+    "hero": {
+      "badge": "Construye tu portfolio a tu manera",
+      "titlePrefix": "Tu portfolio,",
+      "titleHighlight": "tu identidad",
+      "subtitle": "Dos modos distintos. Una plataforma. Muéstrale al mundo quién eres — ya sea un desarrollador con un skill tree o un fotógrafo con una galería.",
+      "ctaSignUp": "Comenzar gratis",
+      "ctaSignIn": "Iniciar sesión"
+    },
+    "features": {
+      "title": "Todo lo que necesitas",
+      "headline": "Construido para como realmente trabajas",
+      "subheadline": "Portfoland se adapta a tu profesión, no al revés.",
+      "portfolio": {
+        "title": "Portfolio de Doble Modo",
+        "description": "Cambia entre Modo Tech y Modo Clásico. Cada uno tiene su propia identidad visual y secciones adaptadas a tu área."
+      },
+      "timeline": {
+        "title": "Timeline Interactivo",
+        "description": "Documenta tu trayectoria profesional con un timeline rico. Agrega experiencias, proyectos e hitos — con IA para ayudarte a escribirlos."
+      },
+      "aiAssistant": {
+        "title": "Contenido Potenciado por IA",
+        "description": "Mejora tu bio, descripciones de proyectos y habilidades con IA. Genera una narrativa para tu portfolio público en segundos."
+      }
+    },
+    "howItWorks": {
+      "title": "Cómo funciona",
+      "headline": "Listo en minutos",
+      "step1": {
+        "title": "Elige tu modo",
+        "description": "Elige Modo Tech para un portfolio estilo desarrollador o Modo Clásico para una presentación limpia y profesional."
+      },
+      "step2": {
+        "title": "Cuenta tu historia",
+        "description": "Agrega tu experiencia, habilidades y proyectos. Usa IA para escribir descripciones convincentes."
+      },
+      "step3": {
+        "title": "Comparte tu portfolio",
+        "description": "Tu portfolio está disponible en tu URL personal. Compártelo con reclutadores, clientes o quien necesite conocer tu historia."
+      }
+    },
+    "modes": {
+      "title": "Dos modos, una plataforma",
+      "headline": "¿Qué estilo te queda mejor?",
+      "subheadline": "Puedes cambiar entre modos cuando quieras — tus datos siempre se conservan.",
+      "classic": {
+        "title": "Modo Clásico",
+        "subtitle": "Limpio y profesional",
+        "feature1": "Diseño minimalista en blanco",
+        "feature2": "Galería, servicios y testimonios",
+        "feature3": "Perfecto para profesionales presenciales",
+        "feature4": "Tipografía limpia, sin distracciones",
+        "cta": "Comenzar con Modo Clásico"
+      },
+      "tech": {
+        "title": "Modo Tech",
+        "subtitle": "Estilo terminal y orientado a datos",
+        "feature1": "Skill tree hexagonal con sincronización GitHub",
+        "feature2": "Evaluaciones de habilidades con IA",
+        "feature3": "Timeline interactivo con sistema de XP",
+        "feature4": "Diseñado para desarrolladores y perfiles tech",
+        "cta": "Comenzar con Modo Tech"
+      }
+    },
+    "cta": {
+      "title": "¿Listo para construir tu portfolio?",
+      "subtitle": "Únete a Portfoland y crea un portfolio que realmente te represente.",
+      "button": "Crear tu portfolio"
+    }
   }
 }

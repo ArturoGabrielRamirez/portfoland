@@ -40,6 +40,20 @@ export type QuestionForClient = {
 // =============================================================================
 
 /**
+ * Per-question review data included in ScoreResult after submit.
+ * Safe to send to the client only after scoring is complete.
+ */
+export interface ReviewItem {
+  questionIndex: number;
+  questionText: string;
+  options: string[];
+  selectedIndex: number;
+  correctIndex: number;
+  explanation: string;
+  isCorrect: boolean;
+}
+
+/**
  * Returned by scoreAssessmentService after all answers are evaluated.
  */
 export interface ScoreResult {
@@ -50,6 +64,8 @@ export interface ScoreResult {
   attemptsUsed: number;
   /** Set when the user has hit MAX_ATTEMPTS_BEFORE_COOLDOWN — UI shows countdown */
   cooldownEndsAt?: Date;
+  /** Per-question review data with correct answers and explanations */
+  reviewItems: ReviewItem[];
 }
 
 /**

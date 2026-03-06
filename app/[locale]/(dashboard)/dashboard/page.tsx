@@ -16,7 +16,6 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { checkOnboarding } from '@/features/onboarding/utils/checkOnboarding'
 import {
-  DashboardNav,
   DashboardRow1,
   HexStatGrid,
   ActiveMissionsPanel,
@@ -101,14 +100,8 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   }))
 
   return (
-    <div
-      className="h-[100dvh] overflow-hidden flex flex-col bg-[#0A0E1A] font-mono"
-    >
-      {/* ===== NAVIGATION ===== */}
-      <DashboardNav locale={locale} user={userData} />
-
-      {/* ===== MAIN CONTENT ===== */}
-      <div className="flex-1 min-h-0 overflow-y-auto md:overflow-hidden flex flex-col gap-2 p-2 pb-20 md:pb-2">
+    // flex-1 fills remaining height after the nav rendered in (dashboard)/layout.tsx
+    <div className="flex-1 min-h-0 overflow-y-auto md:overflow-hidden flex flex-col gap-2 p-2 pb-20 md:pb-2">
 
         {/* ── ROW 1: WelcomeCard + CRTWithAI (client wrapper coordinates aiActive state) ── */}
         <DashboardRow1
@@ -184,6 +177,5 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
           </div>
         </div>
       </div>
-    </div>
   )
 }

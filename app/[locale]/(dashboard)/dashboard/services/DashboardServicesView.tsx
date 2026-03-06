@@ -5,7 +5,6 @@ import { Plus, Pencil, Trash2, Briefcase } from 'lucide-react';
 import { toast } from 'sonner';
 import { useParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { DashboardNav } from '@/features/tech';
 import {
   createServiceAction,
   updateServiceAction,
@@ -126,9 +125,7 @@ export function DashboardServicesView({ services, user }: DashboardServicesViewP
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A] font-mono">
-      <DashboardNav locale={locale} user={user} />
-
+    <>
       {/* Header */}
       <div className="px-6 py-6 flex items-center justify-between border-b border-[hsl(174,100%,50%,0.1)]">
         <h1 className="text-2xl font-mono font-bold text-foreground">Services</h1>
@@ -338,6 +335,6 @@ export function DashboardServicesView({ services, user }: DashboardServicesViewP
           </div>
         )}
       </main>
-    </div>
+    </>
   );
 }

@@ -13,7 +13,6 @@ import { toast } from 'sonner';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { DashboardNav } from '@/features/tech';
 import { ProjectForm } from '@/features/projects/components/ProjectForm';
 import { deleteProject } from '@/features/projects/actions/deleteProject';
 import type { Project } from '@/features/projects/types/project';
@@ -36,7 +35,7 @@ export function DashboardProjectsView({ projects, user }: DashboardProjectsViewP
   const locale = params.locale as string;
   const t = useTranslations('dashboard.projects');
   const tStatus = useTranslations('dashboard.projects.status');
-  
+
   const [showForm, setShowForm] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | undefined>();
   const [isPending, startTransition] = useTransition();
@@ -84,10 +83,7 @@ export function DashboardProjectsView({ projects, user }: DashboardProjectsViewP
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A] font-mono">
-      {/* Main Navigation */}
-      <DashboardNav locale={locale} user={user} />
-
+    <>
       {/* Page Header */}
       <div className="px-6 py-6 flex items-center justify-between border-b border-[hsl(174,100%,50%,0.1)]">
         <div>
@@ -214,6 +210,6 @@ export function DashboardProjectsView({ projects, user }: DashboardProjectsViewP
           </div>
         )}
       </main>
-    </div>
+    </>
   );
 }

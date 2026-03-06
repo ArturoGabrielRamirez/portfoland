@@ -11,7 +11,7 @@ import { Plus, MapPin, ExternalLink, Zap, Flag, Star, Trophy } from 'lucide-reac
 import { toast } from 'sonner';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
-import { HexBadge, DashboardNav } from '@/features/tech';
+import { HexBadge } from '@/features/tech';
 import { useParams } from 'next/navigation';
 import type {
   TimelineData,
@@ -182,10 +182,7 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
   }, [deletingExperience, t]);
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A] font-mono flex flex-col">
-      {/* Main Navigation */}
-      <DashboardNav locale={locale} user={user} />
-
+    <>
       {/* Page Header */}
       <div className="px-6 py-6 flex items-center justify-between border-b border-[hsl(174,100%,50%,0.1)]">
         <div>
@@ -347,6 +344,6 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
         experienceTitle={deletingExperience?.title || ''}
         isLoading={isPending}
       />
-    </div>
+    </>
   );
 }

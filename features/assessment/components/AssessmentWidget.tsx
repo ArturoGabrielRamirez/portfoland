@@ -60,6 +60,7 @@ interface SkillRowProps {
   userSkill: UserSkillWithDetails;
   hasTokens: boolean;
   cooldownEndsAt?: Date;
+  history?: { bestScore: number; totalAttempts: number };
   onTakeAssessment: () => void;
 }
 
@@ -67,7 +68,7 @@ interface SkillRowProps {
  * Single row in the assessment widget — shows skill name, level, validation
  * icons, and a "Take Assessment" CTA with one of three disabled states.
  */
-function SkillRow({ userSkill, hasTokens, cooldownEndsAt, onTakeAssessment }: SkillRowProps) {
+function SkillRow({ userSkill, hasTokens, cooldownEndsAt, history, onTakeAssessment }: SkillRowProps) {
   const { skill, level, aiValidated, githubValidated, aiAssessmentValidated } = userSkill;
 
   // Determine disabled state and tooltip
@@ -100,6 +101,11 @@ function SkillRow({ userSkill, hasTokens, cooldownEndsAt, onTakeAssessment }: Sk
           <span className="font-mono text-[9px] text-gray-600 uppercase tracking-wider">
             {levelName}
           </span>
+          {history && history.totalAttempts > 0 && (
+            <span className="font-mono text-[9px] text-gray-600 mt-0.5">
+              Best: {history.bestScore}% · {history.totalAttempts}x
+            </span>
+          )}
         </div>
 
         {/* Validation icons — show current validation states for context */}
@@ -164,6 +170,7 @@ function SkillRow({ userSkill, hasTokens, cooldownEndsAt, onTakeAssessment }: Sk
 export function AssessmentWidget({
   userSkills,
   assessmentTokens,
+  assessmentHistory,
   onAssessmentPass,
   className,
 }: AssessmentWidgetProps & { className?: string }) {
@@ -250,6 +257,7 @@ export function AssessmentWidget({
               userSkill={userSkill}
               hasTokens={hasTokens}
               cooldownEndsAt={cooldownMap[userSkill.skill.slug]}
+              history={assessmentHistory?.[userSkill.skill.slug]}
               onTakeAssessment={() => handleTakeAssessment(userSkill)}
             />
           ))}

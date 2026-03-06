@@ -96,12 +96,22 @@ export interface AssessmentTokenInfo {
 // =============================================================================
 
 /**
+ * Per-skill assessment history summary passed to AssessmentWidget for inline display.
+ */
+export interface SkillAssessmentSummary {
+  bestScore: number;
+  totalAttempts: number;
+}
+
+/**
  * Props for AssessmentWidget dashboard component.
  */
 export interface AssessmentWidgetProps {
   /** Pre-filtered to supported slugs by the page server component */
   userSkills: UserSkillWithDetails[];
   assessmentTokens: AssessmentTokenInfo;
+  /** Per-skill history summary keyed by skillSlug */
+  assessmentHistory?: Record<string, SkillAssessmentSummary>;
   /** Fires when any assessment is passed — used to trigger CRT xpGain animation */
   onAssessmentPass?: () => void;
 }

@@ -12,7 +12,6 @@ import { toast } from 'sonner';
 import { useTranslations } from 'next-intl';
 
 import { cn } from '@/lib/utils';
-import { DashboardNav } from '@/features/tech';
 import { PortfolioModeToggle } from '@/features/portfolio/components/PortfolioModeToggle';
 import { ProfileImageUpload } from '@/features/portfolio/components/ProfileImageUpload';
 import { HUDPanel } from '@/features/dashboard/components/HUDPanel';
@@ -192,10 +191,7 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
   );
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A] font-mono">
-      {/* Main Navigation */}
-      <DashboardNav locale={locale} user={user} />
-
+    <>
       {/* Page Header */}
       <div className="px-6 py-6 flex items-center justify-between border-b border-[hsl(174,100%,50%,0.1)]">
         <div>
@@ -575,6 +571,6 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
           </form>
         </div>
       </div>
-    </div>
+    </>
   );
 }

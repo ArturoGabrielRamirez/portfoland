@@ -5,7 +5,6 @@ import { Plus, Pencil, Trash2, MessageSquare } from 'lucide-react';
 import { toast } from 'sonner';
 import { useParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { DashboardNav } from '@/features/tech';
 import {
   createTestimonialAction,
   updateTestimonialAction,
@@ -137,9 +136,7 @@ export function DashboardTestimonialsView({ testimonials, user }: DashboardTesti
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A] font-mono">
-      <DashboardNav locale={locale} user={user} />
-
+    <>
       {/* Header */}
       <div className="px-6 py-6 flex items-center justify-between border-b border-[hsl(174,100%,50%,0.1)]">
         <h1 className="text-2xl font-mono font-bold text-foreground">Testimonials</h1>
@@ -285,6 +282,6 @@ export function DashboardTestimonialsView({ testimonials, user }: DashboardTesti
           </div>
         )}
       </main>
-    </div>
+    </>
   );
 }

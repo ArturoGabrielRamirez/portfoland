@@ -15,6 +15,7 @@ import { checkOnboarding } from '@/features/onboarding/utils/checkOnboarding';
 import { getGitHubConnectionStatus } from '@/features/github/data/getGitHubConnectionStatus.data';
 import { DEFAULT_ASSESSMENT_TOKENS } from '@/features/assessment/constants/tokens';
 import { ASSESSMENT_SUPPORTED_SKILL_SLUGS } from '@/features/assessment/constants/supportedSkills';
+import { getAssessmentHistoryData } from '@/features/assessment/data/getAssessmentHistory.data';
 import type { AssessmentTokenInfo } from '@/features/assessment/types/assessment';
 import { DashboardSkillsView } from './DashboardSkillsView';
 
@@ -66,6 +67,12 @@ export default async function DashboardSkillsPage() {
     ASSESSMENT_SUPPORTED_SKILL_SLUGS.includes(s.skill?.slug ?? ''),
   );
 
+  // Fetch per-skill assessment history (best score + attempt count) for inline display
+  const supportedSlugs = supportedUserSkills.map((s) => s.skill?.slug ?? '').filter(Boolean);
+  const assessmentHistory = supportedSlugs.length
+    ? await getAssessmentHistoryData(session.user.id, supportedSlugs)
+    : {};
+
   // Calculate stats
   const totalSkills = skills.length;
   const totalXP = skills.reduce((sum, skill) => sum + skill.totalXP, 0);
@@ -95,6 +102,7 @@ export default async function DashboardSkillsPage() {
       isGitHubConnected={githubStatus.isConnected}
       assessmentTokens={assessmentTokens}
       supportedUserSkills={supportedUserSkills}
+      assessmentHistory={assessmentHistory}
     />
   );
 }

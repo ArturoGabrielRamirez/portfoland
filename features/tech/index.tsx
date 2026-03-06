@@ -658,6 +658,7 @@ export { DashboardNav } from './components/dashboard-nav'
 export { ParticleField } from './components/particle-field'
 export { AIAssistant } from './components/ai-assistant'
 export { AIAssistantWidget } from './components/ai-assistant-widget'
+export { AIAssistantFloat } from './components/ai-assistant-float'
 // Dashboard Redesign V2
 export { CRTWithAI } from './components/crt-with-ai'
 export { HexStatGrid } from './components/hex-stat-grid'

@@ -31,7 +31,8 @@
       "Bash(npx vitest:*)",
       "Bash(tr:*)",
       "Bash(npx jest --testPathPattern=\"features/\\(services|testimonials|gallery|portfolio-settings|portfolio\\)\" --no-coverage)",
-      "Bash(bunx prisma:*)"
+      "Bash(bunx prisma:*)",
+      "Bash(node:*)"
     ]
   }
 }

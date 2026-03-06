@@ -15,7 +15,7 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
-import { HexBadge, DashboardNav } from '@/features/tech';
+import { HexBadge } from '@/features/tech';
 import { CRTWithAI } from '@/features/tech/components/crt-with-ai';
 import {
   SkillTreeView,
@@ -26,7 +26,7 @@ import { AssessmentWidget } from '@/features/assessment/components/AssessmentWid
 import type { UserSkillWithDetails, SkillCategory } from '@/features/skills/types/skill';
 import type { PortfolioMode } from '@/features/portfolio/types/portfolio';
 import type { GitHubStats } from '@/features/github/types/github';
-import type { AssessmentTokenInfo } from '@/features/assessment/types/assessment';
+import type { AssessmentTokenInfo, SkillAssessmentSummary } from '@/features/assessment/types/assessment';
 
 // =============================================================================
 // Types
@@ -59,6 +59,8 @@ interface DashboardSkillsViewProps {
   assessmentTokens: AssessmentTokenInfo;
   /** User skills pre-filtered to ASSESSMENT_SUPPORTED_SKILL_SLUGS (TG10) */
   supportedUserSkills: UserSkillWithDetails[];
+  /** Per-skill history summary (best score + attempts) for inline display */
+  assessmentHistory?: Record<string, SkillAssessmentSummary>;
 }
 
 // =============================================================================
@@ -75,6 +77,7 @@ export function DashboardSkillsView({
   isGitHubConnected,
   assessmentTokens,
   supportedUserSkills,
+  assessmentHistory,
 }: DashboardSkillsViewProps) {
   const params = useParams();
   const locale = params.locale as string;
@@ -116,10 +119,7 @@ export function DashboardSkillsView({
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0A0E1A] font-mono">
-      {/* Main Navigation */}
-      <DashboardNav locale={locale} user={user} />
-
+    <>
       {/* Page Header */}
       <div className="px-6 py-6 flex items-center justify-between border-b border-[hsl(174,100%,50%,0.1)]">
         <div>
@@ -243,6 +243,7 @@ export function DashboardSkillsView({
         <AssessmentWidget
           userSkills={supportedUserSkills}
           assessmentTokens={assessmentTokens}
+          assessmentHistory={assessmentHistory}
           onAssessmentPass={handleAssessmentPass}
         />
       </div>
@@ -267,6 +268,6 @@ export function DashboardSkillsView({
         onSuccess={handleAddSuccess}
         categories={categories}
       />
-    </div>
+    </>
   );
 }

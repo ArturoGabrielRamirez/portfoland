@@ -203,21 +203,6 @@ export default async function LandingPage({ params }: LandingPageProps) {
             </Link>
           </div>
 
-          {/* Stats */}
-          <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12">
-            <div className="text-center">
-              <span className="block text-3xl font-bold text-[#00D4FF]">10K+</span>
-              <span className="text-sm text-[#94A3B8]">{t('stats.users')}</span>
-            </div>
-            <div className="text-center">
-              <span className="block text-3xl font-bold text-[#D946EF]">50K+</span>
-              <span className="text-sm text-[#94A3B8]">{t('stats.portfolios')}</span>
-            </div>
-            <div className="text-center">
-              <span className="block text-3xl font-bold text-[#22C55E]">95%</span>
-              <span className="text-sm text-[#94A3B8]">{t('stats.satisfaction')}</span>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -354,74 +339,74 @@ export default async function LandingPage({ params }: LandingPageProps) {
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Professional Mode */}
+            {/* Classic Mode */}
             <TechCard variant="glow" className="p-8">
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-[#00D4FF]/20 flex items-center justify-center">
                   <UserIcon className="w-6 h-6 text-[#00D4FF]" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-white">{t('modes.professional.title')}</h3>
-                  <p className="text-sm text-[#00D4FF]">{t('modes.professional.subtitle')}</p>
+                  <h3 className="text-xl font-semibold text-white">{t('modes.classic.title')}</h3>
+                  <p className="text-sm text-[#00D4FF]">{t('modes.classic.subtitle')}</p>
                 </div>
               </div>
               <ul className="space-y-3 mb-6">
                 <li className="flex items-center gap-3 text-sm text-[#94A3B8]">
                   <CheckIcon className="w-5 h-5 text-[#00D4FF]" />
-                  {t('modes.professional.feature1')}
+                  {t('modes.classic.feature1')}
                 </li>
                 <li className="flex items-center gap-3 text-sm text-[#94A3B8]">
                   <CheckIcon className="w-5 h-5 text-[#00D4FF]" />
-                  {t('modes.professional.feature2')}
+                  {t('modes.classic.feature2')}
                 </li>
                 <li className="flex items-center gap-3 text-sm text-[#94A3B8]">
                   <CheckIcon className="w-5 h-5 text-[#00D4FF]" />
-                  {t('modes.professional.feature3')}
+                  {t('modes.classic.feature3')}
                 </li>
                 <li className="flex items-center gap-3 text-sm text-[#94A3B8]">
                   <CheckIcon className="w-5 h-5 text-[#00D4FF]" />
-                  {t('modes.professional.feature4')}
+                  {t('modes.classic.feature4')}
                 </li>
               </ul>
               <Link href={`/${locale}/register`}>
                 <TechButton variant="primary" className="w-full">
-                  {t('modes.professional.cta')}
+                  {t('modes.classic.cta')}
                 </TechButton>
               </Link>
             </TechCard>
 
-            {/* Gaming Mode */}
+            {/* Tech Mode */}
             <TechCard variant="magenta" className="p-8">
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-[#D946EF]/20 flex items-center justify-center">
                   <ChartIcon className="w-6 h-6 text-[#D946EF]" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-white">{t('modes.gaming.title')}</h3>
-                  <p className="text-sm text-[#D946EF]">{t('modes.gaming.subtitle')}</p>
+                  <h3 className="text-xl font-semibold text-white">{t('modes.tech.title')}</h3>
+                  <p className="text-sm text-[#D946EF]">{t('modes.tech.subtitle')}</p>
                 </div>
               </div>
               <ul className="space-y-3 mb-6">
                 <li className="flex items-center gap-3 text-sm text-[#94A3B8]">
                   <CheckIcon className="w-5 h-5 text-[#D946EF]" />
-                  {t('modes.gaming.feature1')}
+                  {t('modes.tech.feature1')}
                 </li>
                 <li className="flex items-center gap-3 text-sm text-[#94A3B8]">
                   <CheckIcon className="w-5 h-5 text-[#D946EF]" />
-                  {t('modes.gaming.feature2')}
+                  {t('modes.tech.feature2')}
                 </li>
                 <li className="flex items-center gap-3 text-sm text-[#94A3B8]">
                   <CheckIcon className="w-5 h-5 text-[#D946EF]" />
-                  {t('modes.gaming.feature3')}
+                  {t('modes.tech.feature3')}
                 </li>
                 <li className="flex items-center gap-3 text-sm text-[#94A3B8]">
                   <CheckIcon className="w-5 h-5 text-[#D946EF]" />
-                  {t('modes.gaming.feature4')}
+                  {t('modes.tech.feature4')}
                 </li>
               </ul>
               <Link href={`/${locale}/register`}>
                 <TechButton variant="secondary" className="w-full">
-                  {t('modes.gaming.cta')}
+                  {t('modes.tech.cta')}
                 </TechButton>
               </Link>
             </TechCard>

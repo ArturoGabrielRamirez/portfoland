@@ -37,6 +37,7 @@ import type {
   AssessmentModalProps,
   AssessmentState,
   QuestionForClient,
+  ReviewItem,
   ScoreResult,
 } from '@/features/assessment/types/assessment';
 
@@ -49,6 +50,54 @@ const OPTION_LABELS = ['A', 'B', 'C', 'D'] as const;
 // =============================================================================
 // Sub-components
 // =============================================================================
+
+/** Collapsible review panel showing per-question explanations */
+function ReviewPanel({ items }: { items: ReviewItem[] }) {
+  return (
+    <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
+      {items.map((item) => (
+        <div
+          key={item.questionIndex}
+          className={cn(
+            'p-3 border-l-2 text-xs font-mono space-y-1',
+            item.isCorrect
+              ? 'border-[#22C55E] bg-[#22C55E]/5'
+              : 'border-red-500 bg-red-500/5',
+          )}
+        >
+          <p className="text-gray-300 leading-relaxed">{item.questionText}</p>
+          <div className="space-y-0.5 mt-1">
+            {item.options.map((opt, i) => {
+              const isCorrect = i === item.correctIndex;
+              const isSelected = i === item.selectedIndex;
+              return (
+                <p
+                  key={i}
+                  className={cn(
+                    isCorrect
+                      ? 'text-[#22C55E]'
+                      : isSelected
+                        ? 'text-red-400 line-through'
+                        : 'text-gray-600',
+                  )}
+                >
+                  [{OPTION_LABELS[i]}] {opt}
+                  {isCorrect && ' ✓'}
+                  {!isCorrect && isSelected && ' ✗'}
+                </p>
+              );
+            })}
+          </div>
+          {item.explanation && (
+            <p className="text-gray-400 leading-relaxed border-t border-gray-800 pt-1 mt-1">
+              {item.explanation}
+            </p>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 /** Five-segment progress bar — filled segments in cyan, empty segments dark */
 function ProgressBar({ filledCount }: { filledCount: number }) {
@@ -108,6 +157,7 @@ export function AssessmentModal({
   /** True when the user has answered Q5 and hit "Next" — shows confirm screen */
   const [showConfirm, setShowConfirm] = useState(false);
 
+  const [showReview, setShowReview] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   // ---------------------------------------------------------------------------
@@ -123,6 +173,7 @@ export function AssessmentModal({
     setScoreResult(null);
     setErrorMessage(null);
     setShowConfirm(false);
+    setShowReview(false);
   }, []);
 
   // ---------------------------------------------------------------------------
@@ -494,6 +545,19 @@ export function AssessmentModal({
               </p>
             </div>
 
+            {/* Review toggle */}
+            {scoreResult.reviewItems.length > 0 && (
+              <div className="space-y-2">
+                <button
+                  onClick={() => setShowReview((v) => !v)}
+                  className="w-full font-mono text-xs py-1.5 border border-gray-700 text-gray-400 hover:text-gray-200 hover:border-gray-500 transition-colors"
+                >
+                  {showReview ? '[ HIDE REVIEW ]' : '[ REVIEW ANSWERS ]'}
+                </button>
+                {showReview && <ReviewPanel items={scoreResult.reviewItems} />}
+              </div>
+            )}
+
             <button
               onClick={handlePassClose}
               className="w-full font-mono text-xs py-2 border border-[#22C55E]/40 text-[#22C55E] hover:bg-[#22C55E]/10 transition-colors"
@@ -543,6 +607,19 @@ export function AssessmentModal({
                 </p>
               )}
             </div>
+
+            {/* Review toggle */}
+            {scoreResult.reviewItems.length > 0 && (
+              <div className="space-y-2">
+                <button
+                  onClick={() => setShowReview((v) => !v)}
+                  className="w-full font-mono text-xs py-1.5 border border-gray-700 text-gray-400 hover:text-gray-200 hover:border-gray-500 transition-colors"
+                >
+                  {showReview ? '[ HIDE REVIEW ]' : '[ REVIEW ANSWERS ]'}
+                </button>
+                {showReview && <ReviewPanel items={scoreResult.reviewItems} />}
+              </div>
+            )}
 
             {/* CTA buttons */}
             {!hasCooldown && attemptsLeft > 0 ? (

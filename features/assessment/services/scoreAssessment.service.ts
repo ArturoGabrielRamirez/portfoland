@@ -10,7 +10,7 @@ import { prisma } from '@/lib/prisma';
 import { getAssessmentByIdData } from '../data/getAssessmentById.data';
 import { applyAssessmentRewardsService } from './applyAssessmentRewards.service';
 import { QUESTIONS_PER_ASSESSMENT, PASS_THRESHOLD, MAX_ATTEMPTS_BEFORE_COOLDOWN, COOLDOWN_HOURS } from '../constants/tokens';
-import type { ScoreResult } from '../types/assessment';
+import type { ScoreResult, ReviewItem } from '../types/assessment';
 
 // =============================================================================
 // Types
@@ -136,6 +136,20 @@ export async function scoreAssessmentService(
     }
   }
 
+  // Build per-question review items — safe post-submit since scoring is done
+  const reviewItems: ReviewItem[] = answers.map((a) => {
+    const q = questions[a.questionIndex];
+    return {
+      questionIndex: a.questionIndex,
+      questionText: q?.questionText ?? '',
+      options: (q?.options as string[]) ?? [],
+      selectedIndex: a.selectedIndex,
+      correctIndex: q?.correctIndex ?? 0,
+      explanation: q?.explanation ?? '',
+      isCorrect: q?.correctIndex === a.selectedIndex,
+    };
+  }).sort((a, b) => a.questionIndex - b.questionIndex);
+
   return {
     score,
     passed,
@@ -143,5 +157,6 @@ export async function scoreAssessmentService(
     xpAwarded: passed ? 200 : 0,
     attemptsUsed,
     cooldownEndsAt,
+    reviewItems,
   };
 }

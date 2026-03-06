@@ -98,14 +98,16 @@ const sectionEntranceTransition = {
 
 export function PortfolioLayout({ data, mode }: PortfolioLayoutProps) {
   const [activeSection, setActiveSection] = useState<PortfolioSectionKey>(DEFAULT_SECTION);
-  const [isBooting, setIsBooting] = useState(true);
+  // Boot screen only makes sense for Tech Mode (CRT aesthetic)
+  const [isBooting, setIsBooting] = useState(mode !== 'classic');
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
-  // System Boot effect
+  // System Boot effect — Tech Mode only
   useEffect(() => {
+    if (mode === 'classic') return;
     const timer = setTimeout(() => setIsBooting(false), 2000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [mode]);
 
   const isClassic = mode === 'classic';
   const sections = isClassic ? classicSections : techSections;

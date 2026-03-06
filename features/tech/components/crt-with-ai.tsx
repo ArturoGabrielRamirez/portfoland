@@ -146,7 +146,7 @@ function DecipherText({ text, active, onComplete }: { text: string; active: bool
 // AI Eye SVG — Success Flash, Advanced Thinking, Selective Blink
 // =============================================================================
 
-function AIEye({
+export function AIEye({
     state,
     mouseOffset,
     isBlinking

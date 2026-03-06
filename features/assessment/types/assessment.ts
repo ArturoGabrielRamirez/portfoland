@@ -40,6 +40,20 @@ export type QuestionForClient = {
 // =============================================================================
 
 /**
+ * Per-question review data included in ScoreResult after submit.
+ * Safe to send to the client only after scoring is complete.
+ */
+export interface ReviewItem {
+  questionIndex: number;
+  questionText: string;
+  options: string[];
+  selectedIndex: number;
+  correctIndex: number;
+  explanation: string;
+  isCorrect: boolean;
+}
+
+/**
  * Returned by scoreAssessmentService after all answers are evaluated.
  */
 export interface ScoreResult {
@@ -50,6 +64,8 @@ export interface ScoreResult {
   attemptsUsed: number;
   /** Set when the user has hit MAX_ATTEMPTS_BEFORE_COOLDOWN — UI shows countdown */
   cooldownEndsAt?: Date;
+  /** Per-question review data with correct answers and explanations */
+  reviewItems: ReviewItem[];
 }
 
 /**
@@ -80,12 +96,22 @@ export interface AssessmentTokenInfo {
 // =============================================================================
 
 /**
+ * Per-skill assessment history summary passed to AssessmentWidget for inline display.
+ */
+export interface SkillAssessmentSummary {
+  bestScore: number;
+  totalAttempts: number;
+}
+
+/**
  * Props for AssessmentWidget dashboard component.
  */
 export interface AssessmentWidgetProps {
   /** Pre-filtered to supported slugs by the page server component */
   userSkills: UserSkillWithDetails[];
   assessmentTokens: AssessmentTokenInfo;
+  /** Per-skill history summary keyed by skillSlug */
+  assessmentHistory?: Record<string, SkillAssessmentSummary>;
   /** Fires when any assessment is passed — used to trigger CRT xpGain animation */
   onAssessmentPass?: () => void;
 }

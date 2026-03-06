@@ -147,8 +147,8 @@ export function DashboardNav({ locale, user }: DashboardNavProps) {
             </svg>
           </Link>
 
-          {/* Nav items as hex buttons — Classic items when portfolioMode is 'classic', tech items otherwise */}
-          {(user.portfolioMode === 'classic' ? classicNavItems : navItems.slice(1)).map((item) => {
+          {/* Nav items as hex buttons — all core items always visible, classic items appended for classic mode */}
+          {([...navItems.slice(1), ...(user.portfolioMode === 'classic' ? classicNavItems : [])]).map((item) => {
             const isActive = 'exact' in item && item.exact
               ? cleanPathname === item.href
               : cleanPathname === item.href || cleanPathname.startsWith(item.href + '/')

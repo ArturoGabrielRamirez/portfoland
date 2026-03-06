@@ -226,5 +226,76 @@
     "serviceDescription": "Photographer, chef, architect, coach, stylist",
     "continue": "Continue",
     "changeLater": "You can change this later in settings"
+  },
+  "landing": {
+    "hero": {
+      "badge": "Build your portfolio your way",
+      "titlePrefix": "Your portfolio,",
+      "titleHighlight": "your identity",
+      "subtitle": "Two distinct modes. One platform. Show the world who you are — whether you're a developer with a skill tree or a photographer with a gallery.",
+      "ctaSignUp": "Get started free",
+      "ctaSignIn": "Sign in"
+    },
+    "features": {
+      "title": "Everything you need",
+      "headline": "Built for how you actually work",
+      "subheadline": "Portfoland adapts to your profession, not the other way around.",
+      "portfolio": {
+        "title": "Dual-Mode Portfolio",
+        "description": "Switch between Tech Mode and Classic Mode. Each comes with its own visual identity and section set tailored to your field."
+      },
+      "timeline": {
+        "title": "Interactive Timeline",
+        "description": "Document your career journey with a rich timeline. Add experiences, projects, and milestones — with AI to help you write them."
+      },
+      "aiAssistant": {
+        "title": "AI-Powered Content",
+        "description": "Improve your bio, project descriptions, and skills with AI. Generate a narrative for your public portfolio in seconds."
+      }
+    },
+    "howItWorks": {
+      "title": "How it works",
+      "headline": "Up and running in minutes",
+      "step1": {
+        "title": "Choose your mode",
+        "description": "Pick Tech Mode for a developer-style portfolio or Classic Mode for a clean, professional presentation."
+      },
+      "step2": {
+        "title": "Fill in your story",
+        "description": "Add your experience, skills, and projects. Use AI to help you write compelling descriptions."
+      },
+      "step3": {
+        "title": "Share your portfolio",
+        "description": "Your portfolio is live at your personal URL. Share it with recruiters, clients, or anyone who needs to know your story."
+      }
+    },
+    "modes": {
+      "title": "Two modes, one platform",
+      "headline": "Which style fits you best?",
+      "subheadline": "You can switch between modes anytime — your data is always preserved.",
+      "classic": {
+        "title": "Classic Mode",
+        "subtitle": "Clean & professional",
+        "feature1": "Minimal white design",
+        "feature2": "Gallery, services & testimonials",
+        "feature3": "Perfect for in-person professionals",
+        "feature4": "Clean typography, no distractions",
+        "cta": "Start with Classic Mode"
+      },
+      "tech": {
+        "title": "Tech Mode",
+        "subtitle": "Terminal-inspired & data-driven",
+        "feature1": "Hexagonal skill tree with GitHub sync",
+        "feature2": "AI skill assessments & validation",
+        "feature3": "Interactive timeline with XP system",
+        "feature4": "Built for developers & tech profiles",
+        "cta": "Start with Tech Mode"
+      }
+    },
+    "cta": {
+      "title": "Ready to build your portfolio?",
+      "subtitle": "Join Portfoland and create a portfolio that actually represents you.",
+      "button": "Create your portfolio"
+    }
   }
 }

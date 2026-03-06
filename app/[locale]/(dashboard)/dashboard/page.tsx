@@ -123,6 +123,13 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
               level: stats.level + 1,
             }),
           }}
+          bootStats={{
+            totalXP: stats.totalXP,
+            level: stats.level,
+            activeSkillsCount: stats.activeSkillsCount,
+            currentStreak: stats.currentStreak,
+            achievements: stats.achievements,
+          }}
         />
 
         {/* ── ROW 2: Missions+SysLog | HEX DIAMOND + Actions + Heatmap | Skills+Runners ── */}

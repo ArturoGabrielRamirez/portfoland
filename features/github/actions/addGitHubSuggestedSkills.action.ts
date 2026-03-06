@@ -105,8 +105,8 @@ export const addGitHubSuggestedSkillsAction = async (
     }
 
     revalidatePath('/dashboard/skills');
-    revalidateTag(`user-stats-${userId}`, {});
-    revalidateTag('user-skills', {});
+    revalidateTag(`user-stats-${userId}`);
+    revalidateTag('user-skills');
 
     return {
       payload: { addedCount },

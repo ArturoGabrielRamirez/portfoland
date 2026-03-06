@@ -26,6 +26,14 @@ type AIState =
 
 export type { AIState }
 
+interface BootStats {
+    totalXP: number
+    level: number
+    activeSkillsCount: number
+    currentStreak: number
+    achievements: { current: number; total: number }
+}
+
 interface CRTWithAIProps {
     userName: string
     className?: string
@@ -49,6 +57,8 @@ interface CRTWithAIProps {
      * `xpGainTrigger` or `lifeLossTrigger` after the action resolves.
      */
     searchingTrigger?: number
+    /** Real DB stats for the boot sequence. Falls back to placeholder lines when absent. */
+    bootStats?: BootStats
 }
 
 interface ConsoleLine {
@@ -83,14 +93,28 @@ const TRANSIENT_STATES: AIState[] = ["xp_gain", "life_loss"]
 // Includes the auto-returning transient states AND the sustained searching state
 const NON_PREV_STATES: AIState[] = [...TRANSIENT_STATES, "searching"]
 
-const BOOT_LINES: ConsoleLine[] = [
-    { text: "session_stats --display --verbose", color: "white", prefix: "$ " },
-    { text: "Loading profile... [OK]", color: "green", prefix: "> " },
-    { text: "XP: 1,900 | Level: 18 | Rank: Explorer", color: "cyan", prefix: "> " },
-    { text: "Achievements: 18/42 unlocked [43%]", color: "yellow", prefix: "> " },
-    { text: "Streak: 12 days | Skills: 24 active", color: "magenta", prefix: "> " },
-    { text: "Neural link optimal. Awaiting input...", color: "green", prefix: "> " },
-]
+function makeBootLines(stats?: BootStats): ConsoleLine[] {
+    if (!stats) {
+        return [
+            { text: "session_stats --display --verbose", color: "white", prefix: "$ " },
+            { text: "Loading profile... [OK]", color: "green", prefix: "> " },
+            { text: "Initializing neural link...", color: "cyan", prefix: "> " },
+            { text: "Awaiting data sync...", color: "yellow", prefix: "> " },
+            { text: "Neural link optimal. Awaiting input...", color: "green", prefix: "> " },
+        ]
+    }
+    const pct = stats.achievements.total > 0
+        ? Math.round((stats.achievements.current / stats.achievements.total) * 100)
+        : 0
+    return [
+        { text: "session_stats --display --verbose", color: "white", prefix: "$ " },
+        { text: "Loading profile... [OK]", color: "green", prefix: "> " },
+        { text: `XP: ${stats.totalXP.toLocaleString()} | Level: ${stats.level}`, color: "cyan", prefix: "> " },
+        { text: `Achievements: ${stats.achievements.current}/${stats.achievements.total} unlocked [${pct}%]`, color: "yellow", prefix: "> " },
+        { text: `Streak: ${stats.currentStreak} days | Skills: ${stats.activeSkillsCount} active`, color: "magenta", prefix: "> " },
+        { text: "Neural link optimal. Awaiting input...", color: "green", prefix: "> " },
+    ]
+}
 
 const colorClass: Record<string, string> = {
     cyan: "text-[hsl(174,100%,50%)]",
@@ -499,7 +523,9 @@ export function CRTWithAI({
     xpGainTrigger,
     lifeLossTrigger,
     searchingTrigger,
+    bootStats,
 }: CRTWithAIProps) {
+    const bootLines = makeBootLines(bootStats)
     const [aiState, setAIState] = useState<AIState>("sleeping")
     const [visibleLines, setVisibleLines] = useState(0)
     const [cursorVisible, setCursorVisible] = useState(true)
@@ -734,7 +760,7 @@ export function CRTWithAI({
     useEffect(() => {
         setVisibleLines(0)
         const bootTimer = setTimeout(() => {
-            BOOT_LINES.forEach((_, i) => {
+            bootLines.forEach((_, i) => {
                 setTimeout(() => setVisibleLines(i + 1), i * 300)
             })
         }, 1500)
@@ -864,7 +890,7 @@ export function CRTWithAI({
                             <span className="text-muted-foreground">$ </span>
                             <DecipherText text={`BIENVENIDO, ${userName.toUpperCase()}`} active={true} />
                         </div>
-                        {BOOT_LINES.slice(0, visibleLines).map((line, i) => (
+                        {bootLines.slice(0, visibleLines).map((line, i) => (
                             <div key={i} className={colorClass[line.color]}>
                                 <span className="text-muted-foreground">{line.prefix}</span>{line.text}
                             </div>

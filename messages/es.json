@@ -225,7 +225,10 @@
     "serviceTitle": "Presencial / Servicio",
     "serviceDescription": "Fotógrafo, chef, arquitecto, coach, estilista",
     "continue": "Continuar",
-    "changeLater": "Puedes cambiar esto después en ajustes"
+    "changeLater": "Puedes cambiar esto después en ajustes",
+    "usernameLabel": "Elige tu nombre de usuario",
+    "usernameHint": "Esta será la URL pública de tu portfolio",
+    "modeLabel": "¿Qué describe mejor tu trabajo?"
   },
   "landing": {
     "hero": {

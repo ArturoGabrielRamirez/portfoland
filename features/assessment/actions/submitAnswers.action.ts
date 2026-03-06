@@ -131,7 +131,7 @@ export const submitAnswersAction = async (
     // The second argument `{}` is required by this Next.js version's type signature.
     // -------------------------------------------------------------------------
     revalidatePath('/dashboard/skills');
-    revalidateTag(`user-stats-${userId}`, {});
+    revalidateTag(`user-stats-${userId}`);
 
     return {
       payload: scoreResult,

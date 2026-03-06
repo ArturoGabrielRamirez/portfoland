@@ -87,7 +87,7 @@ export async function updateExperience(
     // Revalidate cache
     revalidatePath('/dashboard/timeline');
     revalidatePath('/dashboard/skills');
-    revalidateTag(`user-stats-${session.user.id}`, {});
+    revalidateTag(`user-stats-${session.user.id}`);
     try {
       await updateStreak(session.user.id);
     } catch {

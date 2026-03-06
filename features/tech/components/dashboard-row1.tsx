@@ -22,6 +22,7 @@ export function DashboardRow1({
   onXPGain,
   onLifeLoss,
   onSearching,
+  bootStats,
 }: DashboardRow1Props) {
   const [aiActive, setAiActive] = useState(false)
 
@@ -76,6 +77,7 @@ export function DashboardRow1({
         xpGainTrigger={xpGainTrigger}
         lifeLossTrigger={lifeLossTrigger}
         searchingTrigger={searchingTrigger}
+        bootStats={bootStats}
       />
     </div>
   )

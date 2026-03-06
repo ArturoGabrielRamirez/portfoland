@@ -87,10 +87,10 @@ export const syncGitHubAction = async (): Promise<
     // The second argument `{}` is required by this Next.js version's type signature
     // -------------------------------------------------------------------------
     revalidatePath('/dashboard/skills');
-    revalidateTag('dashboard-stats', {});
-    revalidateTag('user-skills', {});
-    revalidateTag('top-runners', {});
-    revalidateTag(`user-stats-${userId}`, {});
+    revalidateTag('dashboard-stats');
+    revalidateTag('user-skills');
+    revalidateTag('top-runners');
+    revalidateTag(`user-stats-${userId}`);
 
     // -------------------------------------------------------------------------
     // Step 4: Return summary stats

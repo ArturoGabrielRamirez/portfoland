@@ -48,5 +48,5 @@ export async function updateStreak(userId: string): Promise<void> {
 
   // Pass empty CacheLifeConfig as second arg — required by this Next.js version's type signature.
   // An empty object means no explicit expiry profile; invalidation is tag-based only.
-  revalidateTag(`user-stats-${userId}`, {});
+  revalidateTag(`user-stats-${userId}`);
 }

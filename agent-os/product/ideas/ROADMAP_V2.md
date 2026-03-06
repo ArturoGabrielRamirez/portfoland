@@ -103,22 +103,22 @@
 - [x] Portfolio data aggregation extendida con servicios, testimonials, galería y settings
 - [x] 73 tests — todos pasan
 
-**Spec 2B: Classic Mode Template (Portfolio Público)**
-- Template limpio: white bg, gray-900 text, blue-600 accents
-- Secciones: About, Skills (tags), Gallery (grid/masonry), Services, Testimonials, Contact
-- Cada sección toggleable via `sectionVisibility`
-- Responsive
+**Spec 2B: Classic Mode Template (Portfolio Público)** ✅ COMPLETED
+- 10 componentes en `features/portfolio/components/classic/`
+- Secciones: About, Skills, Gallery, Services, Testimonials, Contact, Timeline
+- `PortfolioLayout` detecta modo y renderiza Classic o Tech template
 
-**Spec 2C: Dashboard Adaptations**
-- Settings page para configurar secciones visibles
-- CRUD de Services
-- CRUD de Testimonials
-- Color picker para colores custom (opcional, v1 puede ser presets)
+**Spec 2C: Dashboard Adaptations** ✅ COMPLETED
+- CRUD de Services (`dashboard/services/`)
+- CRUD de Gallery (`dashboard/gallery/`)
+- CRUD de Testimonials (`dashboard/testimonials/`)
+- Theme presets (default, warm, dark-elegant, ocean) en `DashboardPortfolioView`
+- `modeClasses()` utility — dashboard adapta visuals a Tech/Classic
 
-**Spec 2D: Onboarding & Mode Switcher**
-- Onboarding: "¿Tu trabajo es principalmente online/digital o presencial/de servicio?"
-- Switcher en settings para cambiar modo
-- Warning al cambiar (no se pierden datos, cambia visual + secciones default)
+**Spec 2D: Onboarding & Mode Switcher** ✅ COMPLETED
+- Onboarding con selección de modo (Tech/Classic) + username con availability check
+- `PortfolioModeToggle` en DashboardHeader y DashboardPortfolioView
+- Warning modal al cambiar modo
 
 ---
 
@@ -137,15 +137,17 @@
 - Auto-validar skills basado en repos (`TypeScript` si tiene repos con >60% TS)
 - XP boost para skills validadas (1.3x credibility)
 
-**Spec 3B: Visual Polish**
-- Evaluar The Gridcn / Glitchcn para componentes que mejoren la UI sin ser "arcade"
-- Refinar hexágonos, CRT monitor, skill tree — hacerlos más "terminal profesional" que "Tron 1982"
-- Asegurar que el portfolio se vea serio pero distintivo
+**Spec 3B: Visual Polish** ✅ COMPLETED
+- CRT boot lines con stats reales (XP, level, streak, achievements)
+- AIAssistantFloat widget en todas las páginas del dashboard excepto donde ya hay CRTWithAI
+- `modeClasses()` utility para dashboard con Tech/Classic aesthetics
+- `AIEye` exported, `searching` state para GitHub sync animation
 
-**Spec 3C: Real XP & Stats**
-- Reemplazar mock data con cálculos reales
-- XP desde: experiencias + skills + proyectos + GitHub activity
-- Dynamic goals (no hardcoded)
+**Spec 3C: Real XP & Stats** ✅ COMPLETED
+- XP desde: experiencias (10/mes), proyectos (50-300 por status), skills (XP acumulado con 1.3x GitHub multiplier)
+- `getUserDashboardStats` con `unstable_cache` + tag invalidation
+- Niveles dinámicos: `level² × 100` XP curve
+- 3 achievements computados en runtime (sin writes a DB)
 
 ---
 
@@ -192,8 +194,19 @@ Candidatos (no ordenados — depende de feedback):
 - [x] Phase 0 completa (bugs críticos)
 - [x] Phase 1 completa (rebrand + subdomain unification)
 - [x] Phase 2A completa (Classic Mode data layer — Spec 2026-02-19)
-- [ ] Phase 2B (Classic Mode template funcional)
-- [ ] Onboarding básico con selección de modo
+- [x] Phase 2B completa (Classic Mode template — 10 componentes)
+- [x] Phase 2C completa (Dashboard CRUD Services/Gallery/Testimonials)
+- [x] Phase 2D completa (Onboarding username + modo, mode switcher)
+- [x] Phase 3A completa (GitHub Validation — Spec 2026-03-03)
+- [x] Phase 3B completa (Visual Polish — CRT real stats, AIAssistantFloat)
+- [x] Phase 3C completa (Real XP & Stats — experiences + projects + skills)
+
+### Pre-launch Blockers (health check 2026-03-05)
+- [x] **P0:** Eliminado `app/api/dev-cleanup/route.ts` + scripts de debug
+- [x] **P0:** `revalidateTag` — segundo argumento `{}` eliminado en 14 archivos
+- [x] **P1:** Narrative cache keys actualizadas a "tech"/"classic"
+- [x] **P1:** Route group `(protected)` eliminado — solo queda `(dashboard)`
+- [x] **P1:** Stale files en root eliminados
 
 ### Nice-to-Have (mejora el producto pero no bloquea)
 - [ ] Classic Mode: color picker custom

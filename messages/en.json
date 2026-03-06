@@ -225,7 +225,10 @@
     "serviceTitle": "In-Person / Service",
     "serviceDescription": "Photographer, chef, architect, coach, stylist",
     "continue": "Continue",
-    "changeLater": "You can change this later in settings"
+    "changeLater": "You can change this later in settings",
+    "usernameLabel": "Choose your username",
+    "usernameHint": "This will be your public portfolio URL",
+    "modeLabel": "What best describes your work?"
   },
   "landing": {
     "hero": {

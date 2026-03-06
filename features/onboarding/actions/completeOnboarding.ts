@@ -18,6 +18,19 @@ export async function completeOnboarding(input: Record<string, unknown>) {
 
     const data = await completeOnboardingSchema.validate(input);
 
+    // Check username uniqueness (case-insensitive)
+    const existing = await prisma.user.findFirst({
+      where: {
+        username: { equals: data.username, mode: 'insensitive' },
+        id: { not: session.user.id },
+      },
+      select: { id: true },
+    });
+
+    if (existing) {
+      throw new Error('Username is already taken. Please choose another.');
+    }
+
     const sections = data.mode === 'tech'
       ? [...TECH_DEFAULT_SECTIONS]
       : [...CLASSIC_DEFAULT_SECTIONS];
@@ -26,6 +39,7 @@ export async function completeOnboarding(input: Record<string, unknown>) {
     const updatedUser = await prisma.user.update({
       where: { id: session.user.id },
       data: {
+        username: data.username,
         portfolioMode: data.mode,
         sectionOrder: sections,
         sectionVisibility,

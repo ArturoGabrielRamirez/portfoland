@@ -1,27 +1,69 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
 import { toast } from 'sonner';
-import { Terminal, Briefcase } from 'lucide-react';
+import { Terminal, Briefcase, CheckCircle, XCircle, Loader } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { completeOnboarding } from '@/features/onboarding/actions/completeOnboarding';
+import { checkUsernameAvailability } from '@/features/onboarding/actions/checkUsernameAvailability';
 import { TechButton, Spinner } from '@/features/tech';
+
+// Username validation regex (must match schema)
+const USERNAME_RE = /^[a-z0-9][a-z0-9-]*[a-z0-9]$|^[a-z0-9]$/;
+
+type AvailabilityStatus = 'idle' | 'checking' | 'available' | 'taken' | 'invalid';
 
 export default function OnboardingPage() {
   const [selectedMode, setSelectedMode] = useState<'tech' | 'classic' | null>(null);
+  const [username, setUsername] = useState('');
+  const [availability, setAvailability] = useState<AvailabilityStatus>('idle');
   const [isPending, startTransition] = useTransition();
   const t = useTranslations('onboarding');
   const tCommon = useTranslations('common');
   const router = useRouter();
   const locale = useLocale();
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Debounced username availability check
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    const raw = username.trim();
+
+    if (!raw) {
+      setAvailability('idle');
+      return;
+    }
+
+    if (raw.length < 3 || raw.length > 30 || !USERNAME_RE.test(raw)) {
+      setAvailability('invalid');
+      return;
+    }
+
+    setAvailability('checking');
+    debounceRef.current = setTimeout(async () => {
+      const { available } = await checkUsernameAvailability(raw);
+      setAvailability(available ? 'available' : 'taken');
+    }, 500);
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [username]);
+
+  const canSubmit =
+    selectedMode !== null &&
+    username.trim().length >= 3 &&
+    availability === 'available' &&
+    !isPending;
 
   const handleContinue = () => {
-    if (!selectedMode) return;
+    if (!canSubmit) return;
     startTransition(async () => {
-      const result = await completeOnboarding({ mode: selectedMode });
+      const result = await completeOnboarding({ mode: selectedMode!, username: username.trim() });
       if (result.hasError) {
         toast.error(result.message);
       } else {
@@ -64,7 +106,58 @@ export default function OnboardingPage() {
           {t('subtitle')}
         </p>
 
-        {/* Mode selection cards */}
+        {/* Step 1: Username */}
+        <div className="mb-6">
+          <label className="block text-xs font-mono text-[#94A3B8] uppercase tracking-widest mb-2">
+            {t('usernameLabel')}
+          </label>
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 font-mono text-sm text-[#64748B]">
+              portfoland.com/
+            </span>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value.toLowerCase())}
+              placeholder="your-username"
+              maxLength={30}
+              className={cn(
+                'w-full pl-[130px] pr-10 py-3 bg-[hsl(200,30%,8%)] border rounded-sm font-mono text-sm text-foreground',
+                'placeholder:text-[#334155] focus:outline-none transition-colors',
+                availability === 'available'
+                  ? 'border-[hsl(150,100%,45%)] focus:border-[hsl(150,100%,45%)]'
+                  : availability === 'taken' || availability === 'invalid'
+                    ? 'border-red-500/60 focus:border-red-500'
+                    : 'border-[hsl(174,100%,50%,0.25)] focus:border-[hsl(174,100%,50%,0.6)]',
+              )}
+            />
+            {/* Availability indicator */}
+            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+              {availability === 'checking' && <Loader className="w-4 h-4 text-[#64748B] animate-spin" />}
+              {availability === 'available' && <CheckCircle className="w-4 h-4 text-[hsl(150,100%,45%)]" />}
+              {(availability === 'taken' || availability === 'invalid') && <XCircle className="w-4 h-4 text-red-400" />}
+            </div>
+          </div>
+
+          {/* Availability message */}
+          <p className={cn(
+            'mt-1.5 text-[11px] font-mono',
+            availability === 'available' ? 'text-[hsl(150,100%,45%)]' :
+            availability === 'taken' ? 'text-red-400' :
+            availability === 'invalid' ? 'text-red-400' :
+            'text-[#475569]',
+          )}>
+            {availability === 'available' && '✓ Available'}
+            {availability === 'taken' && '✗ Username already taken'}
+            {availability === 'invalid' && '✗ Lowercase letters, numbers, hyphens only (min 3 chars)'}
+            {(availability === 'idle' || availability === 'checking') && t('usernameHint')}
+          </p>
+        </div>
+
+        {/* Step 2: Mode selection */}
+        <p className="text-xs font-mono text-[#94A3B8] uppercase tracking-widest mb-3">
+          {t('modeLabel')}
+        </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Digital / Tech card */}
           <button
@@ -74,7 +167,7 @@ export default function OnboardingPage() {
               'flex flex-col items-start gap-3 p-6 border rounded-sm text-left transition-all',
               selectedMode === 'tech'
                 ? 'border-[#00D4FF] bg-[#00D4FF]/10 shadow-[0_0_20px_rgba(0,212,255,0.15)]'
-                : 'border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] hover:border-[hsl(174,100%,50%,0.3)]'
+                : 'border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] hover:border-[hsl(174,100%,50%,0.3)]',
             )}
           >
             <Terminal className="w-8 h-8 text-[#00D4FF]" />
@@ -92,7 +185,7 @@ export default function OnboardingPage() {
               'flex flex-col items-start gap-3 p-6 border rounded-sm text-left transition-all',
               selectedMode === 'classic'
                 ? 'border-[#D946EF] bg-[#D946EF]/10 shadow-[0_0_20px_rgba(217,70,239,0.15)]'
-                : 'border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] hover:border-[hsl(174,100%,50%,0.3)]'
+                : 'border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] hover:border-[hsl(174,100%,50%,0.3)]',
             )}
           >
             <Briefcase className="w-8 h-8 text-[#D946EF]" />
@@ -109,7 +202,7 @@ export default function OnboardingPage() {
             type="button"
             variant="primary"
             className="w-full max-w-xs uppercase tracking-[0.2em]"
-            disabled={!selectedMode || isPending}
+            disabled={!canSubmit}
             onClick={handleContinue}
           >
             {isPending ? (

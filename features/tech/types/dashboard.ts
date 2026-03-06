@@ -71,6 +71,14 @@ export interface DashboardRow1Props {
    * when the sync completes.
    */
   onSearching?: () => void
+  /** Real DB stats for the CRT boot sequence. Falls back to placeholder lines when absent. */
+  bootStats?: {
+    totalXP: number
+    level: number
+    activeSkillsCount: number
+    currentStreak: number
+    achievements: { current: number; total: number }
+  }
 }
 
 // =============================================================================

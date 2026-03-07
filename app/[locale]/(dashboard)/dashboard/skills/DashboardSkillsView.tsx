@@ -16,7 +16,7 @@ import { useParams } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import { HexBadge } from '@/features/tech';
-import { CRTWithAI } from '@/features/tech/components/crt-with-ai';
+import { useCRTTriggers } from '@/features/tech/context/crt-triggers';
 import {
   SkillTreeView,
   ManualSkillModal
@@ -87,13 +87,8 @@ export function DashboardSkillsView({
   const [isPending, startTransition] = useTransition();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-  // ---------------------------------------------------------------------------
-  // AIEye trigger counters for GitHub sync and assessment state transitions.
-  // These are lifted state values that panel/widget callbacks increment.
-  // ---------------------------------------------------------------------------
-  const [xpGainTrigger, setXpGainTrigger] = useState(0);
-  const [lifeLossTrigger, setLifeLossTrigger] = useState(0);
-  const [searchingTrigger, setSearchingTrigger] = useState(0);
+  // CRT trigger callbacks from DashboardPageLayout context
+  const { triggerXPGain, triggerLifeLoss, triggerSearching } = useCRTTriggers();
 
   // Handle add skill callback
   const handleAddSkill = useCallback(() => {
@@ -112,11 +107,11 @@ export function DashboardSkillsView({
 
   /**
    * Fires when an assessment is passed.
-   * Increments xpGainTrigger to play the CRT AIEye xp_gain animation.
+   * Triggers the CRT AIEye xp_gain animation via context.
    */
   const handleAssessmentPass = useCallback(() => {
-    setXpGainTrigger((prev) => prev + 1);
-  }, []);
+    triggerXPGain();
+  }, [triggerXPGain]);
 
   return (
     <>
@@ -216,26 +211,17 @@ export function DashboardSkillsView({
         </span>
       </div>
 
-      {/* GITHUB_VALIDATOR — GitHub Expansion Module / Sync Status Panel + AIEye (TG9) */}
+      {/* GITHUB_VALIDATOR — GitHub Expansion Module / Sync Status Panel (TG9) */}
       <div className="px-6 py-3 border-b border-[hsl(174,100%,50%,0.1)]">
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_280px] gap-3">
-          <GitHubSyncPanel
-            userId={user.id}
-            isGitHubConnected={isGitHubConnected}
-            githubSyncedAt={githubSyncedAt}
-            githubStats={githubStats}
-            onSearchingTrigger={() => setSearchingTrigger((c) => c + 1)}
-            onXPGainTrigger={() => setXpGainTrigger((c) => c + 1)}
-            onLifeLossTrigger={() => setLifeLossTrigger((c) => c + 1)}
-          />
-          <CRTWithAI
-            userName={user.name}
-            className="min-h-[140px]"
-            xpGainTrigger={xpGainTrigger}
-            lifeLossTrigger={lifeLossTrigger}
-            searchingTrigger={searchingTrigger}
-          />
-        </div>
+        <GitHubSyncPanel
+          userId={user.id}
+          isGitHubConnected={isGitHubConnected}
+          githubSyncedAt={githubSyncedAt}
+          githubStats={githubStats}
+          onSearchingTrigger={triggerSearching}
+          onXPGainTrigger={triggerXPGain}
+          onLifeLossTrigger={triggerLifeLoss}
+        />
       </div>
 
       {/* ASSESSMENT_MODULE — AI Skill Assessment Widget (TG10) */}

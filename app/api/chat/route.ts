@@ -60,8 +60,15 @@ REGLAS ESTRICTAS:
 - Siempre responde en español.
 `;
 
-function getSystemPrompt(locale?: string): string {
-    return locale === 'es' ? TECH_SYSTEM_PROMPT_ES : TECH_SYSTEM_PROMPT_EN;
+function getSystemPrompt(locale?: string, pageContext?: string): string {
+    const base = locale === 'es' ? TECH_SYSTEM_PROMPT_ES : TECH_SYSTEM_PROMPT_EN;
+    if (!pageContext) return base;
+
+    const pageContextLine = locale === 'es'
+        ? `\nPAGINA ACTUAL: El usuario esta en la pagina "${pageContext}" de su dashboard. Adapta tus sugerencias al contexto de esta pagina.`
+        : `\nCURRENT PAGE: The user is on the "${pageContext}" page of their dashboard. Adapt your suggestions to this page's context.`;
+
+    return base + pageContextLine;
 }
 
 export async function POST(req: Request) {
@@ -85,7 +92,7 @@ export async function POST(req: Request) {
         const userId = session.user.id;
 
         // Parse body BEFORE lives check so locale is available for error messages
-        const { messages, locale } = await req.json();
+        const { messages, locale, pageContext } = await req.json();
         logger.debug(`User: ${userId} | Messages: ${messages?.length || 0} | Locale: ${locale || 'en'}`);
 
         // Check and consume AI lives (3 per day limit)
@@ -129,7 +136,7 @@ export async function POST(req: Request) {
         const result = streamText({
             model: google('gemini-2.0-flash'),
             messages,
-            system: getSystemPrompt(locale),
+            system: getSystemPrompt(locale, pageContext),
             maxSteps: 5,
             tools: {
                 add_experience: tool({

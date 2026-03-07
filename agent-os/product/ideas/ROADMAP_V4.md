@@ -3,7 +3,7 @@
 **Fecha:** 2026-03-06
 **Estado:** Activo -- Reemplaza ROADMAP_V2.md como documento rector
 **Origen:** Audit Opus post-Phase 3A, health check 2026-03-05, analisis de idea docs acumulados
-**Branch base:** `feat/phase3-solidify-tech-mode`
+**Branch base:** `feat/phase4-ai-portfolio-os`
 
 ---
 
@@ -940,4 +940,46 @@ Page-aware tool filtering keeps the AI focused. The base tools (get_portfolio_he
 
 ---
 
-**This roadmap supersedes ROADMAP_V2.md. Next action: create spec + tasks.md for Spec 4A (Dashboard Layout Unification) and begin the pre-Phase 4 cleanup sprint.**
+---
+
+## Open Questions & Future Improvements (from Spec 4A analysis)
+
+### 1. Classic Mode AI Chat — Familiar UX (analyze for 4B or 4B+)
+
+Al eliminar `AIAssistantFloat` en Spec 4A, Classic Mode pierde acceso a AI hasta que 4B lo resuelva. Pero mas alla de restaurar el acceso, hay una oportunidad de diseño:
+
+**Idea:** En vez de un CRT terminal (que es 100% Tech), Classic Mode podria tener un **chat estilo WhatsApp/Messenger** — burbujas de conversacion, colores solidos (no neon), esquinas redondeadas, avatar del AI como foto de perfil. Algo **familiar** para el usuario no-tech.
+
+- Mismo backend (`/api/chat`), mismas tools, diferente skin
+- Colores adaptados al theme Classic seleccionado (warm, ocean, dark-elegant)
+- Posicion: panel lateral derecho o bottom drawer (no floating bubble)
+- Considerar: chat embebido en `ClassicDashboardHeader` como drawer expandible
+
+**Prioridad:** Disenar durante Spec 4B. No dejar Classic sin AI mas de 1 sprint.
+
+### 2. Dashboard page.tsx boilerplate duplicado
+
+Las 8 paginas del dashboard duplican: `auth.api.getSession()`, `prisma.user.findUnique()`, `checkOnboarding()`. Spec 4A resuelve parcialmente con `getDashboardPageData()`, pero el auth check sigue duplicado.
+
+**Opciones a evaluar:**
+- Mover auth + onboarding check a `(dashboard)/layout.tsx` (ya hace auth) y pasar userId via React cache o headers
+- Usar `unstable_cache` + `React.cache()` para deduplicar la session call dentro del mismo request
+- Next.js recomienda verificar auth en cada server component, pero el layout ya lo hace — evaluar si la doble verificacion aporta seguridad real o solo boilerplate
+
+**Decision:** Pospuesto. `getDashboardPageData` reduce el problema suficiente para Phase 4. Revisitar en Phase 5 si el boilerplate escala.
+
+### 3. WelcomeCard translations boilerplate
+
+Cada pagina necesita `getTranslations('dashboard.welcomeCard')` + `getTranslations('dashboard')` para pasar translations a `DashboardPageLayout`. Son ~12 lineas repetidas en 8 archivos.
+
+**Mejora futura:** Hacer `DashboardPageLayout` un Server Component wrapper que resuelve translations internamente y delega el rendering a un client child (`DashboardRow1Client`). Esto elimina el boilerplate pero complica la arquitectura Server/Client boundary.
+
+**Decision:** Evaluar en Sprint 2 si el boilerplate se siente excesivo en la practica.
+
+### 4. getDisplayName/getInitials helpers
+
+Resuelto en Spec 4A Task 8a — se extraen a `features/dashboard/utils/userHelpers.ts`.
+
+---
+
+**This roadmap supersedes ROADMAP_V2.md. Spec 4A created: `agent-os/product/specs/4A-dashboard-layout-unification/`.**

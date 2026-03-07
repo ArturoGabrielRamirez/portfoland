@@ -14,7 +14,7 @@ import { setRequestLocale } from 'next-intl/server'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { cn } from '@/lib/utils'
-import { DashboardNav, AIAssistantFloat } from '@/features/tech'
+import { DashboardNav } from '@/features/tech'
 import type { ProtectedLayoutProps } from '@/features/dashboard/types/dashboard'
 import type { PortfolioMode } from '@/features/portfolio/types/portfolio'
 
@@ -63,7 +63,6 @@ export default async function DashboardLayout({
       <div className="flex-1 flex flex-col min-h-0">
         {children}
       </div>
-      <AIAssistantFloat portfolioMode={user.portfolioMode} locale={locale} />
     </div>
   )
 }

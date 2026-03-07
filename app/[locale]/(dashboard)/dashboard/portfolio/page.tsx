@@ -7,73 +7,94 @@
 
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { setRequestLocale, getTranslations } from 'next-intl/server';
 
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { getPortfolioSettingsData } from '@/features/portfolio-settings/data';
 import { checkOnboarding } from '@/features/onboarding/utils/checkOnboarding';
+import { getDashboardPageData } from '@/features/dashboard/data/getDashboardPageData.data';
+import { DashboardPageLayout } from '@/features/tech';
+import { getDisplayName, getInitials } from '@/features/dashboard/utils/userHelpers';
 import { DashboardPortfolioView } from './DashboardPortfolioView';
 
-export default async function DashboardPortfolioPage() {
-  try {
-    // Check authentication
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
+export default async function DashboardPortfolioPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
 
-    if (!session?.user?.id) {
-      redirect('/login');
-    }
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-    await checkOnboarding(session.user.id);
+  if (!session?.user?.id) {
+    redirect(`/${locale}/login`);
+  }
 
-    // Fetch user with complete profile data
-    const dbUser = await prisma.user.findUnique({
+  await checkOnboarding(session.user.id);
+
+  const [pageData, oauthImage, portfolioSettings] = await Promise.all([
+    getDashboardPageData(session.user.id),
+    prisma.user.findUnique({
       where: { id: session.user.id },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        username: true,
-        image: true,
-        oauthImage: true,
-        bio: true,
-        portfolioMode: true,
-      },
-    });
+      select: { oauthImage: true },
+    }).then(u => u?.oauthImage ?? null),
+    getPortfolioSettingsData(session.user.id),
+  ]);
 
-    if (!dbUser) {
-      redirect('/login');
-    }
+  const displayName = getDisplayName(pageData.user.name, pageData.user.email);
+  const initials = getInitials(pageData.user.name, pageData.user.email);
 
-    const portfolioSettings = await getPortfolioSettingsData(session.user.id);
+  // Clean up invalid image URLs (empty strings, malformed URLs)
+  const cleanImage = pageData.user.image?.trim() && pageData.user.image.trim() !== '' ? pageData.user.image.trim() : null;
 
-    // Get OAuth image - use the one from DB if exists, otherwise null
-    // (will be set on next fresh login from OAuth provider)
-    const oauthImage = dbUser.oauthImage ?? null;
+  const tWelcome = await getTranslations({ locale, namespace: 'dashboard.welcomeCard' });
+  const tDashboard = await getTranslations({ locale, namespace: 'dashboard' });
 
-    // Clean up invalid image URLs (empty strings, malformed URLs)
-    const cleanImage = dbUser.image?.trim() && dbUser.image.trim() !== '' ? dbUser.image.trim() : null;
-
-    return (
+  return (
+    <DashboardPageLayout
+      pageContext="portfolio"
+      portfolioMode={pageData.user.portfolioMode}
+      userName={displayName}
+      userInitial={initials}
+      userImage={pageData.user.image}
+      level={pageData.stats.level}
+      currentXP={pageData.stats.totalXP}
+      maxXP={pageData.stats.nextLevelXP}
+      streakDays={pageData.stats.currentStreak}
+      activeSkillsCount={pageData.stats.activeSkillsCount}
+      translations={{
+        welcomeTitle: tDashboard('welcome', { name: displayName }),
+        welcomeSubtitle: tDashboard('welcomeSubtitle'),
+        streak: tWelcome('streak', { count: pageData.stats.currentStreak }),
+        quickActionsTitle: tWelcome('quickActions'),
+        xpToLevel: tWelcome('xpToLevel', {
+          xp: pageData.stats.xpToNextLevel,
+          level: pageData.stats.level + 1,
+        }),
+      }}
+      bootStats={{
+        totalXP: pageData.stats.totalXP,
+        level: pageData.stats.level,
+        activeSkillsCount: pageData.stats.activeSkillsCount,
+        currentStreak: pageData.stats.currentStreak,
+        achievements: pageData.stats.achievements,
+      }}
+    >
       <DashboardPortfolioView
         user={{
-          id: dbUser.id,
-          name: dbUser.name,
-          email: dbUser.email,
-          username: dbUser.username || null,
+          id: pageData.user.id,
+          name: pageData.user.name,
+          email: pageData.user.email,
+          username: pageData.user.username,
           image: cleanImage,
-          bio: dbUser.bio ?? null,
-          portfolioMode: (dbUser.portfolioMode ?? 'classic') as 'classic' | 'tech',
+          bio: pageData.user.bio,
+          portfolioMode: pageData.user.portfolioMode,
         }}
         oauthImage={oauthImage}
         portfolioSettings={portfolioSettings}
       />
-    );
-  } catch (error) {
-    console.error('Error in DashboardPortfolioPage:', error);
-    throw error;
-  }
+    </DashboardPageLayout>
+  );
 }
 
 /**

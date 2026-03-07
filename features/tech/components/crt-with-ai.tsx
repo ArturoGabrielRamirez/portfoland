@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react"
 import { Send } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
+import type { PageContext } from "../types/page-context"
 
 // =============================================================================
 // Types
@@ -59,6 +60,8 @@ interface CRTWithAIProps {
     searchingTrigger?: number
     /** Real DB stats for the boot sequence. Falls back to placeholder lines when absent. */
     bootStats?: BootStats
+    /** Identifies which dashboard page is active (used for context-aware AI) */
+    pageContext?: PageContext
 }
 
 interface ConsoleLine {
@@ -524,6 +527,7 @@ export function CRTWithAI({
     lifeLossTrigger,
     searchingTrigger,
     bootStats,
+    pageContext,
 }: CRTWithAIProps) {
     const bootLines = makeBootLines(bootStats)
     const [aiState, setAIState] = useState<AIState>("sleeping")

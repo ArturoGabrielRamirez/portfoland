@@ -1,8 +1,10 @@
 /**
  * AI Tool Registry
  *
- * Barrel export for all AI tools and the registry builder that assembles
- * page-context-aware tool sets for the chat API route.
+ * Barrel export for all AI tools and the registry builder.
+ * All tools are available on every page — pageContext only affects the system
+ * prompt (proactive suggestions), not tool availability. This gives users
+ * full AI capabilities regardless of which dashboard page they're on.
  */
 
 import { tool } from 'ai'
@@ -12,13 +14,7 @@ import { createExperienceService } from '@/features/timeline/services/experience
 import { createSkillService } from '@/features/skills/services/skill.service'
 import { getUserSkillsData } from '@/features/skills/data/getUserSkills.data'
 import { getSelfAssessmentLevel, hasGitHubValidation } from '@/features/skills/types/skill'
-import {
-  baseReadTools,
-  projectPageTools,
-  timelinePageTools,
-  generalReadTools,
-  allReadTools,
-} from './readTools'
+import { allReadTools } from './readTools'
 import {
   baseWriteTools,
   projectWriteTools,
@@ -154,43 +150,22 @@ export function existingTools(userId: string) {
 // =============================================================================
 
 /**
- * Build a page-context-aware tool registry for the AI chat.
+ * Build the full tool registry for the AI chat.
  *
- * Always includes base read/write tools and the 4 existing tools.
- * Adds page-specific tools based on the current dashboard page.
+ * All tools are always available regardless of page context.
+ * Page context only affects the system prompt, not tool availability.
  *
  * @param userId - The authenticated user's ID
- * @param pageContext - The current dashboard page identifier
- * @returns A merged object of all applicable tools
+ * @param _pageContext - Reserved for future use (currently unused)
+ * @returns All available tools merged into a single object
  */
-export function buildToolRegistry(userId: string, pageContext?: string) {
-  // Base tools always included
-  const tools: Record<string, any> = {
-    ...baseReadTools(userId),
+export function buildToolRegistry(userId: string, _pageContext?: string) {
+  return {
+    ...allReadTools(userId),
     ...baseWriteTools(userId),
+    ...projectWriteTools(userId),
+    ...timelineWriteTools(userId),
+    ...skillWriteTools(userId),
     ...existingTools(userId),
   }
-
-  switch (pageContext) {
-    case 'skills':
-      Object.assign(tools, skillWriteTools(userId))
-      break
-    case 'timeline':
-      Object.assign(tools, timelinePageTools(userId))
-      Object.assign(tools, timelineWriteTools(userId))
-      break
-    case 'projects':
-      Object.assign(tools, projectPageTools(userId))
-      Object.assign(tools, projectWriteTools(userId))
-      break
-    case 'dashboard':
-      Object.assign(tools, allReadTools(userId))
-      break
-    default:
-      // General pages get github + assessment tools
-      Object.assign(tools, generalReadTools(userId))
-      break
-  }
-
-  return tools
 }

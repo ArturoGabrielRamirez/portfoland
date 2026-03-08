@@ -89,7 +89,7 @@ interface APIChatMessage {
 // =============================================================================
 
 const IDLE_TIMEOUT_MS = 60 * 1000
-const INACTIVITY_RETURN_MS = 8000  // Normal inactivity before drowsy
+const INACTIVITY_RETURN_MS = 45_000  // Normal inactivity before drowsy (45s)
 const AUTONOMOUS_IDLE_MS = 3000
 // After a sync completes (xp_gain), eye stays in curious/awake mode this long
 // before the inactivity sequence kicks in
@@ -735,22 +735,25 @@ export function CRTWithAI({
     useEffect(() => {
         // Don't start inactivity timer while the eye is busy:
         // - "searching": parent-driven state (GitHub sync in progress), must not sleep mid-scan
-        // - "thinking" / "success": active AI response cycle
+        // - "thinking" / "success" / "listening": active AI response cycle
+        // - isStreaming: actively receiving streamed response from API
         if (
             aiState !== "sleeping" &&
             aiState !== "thinking" &&
+            aiState !== "listening" &&
             aiState !== "success" &&
-            aiState !== "searching"
+            aiState !== "searching" &&
+            !isStreaming
         ) {
             resetInactivity()
         }
-        // Clear any running inactivity timer when entering searching so the eye
-        // won't go drowsy while a sync is in progress.
-        if (aiState === "searching" && inactivityTimer.current) {
+        // Clear any running inactivity timer when entering active states so the eye
+        // won't go drowsy while a sync or AI response is in progress.
+        if ((aiState === "searching" || aiState === "thinking" || aiState === "listening" || isStreaming) && inactivityTimer.current) {
             clearTimeout(inactivityTimer.current)
         }
         return () => { if (inactivityTimer.current) clearTimeout(inactivityTimer.current) }
-    }, [resetInactivity, message, aiState])
+    }, [resetInactivity, message, aiState, isStreaming])
 
     // TG1-B: drowsyBlinkInterval useEffect REMOVED.
     // The drowsy state animation is now handled by the Framer Motion tween on the iris ellipse

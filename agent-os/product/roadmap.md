@@ -62,7 +62,7 @@
 
 > **Referencia:** Ver `agent-os/product/ai-features-ideas.md` para la lista completa de ideas priorizadas.
 
-20. [ ] Vercel AI SDK Integration — Streaming responses, conversation state `M`
+20. [x] Vercel AI SDK Integration — Streaming responses, conversation state `M`
 21. [ ] Guided CV Interview (RPG Master Persona) — AI conversacional para recopilar info de CV `L`
 22. [ ] AI Content Suggestions (Gaming vs. Prof. tones) — Sugerencias para mejorar descripciones `M`
 23. [ ] Daily Energy/Lives System (3 uses/day) `S`

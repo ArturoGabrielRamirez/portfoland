@@ -982,4 +982,38 @@ Resuelto en Spec 4A Task 8a — se extraen a `features/dashboard/utils/userHelpe
 
 ---
 
-**This roadmap supersedes ROADMAP_V2.md. Spec 4A created: `agent-os/product/specs/4A-dashboard-layout-unification/`.**
+### 5. CRT persistencia entre navegaciones (post-4B)
+
+El CRT se desmonta y remonta al navegar entre paginas del dashboard porque vive dentro de cada `page.tsx` via `DashboardPageLayout`. Esto causa:
+- Boot sequence se reproduce cada vez que cambias de pagina
+- Chat history se pierde visualmente (se restaura de localStorage pero re-anima todo)
+- WelcomeCard re-anima texto que no cambio
+
+**Solucion propuesta:** Mover el CRT al `(dashboard)/layout.tsx` (que persiste entre navegaciones). Alimentar `pageContext` y `bootStats` via React Context o URL params. El CRT nunca se desmonta, el chat persiste visualmente, solo cambia el pageContext. Evaluar impacto en Server/Client boundary.
+
+### 6. Sistema de vidas/tokens AI — economia del chat
+
+El sistema actual (3 vidas/dia, 1 vida = 1 request) tiene problemas:
+- 3 requests es muy poco para una experiencia fluida
+- No distingue entre un "hola" y un analisis complejo con tool calls
+- No hay forma de ganar mas vidas
+
+**Ideas a evaluar para un spec dedicado:**
+- **Vidas con barra de energia:** Cada vida activa una barra que se consume por tokens usados. Un request simple gasta poco, uno con tools gasta mas.
+- **Ganar vidas:** Completar portfolio manualmente, logros, achievements, rachas de actividad desbloquean vidas extra.
+- **Quest system integration (Spec 4E):** Quests podrian dar vidas como recompensa. Comandos tipo `/quest` o easter eggs en el CRT para desbloquear energia.
+- **Modelo de negocio:** Balance entre dar suficiente para engagement vs. upsell a plan premium con mas tokens.
+- **Metricas clave:** Costo promedio por request (~$0.003 con Gemini Flash), requests/user/dia promedio, conversion a premium.
+
+**Decision:** Disenar spec dedicado que unifique vidas + tokens + quest rewards. Requiere analisis UX/UI profundo y modelado economico.
+
+### 7. Classic Mode chat UI (post-4B)
+
+Classic Mode no tiene chat despues de eliminar `AIAssistantFloat` en 4A. Opciones:
+- Panel estilo WhatsApp/Messenger (familiar para usuarios no-tech)
+- Colores solidos en vez de neon, diseño mas relajado
+- El backend `/api/chat` ya es mode-agnostic — solo falta el frontend
+
+---
+
+**This roadmap supersedes ROADMAP_V2.md. Spec 4A created: `agent-os/product/specs/4A-dashboard-layout-unification/`. Spec 4B created: `agent-os/product/specs/4B-ai-context-engine/`.**

@@ -44,6 +44,7 @@ export default async function DashboardTimelinePage({ params }: { params: Promis
   return (
     <DashboardPageLayout
       pageContext="timeline"
+      locale={locale}
       portfolioMode={pageData.user.portfolioMode}
       userName={displayName}
       userInitial={initials}

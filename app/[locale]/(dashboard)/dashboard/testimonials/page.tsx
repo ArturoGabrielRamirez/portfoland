@@ -44,6 +44,7 @@ export default async function DashboardTestimonialsPage({ params }: { params: Pr
   return (
     <DashboardPageLayout
       pageContext="testimonials"
+      locale={locale}
       portfolioMode={pageData.user.portfolioMode}
       userName={displayName}
       userInitial={initials}

@@ -84,6 +84,7 @@ export default async function DashboardSkillsPage({ params }: { params: Promise<
   return (
     <DashboardPageLayout
       pageContext="skills"
+      locale={locale}
       portfolioMode={pageData.user.portfolioMode}
       userName={displayName}
       userInitial={initials}

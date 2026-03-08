@@ -44,6 +44,7 @@ export default async function DashboardServicesPage({ params }: { params: Promis
   return (
     <DashboardPageLayout
       pageContext="services"
+      locale={locale}
       portfolioMode={pageData.user.portfolioMode}
       userName={displayName}
       userInitial={initials}

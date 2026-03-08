@@ -24,6 +24,7 @@ export function DashboardRow1({
   onSearching,
   bootStats,
   pageContext,
+  locale,
 }: DashboardRow1Props) {
   const [aiActive, setAiActive] = useState(false)
 
@@ -80,6 +81,7 @@ export function DashboardRow1({
         searchingTrigger={searchingTrigger}
         bootStats={bootStats}
         pageContext={pageContext}
+        locale={locale}
       />
     </div>
   )

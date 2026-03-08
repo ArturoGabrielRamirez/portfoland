@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react"
 import { Send } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
+import { processDataStream } from "@ai-sdk/ui-utils"
 import type { PageContext } from "../types/page-context"
 
 // =============================================================================
@@ -62,6 +63,8 @@ interface CRTWithAIProps {
     bootStats?: BootStats
     /** Identifies which dashboard page is active (used for context-aware AI) */
     pageContext?: PageContext
+    /** Locale for AI chat API requests (e.g. "en" or "es") */
+    locale?: string
 }
 
 interface ConsoleLine {
@@ -72,6 +75,12 @@ interface ConsoleLine {
 
 interface ChatMessage {
     role: "user" | "ai" | "system"
+    content: string
+}
+
+// API message format used when communicating with /api/chat
+interface APIChatMessage {
+    role: "user" | "assistant" | "system"
     content: string
 }
 
@@ -86,6 +95,7 @@ const AUTONOMOUS_IDLE_MS = 3000
 // before the inactivity sequence kicks in
 const POST_SYNC_CURIOUS_MS = 28_000
 const AI_INTERACTED_KEY = "portfoland_ai_interacted"
+const CHAT_HISTORY_KEY = "crt-chat-history"
 
 // Transient states that auto-return via a timer and do NOT update prevStateRef
 // TG6: "searching" is parent-driven (sustained), so it is NOT in this list;
@@ -528,17 +538,24 @@ export function CRTWithAI({
     searchingTrigger,
     bootStats,
     pageContext,
+    locale,
 }: CRTWithAIProps) {
     const bootLines = makeBootLines(bootStats)
     const [aiState, setAIState] = useState<AIState>("sleeping")
     const [visibleLines, setVisibleLines] = useState(0)
     const [cursorVisible, setCursorVisible] = useState(true)
     const [message, setMessage] = useState("")
-    const [messages, setMessages] = useState<ChatMessage[]>([])
+    // Chat messages displayed in the CRT (user + AI responses)
+    const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
+    // Full API message history sent to /api/chat (user + assistant roles)
+    const apiMessagesRef = useRef<APIChatMessage[]>([])
+    const [isStreaming, setIsStreaming] = useState(false)
     const [showingChat, setShowingChat] = useState(false)
     const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 })
     const [isBlinking, setIsBlinking] = useState(false)
     const [isAutonomous, setIsAutonomous] = useState(false)
+    // Abort controller for cancelling in-flight API requests
+    const abortControllerRef = useRef<AbortController | null>(null)
 
     const autonomousTimer = useRef<NodeJS.Timeout | null>(null)
     const inactivityTimer = useRef<NodeJS.Timeout | null>(null)
@@ -648,14 +665,26 @@ export function CRTWithAI({
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight
         }
-    }, [messages, visibleLines, showingChat])
+    }, [chatMessages, visibleLines, showingChat])
 
-    // --- Persistence ---
+    // --- Persistence: Restore chat history from localStorage ---
     useEffect(() => {
-        const saved = localStorage.getItem("ai_chat_history")
-        if (saved) {
-            const parsed = JSON.parse(saved)
-            setMessages(parsed.messages)
+        try {
+            const saved = localStorage.getItem(CHAT_HISTORY_KEY)
+            if (saved) {
+                const parsed = JSON.parse(saved) as {
+                    chatMessages?: ChatMessage[]
+                    apiMessages?: APIChatMessage[]
+                }
+                if (parsed.chatMessages && Array.isArray(parsed.chatMessages)) {
+                    setChatMessages(parsed.chatMessages)
+                }
+                if (parsed.apiMessages && Array.isArray(parsed.apiMessages)) {
+                    apiMessagesRef.current = parsed.apiMessages
+                }
+            }
+        } catch {
+            // Ignore corrupt localStorage data
         }
     }, [])
 
@@ -667,11 +696,19 @@ export function CRTWithAI({
         }
     }, [])
 
+    // --- Persistence: Save chat history to localStorage on change ---
     useEffect(() => {
-        if (messages.length > 0) {
-            localStorage.setItem("ai_chat_history", JSON.stringify({ messages }))
+        if (chatMessages.length > 0) {
+            try {
+                localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify({
+                    chatMessages,
+                    apiMessages: apiMessagesRef.current,
+                }))
+            } catch {
+                // localStorage might be full — silently ignore
+            }
         }
-    }, [messages])
+    }, [chatMessages])
 
     // --- Inactivity Logic (Inactivity -> Drowsy -> Sleeping) ---
     const resetInactivity = useCallback(() => {
@@ -795,34 +832,118 @@ export function CRTWithAI({
             setAIState("waking")
             setTimeout(() => {
                 setAIState("awake")
-                if (messages.length > 0) setShowingChat(true)
+                if (chatMessages.length > 0) setShowingChat(true)
             }, 800)
             resetInactivity()
         }
     }
 
-    const handleSend = () => {
-        if (!message.trim()) return
-        const userMsg = message
-        setMessages(prev => [...prev, { role: "user", content: userMsg }])
+    // --- Real AI Chat: Send message to /api/chat and stream response ---
+    const handleSend = useCallback(async () => {
+        if (!message.trim() || isStreaming) return
+
+        const userText = message.trim()
         setMessage("")
         setShowingChat(true)
-
-        // Simulated AI response: listening → thinking → ready → success → awake
         setAIState("listening")
-        setTimeout(() => {
+        localStorage.setItem(AI_INTERACTED_KEY, "1")
+
+        // Add user message to display
+        setChatMessages(prev => [...prev, { role: "user", content: userText }])
+
+        // Build API messages array with user message
+        const userApiMsg: APIChatMessage = { role: "user", content: userText }
+        apiMessagesRef.current = [...apiMessagesRef.current, userApiMsg]
+
+        setIsStreaming(true)
+
+        // Cancel any previous in-flight request
+        if (abortControllerRef.current) {
+            abortControllerRef.current.abort()
+        }
+        const abortController = new AbortController()
+        abortControllerRef.current = abortController
+
+        let streamedText = ""
+
+        try {
+            const response = await fetch("/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    messages: apiMessagesRef.current,
+                    locale: locale || "es",
+                    pageContext,
+                }),
+                signal: abortController.signal,
+            })
+
+            if (!response.ok) {
+                const isRateLimit = response.status === 429
+                const errorMsg = isRateLimit
+                    ? "ENERGY DEPLETED. Recharge tomorrow."
+                    : "ERROR: AI system unavailable. Try again later."
+
+                setChatMessages(prev => [...prev, { role: "system", content: errorMsg }])
+                setAIState("life_loss")
+                setIsStreaming(false)
+                return
+            }
+
+            if (!response.body) {
+                setChatMessages(prev => [...prev, { role: "system", content: "ERROR: Empty response from AI system." }])
+                setAIState("life_loss")
+                setIsStreaming(false)
+                return
+            }
+
+            // Transition to thinking once we start receiving the stream
             setAIState("thinking")
-            setTimeout(() => {
-                const aiReply = `He procesado tu comando "${userMsg}". Analizando resultados... Red neuronal optimizada para Arturo.`
-                setMessages(prev => [...prev, { role: "ai", content: aiReply }])
-                setAIState("ready")
-                setTimeout(() => {
-                    setAIState("success")
-                    setTimeout(() => setAIState("awake"), 2500)
-                }, 600)
-            }, 1500)
-        }, 800)
-    }
+
+            // Add a placeholder AI message that will be progressively updated
+            setChatMessages(prev => [...prev, { role: "ai", content: "" }])
+
+            await processDataStream({
+                stream: response.body,
+                onTextPart(text) {
+                    streamedText += text
+                    // Update the last AI message with accumulated text
+                    setChatMessages(prev => {
+                        const updated = [...prev]
+                        const lastIdx = updated.length - 1
+                        if (lastIdx >= 0 && updated[lastIdx].role === "ai") {
+                            updated[lastIdx] = { ...updated[lastIdx], content: streamedText }
+                        }
+                        return updated
+                    })
+                },
+                onErrorPart(error) {
+                    setChatMessages(prev => [...prev, { role: "system", content: `ERROR: ${error}` }])
+                },
+            })
+
+            // Stream complete — add assistant response to API messages for context
+            if (streamedText) {
+                apiMessagesRef.current = [
+                    ...apiMessagesRef.current,
+                    { role: "assistant", content: streamedText },
+                ]
+            }
+
+            // Success animation sequence
+            setAIState("success")
+            setTimeout(() => setAIState("awake"), 2500)
+            resetInactivity()
+        } catch (err: unknown) {
+            // Ignore abort errors (user sent a new message while previous was streaming)
+            if (err instanceof Error && err.name === "AbortError") return
+
+            setChatMessages(prev => [...prev, { role: "system", content: "ERROR: AI system unavailable. Try again later." }])
+            setAIState("life_loss")
+        } finally {
+            setIsStreaming(false)
+        }
+    }, [message, isStreaming, locale, pageContext, resetInactivity])
 
     // TG6: searching gets its own amber border color
     const borderColor = (aiState === "sleeping" || aiState === "drowsy" || aiState === "life_loss")
@@ -902,7 +1023,7 @@ export function CRTWithAI({
 
                         {/* 2. CHAT HISTORY with Exit Animation towards AI */}
                         <AnimatePresence>
-                            {showingChat && messages.length > 0 && (
+                            {showingChat && chatMessages.length > 0 && (
                                 <motion.div
                                     initial={{ opacity: 0, y: 30, filter: "blur(3px)" }}
                                     animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -923,23 +1044,32 @@ export function CRTWithAI({
                                         transition={{ delay: 0.1 }}
                                         className="text-[9px] font-mono text-muted-foreground/40 uppercase tracking-widest mb-2"
                                     >
-                                        {">"} accessing_memory_buffer... [{messages.length} records]
+                                        {">"} accessing_memory_buffer... [{chatMessages.length} records]
                                     </motion.div>
-                                    {messages.map((msg, idx) => (
+                                    {chatMessages.map((msg, idx) => (
                                         <motion.div
                                             key={idx}
                                             initial={{ opacity: 0, x: -8 }}
                                             animate={{ opacity: 1, x: 0 }}
                                             transition={{ delay: 0.05 * Math.min(idx, 10) }}
-                                            className={cn("flex flex-col", msg.role === 'user' ? "text-foreground" : "text-[hsl(174,100%,50%)]")}
+                                            className={cn(
+                                                "flex flex-col",
+                                                msg.role === "user"
+                                                    ? "text-foreground"
+                                                    : msg.role === "system"
+                                                        ? "text-[hsl(0,80%,55%)]"
+                                                        : "text-[hsl(174,100%,50%)]"
+                                            )}
                                         >
                                             <div className="flex gap-1">
-                                                <span className="text-muted-foreground">{msg.role === 'user' ? "$ query" : "> ai_resp"}:</span>
-                                                <span className={msg.role === 'ai' ? "animate-console-type-in" : ""}>{msg.content}</span>
+                                                <span className="text-muted-foreground">
+                                                    {msg.role === "user" ? "$ query" : msg.role === "system" ? "> sys_err" : "> ai_resp"}:
+                                                </span>
+                                                <span className={msg.role === "ai" ? "animate-console-type-in" : ""}>{msg.content}</span>
                                             </div>
                                         </motion.div>
                                     ))}
-                                    {(aiState === "thinking" || aiState === "listening") && (
+                                    {(aiState === "thinking" || aiState === "listening") && !chatMessages.some(m => m.role === "ai" && m.content === "") && (
                                         <div className="text-purple-400 animate-pulse">
                                             <span className="text-muted-foreground">&gt; ai_resp:</span>
                                             {aiState === "listening" ? " Escuchando input neural..." : " Procesando respuesta neural..."}
@@ -961,7 +1091,12 @@ export function CRTWithAI({
                                         setMessage(e.target.value)
                                         resetInactivity()
                                     }}
-                                    onKeyDown={e => e.key === "Enter" && handleSend()}
+                                    onKeyDown={e => {
+                                        if (e.key === "Enter") {
+                                            e.preventDefault()
+                                            handleSend()
+                                        }
+                                    }}
                                     className="w-full bg-transparent border-none outline-none text-foreground p-0 m-0 caret-transparent"
                                     placeholder={(aiState === "sleeping" || aiState === "drowsy") ? "SISTEMA_DORMIDO (Click para activar)..." : "Introducir comando neural..."}
                                     autoFocus
@@ -1004,7 +1139,7 @@ export function CRTWithAI({
 
             <div className="px-4 py-2 text-[8px] font-mono opacity-20 flex justify-between uppercase">
                 <span>Core.Neural_Process.Active</span>
-                <span>History_Buffer: {messages.length}</span>
+                <span>History_Buffer: {chatMessages.length}</span>
             </div>
         </div>
     )

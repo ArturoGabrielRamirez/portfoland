@@ -53,6 +53,7 @@ export default async function DashboardPortfolioPage({ params }: { params: Promi
   return (
     <DashboardPageLayout
       pageContext="portfolio"
+      locale={locale}
       portfolioMode={pageData.user.portfolioMode}
       userName={displayName}
       userInitial={initials}

@@ -82,6 +82,8 @@ export interface DashboardRow1Props {
   }
   /** Identifies which dashboard page is active (used by CRTWithAI for context-aware AI) */
   pageContext?: PageContext
+  /** Locale for AI chat API requests */
+  locale?: string
 }
 
 // =============================================================================

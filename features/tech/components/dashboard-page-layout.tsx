@@ -36,6 +36,8 @@ interface DashboardPageLayoutProps {
     currentStreak: number
     achievements: { current: number; total: number }
   }
+  /** Locale for AI chat API requests */
+  locale?: string
 }
 
 // =============================================================================
@@ -81,6 +83,7 @@ export function DashboardPageLayout({
   activeSkillsCount,
   translations,
   bootStats,
+  locale,
 }: DashboardPageLayoutProps) {
   const [xpGainTrigger, setXpGainTrigger] = useState(0)
   const [lifeLossTrigger, setLifeLossTrigger] = useState(0)
@@ -110,6 +113,7 @@ export function DashboardPageLayout({
             translations={translations}
             bootStats={bootStats}
             pageContext={pageContext}
+            locale={locale}
             onXPGain={triggers.triggerXPGain}
             onLifeLoss={triggers.triggerLifeLoss}
             onSearching={triggers.triggerSearching}

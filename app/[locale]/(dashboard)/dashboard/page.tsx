@@ -70,6 +70,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   return (
     <DashboardPageLayout
       pageContext="dashboard"
+      locale={locale}
       portfolioMode={pageData.user.portfolioMode}
       userName={displayName}
       userInitial={initials}

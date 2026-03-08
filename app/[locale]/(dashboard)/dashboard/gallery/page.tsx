@@ -44,6 +44,7 @@ export default async function DashboardGalleryPage({ params }: { params: Promise
   return (
     <DashboardPageLayout
       pageContext="gallery"
+      locale={locale}
       portfolioMode={pageData.user.portfolioMode}
       userName={displayName}
       userInitial={initials}

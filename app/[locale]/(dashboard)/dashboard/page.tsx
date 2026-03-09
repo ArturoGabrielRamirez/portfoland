@@ -28,6 +28,7 @@ import type { DashboardPageProps } from '@/features/dashboard/types/dashboard'
 import { getDashboardPageData } from '@/features/dashboard/data/getDashboardPageData.data'
 import { getTopRunners } from '@/features/dashboard/data/getTopRunners.data'
 import { getDisplayName, getInitials } from '@/features/dashboard/utils/userHelpers'
+import { getQuestsAction } from '@/features/quests/actions/getQuestsAction'
 
 // =============================================================================
 // Page
@@ -46,10 +47,11 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
 
   await checkOnboarding(user.id)
 
-  // Fetch page data and top runners in parallel for optimal performance
-  const [pageData, runners] = await Promise.all([
+  // Fetch page data, top runners, and quests in parallel for optimal performance
+  const [pageData, runners, questsResponse] = await Promise.all([
     getDashboardPageData(user.id),
     getTopRunners(user.id),
+    getQuestsAction(locale),
   ])
 
   const stats = pageData.stats
@@ -103,7 +105,11 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
 
         {/* Left column: Active Missions + SYS_LOG (real activity events) */}
         <div className="flex flex-col gap-2 min-h-0">
-          <ActiveMissionsPanel className="flex-1 min-h-[140px]" />
+          <ActiveMissionsPanel
+            quests={questsResponse.hasError ? [] : (questsResponse.payload ?? [])}
+            locale={locale}
+            className="flex-1 min-h-[140px]"
+          />
           <SysLogPanel userId={user.id} className="flex-1 min-h-[120px]" />
         </div>
 

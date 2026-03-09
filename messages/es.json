@@ -370,5 +370,19 @@
     "reportingBroken": "Buscando reemplazo...",
     "replacementFound": "Enlace roto reemplazado por uno funcional",
     "replacementFailed": "No se pudo encontrar un reemplazo"
+  },
+  "quests": {
+    "title": "Misiones Activas",
+    "pending": "{count} pendientes",
+    "allComplete": "!Todas las misiones completadas hoy!",
+    "comeBack": "Vuelve manana para nuevas misiones.",
+    "claim": "Reclamar",
+    "claimed": "Reclamado",
+    "inProgress": "En Progreso",
+    "completed": "Completado",
+    "expired": "Expirado",
+    "weeklyLabel": "Mision Semanal",
+    "expires": "Expira {date}",
+    "xpEarned": "+{xp} XP ganados!"
   }
 }

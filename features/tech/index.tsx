@@ -661,7 +661,7 @@ export { AIAssistantWidget } from './components/ai-assistant-widget'
 // Dashboard Redesign V2
 export { CRTWithAI } from './components/crt-with-ai'
 export { HexStatGrid } from './components/hex-stat-grid'
-export { ActiveMissionsPanel } from './components/active-missions-panel'
+export { ActiveMissionsPanel } from '@/features/quests/components/ActiveMissionsPanel'
 export { SkillRadarPanel } from './components/skill-radar-panel'
 export { TopRunnersPanel } from './components/top-runners-panel'
 export { ActivityHeatmap } from './components/activity-heatmap'

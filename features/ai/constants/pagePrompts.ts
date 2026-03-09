@@ -12,8 +12,8 @@
 
 export const PAGE_PROMPTS: Record<string, { en: string; es: string }> = {
   dashboard: {
-    en: 'User is on their main dashboard. Suggest portfolio improvements, highlight incomplete sections, or help them plan next steps.',
-    es: 'El usuario esta en su dashboard principal. Sugiere mejoras al portfolio, destaca secciones incompletas o ayuda a planificar proximos pasos.',
+    en: "User is on their main dashboard. They have active daily and weekly quests in the Active Missions panel. Reference quests proactively — suggest completing the ones where the condition is already met (e.g., 'You have a quest to add your bio, which you haven't done yet'). Help them understand how to complete each quest and earn XP.",
+    es: "El usuario esta en su dashboard principal. Tiene misiones diarias y semanales activas en el panel de Misiones Activas. Referencia las misiones de forma proactiva — sugiere completar las que ya cumplen la condicion. Ayuda a entender como completar cada mision y ganar XP.",
   },
   skills: {
     en: 'User is viewing their skill tree. Help add new skills, suggest related technologies, or discuss skill levels and validation.',

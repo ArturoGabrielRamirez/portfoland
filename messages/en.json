@@ -370,5 +370,19 @@
     "reportingBroken": "Getting replacement...",
     "replacementFound": "Broken link replaced with a working resource",
     "replacementFailed": "Could not find a replacement"
+  },
+  "quests": {
+    "title": "Active Missions",
+    "pending": "{count} pending",
+    "allComplete": "All missions complete for today!",
+    "comeBack": "Check back tomorrow for new quests.",
+    "claim": "Claim",
+    "claimed": "Claimed",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "expired": "Expired",
+    "weeklyLabel": "Weekly Quest",
+    "expires": "Expires {date}",
+    "xpEarned": "+{xp} XP earned!"
   }
 }

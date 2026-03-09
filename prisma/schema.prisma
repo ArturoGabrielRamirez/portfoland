@@ -57,6 +57,7 @@ model User {
   portfolioSettings PortfolioSettings?
   skillAssessments  SkillAssessment[]
   cvDocuments       CVDocument[]
+  userQuests        UserQuest[]
 
   @@map("users")
 }
@@ -501,4 +502,31 @@ model BrokenResourceUrl {
 
   @@index([skillName, skillLevel])
   @@map("broken_resource_urls")
+}
+
+// =============================================================================
+// Quest System Models
+// =============================================================================
+
+enum QuestStatus {
+  ACTIVE
+  COMPLETED
+  EXPIRED
+}
+
+model UserQuest {
+  id          String      @id @default(cuid()) @map("_id")
+  userId      String
+  questId     String
+  status      QuestStatus @default(ACTIVE)
+  xpAwarded   Int         @default(0)
+  assignedAt  DateTime    @default(now())
+  completedAt DateTime?
+  expiresAt   DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@index([userId, questId])
+  @@map("user_quests")
 }

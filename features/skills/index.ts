@@ -13,6 +13,7 @@
 
 export {
   // Core components
+  SkillIcon,
   SkillHexagonNode,
   SkillDetailCard,
   XPSourceList,
@@ -82,6 +83,7 @@ export type {
   CreateCategoryInput,
   SyncSkillsFromExperienceInput,
   // Component props
+  SkillIconProps,
   SkillHexagonNodeProps,
   SkillDetailCardProps,
   ManualSkillFormProps,
@@ -145,6 +147,14 @@ export {
 
 // Message constants
 export { SKILL_MESSAGES } from './constants/messages';
+
+// Devicon utilities
+export {
+  DEVICON_SLUGS,
+  getDeviconSlug,
+  getDeviconUrl,
+  getDeviconPlainUrl,
+} from './utils/devicons';
 
 // =============================================================================
 // Data Layer

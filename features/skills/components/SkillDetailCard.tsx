@@ -27,6 +27,7 @@ import {
 import { LEVEL_VISUAL_STYLES, LEVEL_BADGE_COLORS } from '../constants/levels';
 import { CATEGORY_COLORS, getCategoryColor } from '../constants/categories';
 import { XPSourceList } from './XPSourceList';
+import { SkillIcon } from './SkillIcon';
 import { suggestEnhancementsAction } from '@/features/skill-enhancement/actions/suggestEnhancements.action';
 import { SkillEnhancementPanel } from '@/features/skill-enhancement/components/SkillEnhancementPanel';
 import type { SkillEnhancement } from '@/features/skill-enhancement/types/enhancement';
@@ -225,12 +226,10 @@ function SkillDetailCardComponent({
                   <div
                     className={cn(
                       'w-16 h-16 clip-hexagon flex items-center justify-center relative',
-                      'text-2xl font-bold font-mono',
-                      isLegendary ? 'text-[#0A0E1A]' : 'text-white'
                     )}
                     style={{ backgroundColor: categoryColor, boxShadow: `0 0 20px ${categoryColor}60` }}
                   >
-                    {userSkill.skill?.name?.charAt(0).toUpperCase() ?? '?'}
+                    <SkillIcon skillName={userSkill.skill?.name ?? ''} size="lg" className="relative z-10" />
                     {isLegendary && (
                       <Crown className="absolute -top-2 -right-2 w-5 h-5 text-[#F59E0B]" />
                     )}

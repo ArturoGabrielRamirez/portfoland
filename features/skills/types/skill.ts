@@ -218,6 +218,15 @@ export interface SyncSkillsFromExperienceInput {
 // =============================================================================
 
 /**
+ * Props for SkillIcon component
+ */
+export interface SkillIconProps {
+  skillName: string;
+  size?: 'xs' | 'sm' | 'md' | 'lg';
+  className?: string;
+}
+
+/**
  * Props for SkillHexagonNode component
  */
 export interface SkillHexagonNodeProps {

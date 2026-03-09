@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 import { LevelBadge } from '@/features/tech';
 import type { MobileSkillItemProps } from '../types/skill';
 import { SKILL_LEVEL_NAMES, LEVEL_THRESHOLDS_ARRAY } from '../constants/xp';
+import { SkillIcon } from './SkillIcon';
 
 /**
  * Get XP progress info for display
@@ -78,15 +79,15 @@ function MobileSkillItemComponent({
         )}
         aria-expanded={isExpanded}
       >
-        {/* Skill Letter Badge */}
+        {/* Skill Icon Badge — container keeps category color ring, icon replaces letter */}
         <div
-          className="flex-shrink-0 w-10 h-10 rounded-sm flex items-center justify-center text-lg font-bold text-white"
+          className="flex-shrink-0 w-10 h-10 rounded-sm flex items-center justify-center"
           style={{
             backgroundColor: userSkill.skill?.category?.color ?? '#64748B',
             boxShadow: `0 0 10px ${userSkill.skill?.category?.color ?? '#64748B'}40`,
           }}
         >
-          {userSkill.skill?.name?.charAt(0).toUpperCase() ?? '?'}
+          <SkillIcon skillName={userSkill.skill?.name ?? ''} size="md" />
         </div>
 
         {/* Skill Info */}

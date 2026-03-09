@@ -16,6 +16,7 @@ import { ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { UserSkillWithDetails, SkillCategory } from '../types/skill';
 import { getCategoryColor, type CategorySlug } from '../constants/categories';
+import { SkillIcon } from './SkillIcon';
 
 interface CRTSkillCanvasProps {
   userSkills: UserSkillWithDetails[];
@@ -52,6 +53,10 @@ function generateNodePositions(
   const centerX = width / 2;
   const centerY = height / 2;
   const radiusBase = Math.min(width, height) * 0.3;
+
+  // Scale the base radius up when there are many skills so clusters spread out
+  const totalSkillCount = groups.reduce((sum, g) => sum + g.skills.length, 0);
+  const scaledRadiusBase = radiusBase * Math.min(1 + (totalSkillCount / 60), 1.5);
 
   // Get label position for angle calculation
   const getLabelPosition = (slug: string, groupIndex: number, height: number, width: number): { x: number; y: number } => {
@@ -93,7 +98,7 @@ function generateNodePositions(
 
     const angleStep = (Math.PI * 2) / groups.length;
     const groupAngle = angleStep * groupIndex - Math.PI / 2;
-    const groupRadius = radiusBase + (groupIndex % 2) * 80;
+    const groupRadius = scaledRadiusBase + (groupIndex % 2) * 80;
 
     // Group center position
     const groupCenterX = centerX + Math.cos(groupAngle) * groupRadius;
@@ -110,7 +115,9 @@ function generateNodePositions(
       // Start the circle from the label direction, then go around
       // This puts the oldest skill (index 0) closest to the label
       const skillAngle = labelToGroupAngle + (Math.PI * 2 * skillIndex) / Math.max(skillCount, 1);
-      const skillRadius = 60 + (skillCount > 3 ? 40 : 0);
+
+      // Scale orbit radius with skill count so dense categories don't overlap
+      const skillRadius = Math.min(Math.max(60, skillCount * 18), 180);
 
       const x = groupCenterX + Math.cos(skillAngle) * skillRadius;
       const y = groupCenterY + Math.sin(skillAngle) * skillRadius;
@@ -460,10 +467,12 @@ function CRTSkillCanvasComponent({
                 />
               </svg>
 
-              {/* Skill initial */}
-              <span className="relative text-sm font-mono font-bold z-10">
-                {node.skill.skill?.name?.charAt(0) || '?'}
-              </span>
+              {/* Skill icon (replaces single-letter initial) */}
+              <SkillIcon
+                skillName={node.skill.skill?.name ?? ''}
+                size="sm"
+                className="relative z-10"
+              />
 
               {/* Mini level badge */}
               <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[hsl(200,30%,8%)] border border-current flex items-center justify-center z-20">

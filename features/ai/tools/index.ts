@@ -143,6 +143,19 @@ export function existingTools(userId: string) {
         }
       },
     }),
+
+    suggestLearningPath: tool({
+      description: "Suggest a learning path of specific skills for the user based on their goals and what they are missing.",
+      parameters: z.object({
+        targetRole: z.string().describe("The target role or goal the user wants to achieve"),
+        skillsToLearn: z.array(z.string()).describe("A list of specific skill names the user should learn next. These must be precise skill names (e.g. 'React', 'TypeScript')."),
+        reasoning: z.string().describe("Brief explanation of why you suggested these skills"),
+      }),
+      execute: async ({ targetRole, skillsToLearn, reasoning }) => {
+        logger.debug('TOOL: suggestLearningPath', { targetRole, skillsToLearn, reasoning })
+        return { success: true, targetRole, skillsToLearn, reasoning }
+      },
+    }),
   }
 }
 

@@ -6,6 +6,7 @@ import { Bot, User, Send, Zap, AlertCircle, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/features/shadcn/ui/button';
 import { useLocale } from 'next-intl';
+import { useAIContext } from '@/features/ai/context/AIContext';
 
 interface AIChatContainerProps {
     className?: string;
@@ -13,6 +14,7 @@ interface AIChatContainerProps {
 
 export function AIChatContainer({ className }: AIChatContainerProps) {
     const locale = useLocale();
+    const { setHighlightedSkills } = useAIContext();
     const [mounted, setMounted] = React.useState(false);
     const [lives, setLives] = React.useState<number>(3);
     const [isLoadingLives, setIsLoadingLives] = React.useState(true);
@@ -82,6 +84,20 @@ export function AIChatContainer({ className }: AIChatContainerProps) {
     useEffect(() => {
         setMounted(true);
     }, []);
+
+    // Intercept tool calls to apply visual highlights
+    useEffect(() => {
+        if (!messages.length) return;
+        
+        const lastMessage = messages[messages.length - 1];
+        if (lastMessage.role === 'assistant' && lastMessage.toolInvocations) {
+            lastMessage.toolInvocations.forEach(invoc => {
+                if (invoc.toolName === 'suggestLearningPath' && invoc.args?.skillsToLearn) {
+                    setHighlightedSkills(invoc.args.skillsToLearn as string[]);
+                }
+            });
+        }
+    }, [messages, setHighlightedSkills]);
 
     // Fetch initial lives on mount
     useEffect(() => {

@@ -226,21 +226,6 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
       {/* Main Content */}
       <div className="max-w-4xl mx-auto px-6 py-8 pb-32">
         <div className="space-y-8">
-          {/* AI ASSISTANT HUD PANEL */}
-          <HUDPanel
-            title={t('ai.assistantTitle')}
-            icon={<Bot className="w-4 h-4" />}
-            className="border-[#00D4FF]/40 shadow-[0_0_15px_rgba(0,212,255,0.1)]"
-          >
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="w-3.5 h-3.5 text-[#00D4FF]" />
-                <span className="text-[10px] text-gray-400 font-mono uppercase">{t('ai.guidanceActive')}</span>
-              </div>
-              <AIChatContainer />
-            </div>
-          </HUDPanel>
-
           <form onSubmit={handleSubmit} className="space-y-8">
 
             {/* Draggable/Reorderable Sections Container */}

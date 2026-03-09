@@ -15,6 +15,8 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { cn } from '@/lib/utils'
 import { DashboardNav } from '@/features/tech'
+import { AIProvider } from '@/features/ai/context/AIContext'
+import { GlobalAIWrapper } from '@/features/ai/components/GlobalAIWrapper'
 import type { ProtectedLayoutProps } from '@/features/dashboard/types/dashboard'
 import type { PortfolioMode } from '@/features/portfolio/types/portfolio'
 
@@ -51,18 +53,20 @@ export default async function DashboardLayout({
   const isTech = user.portfolioMode === 'tech'
 
   return (
-    <div
-      className={cn(
-        'min-h-dvh flex flex-col',
-        isTech
-          ? 'bg-[#0A0E1A] text-white font-mono'
-          : 'bg-gray-50 text-gray-900',
-      )}
-    >
-      <DashboardNav locale={locale} user={user} />
-      <div className="flex-1 flex flex-col min-h-0">
-        {children}
+    <AIProvider>
+      <div
+        className={cn(
+          'min-h-dvh flex flex-col',
+          isTech
+            ? 'bg-[#0A0E1A] text-white font-mono'
+            : 'bg-gray-50 text-gray-900',
+        )}
+      >
+        <DashboardNav locale={locale} user={user} />
+        <GlobalAIWrapper>
+          {children}
+        </GlobalAIWrapper>
       </div>
-    </div>
+    </AIProvider>
   )
 }

@@ -16,6 +16,7 @@ import { ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { UserSkillWithDetails, SkillCategory } from '../types/skill';
 import { getCategoryColor, type CategorySlug } from '../constants/categories';
+import { useAIContext } from '@/features/ai/context/AIContext';
 import { SkillIcon } from './SkillIcon';
 
 interface CRTSkillCanvasProps {
@@ -144,6 +145,7 @@ function CRTSkillCanvasComponent({
   className,
 }: CRTSkillCanvasProps) {
   const canvasRef = useRef<HTMLDivElement>(null);
+  const { highlightedSkills } = useAIContext();
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -432,14 +434,21 @@ function CRTSkillCanvasComponent({
         </svg>
 
         {/* Skill nodes */}
-        {nodes.map((node) => (
+        {nodes.map((node) => {
+          const isHighlighted = highlightedSkills.some(
+            (skill) => 
+               skill.toLowerCase() === node.skill.skill?.name?.toLowerCase() 
+            || skill.toLowerCase() === node.skill.skill?.slug?.toLowerCase()
+          );
+
+          return (
           <div
             key={node.id}
-            className="absolute group"
+            className={cn("absolute group transition-all duration-300", isHighlighted ? "z-30 drop-shadow-[0_0_15px_rgba(0,212,255,0.8)]" : "")}
             style={{
               left: node.x,
               top: node.y,
-              transform: 'translate(-50%, -50%)',
+              transform: isHighlighted ? 'translate(-50%, -50%) scale(1.15)' : 'translate(-50%, -50%)',
             }}
           >
             {/* Hexagon node */}
@@ -501,7 +510,7 @@ function CRTSkillCanvasComponent({
               </div>
             </div>
           </div>
-        ))}
+        )})}
 
       </div>
 

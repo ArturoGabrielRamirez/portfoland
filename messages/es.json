@@ -365,6 +365,10 @@
     "costPaid": "De pago",
     "verifyLink": "Enlace generado por IA — verifica antes de usar",
     "masterLevel": "Alcanzaste el nivel Master! Enfocate en enseniar y contribuir a proyectos open source.",
-    "assessmentPassed": "Evaluacion aprobada"
+    "assessmentPassed": "Evaluacion aprobada",
+    "reportBroken": "Roto?",
+    "reportingBroken": "Buscando reemplazo...",
+    "replacementFound": "Enlace roto reemplazado por uno funcional",
+    "replacementFailed": "No se pudo encontrar un reemplazo"
   }
 }

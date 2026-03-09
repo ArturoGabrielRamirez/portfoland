@@ -7,13 +7,16 @@
  * - Next level focus
  * - Validation CTAs (GitHub, Assessment)
  * - Related skills (with add buttons)
- * - Learning resources (with external links)
+ * - Learning resources (with broken link reporting)
  */
 
+import { useState } from 'react';
 import { BookOpen, Sparkles, Link2, ClipboardCheck, TrendingUp } from 'lucide-react';
+import { toast } from 'sonner';
 import { RelatedSkillCard } from './RelatedSkillCard';
 import { LearningResourceCard } from './LearningResourceCard';
-import type { SkillEnhancement } from '../types/enhancement';
+import { replaceResourceAction } from '../actions/replaceResource.action';
+import type { SkillEnhancement, LearningResource } from '../types/enhancement';
 import { SKILL_LEVEL_NAMES } from '@/features/skills/constants/xp';
 
 interface SkillEnhancementPanelProps {
@@ -27,10 +30,41 @@ export function SkillEnhancementPanel({
   onAddSkill,
   addingSkill,
 }: SkillEnhancementPanelProps) {
-  const { currentLevel, nextLevelFocus, relatedSkills, resources, validationStatus } = enhancement;
+  const { currentLevel, nextLevelFocus, relatedSkills, validationStatus } = enhancement;
+
+  // Resources managed as local state so replacements can be swapped in
+  const [resources, setResources] = useState<LearningResource[]>(enhancement.resources);
+  const [reportingUrl, setReportingUrl] = useState<string | null>(null);
+
   const isMaster = currentLevel >= 5;
   const nextLevel = Math.min(currentLevel + 1, 5) as 1 | 2 | 3 | 4 | 5;
   const nextLevelName = SKILL_LEVEL_NAMES[nextLevel];
+
+  const handleReportBroken = async (url: string, type: LearningResource['type']) => {
+    setReportingUrl(url);
+    try {
+      const result = await replaceResourceAction({
+        skillName: enhancement.skillName,
+        skillLevel: currentLevel,
+        brokenUrl: url,
+        resourceType: type,
+      });
+
+      if (!result.hasError && result.payload) {
+        // Swap broken resource with replacement
+        setResources(prev =>
+          prev.map(r => r.url === url ? result.payload! : r)
+        );
+        toast.success('Broken link replaced with a working resource');
+      } else {
+        toast.error(result.message ?? 'Could not find a replacement');
+      }
+    } catch {
+      toast.error('Could not find a replacement');
+    } finally {
+      setReportingUrl(null);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -124,12 +158,14 @@ export function SkillEnhancementPanel({
           </div>
           <div className="flex flex-col gap-2">
             {resources.map((resource, i) => (
-              <LearningResourceCard key={i} resource={resource} />
+              <LearningResourceCard
+                key={`${resource.url}-${i}`}
+                resource={resource}
+                onReport={handleReportBroken}
+                isReporting={reportingUrl === resource.url}
+              />
             ))}
           </div>
-          <p className="text-xs text-[#475569] mt-2 text-center">
-            ⚠ AI-generated links — verify before using
-          </p>
         </div>
       )}
     </div>

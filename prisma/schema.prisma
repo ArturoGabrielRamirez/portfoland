@@ -469,3 +469,36 @@ model CVDocument {
   @@index([userId])
   @@map("cv_documents")
 }
+
+// =============================================================================
+// Skill Enhancement Cache Models
+// =============================================================================
+
+model SkillEnhancementCache {
+  id             String   @id @default(cuid()) @map("_id")
+  skillName      String
+  skillLevel     Int
+  locale         String   @default("en")
+  nextLevelFocus String
+  relatedSkills  Json
+  resources      Json
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([skillName, skillLevel, locale])
+  @@index([skillName, skillLevel])
+  @@map("skill_enhancement_cache")
+}
+
+model BrokenResourceUrl {
+  id          String   @id @default(cuid()) @map("_id")
+  url         String   @unique
+  skillName   String
+  skillLevel  Int
+  locale      String
+  reportCount Int      @default(1)
+  createdAt   DateTime @default(now())
+
+  @@index([skillName, skillLevel])
+  @@map("broken_resource_urls")
+}

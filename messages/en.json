@@ -365,6 +365,10 @@
     "costPaid": "Paid",
     "verifyLink": "AI-generated link — verify before using",
     "masterLevel": "You've reached Master level! Focus on teaching others and open source contributions.",
-    "assessmentPassed": "Assessment passed"
+    "assessmentPassed": "Assessment passed",
+    "reportBroken": "Broken?",
+    "reportingBroken": "Getting replacement...",
+    "replacementFound": "Broken link replaced with a working resource",
+    "replacementFailed": "Could not find a replacement"
   }
 }

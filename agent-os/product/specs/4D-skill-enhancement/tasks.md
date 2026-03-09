@@ -317,6 +317,91 @@ Add `suggest_learning_path` to the AI tool registry.
 
 ---
 
+## Task Group 10: Shared Cache + Broken Link Reporting *(post-launch improvement)*
+
+Caches AI-generated enhancement suggestions across users to save tokens, and lets users report broken resource links so the cache self-heals over time.
+
+**Rationale:** The `nextLevelFocus` + `relatedSkills` + `resources` output for `React level 3` is identical for every user. Only the `alreadyAdded` flag is user-specific and can be computed in post-process. With a shared cache, 100 users asking about the same skill+level = 1 AI call. Also covers the "suggestions disappear when card closes" UX issue — the card now reads from cache on reopen.
+
+- [ ] **TG10-A: Add Prisma models**
+  - Add `SkillEnhancementCache` model to `prisma/schema.prisma`:
+    ```prisma
+    model SkillEnhancementCache {
+      id             String   @id @default(cuid()) @map("_id")
+      skillName      String
+      skillLevel     Int
+      locale         String   @default("en")
+      nextLevelFocus String
+      relatedSkills  Json     // RelatedSkill[] without alreadyAdded
+      resources      Json     // LearningResource[] with optional broken: boolean
+      createdAt      DateTime @default(now())
+      updatedAt      DateTime @updatedAt
+
+      @@unique([skillName, skillLevel, locale])
+      @@index([skillName, skillLevel])
+    }
+    ```
+  - Add `BrokenResourceUrl` model:
+    ```prisma
+    model BrokenResourceUrl {
+      id          String   @id @default(cuid()) @map("_id")
+      url         String   @unique
+      skillName   String
+      skillLevel  Int
+      locale      String
+      reportCount Int      @default(1)
+      createdAt   DateTime @default(now())
+
+      @@index([skillName, skillLevel])
+    }
+    ```
+  - Run `npx prisma generate` (do NOT run `prisma db push` — user handles migrations)
+
+- [ ] **TG10-B: Update `suggestEnhancementsService` to use cache**
+  - Before calling AI: check `prisma.skillEnhancementCache.findUnique({ where: { skillName_skillLevel_locale } })`
+  - If cache hit: post-process `relatedSkills` to set `alreadyAdded`, filter out `broken: true` resources, return full `SkillEnhancement`
+  - If cache miss: call AI as before, then save result to `SkillEnhancementCache`
+  - TTL check: if `updatedAt` is older than 30 days, treat as miss (regenerate + update cache)
+  - Also update `getEnhancementSuggestions()` helper to use same cache logic (keeps CRT tool consistent)
+
+- [ ] **TG10-C: Create `replaceResourceAction`**
+  - Create `features/skill-enhancement/actions/replaceResource.action.ts`
+  - Input: `{ skillName, skillLevel, locale, brokenUrl, resourceType }`
+  - Steps:
+    1. Upsert `BrokenResourceUrl` (increment `reportCount` if already exists)
+    2. Mark the resource as `broken: true` in `SkillEnhancementCache.resources` JSON
+    3. Call AI with a minimal prompt: *"Suggest 1 [resourceType] learning resource for [skillName] at level [N]/5. Return: title, url, duration, cost (free/paid), why. Must be different from [brokenUrl]."*
+    4. Save the replacement into the cache (replace the broken entry in the JSON array)
+    5. Return the replacement `LearningResource`
+  - No life charge (small targeted prompt, considered a correction not a new generation)
+
+- [ ] **TG10-D: Update `LearningResourceCard` to support broken link reporting**
+  - Add a "⚠ Report broken link" button (visible on hover, or small icon next to the verify text)
+  - On click: calls `replaceResourceAction`, shows loading spinner on the card
+  - On success: swaps the current resource with the replacement in parent state
+  - On failure: shows toast error
+  - Props additions: `onReport?: (url: string) => Promise<LearningResource | null>`, `isReporting?: boolean`
+
+- [ ] **TG10-E: Update `SkillEnhancementPanel` to wire up replacement**
+  - Maintain `resources` as local state (initialized from `enhancement.resources`)
+  - Handle `handleReportBroken(url, resourceType)`: calls `replaceResourceAction`, updates local resources list
+  - Pass `onReport` and `isReporting` down to each `LearningResourceCard`
+
+- [ ] **TG10-F: Add translations for broken link flow**
+  - Add to `messages/en.json` and `messages/es.json` under `skillEnhancement`:
+    - `"reportBroken": "Report broken link"`
+    - `"reportingBroken": "Getting replacement..."`
+    - `"replacementFound": "Link replaced"`
+    - `"replacementFailed": "Could not find a replacement"`
+
+**Acceptance:**
+- Second user to ask about the same skill+level gets instant response (no AI call, no life charge)
+- Reopening SkillDetailCard reuses cached suggestions
+- Clicking "Report broken link" marks it in DB and returns a replacement resource
+- Cache self-heals: broken resources are replaced, valid resources persist for 30 days
+
+---
+
 ## Implementation Order
 
 1. **TG1** (Types + Schema) — foundation, no dependencies

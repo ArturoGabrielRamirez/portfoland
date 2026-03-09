@@ -13,6 +13,7 @@ export const PORTFOLIO_SETTINGS_MESSAGES = {
   INVALID_THEME: 'Invalid theme ID. Please select a valid theme preset.',
   INVALID_LAYOUT: 'Invalid layout variant. Must be one of: bento, stacked, sidebar.',
   INVALID_HERO_STYLE: 'Invalid hero style. Must be one of: standard, minimal, cover.',
+  INVALID_VIEW_MODE: 'Invalid view mode. Must be one of: sections, one_page, minimal, terminal.',
 } as const;
 
 export type PortfolioSettingsMessageKey = keyof typeof PORTFOLIO_SETTINGS_MESSAGES;

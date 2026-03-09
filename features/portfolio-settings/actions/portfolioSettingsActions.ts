@@ -74,3 +74,34 @@ export async function updatePortfolioSettingsAction(
     };
   });
 }
+
+/**
+ * Update portfolio view mode for the authenticated user
+ *
+ * @param viewMode - The new view mode value
+ * @returns ActionResponse with updated settings
+ */
+export async function updatePortfolioViewModeAction(viewMode: string) {
+  return actionWrapper<PortfolioSettingsModel>(async () => {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user?.id) {
+      throw new Error('Please log in to continue');
+    }
+
+    const data = await updatePortfolioSettingsSchema.validate({ viewMode });
+
+    const settings = await updatePortfolioSettingsService(session.user.id, {
+      viewMode: data.viewMode,
+    });
+
+    revalidatePath('/dashboard/portfolio');
+
+    return {
+      payload: settings,
+      message: PORTFOLIO_SETTINGS_MESSAGES.UPDATE_SUCCESS,
+    };
+  });
+}

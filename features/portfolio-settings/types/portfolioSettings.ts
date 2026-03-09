@@ -45,6 +45,7 @@ export interface UpdatePortfolioSettingsInput {
   fontFamily?: string | null;
   heroStyle?: string;
   showBranding?: boolean;
+  viewMode?: string;
 }
 
 // =============================================================================
@@ -65,4 +66,5 @@ export type PortfolioSettingsData = Pick<
   | 'fontFamily'
   | 'heroStyle'
   | 'showBranding'
+  | 'viewMode'
 >;

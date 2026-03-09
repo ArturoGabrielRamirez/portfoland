@@ -16,6 +16,7 @@ import { THEME_PRESETS } from '../constants/themes';
 
 const VALID_LAYOUT_VARIANTS = ['bento', 'stacked', 'sidebar'] as const;
 const VALID_HERO_STYLES = ['standard', 'minimal', 'cover'] as const;
+const VALID_VIEW_MODES = ['sections', 'one_page', 'minimal', 'terminal'] as const;
 
 // =============================================================================
 // Service Functions
@@ -70,6 +71,13 @@ export async function updatePortfolioSettingsService(
   if (input.heroStyle !== undefined) {
     if (!(VALID_HERO_STYLES as readonly string[]).includes(input.heroStyle)) {
       throw new Error(PORTFOLIO_SETTINGS_MESSAGES.INVALID_HERO_STYLE);
+    }
+  }
+
+  // Validate viewMode is in allowed list
+  if (input.viewMode !== undefined) {
+    if (!(VALID_VIEW_MODES as readonly string[]).includes(input.viewMode)) {
+      throw new Error(PORTFOLIO_SETTINGS_MESSAGES.INVALID_VIEW_MODE);
     }
   }
 

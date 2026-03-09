@@ -19,9 +19,10 @@ import { AIChatContainer } from '@/features/dashboard/components/ai/AIChatContai
 import { ImproveBioButton } from '@/features/ai/components/ImproveBioButton';
 import { updateProfile } from '@/features/portfolio/actions/updateProfile';
 import { updatePortfolioSettingsAction } from '@/features/portfolio-settings/actions/portfolioSettingsActions';
+import { PortfolioViewSelector } from '@/features/portfolio-settings/components/PortfolioViewSelector';
 import { THEME_PRESETS } from '@/features/portfolio-settings/constants/themes';
 import ReactMarkdown from 'react-markdown';
-import type { PortfolioMode } from '@/features/portfolio/types/portfolio';
+import type { PortfolioMode, PortfolioViewMode } from '@/features/portfolio/types/portfolio';
 import type { PortfolioSettingsModel } from '@/features/portfolio-settings/types/portfolioSettings';
 import {
   Github,
@@ -550,6 +551,12 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
                   </div>
                 </HUDPanel>
               )}
+
+              {/* View Mode Selector */}
+              <PortfolioViewSelector
+                currentViewMode={(portfolioSettings?.viewMode ?? 'sections') as PortfolioViewMode}
+                portfolioMode={user.portfolioMode}
+              />
             </div>
 
             {/* Floating Action Button for Saving */}

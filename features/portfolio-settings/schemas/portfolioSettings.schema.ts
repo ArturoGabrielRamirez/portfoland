@@ -21,6 +21,11 @@ const VALID_LAYOUT_VARIANTS = ['bento', 'stacked', 'sidebar'] as const;
 const VALID_HERO_STYLES = ['standard', 'minimal', 'cover'] as const;
 
 /**
+ * Valid portfolio view mode values
+ */
+const VALID_VIEW_MODES = ['sections', 'one_page', 'minimal', 'terminal'] as const;
+
+/**
  * Hex color validation regex
  */
 const hexColorRegex = /^#[0-9A-Fa-f]{6}$/;
@@ -58,7 +63,12 @@ export const updatePortfolioSettingsSchema = yup.object({
   showBranding: yup
     .boolean()
     .optional(),
+  viewMode: yup
+    .string()
+    .oneOf([...VALID_VIEW_MODES], `View mode must be one of: ${VALID_VIEW_MODES.join(', ')}`)
+    .optional(),
 });
+
 
 // =============================================================================
 // Inferred Types

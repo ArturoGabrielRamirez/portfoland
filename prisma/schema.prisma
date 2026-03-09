@@ -444,6 +444,7 @@ model PortfolioSettings {
   fontFamily    String?
   heroStyle     String   @default("standard")
   showBranding  Boolean  @default(true)
+  viewMode      String   @default("sections")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 

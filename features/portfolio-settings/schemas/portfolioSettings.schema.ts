@@ -69,12 +69,12 @@ export const updatePortfolioSettingsSchema = yup.object({
     .optional(),
   customTheme: yup
     .object({
-      backgroundColor: yup.string().matches(hexColorRegex, 'Background color must be a valid hex color').required('Background color is required'),
-      textColor: yup.string().matches(hexColorRegex, 'Text color must be a valid hex color').required('Text color is required'),
-      accentColor: yup.string().matches(hexColorRegex, 'Accent color must be a valid hex color').required('Accent color is required'),
-      borderColor: yup.string().matches(hexColorRegex, 'Border color must be a valid hex color').required('Border color is required'),
-      cardBackground: yup.string().matches(hexColorRegex, 'Card background must be a valid hex color').required('Card background is required'),
-      fontFamily: yup.string().max(100, 'Font family must be less than 100 characters').required('Font family is required'),
+      backgroundColor: yup.string().matches(hexColorRegex, 'Background color must be a valid hex color').optional(),
+      textColor: yup.string().matches(hexColorRegex, 'Text color must be a valid hex color').optional(),
+      accentColor: yup.string().matches(hexColorRegex, 'Accent color must be a valid hex color').optional(),
+      borderColor: yup.string().matches(hexColorRegex, 'Border color must be a valid hex color').optional(),
+      cardBackground: yup.string().matches(hexColorRegex, 'Card background must be a valid hex color').optional(),
+      fontFamily: yup.string().max(100, 'Font family must be less than 100 characters').optional(),
     })
     .nullable()
     .optional(),

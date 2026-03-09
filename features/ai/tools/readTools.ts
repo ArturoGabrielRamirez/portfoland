@@ -5,14 +5,16 @@
  * Each tool uses the Vercel AI SDK `tool()` function with Zod parameter schemas.
  */
 
-import { tool } from 'ai'
+import { tool, generateObject } from 'ai'
 import { z } from 'zod'
+import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import { prisma } from '@/lib/prisma'
 import { logger } from '@/lib/logger'
 import { getProjectsByUserIdData } from '@/features/projects/data/getProjectsByUserId.data'
 import { getExperiencesByUserId } from '@/features/timeline/data/getExperiences.data'
 import { getGitHubConnectionStatus } from '@/features/github/data/getGitHubConnectionStatus.data'
 import { getAssessmentHistoryData } from '@/features/assessment/data/getAssessmentHistory.data'
+import { getUserSkillsData } from '@/features/skills/data/getUserSkills.data'
 
 // =============================================================================
 // Individual Tool Factories
@@ -201,6 +203,67 @@ function createGetPortfolioHealthTool(userId: string) {
   })
 }
 
+function createSuggestLearningPathTool(userId: string) {
+  const google = createGoogleGenerativeAI({
+    apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
+  })
+
+  return tool({
+    description: "Suggest learning resources, related technologies, and next-level guidance for a specific skill. Use when the user asks how to improve or learn a skill.",
+    parameters: z.object({
+      skillName: z.string().describe("The skill to get improvement suggestions for (e.g., 'React', 'TypeScript')"),
+      locale: z.string().optional().describe("Language for suggestions: 'en' or 'es'"),
+    }),
+    execute: async ({ skillName, locale = 'en' }) => {
+      logger.debug('TOOL: suggest_learning_path', { skillName })
+      try {
+        const userSkills = await getUserSkillsData(userId)
+        const matchedSkill = userSkills.find(
+          us => us.skill.name.toLowerCase() === skillName.toLowerCase()
+        )
+        const skillLevel = matchedSkill ? (matchedSkill.level ?? 3) : 3
+        const category = matchedSkill?.skill?.category?.name ?? 'General'
+        const userSkillNames = userSkills.map(us => us.skill.name)
+
+        const prompt = locale === 'es'
+          ? `Sugiere recursos de aprendizaje y habilidades relacionadas para alguien con nivel ${skillLevel}/5 en ${skillName} (categoría: ${category}). Habilidades actuales del usuario: ${userSkillNames.join(', ')}. No sugieras habilidades que ya tiene. Genera 3-4 recursos realistas.`
+          : `Suggest learning resources and related skills for someone at level ${skillLevel}/5 in ${skillName} (category: ${category}). User's current skills: ${userSkillNames.join(', ')}. Do not suggest skills they already have. Generate 3-4 realistic resources with real URLs.`
+
+        const result = await generateObject({
+          model: google('gemini-2.0-flash'),
+          prompt,
+          schema: z.object({
+            nextLevelFocus: z.string(),
+            relatedSkills: z.array(z.object({
+              name: z.string(),
+              reason: z.string(),
+            })).max(4),
+            resources: z.array(z.object({
+              title: z.string(),
+              type: z.enum(['video', 'article', 'course', 'documentation', 'practice']),
+              url: z.string(),
+              duration: z.string(),
+              cost: z.enum(['free', 'paid']),
+            })).max(4),
+          }),
+        })
+
+        return {
+          skill: skillName,
+          currentLevel: skillLevel,
+          nextLevelFocus: result.object.nextLevelFocus,
+          relatedSkills: result.object.relatedSkills,
+          resources: result.object.resources,
+          tip: `Visit /dashboard/skills and click on ${skillName} to open the full Enhancement panel with add buttons for related skills.`,
+        }
+      } catch (err: any) {
+        logger.error('TOOL_ERROR (suggest_learning_path):', err)
+        return { error: 'Failed to generate suggestions', details: err.message }
+      }
+    },
+  })
+}
+
 // =============================================================================
 // Grouped Exports
 // =============================================================================
@@ -244,5 +307,6 @@ export function allReadTools(userId: string) {
     get_experiences: createGetExperiencesTool(userId),
     get_github_data: createGetGitHubDataTool(userId),
     get_assessment_history: createGetAssessmentHistoryTool(userId),
+    suggest_learning_path: createSuggestLearningPathTool(userId),
   }
 }

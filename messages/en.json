@@ -344,5 +344,27 @@
       "subtitle": "Join Portfoland and create a portfolio that actually represents you.",
       "button": "Create your portfolio"
     }
+  },
+  "skillEnhancement": {
+    "tab": "Enhance",
+    "tabStats": "Stats",
+    "tabXP": "XP",
+    "toNextLevel": "To reach next level:",
+    "relatedSkills": "Related Skills",
+    "resources": "Learning Resources",
+    "alreadyAdded": "Added",
+    "addSkill": "Add",
+    "loadingSuggestions": "Getting AI suggestions...",
+    "getSuggestions": "Get AI Suggestions",
+    "getSuggestionsHint": "Costs 1 life",
+    "connectGithub": "Connect GitHub",
+    "connectGithubHint": "Validate your skills with real code",
+    "takeAssessment": "Take Assessment",
+    "takeAssessmentHint": "Earn a Verified badge",
+    "costFree": "Free",
+    "costPaid": "Paid",
+    "verifyLink": "AI-generated link — verify before using",
+    "masterLevel": "You've reached Master level! Focus on teaching others and open source contributions.",
+    "assessmentPassed": "Assessment passed"
   }
 }

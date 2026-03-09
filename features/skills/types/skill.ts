@@ -240,6 +240,8 @@ export interface SkillDetailCardProps {
   onDelete?: () => void;
   isEditable?: boolean;
   className?: string;
+  githubConnected?: boolean;
+  locale?: string;
 }
 
 /**
@@ -302,6 +304,8 @@ export interface SkillTreeViewProps {
   isEditable?: boolean;
   onAddSkill?: () => void;
   className?: string;
+  githubConnected?: boolean;
+  locale?: string;
 }
 
 // =============================================================================

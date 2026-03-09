@@ -3,13 +3,19 @@
 /**
  * SkillDetailCard Component
  *
- * Pokemon-style flip card for skill details.
- * Front side shows skill info, back side shows XP breakdown.
+ * Slide-in card for skill details with three tabs:
+ * - Stats: XP progress and level info
+ * - XP: XP breakdown by source
+ * - Enhance: AI-powered skill improvement suggestions
  */
 
-import { memo, useState, useRef, useEffect } from 'react';
+import { memo, useState, useTransition, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, RotateCcw, Edit, Trash2, Crown, Sparkles } from 'lucide-react';
+import {
+  X, Edit, Trash2, Crown, Sparkles, Loader2,
+  BarChart2, Zap, Link2
+} from 'lucide-react';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { TechCard, XPBar, LevelBadge, TechBadge } from '@/features/tech';
 import type { SkillDetailCardProps } from '../types/skill';
@@ -21,26 +27,23 @@ import {
 import { LEVEL_VISUAL_STYLES, LEVEL_BADGE_COLORS } from '../constants/levels';
 import { CATEGORY_COLORS, getCategoryColor } from '../constants/categories';
 import { XPSourceList } from './XPSourceList';
+import { suggestEnhancementsAction } from '@/features/skill-enhancement/actions/suggestEnhancements.action';
+import { SkillEnhancementPanel } from '@/features/skill-enhancement/components/SkillEnhancementPanel';
+import type { SkillEnhancement } from '@/features/skill-enhancement/types/enhancement';
+import { createSkill } from '../actions/createSkill';
 
-/**
- * Get next level XP threshold
- */
+type Tab = 'stats' | 'xp' | 'enhance';
+
 function getNextLevelThreshold(level: number): number {
   if (level >= 5) return LEVEL_THRESHOLDS_ARRAY[4].min;
   return LEVEL_THRESHOLDS_ARRAY[level].min;
 }
 
-/**
- * Get current level XP threshold
- */
 function getCurrentLevelThreshold(level: number): number {
   if (level <= 1) return 0;
   return LEVEL_THRESHOLDS_ARRAY[level - 1].min;
 }
 
-/**
- * SkillDetailCard renders a flippable card with skill details
- */
 function SkillDetailCardComponent({
   userSkill,
   isOpen,
@@ -49,92 +52,131 @@ function SkillDetailCardComponent({
   onDelete,
   isEditable = false,
   className,
+  githubConnected = false,
+  locale = 'en',
 }: SkillDetailCardProps) {
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [activeTab, setActiveTab] = useState<Tab>('stats');
+  const [enhancement, setEnhancement] = useState<SkillEnhancement | null>(null);
+  const [isLoadingEnhancement, setIsLoadingEnhancement] = useState(false);
+  const [addingSkill, setAddingSkill] = useState<string | null>(null);
+  const [, startTransition] = useTransition();
   const cardRef = useRef<HTMLDivElement>(null);
 
-  // Get skill data
   const level = (userSkill.level ?? 1) as 1 | 2 | 3 | 4 | 5;
   const levelName = SKILL_LEVEL_NAMES[level];
   const visualStyle = LEVEL_VISUAL_STYLES[level];
   const badgeColors = LEVEL_BADGE_COLORS[level];
 
-  // Category info
   const categorySlug = userSkill.skill?.category?.slug;
   const categoryColor = categorySlug
     ? getCategoryColor(categorySlug as any)
     : userSkill.skill?.category?.color ?? CATEGORY_COLORS.core;
   const categoryName = userSkill.skill?.category?.name ?? 'Uncategorized';
 
-  // XP calculations
   const totalXP = userSkill.totalXP ?? 0;
   const currentThreshold = getCurrentLevelThreshold(level);
   const nextThreshold = getNextLevelThreshold(level);
   const xpInLevel = totalXP - currentThreshold;
   const xpNeeded = nextThreshold - currentThreshold;
   const progress = calculateLevelProgress(totalXP);
-
-  // Is this a legendary (master) skill?
   const isLegendary = level === 5;
 
-  // Handle click outside to close
+  const hasExperienceSources = userSkill.sources?.some(
+    (source) => source.sourceType === 'EXPERIENCE'
+  );
+  const canDelete = isEditable && !hasExperienceSources;
+
+  // Close on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (cardRef.current && !cardRef.current.contains(event.target as Node)) {
         onClose();
       }
     };
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    if (isOpen) document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, onClose]);
 
-  // Handle escape key to close
+  // Close on Escape
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
+      if (event.key === 'Escape') onClose();
     };
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-    };
+    if (isOpen) document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, onClose]);
 
-  // Reset flip state when closed
+  // Reset state on close
   useEffect(() => {
     if (!isOpen) {
-      setIsFlipped(false);
+      setActiveTab('stats');
+      setEnhancement(null);
+      setIsLoadingEnhancement(false);
     }
   }, [isOpen]);
 
-  const handleFlip = () => {
-    setIsFlipped(!isFlipped);
+  const handleGetEnhancement = async () => {
+    setIsLoadingEnhancement(true);
+    try {
+      const result = await suggestEnhancementsAction({
+        skillName: userSkill.skill?.name ?? '',
+        skillLevel: level,
+        category: categoryName,
+        locale,
+      });
+      if (!result.hasError && result.payload) {
+        setEnhancement(result.payload);
+      } else {
+        toast.error(result.message ?? 'Failed to get suggestions');
+      }
+    } catch {
+      toast.error('Failed to get AI suggestions');
+    } finally {
+      setIsLoadingEnhancement(false);
+    }
+  };
+
+  const handleAddRelatedSkill = (skillName: string) => {
+    setAddingSkill(skillName);
+    startTransition(async () => {
+      try {
+        const result = await createSkill({
+          name: skillName,
+          selfAssessmentLevel: 'BEGINNER',
+        });
+        if (!result.hasError) {
+          toast.success(`${skillName} added to your skill tree`);
+          // Mark as added in current enhancement
+          if (enhancement) {
+            setEnhancement({
+              ...enhancement,
+              relatedSkills: enhancement.relatedSkills.map(rs =>
+                rs.name === skillName ? { ...rs, alreadyAdded: true } : rs
+              ),
+            });
+          }
+        } else {
+          toast.error(result.message ?? 'Failed to add skill');
+        }
+      } catch {
+        toast.error('Failed to add skill');
+      } finally {
+        setAddingSkill(null);
+      }
+    });
   };
 
   const handleExperienceClick = (experienceId: string) => {
-    // Navigate to timeline with the experience selected
-    // This could be handled by the parent component
     window.location.href = `/dashboard/timeline?experience=${experienceId}`;
   };
 
-  // Check if skill can be deleted (no experience sources)
-  const hasExperienceSources = userSkill.sources?.some(
-    (source) => source.sourceType === 'EXPERIENCE'
-  );
-  const canDelete = isEditable && !hasExperienceSources;
-
   if (!isOpen) return null;
+
+  const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
+    { id: 'stats', label: 'Stats', icon: <BarChart2 className="w-3.5 h-3.5" /> },
+    { id: 'xp', label: 'XP', icon: <Zap className="w-3.5 h-3.5" /> },
+    { id: 'enhance', label: 'Enhance', icon: <Sparkles className="w-3.5 h-3.5" /> },
+  ];
 
   return (
     <AnimatePresence>
@@ -151,99 +193,87 @@ function SkillDetailCardComponent({
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 400, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className={cn(
-              'relative w-full max-w-sm perspective-1000 mt-4',
-              className
-            )}
-            style={{ perspective: 1000 }}
+            className={cn('relative w-full max-w-sm mt-4', className)}
           >
-            {/* Card Container - preserves 3D */}
-            <motion.div
-              animate={{ rotateY: isFlipped ? 180 : 0 }}
-              transition={{ duration: 0.6, type: 'spring', stiffness: 200 }}
-              className="relative preserve-3d"
-              style={{
-                transformStyle: 'preserve-3d',
-              }}
+            <TechCard
+              variant={isLegendary ? 'featured' : 'glow'}
+              className={cn(
+                'w-full overflow-hidden relative rounded-sm',
+                isLegendary && 'ring-2 ring-[#F59E0B]'
+              )}
+              style={{ boxShadow: `0 0 30px ${categoryColor}40` }}
             >
-              {/* Front Side */}
+              {/* CRT overlay */}
+              <div className="absolute inset-0 pointer-events-none crt-lines opacity-10 z-10" />
+
+              {/* Header */}
               <div
-                className="absolute inset-0 backface-hidden"
-                style={{ backfaceVisibility: 'hidden' }}
+                className="relative p-4 border-b border-[#1E293B]"
+                style={{ background: `linear-gradient(135deg, ${categoryColor}20 0%, transparent 100%)` }}
               >
-                <TechCard
-                  variant={isLegendary ? 'featured' : 'glow'}
-                  className={cn(
-                    'w-full overflow-hidden relative rounded-sm',
-                    isLegendary && 'ring-2 ring-[#F59E0B]'
-                  )}
-                  style={{
-                    boxShadow: `0 0 30px ${categoryColor}40`,
-                  }}
+                <button
+                  onClick={onClose}
+                  className="absolute top-3 right-3 p-1.5 rounded-sm text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
+                  aria-label="Close"
                 >
-                  {/* CRT effect overlay */}
-                  <div className="absolute inset-0 pointer-events-none crt-lines opacity-10 z-10" />
-                  {/* Header */}
+                  <X className="w-4 h-4" />
+                </button>
+
+                <TechBadge color="gray" className="mb-3">{categoryName}</TechBadge>
+
+                <div className="flex items-center gap-4">
                   <div
-                    className="relative p-4 border-b border-[#1E293B]"
-                    style={{
-                      background: `linear-gradient(135deg, ${categoryColor}20 0%, transparent 100%)`,
-                    }}
+                    className={cn(
+                      'w-16 h-16 clip-hexagon flex items-center justify-center relative',
+                      'text-2xl font-bold font-mono',
+                      isLegendary ? 'text-[#0A0E1A]' : 'text-white'
+                    )}
+                    style={{ backgroundColor: categoryColor, boxShadow: `0 0 20px ${categoryColor}60` }}
                   >
-                    {/* Close button */}
-                    <button
-                      onClick={onClose}
-                      className="absolute top-3 right-3 p-1.5 rounded-sm text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
-                      aria-label="Close"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-
-                    {/* Category badge */}
-                    <TechBadge color="gray" className="mb-3">
-                      {categoryName}
-                    </TechBadge>
-
-                    {/* Skill Icon/Letter */}
-                    <div className="flex items-center gap-4">
-                      <div
-                        className={cn(
-                          'w-16 h-16 clip-hexagon flex items-center justify-center relative',
-                          'text-2xl font-bold font-mono',
-                          isLegendary ? 'text-[#0A0E1A]' : 'text-white'
-                        )}
-                        style={{
-                          backgroundColor: categoryColor,
-                          boxShadow: `0 0 20px ${categoryColor}60`,
-                        }}
-                      >
-                        {userSkill.skill?.name?.charAt(0).toUpperCase() ?? '?'}
-                        {isLegendary && (
-                          <Crown className="absolute -top-2 -right-2 w-5 h-5 text-[#F59E0B]" />
-                        )}
-                      </div>
-
-                      <div className="flex-1">
-                        <h2 className="text-xl font-bold text-white">
-                          {userSkill.skill?.name ?? 'Unknown Skill'}
-                        </h2>
-                        <div className="flex items-center gap-2 mt-1">
-                          <LevelBadge level={level} size="sm" />
-                          <span
-                            className="text-sm font-medium"
-                            style={{ color: badgeColors.text }}
-                          >
-                            {levelName}
-                          </span>
-                          {isLegendary && (
-                            <Sparkles className="w-4 h-4 text-[#F59E0B]" />
-                          )}
-                        </div>
-                      </div>
-                    </div>
+                    {userSkill.skill?.name?.charAt(0).toUpperCase() ?? '?'}
+                    {isLegendary && (
+                      <Crown className="absolute -top-2 -right-2 w-5 h-5 text-[#F59E0B]" />
+                    )}
                   </div>
 
-                  {/* XP Progress */}
+                  <div className="flex-1">
+                    <h2 className="text-xl font-bold text-white">
+                      {userSkill.skill?.name ?? 'Unknown Skill'}
+                    </h2>
+                    <div className="flex items-center gap-2 mt-1">
+                      <LevelBadge level={level} size="sm" />
+                      <span className="text-sm font-medium" style={{ color: badgeColors.text }}>
+                        {levelName}
+                      </span>
+                      {isLegendary && <Sparkles className="w-4 h-4 text-[#F59E0B]" />}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Tab Bar */}
+              <div className="flex border-b border-[#1E293B]">
+                {tabs.map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={cn(
+                      'flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 text-xs font-medium transition-colors',
+                      activeTab === tab.id
+                        ? 'text-[#00D4FF] border-b-2 border-[#00D4FF] bg-[#00D4FF]/5'
+                        : 'text-[#64748B] hover:text-[#94A3B8] hover:bg-[#1E293B]/50'
+                    )}
+                  >
+                    {tab.icon}
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Tab Content */}
+              <div className="overflow-y-auto max-h-[60vh]">
+                {/* Stats Tab */}
+                {activeTab === 'stats' && (
                   <div className="p-4">
                     <XPBar
                       current={xpInLevel}
@@ -257,21 +287,10 @@ function SkillDetailCardComponent({
                         <> | {(nextThreshold - totalXP).toLocaleString()} to {SKILL_LEVEL_NAMES[(level + 1) as 1 | 2 | 3 | 4 | 5]}</>
                       )}
                     </p>
-                  </div>
 
-                  {/* Actions */}
-                  <div className="p-4 pt-0 flex items-center justify-between">
-                    <button
-                      onClick={handleFlip}
-                      className="flex items-center gap-2 px-3 py-2 rounded-sm text-sm text-[#00D4FF] hover:bg-[#00D4FF]/10 transition-colors"
-                      aria-label="Flip card to see XP breakdown"
-                    >
-                      <RotateCcw className="w-4 h-4" />
-                      XP Breakdown
-                    </button>
-
+                    {/* Edit/Delete actions */}
                     {isEditable && (
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center justify-end gap-2 mt-4 pt-4 border-t border-[#1E293B]">
                         {onEdit && (
                           <button
                             onClick={onEdit}
@@ -293,55 +312,16 @@ function SkillDetailCardComponent({
                       </div>
                     )}
                   </div>
-                </TechCard>
-              </div>
+                )}
 
-              {/* Back Side */}
-              <div
-                className="backface-hidden"
-                style={{
-                  backfaceVisibility: 'hidden',
-                  transform: 'rotateY(180deg)',
-                }}
-              >
-                <TechCard
-                  variant="default"
-                  className="w-full overflow-hidden"
-                >
-                  {/* Header */}
-                  <div className="p-4 border-b border-[#1E293B] flex items-center justify-between">
-                    <h3 className="text-lg font-bold text-white">
-                      XP Breakdown
-                    </h3>
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={handleFlip}
-                        className="p-1.5 rounded-sm text-[#64748B] hover:text-[#00D4FF] hover:bg-[#1E293B] transition-colors"
-                        aria-label="Flip card back"
-                      >
-                        <RotateCcw className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={onClose}
-                        className="p-1.5 rounded-sm text-[#64748B] hover:text-white hover:bg-[#1E293B] transition-colors"
-                        aria-label="Close"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* XP Source List */}
-                  <div className="p-4 max-h-80 overflow-y-auto">
+                {/* XP Tab */}
+                {activeTab === 'xp' && (
+                  <div className="p-4">
                     <XPSourceList
                       sources={userSkill.sources ?? []}
                       onExperienceClick={handleExperienceClick}
                     />
-                  </div>
-
-                  {/* Footer */}
-                  <div className="p-4 pt-0 text-center border-t border-[#1E293B]">
-                    <p className="text-xs text-[#64748B]">
+                    <p className="text-xs text-[#64748B] mt-4 text-center border-t border-[#1E293B] pt-4">
                       Skill added{' '}
                       {new Date(userSkill.createdAt).toLocaleDateString('en-US', {
                         month: 'short',
@@ -349,9 +329,49 @@ function SkillDetailCardComponent({
                       })}
                     </p>
                   </div>
-                </TechCard>
+                )}
+
+                {/* Enhance Tab */}
+                {activeTab === 'enhance' && (
+                  <div className="p-4">
+                    {!enhancement && !isLoadingEnhancement && (
+                      <div className="flex flex-col items-center gap-3 py-6 text-center">
+                        <Sparkles className="w-10 h-10 text-[#D946EF] opacity-60" />
+                        <div>
+                          <p className="text-sm font-medium text-white">Get AI Suggestions</p>
+                          <p className="text-xs text-[#64748B] mt-1">
+                            Related skills, learning resources, and next-level guidance
+                          </p>
+                          <p className="text-xs text-[#475569] mt-1">Costs 1 life</p>
+                        </div>
+                        <button
+                          onClick={handleGetEnhancement}
+                          className="flex items-center gap-2 px-4 py-2 rounded-sm text-sm font-medium bg-[#D946EF]/10 border border-[#D946EF]/40 text-[#D946EF] hover:bg-[#D946EF]/20 transition-colors"
+                        >
+                          <Sparkles className="w-4 h-4" />
+                          Get AI Suggestions
+                        </button>
+                      </div>
+                    )}
+
+                    {isLoadingEnhancement && (
+                      <div className="flex flex-col items-center gap-3 py-8">
+                        <Loader2 className="w-8 h-8 text-[#D946EF] animate-spin" />
+                        <p className="text-sm text-[#64748B]">Getting AI suggestions...</p>
+                      </div>
+                    )}
+
+                    {enhancement && (
+                      <SkillEnhancementPanel
+                        enhancement={enhancement}
+                        onAddSkill={handleAddRelatedSkill}
+                        addingSkill={addingSkill}
+                      />
+                    )}
+                  </div>
+                )}
               </div>
-            </motion.div>
+            </TechCard>
           </motion.div>
         </motion.div>
       )}

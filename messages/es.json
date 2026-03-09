@@ -344,5 +344,27 @@
       "deleteFailed": "Error al eliminar el CV. Por favor, intenta de nuevo.",
       "downloadFailed": "Error al descargar el PDF. Por favor, intenta de nuevo."
     }
+  },
+  "skillEnhancement": {
+    "tab": "Mejorar",
+    "tabStats": "Stats",
+    "tabXP": "XP",
+    "toNextLevel": "Para llegar al siguiente nivel:",
+    "relatedSkills": "Habilidades Relacionadas",
+    "resources": "Recursos de Aprendizaje",
+    "alreadyAdded": "Agregado",
+    "addSkill": "Agregar",
+    "loadingSuggestions": "Obteniendo sugerencias de IA...",
+    "getSuggestions": "Obtener Sugerencias de IA",
+    "getSuggestionsHint": "Cuesta 1 vida",
+    "connectGithub": "Conectar GitHub",
+    "connectGithubHint": "Valida tus habilidades con codigo real",
+    "takeAssessment": "Tomar Evaluacion",
+    "takeAssessmentHint": "Gana un badge de Verificado",
+    "costFree": "Gratis",
+    "costPaid": "De pago",
+    "verifyLink": "Enlace generado por IA — verifica antes de usar",
+    "masterLevel": "Alcanzaste el nivel Master! Enfocate en enseniar y contribuir a proyectos open source.",
+    "assessmentPassed": "Evaluacion aprobada"
   }
 }

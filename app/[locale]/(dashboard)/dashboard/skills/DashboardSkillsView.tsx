@@ -243,6 +243,8 @@ export function DashboardSkillsView({
             isEditable={true}
             onAddSkill={handleAddSkill}
             className="w-full h-full"
+            githubConnected={isGitHubConnected}
+            locale={locale}
           />
         </div>
       </section>

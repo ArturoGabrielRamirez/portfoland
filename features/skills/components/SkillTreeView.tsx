@@ -60,6 +60,8 @@ function SkillTreeViewComponent({
   isEditable = false,
   onAddSkill,
   className,
+  githubConnected = false,
+  locale = 'en',
 }: SkillTreeViewProps) {
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const [selectedSkill, setSelectedSkill] = useState<UserSkillWithDetails | null>(null);
@@ -265,6 +267,8 @@ function SkillTreeViewComponent({
           isEditable={isEditable}
           onEdit={isEditable ? handleEditSkill : undefined}
           onDelete={isEditable ? handleDeleteSkill : undefined}
+          githubConnected={githubConnected}
+          locale={locale}
         />
       )}
 

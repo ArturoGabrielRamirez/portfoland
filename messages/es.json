@@ -38,7 +38,8 @@
     "signUp": "Registrarse",
     "signOut": "Cerrar Sesion",
     "profile": "Perfil",
-    "language": "Idioma"
+    "language": "Idioma",
+    "cvGenerator": "Generador de CV"
   },
   "auth": {
     "login": {
@@ -210,7 +211,8 @@
     "timeline": "Linea de Tiempo",
     "skills": "Habilidades",
     "projects": "Proyectos",
-    "online": "EN LINEA"
+    "online": "EN LINEA",
+    "cv": "CV"
   },
   "languageSwitcher": {
     "title": "Idioma",
@@ -299,6 +301,48 @@
       "title": "¿Listo para construir tu portfolio?",
       "subtitle": "Únete a Portfoland y crea un portfolio que realmente te represente.",
       "button": "Crear tu portfolio"
+    }
+  },
+  "cv": {
+    "pageTitle": "Generador de CV",
+    "generateButton": "Generar CV",
+    "analyzeButton": "Analizar CV",
+    "downloadButton": "Descargar PDF",
+    "newButton": "Nuevo CV",
+    "targetJobLabel": "Puesto Objetivo (opcional)",
+    "targetJobPlaceholder": "ej. Desarrollador Frontend Senior",
+    "jobDescriptionLabel": "Descripcion del Puesto (opcional)",
+    "jobDescriptionPlaceholder": "Pega la descripcion del puesto aqui para optimizacion ATS...",
+    "emptyState": "Genera tu primer CV desde los datos de tu portfolio. Opcionalmente agrega un puesto objetivo para personalizarlo.",
+    "generating": "Generando...",
+    "previewTitle": "Vista Previa del CV",
+    "savedCVs": "CVs Guardados",
+    "noSavedCVs": "No hay CVs generados aun",
+    "deleteConfirm": "Estas seguro de que quieres eliminar este CV?",
+    "generateSuccess": "CV generado exitosamente",
+    "deleteSuccess": "CV eliminado exitosamente",
+    "analysisTypes": {
+      "reality_check": "Revision de Realidad",
+      "ats_optimization": "Optimizacion ATS",
+      "impact_improvement": "Mejora de Impacto",
+      "keyword_gap": "Analisis de Palabras Clave",
+      "weakness_detection": "Deteccion de Debilidades",
+      "differentiation": "Diferenciacion"
+    },
+    "analysisDescriptions": {
+      "reality_check": "Obtiene un analisis de tu CV desde la perspectiva de un reclutador",
+      "ats_optimization": "Optimiza tu CV para Sistemas de Seguimiento de Candidatos",
+      "impact_improvement": "Convierte responsabilidades en logros medibles",
+      "keyword_gap": "Compara tu CV con la descripcion del puesto",
+      "weakness_detection": "Identifica brechas laborales y señales de alerta",
+      "differentiation": "Descubre tu propuesta de valor unica"
+    },
+    "requiresJobDescription": "Requiere descripcion del puesto",
+    "errors": {
+      "generateFailed": "Error al generar el CV. Por favor, intenta de nuevo.",
+      "analyzeFailed": "Error al analizar el CV. Por favor, intenta de nuevo.",
+      "deleteFailed": "Error al eliminar el CV. Por favor, intenta de nuevo.",
+      "downloadFailed": "Error al descargar el PDF. Por favor, intenta de nuevo."
     }
   }
 }

@@ -20,6 +20,7 @@ import {
   projectWriteTools,
   timelineWriteTools,
   skillWriteTools,
+  cvWriteTools,
 } from './writeTools'
 
 // =============================================================================
@@ -166,6 +167,7 @@ export function buildToolRegistry(userId: string, _pageContext?: string) {
     ...projectWriteTools(userId),
     ...timelineWriteTools(userId),
     ...skillWriteTools(userId),
+    ...cvWriteTools(userId),
     ...existingTools(userId),
   }
 }

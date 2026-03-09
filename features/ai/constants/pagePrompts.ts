@@ -43,6 +43,10 @@ export const PAGE_PROMPTS: Record<string, { en: string; es: string }> = {
     en: 'User is managing testimonials. Help request testimonials or suggest improvements.',
     es: 'El usuario esta gestionando testimonios. Ayuda a solicitar testimonios o sugiere mejoras.',
   },
+  cv: {
+    en: 'User is on the CV Generator page. Help them generate, improve, and optimize their CV for specific job targets.',
+    es: 'El usuario esta en el Generador de CV. Ayuda a generar, mejorar y optimizar su CV para puestos especificos.',
+  },
 }
 
 // =============================================================================

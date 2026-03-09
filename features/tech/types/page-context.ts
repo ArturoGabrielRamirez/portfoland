@@ -7,3 +7,4 @@ export type PageContext =
   | "gallery"
   | "services"
   | "testimonials"
+  | "cv"

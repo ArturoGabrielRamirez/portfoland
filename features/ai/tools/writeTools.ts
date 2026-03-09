@@ -10,6 +10,7 @@ import { tool } from 'ai'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 import { logger } from '@/lib/logger'
+import { generateCVService } from '@/features/cv/services/generateCV.service'
 
 // =============================================================================
 // Individual Tool Factories
@@ -130,6 +131,31 @@ function createSuggestSkillsTool() {
   })
 }
 
+function createGenerateCVTool(userId: string) {
+  return tool({
+    description: "Generate a professional CV/resume from the user's portfolio data. Optionally tailored for a specific job target. The CV is saved and can be downloaded as PDF from /dashboard/cv.",
+    parameters: z.object({
+      targetJob: z.string().optional().describe('The job title to tailor the CV for (e.g. "Senior React Developer")'),
+      jobDescription: z.string().optional().describe('The full job description text for ATS optimization'),
+    }),
+    execute: async ({ targetJob, jobDescription }) => {
+      logger.debug('TOOL: generate_cv', { userId, targetJob })
+      try {
+        const result = await generateCVService(userId, targetJob, jobDescription)
+        return {
+          success: true,
+          cvId: result.cvId,
+          title: result.title,
+          message: `CV "${result.title}" generated successfully. View and download it at /dashboard/cv.`,
+        }
+      } catch (err: any) {
+        logger.error('TOOL_ERROR (generate_cv):', err)
+        return { error: err.message || 'Failed to generate CV' }
+      }
+    },
+  })
+}
+
 // =============================================================================
 // Grouped Exports
 // =============================================================================
@@ -159,5 +185,12 @@ export function timelineWriteTools(userId: string) {
 export function skillWriteTools(_userId: string) {
   return {
     suggest_skills: createSuggestSkillsTool(),
+  }
+}
+
+/** CV write tools */
+export function cvWriteTools(userId: string) {
+  return {
+    generate_cv: createGenerateCVTool(userId),
   }
 }

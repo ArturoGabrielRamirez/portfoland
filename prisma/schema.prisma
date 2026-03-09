@@ -56,6 +56,7 @@ model User {
   galleryItems      GalleryItem[]
   portfolioSettings PortfolioSettings?
   skillAssessments  SkillAssessment[]
+  cvDocuments       CVDocument[]
 
   @@map("users")
 }
@@ -446,4 +447,25 @@ model PortfolioSettings {
   updatedAt     DateTime @updatedAt
 
   @@map("portfolio_settings")
+}
+
+// =============================================================================
+// CV Generator Models
+// =============================================================================
+
+model CVDocument {
+  id              String   @id @default(cuid()) @map("_id")
+  userId          String
+  title           String
+  targetJob       String?
+  jobDescription  String?
+  content         Json
+  analysisResults Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("cv_documents")
 }

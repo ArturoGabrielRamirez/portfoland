@@ -255,7 +255,7 @@ Add generate_cv tool to the AI chat.
 
 ## Task Group 10: Integration Testing
 
-- [ ] **TG10-A: Verify TypeScript compilation**
+- [x] **TG10-A: Verify TypeScript compilation**
   - Run `npx tsc --noEmit` and confirm zero NEW errors from 4C changes
 
 - [ ] **TG10-B: Verify CV generation flow** *(manual)*

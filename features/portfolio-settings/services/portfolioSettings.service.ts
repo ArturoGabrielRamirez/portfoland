@@ -53,9 +53,9 @@ export async function updatePortfolioSettingsService(
   userId: string,
   input: UpdatePortfolioSettingsInput
 ): Promise<PortfolioSettingsModel> {
-  // Validate theme ID exists in THEME_PRESETS
+  // Validate theme ID exists in THEME_PRESETS or is 'custom'
   if (input.theme !== undefined) {
-    if (!Object.keys(THEME_PRESETS).includes(input.theme)) {
+    if (input.theme !== 'custom' && !Object.keys(THEME_PRESETS).includes(input.theme)) {
       throw new Error(PORTFOLIO_SETTINGS_MESSAGES.INVALID_THEME);
     }
   }

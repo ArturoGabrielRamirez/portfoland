@@ -73,7 +73,12 @@ interface OnePageTemplateProps {
 export function OnePageTemplate({ data, mode }: OnePageTemplateProps) {
   const isClassic = mode === 'classic';
   const sections = isClassic ? classicSections : techSections;
-  const preset = THEME_PRESETS[data.settings?.theme ?? 'default'] ?? THEME_PRESETS['default'];
+  
+  // Resolve Theme
+  const isCustomTheme = data.settings?.theme === 'custom' && data.settings?.customTheme;
+  const preset = isCustomTheme 
+    ? (data.settings!.customTheme as any) // Shape matches ThemePreset's color fields
+    : (THEME_PRESETS[data.settings?.theme ?? 'default'] ?? THEME_PRESETS['default']);
 
   const orderMap: Record<string, string> = { 'experience': 'timeline' };
   const userOrder = data.user.sectionOrder || [];
@@ -102,6 +107,7 @@ export function OnePageTemplate({ data, mode }: OnePageTemplateProps) {
         '--portfolio-accent': preset.accentColor,
         '--portfolio-border': preset.borderColor,
         '--portfolio-card-bg': preset.cardBackground,
+        fontFamily: preset.fontFamily,
       } as React.CSSProperties : undefined}
     >
       {/* CRT Overlay (Tech Mode only) */}

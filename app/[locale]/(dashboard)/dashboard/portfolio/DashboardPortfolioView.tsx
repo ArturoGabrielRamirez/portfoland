@@ -20,6 +20,7 @@ import { ImproveBioButton } from '@/features/ai/components/ImproveBioButton';
 import { updateProfile } from '@/features/portfolio/actions/updateProfile';
 import { updatePortfolioSettingsAction } from '@/features/portfolio-settings/actions/portfolioSettingsActions';
 import { PortfolioViewSelector } from '@/features/portfolio-settings/components/PortfolioViewSelector';
+import { CustomThemeBuilder, type CustomThemePayload } from '@/features/portfolio-settings/components/CustomThemeBuilder';
 import { THEME_PRESETS } from '@/features/portfolio-settings/constants/themes';
 import ReactMarkdown from 'react-markdown';
 import type { PortfolioMode, PortfolioViewMode } from '@/features/portfolio/types/portfolio';
@@ -104,6 +105,9 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
   );
 
   const [currentTheme, setCurrentTheme] = useState(portfolioSettings?.theme ?? 'default');
+  const [themeTab, setThemeTab] = useState<'presets' | 'custom'>(
+    portfolioSettings?.theme === 'custom' ? 'custom' : 'presets'
+  );
 
   // Helper: Move section in order
   const moveSection = useCallback((index: number, direction: 'up' | 'down') => {
@@ -149,14 +153,17 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
   };
 
   // Handle theme selection
-  const handleThemeSelect = (presetId: string) => {
+  const handleThemeSelect = (presetId: string, customThemePayload?: CustomThemePayload) => {
     startTransition(async () => {
-      const result = await updatePortfolioSettingsAction({ theme: presetId });
+      const result = await updatePortfolioSettingsAction({ 
+        theme: presetId,
+        ...(customThemePayload ? { customTheme: customThemePayload as any } : {})
+      });
       if (result.hasError) {
         toast.error(result.message);
       } else {
         setCurrentTheme(presetId);
-        toast.success('Theme updated');
+        toast.success(presetId === 'custom' ? 'Custom theme saved' : 'Theme updated');
       }
     });
   };
@@ -502,6 +509,7 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
                   </div>
                 </div>
               </HUDPanel>
+            </div>
 
               {/* Theme & Display HUD */}
               <HUDPanel title={t('preferences.title')} icon={<Layers className="w-4 h-4" />}>
@@ -516,40 +524,78 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
 
               {/* CLASSIC MODE THEME PICKER */}
               {user.portfolioMode === 'classic' && (
-                <HUDPanel title="Classic Mode Theme" icon={<Layers className="w-4 h-4" />}>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    {Object.values(THEME_PRESETS).map((preset) => (
-                      <button
-                        key={preset.id}
-                        type="button"
-                        onClick={() => handleThemeSelect(preset.id)}
-                        className={cn(
-                          'flex flex-col gap-2 p-3 border rounded-sm text-left transition-all',
-                          currentTheme === preset.id
-                            ? 'border-[hsl(174,100%,50%,0.5)] bg-[hsl(174,100%,50%,0.08)]'
-                            : 'border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] hover:border-[hsl(174,100%,50%,0.3)]'
-                        )}
-                      >
-                        <div className="flex items-center gap-1.5">
-                          <span
-                            className="w-3 h-3 rounded-full border border-white/10"
-                            style={{ backgroundColor: preset.backgroundColor }}
-                          />
-                          <span
-                            className="w-3 h-3 rounded-full"
-                            style={{ backgroundColor: preset.accentColor }}
-                          />
-                          {currentTheme === preset.id && (
-                            <span className="text-[hsl(150,100%,45%)] bg-[hsl(150,100%,45%,0.1)] text-[10px] font-mono px-1.5 py-0.5 rounded-sm uppercase ml-auto">
-                              Active
-                            </span>
-                          )}
-                        </div>
-                        <span className="text-xs font-mono text-gray-200">{preset.name}</span>
-                      </button>
-                    ))}
+                <div className="space-y-4">
+                  {/* Tabs: Presets vs Custom */}
+                  <div className="flex items-center gap-2 p-1 bg-[#0D1421] border border-[hsl(174,100%,50%,0.15)] rounded-sm w-fit mx-auto md:mx-0">
+                    <button
+                      type="button"
+                      onClick={() => setThemeTab('presets')}
+                      className={cn(
+                        "px-4 py-1.5 text-xs font-mono rounded-sm transition-all",
+                        themeTab === 'presets' 
+                          ? "bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/30" 
+                          : "text-gray-500 hover:text-gray-300 border border-transparent"
+                      )}
+                    >
+                      Presets
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setThemeTab('custom')}
+                      className={cn(
+                        "px-4 py-1.5 text-xs font-mono rounded-sm transition-all",
+                        themeTab === 'custom' 
+                          ? "bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/30" 
+                          : "text-gray-500 hover:text-gray-300 border border-transparent"
+                      )}
+                    >
+                      Custom Builder
+                    </button>
                   </div>
-                </HUDPanel>
+
+                  {themeTab === 'presets' ? (
+                    <HUDPanel title="Classic Mode Theme" icon={<Layers className="w-4 h-4" />}>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {Object.values(THEME_PRESETS).map((preset) => (
+                          <button
+                            key={preset.id}
+                            type="button"
+                            onClick={() => handleThemeSelect(preset.id)}
+                            className={cn(
+                              'flex flex-col gap-2 p-3 border rounded-sm text-left transition-all',
+                              currentTheme === preset.id
+                                ? 'border-[hsl(174,100%,50%,0.5)] bg-[hsl(174,100%,50%,0.08)]'
+                                : 'border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] hover:border-[hsl(174,100%,50%,0.3)]'
+                            )}
+                          >
+                            <div className="flex items-center gap-1.5">
+                              <span
+                                className="w-3 h-3 rounded-full border border-white/10"
+                                style={{ backgroundColor: preset.backgroundColor }}
+                              />
+                              <span
+                                className="w-3 h-3 rounded-full"
+                                style={{ backgroundColor: preset.accentColor }}
+                              />
+                              {currentTheme === preset.id && (
+                                <span className="text-[hsl(150,100%,45%)] bg-[hsl(150,100%,45%,0.1)] text-[10px] font-mono px-1.5 py-0.5 rounded-sm uppercase ml-auto">
+                                  Active
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-xs font-mono text-gray-200">{preset.name}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </HUDPanel>
+                  ) : (
+                    <CustomThemeBuilder 
+                      initialTheme={portfolioSettings?.customTheme as CustomThemePayload | null}
+                      disabled={isPending}
+                      onChange={(newTheme) => handleThemeSelect('custom', newTheme)}
+                    />
+                  )}
+                </div>
               )}
 
               {/* View Mode Selector */}
@@ -557,7 +603,6 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
                 currentViewMode={(portfolioSettings?.viewMode ?? 'sections') as PortfolioViewMode}
                 portfolioMode={user.portfolioMode}
               />
-            </div>
 
             {/* Floating Action Button for Saving */}
             <div className="fixed bottom-10 right-10 z-50">

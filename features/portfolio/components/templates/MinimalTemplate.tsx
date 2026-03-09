@@ -8,6 +8,7 @@
 'use client';
 
 import type { PortfolioMode, PortfolioData } from '../../types/portfolio';
+import { THEME_PRESETS } from '@/features/portfolio-settings/constants/themes';
 
 // =============================================================================
 // Component
@@ -49,13 +50,28 @@ export function MinimalTemplate({ data, mode }: MinimalTemplateProps) {
     }
   }
 
+  // Resolve Theme
+  const isCustomTheme = data.settings?.theme === 'custom' && !!data.settings?.customTheme;
+  const preset = isCustomTheme
+    ? (data.settings!.customTheme as any) // Shape matches ThemePreset's color fields
+    : (THEME_PRESETS[data.settings?.theme ?? 'default'] ?? THEME_PRESETS['default']);
+
   const initials = user.name
     ? user.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2)
     : '??';
 
   if (isClassic) {
     return (
-      <div className="min-h-screen flex items-start justify-center py-16 px-4 bg-white">
+      <div
+        className="min-h-screen flex items-start justify-center py-16 px-4 bg-white"
+        style={isCustomTheme ? {
+          '--portfolio-text': preset.textColor,
+          '--portfolio-accent': preset.accentColor,
+          '--portfolio-border': preset.borderColor,
+          '--portfolio-card-bg': preset.cardBackground,
+          fontFamily: preset.fontFamily,
+        } as React.CSSProperties : undefined}
+      >
         <div className="w-full max-w-lg mx-auto flex flex-col gap-6">
           {/* Identity Card */}
           <div className="bg-white border border-gray-200 rounded-xl p-8 shadow-sm flex flex-col gap-4">
@@ -119,7 +135,16 @@ export function MinimalTemplate({ data, mode }: MinimalTemplateProps) {
 
   // Tech Mode
   return (
-    <div className="min-h-screen flex items-start justify-center py-16 px-4 bg-[#0A0E1A] relative overflow-x-hidden">
+    <div
+      className="min-h-screen flex items-start justify-center py-16 px-4 bg-[#0A0E1A] relative overflow-x-hidden"
+      style={isCustomTheme ? {
+        '--portfolio-text': preset.textColor,
+        '--portfolio-accent': preset.accentColor,
+        '--portfolio-border': preset.borderColor,
+        '--portfolio-card-bg': preset.cardBackground,
+        fontFamily: preset.fontFamily,
+      } as React.CSSProperties : undefined}
+    >
       {/* CRT Overlay */}
       <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden">
         <div className="crt-lines absolute inset-0 opacity-[0.03]" />

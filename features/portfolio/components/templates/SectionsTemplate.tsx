@@ -114,7 +114,12 @@ export function SectionsTemplate({ data, mode }: SectionsTemplateProps) {
 
   const isClassic = mode === 'classic';
   const sections = isClassic ? classicSections : techSections;
-  const preset = THEME_PRESETS[data.settings?.theme ?? 'default'] ?? THEME_PRESETS['default'];
+  
+  // Resolve Theme
+  const isCustomTheme = data.settings?.theme === 'custom' && data.settings?.customTheme;
+  const preset = isCustomTheme 
+    ? (data.settings!.customTheme as any) // Shape matches ThemePreset's color fields
+    : (THEME_PRESETS[data.settings?.theme ?? 'default'] ?? THEME_PRESETS['default']);
 
   const handleSectionChange = useCallback((section: string) => {
     setActiveSection(section as PortfolioSectionKey);
@@ -137,6 +142,7 @@ export function SectionsTemplate({ data, mode }: SectionsTemplateProps) {
         '--portfolio-accent': preset.accentColor,
         '--portfolio-border': preset.borderColor,
         '--portfolio-card-bg': preset.cardBackground,
+        fontFamily: preset.fontFamily,
       } as React.CSSProperties : undefined}
       data-testid="portfolio-layout"
     >

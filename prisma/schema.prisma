@@ -445,6 +445,7 @@ model PortfolioSettings {
   heroStyle     String   @default("standard")
   showBranding  Boolean  @default(true)
   viewMode      String   @default("sections")
+  customTheme   Json?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 

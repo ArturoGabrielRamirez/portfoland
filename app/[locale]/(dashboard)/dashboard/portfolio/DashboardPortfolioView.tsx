@@ -21,6 +21,7 @@ import { updatePortfolioSettingsAction } from '@/features/portfolio-settings/act
 import { PortfolioViewSelector } from '@/features/portfolio-settings/components/PortfolioViewSelector';
 import { CustomThemeBuilder, type CustomThemePayload } from '@/features/portfolio-settings/components/CustomThemeBuilder';
 import { THEME_PRESETS } from '@/features/portfolio-settings/constants/themes';
+import { CVImportButton } from '@/features/cv/components/CVImportButton';
 import ReactMarkdown from 'react-markdown';
 import type { PortfolioMode, PortfolioViewMode } from '@/features/portfolio/types/portfolio';
 import type { PortfolioSettingsModel } from '@/features/portfolio-settings/types/portfolioSettings';
@@ -154,7 +155,7 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
   // Handle theme selection
   const handleThemeSelect = (presetId: string, customThemePayload?: CustomThemePayload) => {
     startTransition(async () => {
-      const result = await updatePortfolioSettingsAction({ 
+      const result = await updatePortfolioSettingsAction({
         theme: presetId,
         ...(customThemePayload ? { customTheme: customThemePayload as any } : {})
       });
@@ -219,6 +220,7 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
               {t('viewPublic')}
             </a>
           )}
+          <CVImportButton portfolioMode={user.portfolioMode} />
         </div>
       </div>
 
@@ -516,8 +518,8 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
                       onClick={() => setThemeTab('presets')}
                       className={cn(
                         "px-4 py-1.5 text-xs font-mono rounded-sm transition-all",
-                        themeTab === 'presets' 
-                          ? "bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/30" 
+                        themeTab === 'presets'
+                          ? "bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/30"
                           : "text-gray-500 hover:text-gray-300 border border-transparent"
                       )}
                     >
@@ -528,8 +530,8 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
                       onClick={() => setThemeTab('custom')}
                       className={cn(
                         "px-4 py-1.5 text-xs font-mono rounded-sm transition-all",
-                        themeTab === 'custom' 
-                          ? "bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/30" 
+                        themeTab === 'custom'
+                          ? "bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/30"
                           : "text-gray-500 hover:text-gray-300 border border-transparent"
                       )}
                     >
@@ -573,7 +575,7 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
                       </div>
                     </HUDPanel>
                   ) : (
-                    <CustomThemeBuilder 
+                    <CustomThemeBuilder
                       initialTheme={portfolioSettings?.customTheme as CustomThemePayload | null}
                       disabled={isPending}
                       onChange={(newTheme) => handleThemeSelect('custom', newTheme)}

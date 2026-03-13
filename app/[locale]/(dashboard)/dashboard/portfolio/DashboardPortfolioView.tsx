@@ -16,6 +16,7 @@ import { PortfolioModeToggle } from '@/features/portfolio/components/PortfolioMo
 import { ProfileImageUpload } from '@/features/portfolio/components/ProfileImageUpload';
 import { HUDPanel } from '@/features/dashboard/components/HUDPanel';
 import { ImproveBioButton } from '@/features/ai/components/ImproveBioButton';
+import { BioSkillSuggestions } from '@/features/portfolio/components/BioSkillSuggestions';
 import { updateProfile } from '@/features/portfolio/actions/updateProfile';
 import { updatePortfolioSettingsAction } from '@/features/portfolio-settings/actions/portfolioSettingsActions';
 import { PortfolioViewSelector } from '@/features/portfolio-settings/components/PortfolioViewSelector';
@@ -279,6 +280,9 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
                             className="w-full px-4 py-3 bg-[#0D1421] border border-[hsl(174,100%,50%,0.25)] rounded font-mono text-sm text-gray-100 placeholder:text-gray-600 focus:border-[#00D4FF] focus:ring-1 focus:ring-[#00D4FF]/30 focus:outline-none resize-none transition-all"
                             placeholder={t('sections.bioPlaceholder')}
                           />
+
+                          {/* AI Skill Suggestions — fired after 1.5s debounce on bio change */}
+                          <BioSkillSuggestions bio={bio} />
 
                           {/* Markdown Preview & Hint */}
                           {bio && (

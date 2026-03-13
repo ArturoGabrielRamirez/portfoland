@@ -788,6 +788,7 @@ These ideas have value but are not in Phase 4. They should be re-evaluated after
 | **Gridcn/Glitchcn adoption** | ROADMAP_V2.md | Evaluate after visual polish in 4F; may not be needed if existing components are sufficient |
 | **Community-contributed assessment questions** | AI_SKILL_ASSESSMENT_GAME.md | Requires moderation infrastructure |
 | **Freemium/Pro pricing** | CV_IMPROVEMENT_PROMPTS.md, AI_SKILL_ASSESSMENT_GAME.md | Premature without user base; implement when AI costs justify it |
+| **CV Import (upload existing resume)** | User request 2026-03-13 | Upload PDF/DOCX → AI extracts structured data → populates skills + timeline + projects via existing actions. Complements 4C (CV Generator exports; this imports). High onboarding impact — eliminates blank-portfolio problem. Phase 5 priority. Flow: upload → text extract (pdf-parse) → generateObject → user preview/confirm → bulk create via existing actions → CRT narrates progress. |
 
 ---
 

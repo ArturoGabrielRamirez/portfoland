@@ -21,6 +21,7 @@ import { GitHubAuthError } from '../types';
 import { GITHUB_MESSAGES } from '../constants/messages';
 import { syncGitHubService } from '../services/syncGitHub.service';
 import type { SyncGitHubResponse } from '../types/sync';
+import { completeQuestAction } from '@/features/quests/actions/completeQuestAction';
 
 // =============================================================================
 // Action
@@ -33,7 +34,8 @@ import type { SyncGitHubResponse } from '../types/sync';
  *   1. Authenticate via Better Auth session
  *   2. Call `syncGitHubService` (fetches GitHub API + writes DB)
  *   3. Invalidate dashboard and skill caches
- *   4. Return summary stats for the sync panel
+ *   4. Award quest XP for GitHub sync (fire-and-forget)
+ *   5. Return summary stats for the sync panel
  *
  * @returns ActionResponse with `SyncGitHubResponse` payload on success,
  *          or an error response with an optional `errorType` discriminator
@@ -93,7 +95,12 @@ export const syncGitHubAction = async (): Promise<
     revalidateTag(`user-stats-${userId}`);
 
     // -------------------------------------------------------------------------
-    // Step 4: Return summary stats
+    // Step 4: Award quest XP for GitHub sync — fire-and-forget, don't block sync result
+    // -------------------------------------------------------------------------
+    void completeQuestAction('github_sync').catch(() => {})
+
+    // -------------------------------------------------------------------------
+    // Step 5: Return summary stats
     // -------------------------------------------------------------------------
     return {
       payload: {

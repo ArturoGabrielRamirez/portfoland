@@ -218,6 +218,15 @@ export interface SyncSkillsFromExperienceInput {
 // =============================================================================
 
 /**
+ * Props for SkillIcon component
+ */
+export interface SkillIconProps {
+  skillName: string;
+  size?: 'xs' | 'sm' | 'md' | 'lg';
+  className?: string;
+}
+
+/**
  * Props for SkillHexagonNode component
  */
 export interface SkillHexagonNodeProps {
@@ -240,6 +249,8 @@ export interface SkillDetailCardProps {
   onDelete?: () => void;
   isEditable?: boolean;
   className?: string;
+  githubConnected?: boolean;
+  locale?: string;
 }
 
 /**
@@ -302,6 +313,8 @@ export interface SkillTreeViewProps {
   isEditable?: boolean;
   onAddSkill?: () => void;
   className?: string;
+  githubConnected?: boolean;
+  locale?: string;
 }
 
 // =============================================================================

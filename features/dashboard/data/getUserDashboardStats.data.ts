@@ -2,7 +2,8 @@
  * Get Dashboard Stats by User ID
  *
  * Computes real XP, level, achievements, and streak for the Tech Mode
- * dashboard from the user's experiences, projects, and AI-validated skills.
+ * dashboard from the user's experiences, projects, AI-validated skills,
+ * and completed quests.
  * Results are cached per-user and invalidated by tag on content mutations.
  */
 
@@ -50,6 +51,10 @@ async function fetchDashboardStats(userId: string): Promise<DashboardStats> {
         where: { aiValidated: true },
         select: { totalXP: true, githubValidated: true },
       },
+      userQuests: {
+        where: { status: 'COMPLETED' },
+        select: { xpAwarded: true },
+      },
       _count: {
         select: {
           conversations: true,
@@ -81,10 +86,14 @@ async function fetchDashboardStats(userId: string): Promise<DashboardStats> {
     return Math.round(rawSkillXP * (userSkill.githubValidated ? GITHUB_XP_MULTIPLIER : 1));
   });
 
+  // Quest XP: sum of xpAwarded across all COMPLETED quests
+  const questXPs = user.userQuests.reduce((sum, q) => sum + q.xpAwarded, 0);
+
   const totalXP =
     experienceXPs.reduce((sum, xp) => sum + xp, 0) +
     projectXPs.reduce((sum, xp) => sum + xp, 0) +
-    skillXPs.reduce((sum, xp) => sum + xp, 0);
+    skillXPs.reduce((sum, xp) => sum + xp, 0) +
+    questXPs;
 
   // ---------------------------------------------------------------------------
   // Level computation — uses shared utility from lib/utils/xp

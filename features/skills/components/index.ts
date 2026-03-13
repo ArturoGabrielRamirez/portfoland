@@ -5,6 +5,7 @@
  */
 
 // Core components
+export { SkillIcon } from './SkillIcon';
 export { SkillHexagonNode } from './SkillHexagonNode';
 export { SkillDetailCard } from './SkillDetailCard';
 export { XPSourceList } from './XPSourceList';

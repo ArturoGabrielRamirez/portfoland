@@ -19,6 +19,7 @@ import {
   EXPERIENCE_COLOR_CLASSES,
   EXPERIENCE_LABELS_EN,
 } from '../constants/xp';
+import { SkillIcon } from '@/features/skills/components/SkillIcon';
 
 /**
  * Icon mapping for experience types
@@ -153,8 +154,9 @@ function ExperienceCardComponent({
               {experience.skills.slice(0, 5).map((skill) => (
                 <span
                   key={skill}
-                  className="px-2 py-0.5 text-xs rounded-sm bg-[hsl(174,100%,50%,0.1)] text-[hsl(174,100%,50%)] border border-[hsl(174,100%,50%,0.2)]"
+                  className="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded-sm bg-[hsl(174,100%,50%,0.1)] text-[hsl(174,100%,50%)] border border-[hsl(174,100%,50%,0.2)]"
                 >
+                  <SkillIcon skillName={skill} size="xs" />
                   {skill}
                 </span>
               ))}

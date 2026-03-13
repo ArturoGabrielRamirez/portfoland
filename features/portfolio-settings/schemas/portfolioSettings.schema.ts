@@ -21,6 +21,11 @@ const VALID_LAYOUT_VARIANTS = ['bento', 'stacked', 'sidebar'] as const;
 const VALID_HERO_STYLES = ['standard', 'minimal', 'cover'] as const;
 
 /**
+ * Valid portfolio view mode values
+ */
+const VALID_VIEW_MODES = ['sections', 'one_page', 'minimal', 'terminal'] as const;
+
+/**
  * Hex color validation regex
  */
 const hexColorRegex = /^#[0-9A-Fa-f]{6}$/;
@@ -58,7 +63,23 @@ export const updatePortfolioSettingsSchema = yup.object({
   showBranding: yup
     .boolean()
     .optional(),
+  viewMode: yup
+    .string()
+    .oneOf([...VALID_VIEW_MODES], `View mode must be one of: ${VALID_VIEW_MODES.join(', ')}`)
+    .optional(),
+  customTheme: yup
+    .object({
+      backgroundColor: yup.string().matches(hexColorRegex, 'Background color must be a valid hex color').optional(),
+      textColor: yup.string().matches(hexColorRegex, 'Text color must be a valid hex color').optional(),
+      accentColor: yup.string().matches(hexColorRegex, 'Accent color must be a valid hex color').optional(),
+      borderColor: yup.string().matches(hexColorRegex, 'Border color must be a valid hex color').optional(),
+      cardBackground: yup.string().matches(hexColorRegex, 'Card background must be a valid hex color').optional(),
+      fontFamily: yup.string().max(100, 'Font family must be less than 100 characters').optional(),
+    })
+    .nullable()
+    .optional(),
 });
+
 
 // =============================================================================
 // Inferred Types

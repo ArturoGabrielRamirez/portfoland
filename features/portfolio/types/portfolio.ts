@@ -23,6 +23,11 @@ import type { PortfolioSettingsData } from '@/features/portfolio-settings/types/
 export type PortfolioMode = 'classic' | 'tech';
 
 /**
+ * Portfolio view/layout mode
+ */
+export type PortfolioViewMode = 'sections' | 'one_page' | 'minimal' | 'terminal';
+
+/**
  * User data for portfolio display
  */
 export interface PortfolioUser {

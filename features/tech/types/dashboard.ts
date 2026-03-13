@@ -1,4 +1,5 @@
 import { ReactNode } from "react"
+import type { PageContext } from "./page-context"
 
 export interface WelcomeCardProps {
   userName: string
@@ -79,6 +80,10 @@ export interface DashboardRow1Props {
     currentStreak: number
     achievements: { current: number; total: number }
   }
+  /** Identifies which dashboard page is active (used by CRTWithAI for context-aware AI) */
+  pageContext?: PageContext
+  /** Locale for AI chat API requests */
+  locale?: string
 }
 
 // =============================================================================

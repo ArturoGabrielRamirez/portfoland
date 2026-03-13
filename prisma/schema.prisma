@@ -56,6 +56,8 @@ model User {
   galleryItems      GalleryItem[]
   portfolioSettings PortfolioSettings?
   skillAssessments  SkillAssessment[]
+  cvDocuments       CVDocument[]
+  userQuests        UserQuest[]
 
   @@map("users")
 }
@@ -442,8 +444,91 @@ model PortfolioSettings {
   fontFamily    String?
   heroStyle     String   @default("standard")
   showBranding  Boolean  @default(true)
+  viewMode      String   @default("sections")
+  customTheme   Json?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   @@map("portfolio_settings")
+}
+
+// =============================================================================
+// CV Generator Models
+// =============================================================================
+
+model CVDocument {
+  id              String   @id @default(cuid()) @map("_id")
+  userId          String
+  title           String
+  targetJob       String?
+  jobDescription  String?
+  content         Json
+  analysisResults Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("cv_documents")
+}
+
+// =============================================================================
+// Skill Enhancement Cache Models
+// =============================================================================
+
+model SkillEnhancementCache {
+  id             String   @id @default(cuid()) @map("_id")
+  skillName      String
+  skillLevel     Int
+  locale         String   @default("en")
+  nextLevelFocus String
+  relatedSkills  Json
+  resources      Json
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([skillName, skillLevel, locale])
+  @@index([skillName, skillLevel])
+  @@map("skill_enhancement_cache")
+}
+
+model BrokenResourceUrl {
+  id          String   @id @default(cuid()) @map("_id")
+  url         String   @unique
+  skillName   String
+  skillLevel  Int
+  locale      String
+  reportCount Int      @default(1)
+  createdAt   DateTime @default(now())
+
+  @@index([skillName, skillLevel])
+  @@map("broken_resource_urls")
+}
+
+// =============================================================================
+// Quest System Models
+// =============================================================================
+
+enum QuestStatus {
+  ACTIVE
+  COMPLETED
+  EXPIRED
+}
+
+model UserQuest {
+  id          String      @id @default(cuid()) @map("_id")
+  userId      String
+  questId     String
+  status      QuestStatus @default(ACTIVE)
+  xpAwarded   Int         @default(0)
+  assignedAt  DateTime    @default(now())
+  completedAt DateTime?
+  expiresAt   DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@index([userId, questId])
+  @@map("user_quests")
 }

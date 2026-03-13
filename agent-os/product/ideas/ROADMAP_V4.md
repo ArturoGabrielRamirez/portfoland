@@ -3,7 +3,7 @@
 **Fecha:** 2026-03-06
 **Estado:** Activo -- Reemplaza ROADMAP_V2.md como documento rector
 **Origen:** Audit Opus post-Phase 3A, health check 2026-03-05, analisis de idea docs acumulados
-**Branch base:** `feat/phase3-solidify-tech-mode`
+**Branch base:** `feat/phase4-ai-portfolio-os`
 
 ---
 
@@ -788,6 +788,7 @@ These ideas have value but are not in Phase 4. They should be re-evaluated after
 | **Gridcn/Glitchcn adoption** | ROADMAP_V2.md | Evaluate after visual polish in 4F; may not be needed if existing components are sufficient |
 | **Community-contributed assessment questions** | AI_SKILL_ASSESSMENT_GAME.md | Requires moderation infrastructure |
 | **Freemium/Pro pricing** | CV_IMPROVEMENT_PROMPTS.md, AI_SKILL_ASSESSMENT_GAME.md | Premature without user base; implement when AI costs justify it |
+| **CV Import (upload existing resume)** | User request 2026-03-13 | Upload PDF/DOCX → AI extracts structured data → populates skills + timeline + projects via existing actions. Complements 4C (CV Generator exports; this imports). High onboarding impact — eliminates blank-portfolio problem. Phase 5 priority. Flow: upload → text extract (pdf-parse) → generateObject → user preview/confirm → bulk create via existing actions → CRT narrates progress. |
 
 ---
 
@@ -940,4 +941,80 @@ Page-aware tool filtering keeps the AI focused. The base tools (get_portfolio_he
 
 ---
 
-**This roadmap supersedes ROADMAP_V2.md. Next action: create spec + tasks.md for Spec 4A (Dashboard Layout Unification) and begin the pre-Phase 4 cleanup sprint.**
+---
+
+## Open Questions & Future Improvements (from Spec 4A analysis)
+
+### 1. Classic Mode AI Chat — Familiar UX (analyze for 4B or 4B+)
+
+Al eliminar `AIAssistantFloat` en Spec 4A, Classic Mode pierde acceso a AI hasta que 4B lo resuelva. Pero mas alla de restaurar el acceso, hay una oportunidad de diseño:
+
+**Idea:** En vez de un CRT terminal (que es 100% Tech), Classic Mode podria tener un **chat estilo WhatsApp/Messenger** — burbujas de conversacion, colores solidos (no neon), esquinas redondeadas, avatar del AI como foto de perfil. Algo **familiar** para el usuario no-tech.
+
+- Mismo backend (`/api/chat`), mismas tools, diferente skin
+- Colores adaptados al theme Classic seleccionado (warm, ocean, dark-elegant)
+- Posicion: panel lateral derecho o bottom drawer (no floating bubble)
+- Considerar: chat embebido en `ClassicDashboardHeader` como drawer expandible
+
+**Prioridad:** Disenar durante Spec 4B. No dejar Classic sin AI mas de 1 sprint.
+
+### 2. Dashboard page.tsx boilerplate duplicado
+
+Las 8 paginas del dashboard duplican: `auth.api.getSession()`, `prisma.user.findUnique()`, `checkOnboarding()`. Spec 4A resuelve parcialmente con `getDashboardPageData()`, pero el auth check sigue duplicado.
+
+**Opciones a evaluar:**
+- Mover auth + onboarding check a `(dashboard)/layout.tsx` (ya hace auth) y pasar userId via React cache o headers
+- Usar `unstable_cache` + `React.cache()` para deduplicar la session call dentro del mismo request
+- Next.js recomienda verificar auth en cada server component, pero el layout ya lo hace — evaluar si la doble verificacion aporta seguridad real o solo boilerplate
+
+**Decision:** Pospuesto. `getDashboardPageData` reduce el problema suficiente para Phase 4. Revisitar en Phase 5 si el boilerplate escala.
+
+### 3. WelcomeCard translations boilerplate
+
+Cada pagina necesita `getTranslations('dashboard.welcomeCard')` + `getTranslations('dashboard')` para pasar translations a `DashboardPageLayout`. Son ~12 lineas repetidas en 8 archivos.
+
+**Mejora futura:** Hacer `DashboardPageLayout` un Server Component wrapper que resuelve translations internamente y delega el rendering a un client child (`DashboardRow1Client`). Esto elimina el boilerplate pero complica la arquitectura Server/Client boundary.
+
+**Decision:** Evaluar en Sprint 2 si el boilerplate se siente excesivo en la practica.
+
+### 4. getDisplayName/getInitials helpers
+
+Resuelto en Spec 4A Task 8a — se extraen a `features/dashboard/utils/userHelpers.ts`.
+
+---
+
+### 5. CRT persistencia entre navegaciones (post-4B)
+
+El CRT se desmonta y remonta al navegar entre paginas del dashboard porque vive dentro de cada `page.tsx` via `DashboardPageLayout`. Esto causa:
+- Boot sequence se reproduce cada vez que cambias de pagina
+- Chat history se pierde visualmente (se restaura de localStorage pero re-anima todo)
+- WelcomeCard re-anima texto que no cambio
+
+**Solucion propuesta:** Mover el CRT al `(dashboard)/layout.tsx` (que persiste entre navegaciones). Alimentar `pageContext` y `bootStats` via React Context o URL params. El CRT nunca se desmonta, el chat persiste visualmente, solo cambia el pageContext. Evaluar impacto en Server/Client boundary.
+
+### 6. Sistema de vidas/tokens AI — economia del chat
+
+El sistema actual (3 vidas/dia, 1 vida = 1 request) tiene problemas:
+- 3 requests es muy poco para una experiencia fluida
+- No distingue entre un "hola" y un analisis complejo con tool calls
+- No hay forma de ganar mas vidas
+
+**Ideas a evaluar para un spec dedicado:**
+- **Vidas con barra de energia:** Cada vida activa una barra que se consume por tokens usados. Un request simple gasta poco, uno con tools gasta mas.
+- **Ganar vidas:** Completar portfolio manualmente, logros, achievements, rachas de actividad desbloquean vidas extra.
+- **Quest system integration (Spec 4E):** Quests podrian dar vidas como recompensa. Comandos tipo `/quest` o easter eggs en el CRT para desbloquear energia.
+- **Modelo de negocio:** Balance entre dar suficiente para engagement vs. upsell a plan premium con mas tokens.
+- **Metricas clave:** Costo promedio por request (~$0.003 con Gemini Flash), requests/user/dia promedio, conversion a premium.
+
+**Decision:** Disenar spec dedicado que unifique vidas + tokens + quest rewards. Requiere analisis UX/UI profundo y modelado economico.
+
+### 7. Classic Mode chat UI (post-4B)
+
+Classic Mode no tiene chat despues de eliminar `AIAssistantFloat` en 4A. Opciones:
+- Panel estilo WhatsApp/Messenger (familiar para usuarios no-tech)
+- Colores solidos en vez de neon, diseño mas relajado
+- El backend `/api/chat` ya es mode-agnostic — solo falta el frontend
+
+---
+
+**This roadmap supersedes ROADMAP_V2.md. Spec 4A created: `agent-os/product/specs/4A-dashboard-layout-unification/`. Spec 4B created: `agent-os/product/specs/4B-ai-context-engine/`.**

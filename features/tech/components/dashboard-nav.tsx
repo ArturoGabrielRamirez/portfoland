@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { LayoutDashboard, Clock, GitBranch, FolderOpen, User, Briefcase, MessageSquare, Images } from 'lucide-react'
+import { LayoutDashboard, Clock, GitBranch, FolderOpen, User, Briefcase, MessageSquare, Images, FileText } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { PortfolioModeToggle } from '@/features/portfolio/components/PortfolioModeToggle'
 import { LanguageSwitcher } from '@/features/i18n'
@@ -30,6 +30,7 @@ export function DashboardNav({ locale, user }: DashboardNavProps) {
     { href: '/dashboard/timeline', label: t('timeline'), icon: Clock, exact: false },
     { href: '/dashboard/skills', label: t('skills'), icon: GitBranch, exact: false },
     { href: '/dashboard/projects', label: t('projects'), icon: FolderOpen, exact: false },
+    { href: '/dashboard/cv', label: t('cv'), icon: FileText, exact: false },
   ]
 
   const classicNavItems = [

@@ -33,6 +33,7 @@
     "skillTree": "Skill Tree",
     "projects": "Projects",
     "portfolio": "Portfolio",
+    "cvGenerator": "CV Generator",
     "settings": "Settings",
     "signIn": "Sign In",
     "signUp": "Sign Up",
@@ -129,6 +130,25 @@
   "dashboard": {
     "welcome": "Welcome back, {name}!",
     "welcomeSubtitle": "Continue building your professional adventure",
+    "skills": {
+      "title": "Skill Tree",
+      "subtitle": "Visualize and manage your technical nodes",
+      "viewPublic": "View Public Profile",
+      "addSkill": "Add Skill",
+      "stats": {
+        "totalSkills": "Total Skills",
+        "totalXP": "Total XP",
+        "mastered": "Mastered",
+        "categories": "Categories"
+      },
+      "legend": {
+        "core": "Core",
+        "backend": "Backend",
+        "frontend": "Frontend",
+        "tools": "Tools",
+        "softSkills": "Soft Skills"
+      }
+    },
     "welcomeCard": {
       "streak": "{count} day streak",
       "quickActions": "Quick Actions",
@@ -197,6 +217,50 @@
         "title": "Recent Activity",
         "viewAll": "VIEW ALL"
       },
+      "portfolio": {
+        "title": "Portfolio Settings",
+        "subtitle": "Customize your public presence and section layouts",
+        "viewPublic": "View Public Portfolio",
+        "sections": {
+          "about": "About You",
+          "displayName": "Display Name",
+          "displayNamePlaceholder": "Enter your professional name",
+          "bio": "Bio / Professional Narrative",
+          "bioPlaceholder": "Tell your professional story. Supports Markdown.",
+          "markdownTip": "Supports GitHub Flavored Markdown",
+          "previewLabel": "Live Preview",
+          "avatar": "Profile Avatar",
+          "experience": "Career History",
+          "experienceNote": "Manage your timeline in the Timeline section",
+          "experienceNote2": "This section only toggles visibility",
+          "skills": "Technical Skills",
+          "skillsNote": "Manage your skills in the Skill Tree section",
+          "projects": "Project Showcases",
+          "projectsNote": "Manage your projects in the Projects section",
+          "socialLinks": "Connect Channels",
+          "github": "GitHub Profile",
+          "linkedin": "LinkedIn Profile",
+          "externalChannels": "External Channels",
+          "addNew": "Add Channel",
+          "label": "Channel Label (e.g. Twitter)",
+          "url": "URL (https://...)",
+          "noLinks": "No custom channels added yet"
+        },
+        "preferences": {
+          "title": "Interface Preferences",
+          "interface": "Visual Paradigm",
+          "description": "Switch between Tech (Data-driven) and Classic (Clean) views"
+        },
+        "actions": {
+          "syncing": "Syncing...",
+          "save": "Save Changes"
+        },
+        "messages": {
+          "updated": "Profile updated successfully",
+          "error": "Failed to update profile",
+          "unexpectedError": "An unexpected error occurred"
+        }
+      },
       "quickActions": {
         "timeline": "Timeline",
         "projects": "Projects",
@@ -210,7 +274,50 @@
     "timeline": "Timeline",
     "skills": "Skills",
     "projects": "Projects",
+    "cv": "CV",
     "online": "ONLINE"
+  },
+  "cv": {
+    "pageTitle": "CV Generator",
+    "generateButton": "Generate CV",
+    "analyzeButton": "Analyze CV",
+    "downloadButton": "Download PDF",
+    "newButton": "New CV",
+    "targetJobLabel": "Target Job (optional)",
+    "targetJobPlaceholder": "e.g. Senior Frontend Developer",
+    "jobDescriptionLabel": "Job Description (optional)",
+    "jobDescriptionPlaceholder": "Paste the job description here for ATS optimization...",
+    "emptyState": "Generate your first CV from your portfolio data. Optionally add a target job to tailor it.",
+    "generating": "Generating...",
+    "previewTitle": "CV Preview",
+    "savedCVs": "Saved CVs",
+    "noSavedCVs": "No CVs generated yet",
+    "deleteConfirm": "Are you sure you want to delete this CV?",
+    "generateSuccess": "CV generated successfully",
+    "deleteSuccess": "CV deleted successfully",
+    "analysisTypes": {
+      "reality_check": "Reality Check",
+      "ats_optimization": "ATS Optimization",
+      "impact_improvement": "Impact Improvement",
+      "keyword_gap": "Keyword Gap Analysis",
+      "weakness_detection": "Weakness Detection",
+      "differentiation": "Differentiation"
+    },
+    "analysisDescriptions": {
+      "reality_check": "Get a recruiter-perspective analysis of your CV",
+      "ats_optimization": "Optimize your CV for Applicant Tracking Systems",
+      "impact_improvement": "Convert responsibilities into measurable achievements",
+      "keyword_gap": "Compare your CV against the job description",
+      "weakness_detection": "Identify employment gaps and red flags",
+      "differentiation": "Discover your unique value proposition"
+    },
+    "requiresJobDescription": "Requires job description",
+    "errors": {
+      "generateFailed": "Failed to generate CV. Please try again.",
+      "analyzeFailed": "Failed to analyze CV. Please try again.",
+      "deleteFailed": "Failed to delete CV. Please try again.",
+      "downloadFailed": "Failed to download PDF. Please try again."
+    }
   },
   "languageSwitcher": {
     "title": "Language",
@@ -300,5 +407,45 @@
       "subtitle": "Join Portfoland and create a portfolio that actually represents you.",
       "button": "Create your portfolio"
     }
+  },
+  "skillEnhancement": {
+    "tab": "Enhance",
+    "tabStats": "Stats",
+    "tabXP": "XP",
+    "toNextLevel": "To reach next level:",
+    "relatedSkills": "Related Skills",
+    "resources": "Learning Resources",
+    "alreadyAdded": "Added",
+    "addSkill": "Add",
+    "loadingSuggestions": "Getting AI suggestions...",
+    "getSuggestions": "Get AI Suggestions",
+    "getSuggestionsHint": "Costs 1 life",
+    "connectGithub": "Connect GitHub",
+    "connectGithubHint": "Validate your skills with real code",
+    "takeAssessment": "Take Assessment",
+    "takeAssessmentHint": "Earn a Verified badge",
+    "costFree": "Free",
+    "costPaid": "Paid",
+    "verifyLink": "AI-generated link — verify before using",
+    "masterLevel": "You've reached Master level! Focus on teaching others and open source contributions.",
+    "assessmentPassed": "Assessment passed",
+    "reportBroken": "Broken?",
+    "reportingBroken": "Getting replacement...",
+    "replacementFound": "Broken link replaced with a working resource",
+    "replacementFailed": "Could not find a replacement"
+  },
+  "quests": {
+    "title": "Active Missions",
+    "pending": "{count} pending",
+    "allComplete": "All missions complete for today!",
+    "comeBack": "Check back tomorrow for new quests.",
+    "claim": "Claim",
+    "claimed": "Claimed",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "expired": "Expired",
+    "weeklyLabel": "Weekly Quest",
+    "expires": "Expires {date}",
+    "xpEarned": "+{xp} XP earned!"
   }
 }

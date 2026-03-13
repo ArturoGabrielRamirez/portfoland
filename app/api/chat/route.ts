@@ -1,17 +1,18 @@
 
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
-import { streamText, tool } from 'ai';
+import { streamText } from 'ai';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
-import { z } from 'zod';
-import { createExperienceService } from '@/features/timeline/services/experience.service';
-import { createSkillService } from '@/features/skills/services/skill.service';
-import { updateProfileService } from '@/features/portfolio/services/portfolio.service';
 import { consumeLifeService } from '@/features/ai-quota';
-import { getUserSkillsData } from '@/features/skills/data/getUserSkills.data';
-import { getSelfAssessmentLevel, hasGitHubValidation } from '@/features/skills/types/skill';
 import { prisma } from '@/lib/prisma';
 import { logger } from '@/lib/logger';
+import {
+    getPortfolioSummary,
+    formatSummaryForPrompt,
+    type PortfolioSummary,
+} from '@/features/ai/services/contextLoader.service';
+import { getPagePrompt } from '@/features/ai/constants/pagePrompts';
+import { buildToolRegistry } from '@/features/ai/tools';
 
 const google = createGoogleGenerativeAI({
     apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
@@ -33,9 +34,15 @@ CORE TASKS:
 2. Skill Tree Analyst: suggest external learning resources when you see low-level nodes.
 3. Content Optimizer: Rephrase descriptions to be impactful.
 
+TOOLS:
+- Usa suggest_skill_path para sugerir rutas de aprendizaje. SIEMPRE especifica un 'targetRole' (ej: "Expert AI Developer") o un 'skillName'. Explica tu razonamiento en el parámetro 'reasoning'.
+- Esta herramienta resalta nodos en el Skill Tree visual. Úsala siempre que el usuario pregunte "¿qué aprender?" o "¿cómo mejorar?".
+- Always use snake_case for tool names.
+
 STRICT RULES:
 - Only discuss portfolio-related topics.
 - When you have enough info, EXECUTE the relevant tool immediately.
+- EXTREMELY IMPORTANT: After executing any tool, your VERY NEXT step MUST be to generate a conversational TEXT response to the user summarizing the result. YOU ARE FORBIDDEN FROM STOPPING SILENTLY. You MUST ALWAYS speak to the user after a tool executes.
 - Be concise.
 - Always respond in English.
 `;
@@ -53,15 +60,37 @@ TAREAS PRINCIPALES:
 2. Analista del Árbol de Skills: Sugiere recursos de aprendizaje externos cuando veas nodos de bajo nivel.
 3. Optimizador de Contenido: Reformula descripciones para que sean impactantes.
 
+TOOLS:
+- Usa suggest_skill_path para sugerir rutas de aprendizaje. SIEMPRE especifica un 'targetRole' (ej: "Experto en IA") o un 'skillName'. Explica tu razonamiento en el parámetro 'reasoning'.
+- Esta herramienta resalta nodos en el Skill Tree visual de forma inmediata. Úsala siempre que el usuario pregunte "¿qué aprender?" o "¿cómo mejorar?".
+- Usa siempre snake_case para los nombres de las herramientas.
+
 REGLAS ESTRICTAS:
 - Solo discute temas relacionados con portfolio.
 - Cuando tengas suficiente info, EJECUTA el tool relevante inmediatamente.
+- EXTREMADAMENTE IMPORTANTE: Después de ejecutar cualquier tool, tu SIGUIENTE paso DEBE SER generar una respuesta de TEXTO conversacional resumiendo el resultado. TIENES PROHIBIDO DETENERTE EN SILENCIO. SIEMPRE DEBES hablarle al usuario después de que un tool se ejecuta.
 - Sé conciso.
 - Siempre responde en español.
 `;
 
-function getSystemPrompt(locale?: string): string {
-    return locale === 'es' ? TECH_SYSTEM_PROMPT_ES : TECH_SYSTEM_PROMPT_EN;
+function getSystemPrompt(locale?: string, pageContext?: string, summary?: PortfolioSummary): string {
+    const base = locale === 'es' ? TECH_SYSTEM_PROMPT_ES : TECH_SYSTEM_PROMPT_EN;
+
+    let prompt = base;
+
+    // Append portfolio summary context
+    if (summary) {
+        prompt += '\n' + formatSummaryForPrompt(summary);
+    }
+
+    // Append page-specific instructions
+    const pagePrompt = getPagePrompt(pageContext, locale || 'en');
+    if (pagePrompt) {
+        const prefix = locale === 'es' ? 'PAGINA ACTUAL' : 'CURRENT PAGE';
+        prompt += `\n${prefix}: ${pagePrompt}`;
+    }
+
+    return prompt;
 }
 
 export async function POST(req: Request) {
@@ -85,8 +114,27 @@ export async function POST(req: Request) {
         const userId = session.user.id;
 
         // Parse body BEFORE lives check so locale is available for error messages
-        const { messages, locale } = await req.json();
-        logger.debug(`User: ${userId} | Messages: ${messages?.length || 0} | Locale: ${locale || 'en'}`);
+        let body: any;
+        try {
+            body = await req.json();
+        } catch (e: any) {
+            logger.error(`MALFORMED_JSON | User: ${userId} | Error: ${e.message}`);
+            return new Response(JSON.stringify({ error: 'Invalid JSON request body' }), {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
+
+        const { messages, locale, pageContext } = body;
+        if (!messages || !Array.isArray(messages)) {
+            logger.error(`INVALID_MESSAGES | User: ${userId}`);
+            return new Response(JSON.stringify({ error: 'Messages are required and must be an array' }), {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
+
+        logger.debug(`User: ${userId} | Messages: ${messages.length} | Locale: ${locale || 'en'}`);
 
         // Check and consume AI lives (3 per day limit)
         const { hasLives, remainingLives, error } = await consumeLifeService(userId, locale || 'en');
@@ -126,121 +174,19 @@ export async function POST(req: Request) {
             logger.debug(`CONVERSATION_FOUND | ID: ${conversation.id}`);
         }
 
+        // Load portfolio context and build page-aware tools
+        const summary = await getPortfolioSummary(userId);
+        const tools = buildToolRegistry(userId, pageContext);
+
         const result = streamText({
             model: google('gemini-2.0-flash'),
             messages,
-            system: getSystemPrompt(locale),
+            system: getSystemPrompt(locale, pageContext, summary),
             maxSteps: 5,
-            tools: {
-                add_experience: tool({
-                    description: 'Add a new work experience or project.',
-                    parameters: z.object({
-                        type: z.enum(['WORK', 'EDUCATION', 'PROJECT', 'CERTIFICATION']),
-                        title: z.string(),
-                        company: z.string(),
-                        address: z.string(),
-                        startDate: z.string(),
-                        endDate: z.string().optional(),
-                        description: z.string(),
-                    }),
-                    execute: async (params) => {
-                        logger.debug(`TOOL: add_experience`, params);
-                        return await createExperienceService({
-                            userId,
-                            ...params,
-                            startDate: new Date(params.startDate),
-                            endDate: params.endDate ? new Date(params.endDate) : null,
-                            latitude: 0,
-                            longitude: 0,
-                        });
-                    },
-                }),
-                add_skill: tool({
-                    description: 'Add a new skill node.',
-                    parameters: z.object({
-                        name: z.string(),
-                        level: z.number().min(1).max(5),
-                    }),
-                    execute: async ({ name, level }) => {
-                        logger.debug(`TOOL: add_skill`, { name, level });
-                        return await createSkillService({
-                            userId,
-                            name,
-                            selfAssessmentLevel: level as any,
-                        });
-                    },
-                }),
-                get_portfolio_data: tool({
-                    description: "Retrieves the current user's skills and experiences.",
-                    parameters: z.object({
-                        reason: z.string().describe('Reason for fetching data'),
-                    }),
-                    execute: async () => {
-                        logger.debug(`TOOL: get_portfolio_data`);
-                        try {
-                            const skills = await getUserSkillsData(userId);
-                            return (skills || []).map(s => ({
-                                name: s?.skill?.name || 'Unknown',
-                                level: (s as any)?.level || 1,
-                                category: s?.skill?.category?.name || 'General',
-                            }));
-                        } catch (err: any) {
-                            logger.error('TOOL_ERROR:', err);
-                            return { error: 'Failed' };
-                        }
-                    },
-                }),
-                get_skill_tree: tool({
-                    description: "Retrieves the user's complete skill tree with detailed information including levels, categories, XP, and validation status. Use this to analyze skill progression and suggest learning paths.",
-                    parameters: z.object({
-                        reason: z.string().describe('Why you need the skill tree data (e.g., to suggest next skills to learn)'),
-                    }),
-                    execute: async () => {
-                        logger.debug(`TOOL: get_skill_tree`);
-                        try {
-                            const userSkills = await getUserSkillsData(userId);
-
-                            if (!userSkills || userSkills.length === 0) {
-                                return {
-                                    message: 'No skills found. User should add skills to their profile.',
-                                    skills: []
-                                };
-                            }
-
-                            const skillTree = userSkills.map(us => ({
-                                name: us.skill.name,
-                                category: us.skill.category.name,
-                                selfAssessmentLevel: getSelfAssessmentLevel(us.sources),
-                                totalXP: us.totalXP,
-                                // hasGitHubValidation now reads the real githubValidated field
-                                // from the UserSkill Prisma model (added in TG1 schema change)
-                                githubValidated: hasGitHubValidation(us),
-                                manuallyAdded: us.sources.some(s => s.sourceType === 'MANUAL'),
-                                experienceBased: us.sources.some(s => s.sourceType === 'EXPERIENCE'),
-                                sourcesCount: us.sources.length,
-                            }));
-
-                            // Group by category for better analysis
-                            const byCategory = skillTree.reduce((acc, skill) => {
-                                if (!acc[skill.category]) {
-                                    acc[skill.category] = [];
-                                }
-                                acc[skill.category].push(skill);
-                                return acc;
-                            }, {} as Record<string, typeof skillTree>);
-
-                            return {
-                                totalSkills: skillTree.length,
-                                categories: Object.keys(byCategory),
-                                skillsByCategory: byCategory,
-                                skills: skillTree,
-                            };
-                        } catch (err: any) {
-                            logger.error('TOOL_ERROR (get_skill_tree):', err);
-                            return { error: 'Failed to retrieve skill tree', details: err.message };
-                        }
-                    },
-                }),
+            toolChoice: 'auto',
+            tools,
+            async onStepFinish(event) {
+                logger.debug(`STEP_FINISH | Reason: ${event.finishReason} | ToolCalls: ${event.toolCalls?.length || 0} | ToolResults: ${event.toolResults?.length || 0}`);
             },
             async onFinish({ text, response }) {
                 logger.debug(`AI_FINISHED | User: ${userId}`);

@@ -7,9 +7,9 @@
 
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { setRequestLocale, getTranslations, getMessages } from 'next-intl/server';
 
 import { auth } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
 import { getUserSkillsData, getSkillCategoriesData } from '@/features/skills/data';
 import { checkOnboarding } from '@/features/onboarding/utils/checkOnboarding';
 import { getGitHubConnectionStatus } from '@/features/github/data/getGitHubConnectionStatus.data';
@@ -17,49 +17,46 @@ import { DEFAULT_ASSESSMENT_TOKENS } from '@/features/assessment/constants/token
 import { ASSESSMENT_SUPPORTED_SKILL_SLUGS } from '@/features/assessment/constants/supportedSkills';
 import { getAssessmentHistoryData } from '@/features/assessment/data/getAssessmentHistory.data';
 import type { AssessmentTokenInfo } from '@/features/assessment/types/assessment';
+import { getDashboardPageData } from '@/features/dashboard/data/getDashboardPageData.data';
+import { DashboardPageLayout } from '@/features/tech';
+import { getDisplayName, getInitials } from '@/features/dashboard/utils/userHelpers';
 import { DashboardSkillsView } from './DashboardSkillsView';
+import { SkillsIntlProvider } from './SkillsIntlProvider';
 
-export default async function DashboardSkillsPage() {
+export default async function DashboardSkillsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   // Check authentication
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
   if (!session?.user?.id) {
-    redirect('/login');
+    redirect(`/${locale}/login`);
   }
 
   await checkOnboarding(session.user.id);
 
-  // Fetch user with complete data — includes GitHub sync fields and meta for assessment tokens
-  const [dbUser, githubStatus] = await Promise.all([
-    prisma.user.findUnique({
-      where: { id: session.user.id },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        username: true,
-        image: true,
-        portfolioMode: true,
-        githubSyncedAt: true,
-        githubStats: true,
-        meta: true,
-      },
-    }),
+  // Fetch shared page data + skills + categories + github status in parallel
+  const [pageData, skills, categories, githubStatus] = await Promise.all([
+    getDashboardPageData(session.user.id),
+    getUserSkillsData(session.user.id).catch(() => []),
+    getSkillCategoriesData(session.user.id).catch(() => []),
     getGitHubConnectionStatus(session.user.id),
   ]);
 
-  // Fetch user's skills and categories data
-  const [skills, categories] = await Promise.all([
-    getUserSkillsData(session.user.id).catch(() => []),
-    getSkillCategoriesData(session.user.id).catch(() => []),
-  ]);
+  // Parse assessment tokens from User.meta — need a separate fetch for meta field
+  // since getDashboardPageData doesn't include it
+  const { prisma } = await import('@/lib/prisma');
+  const userMeta = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { meta: true },
+  });
 
-  // Parse assessment tokens from User.meta — fall back to defaults if absent
   const todayISO = new Date().toISOString().split('T')[0];
   const assessmentTokens: AssessmentTokenInfo =
-    (dbUser?.meta as { assessmentTokens?: AssessmentTokenInfo } | null)?.assessmentTokens ??
+    (userMeta?.meta as { assessmentTokens?: AssessmentTokenInfo } | null)?.assessmentTokens ??
     { remaining: DEFAULT_ASSESSMENT_TOKENS, lastResetDate: todayISO };
 
   // Filter skills to those eligible for assessment
@@ -79,31 +76,71 @@ export default async function DashboardSkillsPage() {
   const masterSkills = skills.filter((s) => s.level === 5).length;
   const categoriesUsed = new Set(skills.map((s) => s.skill.categoryId)).size;
 
+  const displayName = getDisplayName(pageData.user.name, pageData.user.email);
+  const initials = getInitials(pageData.user.name, pageData.user.email);
+
+  const tWelcome = await getTranslations({ locale, namespace: 'dashboard.welcomeCard' });
+  const tDashboard = await getTranslations({ locale, namespace: 'dashboard' });
+  const messages = await getMessages();
+
   return (
-    <DashboardSkillsView
-      skills={skills}
-      categories={categories}
-      stats={{
-        totalSkills,
-        totalXP,
-        masterSkills,
-        categoriesUsed,
+    <DashboardPageLayout
+      pageContext="skills"
+      locale={locale}
+      portfolioMode={pageData.user.portfolioMode}
+      userName={displayName}
+      userInitial={initials}
+      userImage={pageData.user.image}
+      level={pageData.stats.level}
+      currentXP={pageData.stats.totalXP}
+      maxXP={pageData.stats.nextLevelXP}
+      streakDays={pageData.stats.currentStreak}
+      activeSkillsCount={pageData.stats.activeSkillsCount}
+      translations={{
+        welcomeTitle: tDashboard('welcome', { name: displayName }),
+        welcomeSubtitle: tDashboard('welcomeSubtitle'),
+        streak: tWelcome('streak', { count: pageData.stats.currentStreak }),
+        quickActionsTitle: tWelcome('quickActions'),
+        xpToLevel: tWelcome('xpToLevel', {
+          xp: pageData.stats.xpToNextLevel,
+          level: pageData.stats.level + 1,
+        }),
       }}
-      user={{
-        id: session.user.id,
-        name: dbUser?.name ?? session.user.name ?? 'User',
-        email: dbUser?.email ?? session.user.email,
-        username: dbUser?.username || null,
-        image: dbUser?.image ?? session.user.image ?? null,
-        portfolioMode: (dbUser?.portfolioMode ?? 'classic') as 'classic' | 'tech',
+      bootStats={{
+        totalXP: pageData.stats.totalXP,
+        level: pageData.stats.level,
+        activeSkillsCount: pageData.stats.activeSkillsCount,
+        currentStreak: pageData.stats.currentStreak,
+        achievements: pageData.stats.achievements,
       }}
-      githubSyncedAt={githubStatus.syncedAt}
-      githubStats={githubStatus.stats}
-      isGitHubConnected={githubStatus.isConnected}
-      assessmentTokens={assessmentTokens}
-      supportedUserSkills={supportedUserSkills}
-      assessmentHistory={assessmentHistory}
-    />
+    >
+      <SkillsIntlProvider locale={locale} messages={messages}>
+        <DashboardSkillsView
+          skills={skills}
+          categories={categories}
+          stats={{
+            totalSkills,
+            totalXP,
+            masterSkills,
+            categoriesUsed,
+          }}
+          user={{
+            id: pageData.user.id,
+            name: pageData.user.name,
+            email: pageData.user.email,
+            username: pageData.user.username,
+            image: pageData.user.image,
+            portfolioMode: pageData.user.portfolioMode,
+          }}
+          githubSyncedAt={githubStatus.syncedAt}
+          githubStats={githubStatus.stats}
+          isGitHubConnected={githubStatus.isConnected}
+          assessmentTokens={assessmentTokens}
+          supportedUserSkills={supportedUserSkills}
+          assessmentHistory={assessmentHistory}
+        />
+      </SkillsIntlProvider>
+    </DashboardPageLayout>
   );
 }
 

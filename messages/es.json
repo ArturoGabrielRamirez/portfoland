@@ -38,7 +38,8 @@
     "signUp": "Registrarse",
     "signOut": "Cerrar Sesion",
     "profile": "Perfil",
-    "language": "Idioma"
+    "language": "Idioma",
+    "cvGenerator": "Generador de CV"
   },
   "auth": {
     "login": {
@@ -129,6 +130,25 @@
   "dashboard": {
     "welcome": "Bienvenido de nuevo, {name}!",
     "welcomeSubtitle": "Continua construyendo tu aventura profesional",
+    "skills": {
+      "title": "Árbol de Skills",
+      "subtitle": "Visualiza y gestiona tus nodos técnicos",
+      "viewPublic": "Ver Perfil Público",
+      "addSkill": "Agregar Habilidad",
+      "stats": {
+        "totalSkills": "Total Skills",
+        "totalXP": "XP Total",
+        "mastered": "Dominadas",
+        "categories": "Categorías"
+      },
+      "legend": {
+        "core": "Core",
+        "backend": "Backend",
+        "frontend": "Frontend",
+        "tools": "Herramientas",
+        "softSkills": "Soft Skills"
+      }
+    },
     "welcomeCard": {
       "streak": "{count} dias de racha",
       "quickActions": "Acciones Rapidas",
@@ -197,6 +217,50 @@
         "title": "Actividad Reciente",
         "viewAll": "VER TODO"
       },
+      "portfolio": {
+        "title": "Ajustes del Portafolio",
+        "subtitle": "Personaliza tu presencia pública y el orden de las secciones",
+        "viewPublic": "Ver Portafolio Público",
+        "sections": {
+          "about": "Sobre Ti",
+          "displayName": "Nombre para Mostrar",
+          "displayNamePlaceholder": "Ingresa tu nombre profesional",
+          "bio": "Biografía / Narrativa Profesional",
+          "bioPlaceholder": "Cuenta tu historia profesional. Soporta Markdown.",
+          "markdownTip": "Soporta GitHub Flavored Markdown",
+          "previewLabel": "Vista Previa",
+          "avatar": "Avatar de Perfil",
+          "experience": "Historial de Carrera",
+          "experienceNote": "Gestiona tu timeline en la sección de Línea de Tiempo",
+          "experienceNote2": "Esta sección solo alterna la visibilidad",
+          "skills": "Habilidades Técnicas",
+          "skillsNote": "Gestiona tus habilidades en la sección de Árbol de Skills",
+          "projects": "Muestra de Proyectos",
+          "projectsNote": "Gestiona tus proyectos en la sección de Proyectos",
+          "socialLinks": "Canales de Contacto",
+          "github": "Perfil de GitHub",
+          "linkedin": "Perfil de LinkedIn",
+          "externalChannels": "Canales Externos",
+          "addNew": "Agregar Canal",
+          "label": "Etiqueta (ej. Twitter)",
+          "url": "URL (https://...)",
+          "noLinks": "No hay canales personalizados aún"
+        },
+        "preferences": {
+          "title": "Preferencias de Interfaz",
+          "interface": "Paradigma Visual",
+          "description": "Cambia entre vistas Tech (Datos) y Clásica (Limpia)"
+        },
+        "actions": {
+          "syncing": "Sincronizando...",
+          "save": "Guardar Cambios"
+        },
+        "messages": {
+          "updated": "Perfil actualizado exitosamente",
+          "error": "Error al actualizar el perfil",
+          "unexpectedError": "Ocurrió un error inesperado"
+        }
+      },
       "quickActions": {
         "timeline": "Linea de Tiempo",
         "projects": "Proyectos",
@@ -210,7 +274,8 @@
     "timeline": "Linea de Tiempo",
     "skills": "Habilidades",
     "projects": "Proyectos",
-    "online": "EN LINEA"
+    "online": "EN LINEA",
+    "cv": "CV"
   },
   "languageSwitcher": {
     "title": "Idioma",
@@ -300,5 +365,87 @@
       "subtitle": "Únete a Portfoland y crea un portfolio que realmente te represente.",
       "button": "Crear tu portfolio"
     }
+  },
+  "cv": {
+    "pageTitle": "Generador de CV",
+    "generateButton": "Generar CV",
+    "analyzeButton": "Analizar CV",
+    "downloadButton": "Descargar PDF",
+    "newButton": "Nuevo CV",
+    "targetJobLabel": "Puesto Objetivo (opcional)",
+    "targetJobPlaceholder": "ej. Desarrollador Frontend Senior",
+    "jobDescriptionLabel": "Descripcion del Puesto (opcional)",
+    "jobDescriptionPlaceholder": "Pega la descripcion del puesto aqui para optimizacion ATS...",
+    "emptyState": "Genera tu primer CV desde los datos de tu portfolio. Opcionalmente agrega un puesto objetivo para personalizarlo.",
+    "generating": "Generando...",
+    "previewTitle": "Vista Previa del CV",
+    "savedCVs": "CVs Guardados",
+    "noSavedCVs": "No hay CVs generados aun",
+    "deleteConfirm": "Estas seguro de que quieres eliminar este CV?",
+    "generateSuccess": "CV generado exitosamente",
+    "deleteSuccess": "CV eliminado exitosamente",
+    "analysisTypes": {
+      "reality_check": "Revision de Realidad",
+      "ats_optimization": "Optimizacion ATS",
+      "impact_improvement": "Mejora de Impacto",
+      "keyword_gap": "Analisis de Palabras Clave",
+      "weakness_detection": "Deteccion de Debilidades",
+      "differentiation": "Diferenciacion"
+    },
+    "analysisDescriptions": {
+      "reality_check": "Obtiene un analisis de tu CV desde la perspectiva de un reclutador",
+      "ats_optimization": "Optimiza tu CV para Sistemas de Seguimiento de Candidatos",
+      "impact_improvement": "Convierte responsabilidades en logros medibles",
+      "keyword_gap": "Compara tu CV con la descripcion del puesto",
+      "weakness_detection": "Identifica brechas laborales y señales de alerta",
+      "differentiation": "Descubre tu propuesta de valor unica"
+    },
+    "requiresJobDescription": "Requiere descripcion del puesto",
+    "errors": {
+      "generateFailed": "Error al generar el CV. Por favor, intenta de nuevo.",
+      "analyzeFailed": "Error al analizar el CV. Por favor, intenta de nuevo.",
+      "deleteFailed": "Error al eliminar el CV. Por favor, intenta de nuevo.",
+      "downloadFailed": "Error al descargar el PDF. Por favor, intenta de nuevo."
+    }
+  },
+  "skillEnhancement": {
+    "tab": "Mejorar",
+    "tabStats": "Stats",
+    "tabXP": "XP",
+    "toNextLevel": "Para llegar al siguiente nivel:",
+    "relatedSkills": "Habilidades Relacionadas",
+    "resources": "Recursos de Aprendizaje",
+    "alreadyAdded": "Agregado",
+    "addSkill": "Agregar",
+    "loadingSuggestions": "Obteniendo sugerencias de IA...",
+    "getSuggestions": "Obtener Sugerencias de IA",
+    "getSuggestionsHint": "Cuesta 1 vida",
+    "connectGithub": "Conectar GitHub",
+    "connectGithubHint": "Valida tus habilidades con codigo real",
+    "takeAssessment": "Tomar Evaluacion",
+    "takeAssessmentHint": "Gana un badge de Verificado",
+    "costFree": "Gratis",
+    "costPaid": "De pago",
+    "verifyLink": "Enlace generado por IA — verifica antes de usar",
+    "masterLevel": "Alcanzaste el nivel Master! Enfocate en enseniar y contribuir a proyectos open source.",
+    "assessmentPassed": "Evaluacion aprobada",
+    "reportBroken": "Roto?",
+    "reportingBroken": "Buscando reemplazo...",
+    "replacementFound": "Enlace roto reemplazado por uno funcional",
+    "replacementFailed": "No se pudo encontrar un reemplazo"
+  },
+  "quests": {
+    "title": "Misiones Activas",
+    "pending": "{count} pendientes",
+    "allComplete": "!Todas las misiones completadas hoy!",
+    "comeBack": "Vuelve manana para nuevas misiones.",
+    "claim": "Reclamar",
+    "claimed": "Reclamado",
+    "inProgress": "En Progreso",
+    "completed": "Completado",
+    "expired": "Expirado",
+    "weeklyLabel": "Mision Semanal",
+    "expires": "Expira {date}",
+    "xpEarned": "+{xp} XP ganados!"
   }
 }

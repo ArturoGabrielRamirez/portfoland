@@ -6,50 +6,83 @@
 
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { auth } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
 import { getProjectsByUserIdData } from '@/features/projects/data';
 import { checkOnboarding } from '@/features/onboarding/utils/checkOnboarding';
+import { getDashboardPageData } from '@/features/dashboard/data/getDashboardPageData.data';
+import { DashboardPageLayout } from '@/features/tech';
+import { getDisplayName, getInitials } from '@/features/dashboard/utils/userHelpers';
 import { DashboardProjectsView } from './DashboardProjectsView';
 
-export default async function DashboardProjectsPage() {
+export default async function DashboardProjectsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
   if (!session?.user?.id) {
-    redirect('/login');
+    redirect(`/${locale}/login`);
   }
-
-  // Fetch user with complete data
-  const dbUser = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      username: true,
-      image: true,
-      portfolioMode: true,
-    },
-  });
 
   await checkOnboarding(session.user.id);
 
-  const projects = await getProjectsByUserIdData(session.user.id);
+  const [pageData, projects] = await Promise.all([
+    getDashboardPageData(session.user.id),
+    getProjectsByUserIdData(session.user.id),
+  ]);
+
+  const displayName = getDisplayName(pageData.user.name, pageData.user.email);
+  const initials = getInitials(pageData.user.name, pageData.user.email);
+
+  const tWelcome = await getTranslations({ locale, namespace: 'dashboard.welcomeCard' });
+  const tDashboard = await getTranslations({ locale, namespace: 'dashboard' });
 
   return (
-    <DashboardProjectsView
-      projects={projects}
-      user={{
-        id: session.user.id,
-        name: dbUser?.name ?? session.user.name ?? 'User',
-        email: dbUser?.email ?? session.user.email,
-        username: dbUser?.username || null,
-        image: dbUser?.image ?? session.user.image ?? null,
-        portfolioMode: (dbUser?.portfolioMode ?? 'classic') as 'classic' | 'tech',
+    <DashboardPageLayout
+      pageContext="projects"
+      locale={locale}
+      portfolioMode={pageData.user.portfolioMode}
+      userName={displayName}
+      userInitial={initials}
+      userImage={pageData.user.image}
+      level={pageData.stats.level}
+      currentXP={pageData.stats.totalXP}
+      maxXP={pageData.stats.nextLevelXP}
+      streakDays={pageData.stats.currentStreak}
+      activeSkillsCount={pageData.stats.activeSkillsCount}
+      translations={{
+        welcomeTitle: tDashboard('welcome', { name: displayName }),
+        welcomeSubtitle: tDashboard('welcomeSubtitle'),
+        streak: tWelcome('streak', { count: pageData.stats.currentStreak }),
+        quickActionsTitle: tWelcome('quickActions'),
+        xpToLevel: tWelcome('xpToLevel', {
+          xp: pageData.stats.xpToNextLevel,
+          level: pageData.stats.level + 1,
+        }),
       }}
-    />
+      bootStats={{
+        totalXP: pageData.stats.totalXP,
+        level: pageData.stats.level,
+        activeSkillsCount: pageData.stats.activeSkillsCount,
+        currentStreak: pageData.stats.currentStreak,
+        achievements: pageData.stats.achievements,
+      }}
+    >
+      <DashboardProjectsView
+        projects={projects}
+        user={{
+          id: pageData.user.id,
+          name: pageData.user.name,
+          email: pageData.user.email,
+          username: pageData.user.username,
+          image: pageData.user.image,
+          portfolioMode: pageData.user.portfolioMode,
+        }}
+      />
+    </DashboardPageLayout>
   );
 }
 

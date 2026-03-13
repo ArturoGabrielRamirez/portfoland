@@ -571,8 +571,25 @@ export function CRTWithAI({
                 if (parsed.apiMessages && Array.isArray(parsed.apiMessages)) {
                     apiMessagesRef.current = parsed.apiMessages
                 }
+                return // localStorage has history, skip DB fetch
             }
         } catch { }
+
+        // No localStorage history — load from DB for cross-device persistence
+        fetch("/api/chat/history")
+            .then(r => r.ok ? r.json() : null)
+            .then((data: { messages?: Array<{ role: string; content: string }> } | null) => {
+                if (!data?.messages?.length) return
+                const dbMsgs = data.messages as APIChatMessage[]
+                const uiMsgs: ChatMessage[] = dbMsgs
+                    .filter(m => m.role === "user" || m.role === "assistant")
+                    .map(m => ({ role: m.role === "user" ? "user" : "ai", content: m.content }))
+                if (uiMsgs.length > 0) {
+                    setChatMessages(uiMsgs)
+                    apiMessagesRef.current = dbMsgs
+                }
+            })
+            .catch(() => { })
     }, [])
 
     useEffect(() => {
@@ -716,6 +733,7 @@ export function CRTWithAI({
         abortControllerRef.current = abortController
 
         let streamedText = ""
+        let toolResultText = "" // fallback if Gemini doesn't generate text after tool
 
         try {
             const response = await fetch("/api/chat", {
@@ -844,8 +862,13 @@ export function CRTWithAI({
                                 for (const tr of results) {
                                     const r = tr.result || tr
                                     if (r && typeof r === 'object') {
+                                        // Highlight skills from tool result (more reliable than from args)
+                                        if (r.skillsToLearn && Array.isArray(r.skillsToLearn) && r.skillsToLearn.length > 0) {
+                                            setHighlightedSkills(r.skillsToLearn)
+                                        }
+
                                         let resMsg = ""
-                                        if (r.skillsToLearn && Array.isArray(r.skillsToLearn)) {
+                                        if (r.skillsToLearn && Array.isArray(r.skillsToLearn) && r.skillsToLearn.length > 0) {
                                             resMsg += `\n\n> TARGET NODES: ${r.skillsToLearn.join(', ')}`
                                         }
                                         if (r.nextLevelFocus) {
@@ -858,6 +881,7 @@ export function CRTWithAI({
                                             resMsg += `\n> SYSTEM: ${r.message}`
                                         }
                                         if (resMsg) {
+                                            toolResultText += resMsg // accumulate for fallback
                                             setChatMessages(prev => {
                                                 const updated = [...prev]
                                                 const lastIdx = updated.length - 1
@@ -882,8 +906,11 @@ export function CRTWithAI({
                 }
             }
 
-            if (streamedText) {
-                apiMessagesRef.current = [...apiMessagesRef.current, { role: "assistant", content: streamedText }]
+            // Use streamed text; fall back to tool result summary so apiMessagesRef
+            // is always updated and AI has context for the next turn
+            const finalAssistantText = streamedText || toolResultText.trim()
+            if (finalAssistantText) {
+                apiMessagesRef.current = [...apiMessagesRef.current, { role: "assistant", content: finalAssistantText }]
             }
             setAIState("success")
             setTimeout(() => setAIState("awake"), 2000)

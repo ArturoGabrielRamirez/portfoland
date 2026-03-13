@@ -2,9 +2,8 @@
  * AI Tool Registry
  *
  * Barrel export for all AI tools and the registry builder.
- * All tools are available on every page — pageContext only affects the system
- * prompt (proactive suggestions), not tool availability. This gives users
- * full AI capabilities regardless of which dashboard page they're on.
+ * All tools use Zod schemas with at least one required property to bypass
+ * the @ai-sdk/google empty-schema serialization bug with additionalProperties:false.
  */
 
 import { tool } from 'ai'
@@ -24,18 +23,15 @@ import {
 } from './writeTools'
 
 // =============================================================================
-// Existing Tools (extracted from app/api/chat/route.ts)
+// Existing Tools
 // =============================================================================
 
-/**
- * The 4 original tools that were inline in the chat route.
- * Extracted here without changing behavior.
- */
 export function existingTools(userId: string) {
   return {
     add_experience: tool({
       description: 'Add a new work experience or project.',
       parameters: z.object({
+        reason: z.string().describe('Why you are adding this experience').default('User requested'),
         type: z.enum(['WORK', 'EDUCATION', 'PROJECT', 'CERTIFICATION']),
         title: z.string(),
         company: z.string(),
@@ -46,30 +42,49 @@ export function existingTools(userId: string) {
       }),
       execute: async (params) => {
         logger.debug('TOOL: add_experience', params)
-        return await createExperienceService({
-          userId,
-          ...params,
-          startDate: new Date(params.startDate),
-          endDate: params.endDate ? new Date(params.endDate) : null,
-          latitude: 0,
-          longitude: 0,
-        })
+        try {
+          const result = await createExperienceService({
+            userId,
+            ...params,
+            startDate: new Date(params.startDate),
+            endDate: params.endDate ? new Date(params.endDate) : null,
+            latitude: 0,
+            longitude: 0,
+          })
+          return {
+            ...result,
+            _ai_instruction: "MUST DO: Respond to the user confirming the experience was added successfully."
+          }
+        } catch (err: any) {
+          logger.error('TOOL_ERROR (add_experience):', err)
+          return { error: 'Failed to add experience', details: err.message } as any
+        }
       },
     }),
 
     add_skill: tool({
       description: 'Add a new skill node.',
       parameters: z.object({
+        reason: z.string().describe('Why you are adding this skill').default('User requested'),
         name: z.string(),
         level: z.number().min(1).max(5),
       }),
       execute: async ({ name, level }) => {
         logger.debug('TOOL: add_skill', { name, level })
-        return await createSkillService({
-          userId,
-          name,
-          selfAssessmentLevel: level as any,
-        })
+        try {
+          const result = await createSkillService({
+            userId,
+            name,
+            selfAssessmentLevel: level as any,
+          })
+          return {
+            ...result,
+            _ai_instruction: "MUST DO: Respond to the user confirming the skill was added successfully."
+          }
+        } catch (err: any) {
+          logger.error('TOOL_ERROR (add_skill):', err)
+          return { error: 'Failed to add skill', details: err.message } as any
+        }
       },
     }),
 
@@ -82,14 +97,17 @@ export function existingTools(userId: string) {
         logger.debug('TOOL: get_portfolio_data')
         try {
           const skills = await getUserSkillsData(userId)
-          return (skills || []).map(s => ({
-            name: s?.skill?.name || 'Unknown',
-            level: (s as any)?.level || 1,
-            category: s?.skill?.category?.name || 'General',
-          }))
+          return {
+            skills: (skills || []).map(s => ({
+              name: s?.skill?.name || 'Unknown',
+              level: (s as any)?.level || 1,
+              category: s?.skill?.category?.name || 'General',
+            })),
+            _ai_instruction: "MUST DO: Respond to the user with a brief summary of their current portfolio data."
+          }
         } catch (err: any) {
           logger.error('TOOL_ERROR:', err)
-          return { error: 'Failed' }
+          return { error: 'Failed' } as any
         }
       },
     }),
@@ -122,7 +140,6 @@ export function existingTools(userId: string) {
             sourcesCount: us.sources.length,
           }))
 
-          // Group by category for better analysis
           const byCategory = skillTree.reduce((acc, skill) => {
             if (!acc[skill.category]) {
               acc[skill.category] = []
@@ -136,24 +153,46 @@ export function existingTools(userId: string) {
             categories: Object.keys(byCategory),
             skillsByCategory: byCategory,
             skills: skillTree,
+            _ai_instruction: "MUST DO: Analyze the skill tree data and respond to the user with a helpful insight or suggestion."
           }
         } catch (err: any) {
           logger.error('TOOL_ERROR (get_skill_tree):', err)
-          return { error: 'Failed to retrieve skill tree', details: err.message }
+          return { error: 'Failed to retrieve skill tree', details: err.message } as any
         }
       },
     }),
 
-    suggestLearningPath: tool({
-      description: "Suggest a learning path of specific skills for the user based on their goals and what they are missing.",
+    // DEPRECATED: Wrappers for migration to suggest_skill_path
+    suggest_learning_path: tool({
+      description: 'DEPRECATED: Use suggest_skill_path instead.',
       parameters: z.object({
-        targetRole: z.string().describe("The target role or goal the user wants to achieve"),
-        skillsToLearn: z.array(z.string()).describe("A list of specific skill names the user should learn next. These must be precise skill names (e.g. 'React', 'TypeScript')."),
-        reasoning: z.string().describe("Brief explanation of why you suggested these skills"),
+        reason: z.string().describe('Migration reason').default('Legacy wrapper call'),
+        skillName: z.string().optional(),
+        locale: z.string().optional(),
       }),
-      execute: async ({ targetRole, skillsToLearn, reasoning }) => {
-        logger.debug('TOOL: suggestLearningPath', { targetRole, skillsToLearn, reasoning })
-        return { success: true, targetRole, skillsToLearn, reasoning }
+      execute: async (args) => {
+        logger.debug('TOOL: suggest_learning_path (DEPRECATED wrapper)')
+        const registry = allReadTools(userId) as any
+        return await registry.suggest_skill_path.execute(args)
+      },
+    }),
+
+    suggestLearningPath: tool({
+      description: 'DEPRECATED: Use suggest_skill_path instead.',
+      parameters: z.object({
+        reason: z.string().describe('Migration reason').default('Legacy wrapper call'),
+        targetRole: z.string().optional(),
+        skillsToLearn: z.array(z.string()).optional(),
+        reasoning: z.string().optional(),
+      }),
+      execute: async (args) => {
+        logger.debug('TOOL: suggestLearningPath (DEPRECATED wrapper)')
+        const registry = allReadTools(userId) as any
+        return await registry.suggest_skill_path.execute({
+          reasoning: args.reasoning || 'Legacy fallback',
+          targetRole: args.targetRole,
+          skillsToHighlight: args.skillsToLearn,
+        })
       },
     }),
   }
@@ -163,16 +202,6 @@ export function existingTools(userId: string) {
 // Tool Registry Builder
 // =============================================================================
 
-/**
- * Build the full tool registry for the AI chat.
- *
- * All tools are always available regardless of page context.
- * Page context only affects the system prompt, not tool availability.
- *
- * @param userId - The authenticated user's ID
- * @param _pageContext - Reserved for future use (currently unused)
- * @returns All available tools merged into a single object
- */
 export function buildToolRegistry(userId: string, _pageContext?: string) {
   return {
     ...allReadTools(userId),

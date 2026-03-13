@@ -3,12 +3,11 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { LayoutDashboard, Clock, GitBranch, FolderOpen, User, Briefcase, MessageSquare, Images, FileText, Bot, Sparkles } from 'lucide-react'
+import { LayoutDashboard, Clock, GitBranch, FolderOpen, User, Briefcase, MessageSquare, Images, FileText } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { PortfolioModeToggle } from '@/features/portfolio/components/PortfolioModeToggle'
 import { LanguageSwitcher } from '@/features/i18n'
 import { UserMenu } from '@/features/dashboard/components/UserMenu'
-import { useAIContext } from '@/features/ai/context/AIContext'
 import type { PortfolioMode } from '@/features/portfolio/types/portfolio'
 
 interface DashboardNavProps {
@@ -25,7 +24,6 @@ interface DashboardNavProps {
 export function DashboardNav({ locale, user }: DashboardNavProps) {
   const pathname = usePathname()
   const t = useTranslations('nav')
-  const { isSidebarOpen, setIsSidebarOpen } = useAIContext()
 
   const navItems = [
     { href: '/dashboard', label: t('dashboard'), icon: LayoutDashboard, exact: true },
@@ -107,20 +105,6 @@ export function DashboardNav({ locale, user }: DashboardNavProps) {
 
         {/* Right: Controls */}
         <div className="flex items-center gap-3">
-          {user.portfolioMode === 'tech' && (
-            <button
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono font-bold transition-all border",
-                isSidebarOpen 
-                  ? "bg-[hsl(174,100%,50%,0.15)] text-[hsl(174,100%,50%)] border-[hsl(174,100%,50%,0.4)] shadow-[0_0_10px_hsl(174,100%,50%,0.2)]"
-                  : "bg-transparent text-cyan-500/70 border-cyan-500/20 hover:bg-cyan-500/10 hover:text-cyan-400 hover:border-cyan-500/40"
-              )}
-            >
-              {isSidebarOpen ? <Bot size={14} /> : <Sparkles size={14} />}
-              AI OVERSEER
-            </button>
-          )}
           <PortfolioModeToggle currentMode={user.portfolioMode} />
           <LanguageSwitcher isAuthenticated={true} />
           <span className="flex items-center gap-1.5 text-[10px] font-mono text-[hsl(150,100%,45%)]">

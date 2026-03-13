@@ -16,7 +16,6 @@ import { prisma } from '@/lib/prisma'
 import { cn } from '@/lib/utils'
 import { DashboardNav } from '@/features/tech'
 import { AIProvider } from '@/features/ai/context/AIContext'
-import { GlobalAIWrapper } from '@/features/ai/components/GlobalAIWrapper'
 import type { ProtectedLayoutProps } from '@/features/dashboard/types/dashboard'
 import type { PortfolioMode } from '@/features/portfolio/types/portfolio'
 
@@ -63,9 +62,7 @@ export default async function DashboardLayout({
         )}
       >
         <DashboardNav locale={locale} user={user} />
-        <GlobalAIWrapper>
-          {children}
-        </GlobalAIWrapper>
+        {children}
       </div>
     </AIProvider>
   )

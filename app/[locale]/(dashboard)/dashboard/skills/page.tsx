@@ -7,7 +7,7 @@
 
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { setRequestLocale, getTranslations } from 'next-intl/server';
+import { setRequestLocale, getTranslations, getMessages } from 'next-intl/server';
 
 import { auth } from '@/lib/auth';
 import { getUserSkillsData, getSkillCategoriesData } from '@/features/skills/data';
@@ -21,6 +21,7 @@ import { getDashboardPageData } from '@/features/dashboard/data/getDashboardPage
 import { DashboardPageLayout } from '@/features/tech';
 import { getDisplayName, getInitials } from '@/features/dashboard/utils/userHelpers';
 import { DashboardSkillsView } from './DashboardSkillsView';
+import { SkillsIntlProvider } from './SkillsIntlProvider';
 
 export default async function DashboardSkillsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -80,6 +81,7 @@ export default async function DashboardSkillsPage({ params }: { params: Promise<
 
   const tWelcome = await getTranslations({ locale, namespace: 'dashboard.welcomeCard' });
   const tDashboard = await getTranslations({ locale, namespace: 'dashboard' });
+  const messages = await getMessages();
 
   return (
     <DashboardPageLayout
@@ -112,30 +114,32 @@ export default async function DashboardSkillsPage({ params }: { params: Promise<
         achievements: pageData.stats.achievements,
       }}
     >
-      <DashboardSkillsView
-        skills={skills}
-        categories={categories}
-        stats={{
-          totalSkills,
-          totalXP,
-          masterSkills,
-          categoriesUsed,
-        }}
-        user={{
-          id: pageData.user.id,
-          name: pageData.user.name,
-          email: pageData.user.email,
-          username: pageData.user.username,
-          image: pageData.user.image,
-          portfolioMode: pageData.user.portfolioMode,
-        }}
-        githubSyncedAt={githubStatus.syncedAt}
-        githubStats={githubStatus.stats}
-        isGitHubConnected={githubStatus.isConnected}
-        assessmentTokens={assessmentTokens}
-        supportedUserSkills={supportedUserSkills}
-        assessmentHistory={assessmentHistory}
-      />
+      <SkillsIntlProvider locale={locale} messages={messages}>
+        <DashboardSkillsView
+          skills={skills}
+          categories={categories}
+          stats={{
+            totalSkills,
+            totalXP,
+            masterSkills,
+            categoriesUsed,
+          }}
+          user={{
+            id: pageData.user.id,
+            name: pageData.user.name,
+            email: pageData.user.email,
+            username: pageData.user.username,
+            image: pageData.user.image,
+            portfolioMode: pageData.user.portfolioMode,
+          }}
+          githubSyncedAt={githubStatus.syncedAt}
+          githubStats={githubStatus.stats}
+          isGitHubConnected={githubStatus.isConnected}
+          assessmentTokens={assessmentTokens}
+          supportedUserSkills={supportedUserSkills}
+          assessmentHistory={assessmentHistory}
+        />
+      </SkillsIntlProvider>
     </DashboardPageLayout>
   );
 }

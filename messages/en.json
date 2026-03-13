@@ -130,6 +130,25 @@
   "dashboard": {
     "welcome": "Welcome back, {name}!",
     "welcomeSubtitle": "Continue building your professional adventure",
+    "skills": {
+      "title": "Skill Tree",
+      "subtitle": "Visualize and manage your technical nodes",
+      "viewPublic": "View Public Profile",
+      "addSkill": "Add Skill",
+      "stats": {
+        "totalSkills": "Total Skills",
+        "totalXP": "Total XP",
+        "mastered": "Mastered",
+        "categories": "Categories"
+      },
+      "legend": {
+        "core": "Core",
+        "backend": "Backend",
+        "frontend": "Frontend",
+        "tools": "Tools",
+        "softSkills": "Soft Skills"
+      }
+    },
     "welcomeCard": {
       "streak": "{count} day streak",
       "quickActions": "Quick Actions",
@@ -197,6 +216,50 @@
       "activity": {
         "title": "Recent Activity",
         "viewAll": "VIEW ALL"
+      },
+      "portfolio": {
+        "title": "Portfolio Settings",
+        "subtitle": "Customize your public presence and section layouts",
+        "viewPublic": "View Public Portfolio",
+        "sections": {
+          "about": "About You",
+          "displayName": "Display Name",
+          "displayNamePlaceholder": "Enter your professional name",
+          "bio": "Bio / Professional Narrative",
+          "bioPlaceholder": "Tell your professional story. Supports Markdown.",
+          "markdownTip": "Supports GitHub Flavored Markdown",
+          "previewLabel": "Live Preview",
+          "avatar": "Profile Avatar",
+          "experience": "Career History",
+          "experienceNote": "Manage your timeline in the Timeline section",
+          "experienceNote2": "This section only toggles visibility",
+          "skills": "Technical Skills",
+          "skillsNote": "Manage your skills in the Skill Tree section",
+          "projects": "Project Showcases",
+          "projectsNote": "Manage your projects in the Projects section",
+          "socialLinks": "Connect Channels",
+          "github": "GitHub Profile",
+          "linkedin": "LinkedIn Profile",
+          "externalChannels": "External Channels",
+          "addNew": "Add Channel",
+          "label": "Channel Label (e.g. Twitter)",
+          "url": "URL (https://...)",
+          "noLinks": "No custom channels added yet"
+        },
+        "preferences": {
+          "title": "Interface Preferences",
+          "interface": "Visual Paradigm",
+          "description": "Switch between Tech (Data-driven) and Classic (Clean) views"
+        },
+        "actions": {
+          "syncing": "Syncing...",
+          "save": "Save Changes"
+        },
+        "messages": {
+          "updated": "Profile updated successfully",
+          "error": "Failed to update profile",
+          "unexpectedError": "An unexpected error occurred"
+        }
       },
       "quickActions": {
         "timeline": "Timeline",

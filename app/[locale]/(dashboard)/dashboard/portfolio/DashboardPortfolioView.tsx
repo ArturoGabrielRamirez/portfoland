@@ -15,7 +15,6 @@ import { cn } from '@/lib/utils';
 import { PortfolioModeToggle } from '@/features/portfolio/components/PortfolioModeToggle';
 import { ProfileImageUpload } from '@/features/portfolio/components/ProfileImageUpload';
 import { HUDPanel } from '@/features/dashboard/components/HUDPanel';
-import { AIChatContainer } from '@/features/dashboard/components/ai/AIChatContainer';
 import { ImproveBioButton } from '@/features/ai/components/ImproveBioButton';
 import { updateProfile } from '@/features/portfolio/actions/updateProfile';
 import { updatePortfolioSettingsAction } from '@/features/portfolio-settings/actions/portfolioSettingsActions';

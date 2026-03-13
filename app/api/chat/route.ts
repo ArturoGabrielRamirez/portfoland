@@ -34,9 +34,15 @@ CORE TASKS:
 2. Skill Tree Analyst: suggest external learning resources when you see low-level nodes.
 3. Content Optimizer: Rephrase descriptions to be impactful.
 
+TOOLS:
+- Usa suggest_skill_path para sugerir rutas de aprendizaje. SIEMPRE especifica un 'targetRole' (ej: "Expert AI Developer") o un 'skillName'. Explica tu razonamiento en el parámetro 'reasoning'.
+- Esta herramienta resalta nodos en el Skill Tree visual. Úsala siempre que el usuario pregunte "¿qué aprender?" o "¿cómo mejorar?".
+- Always use snake_case for tool names.
+
 STRICT RULES:
 - Only discuss portfolio-related topics.
 - When you have enough info, EXECUTE the relevant tool immediately.
+- EXTREMELY IMPORTANT: After executing any tool, your VERY NEXT step MUST be to generate a conversational TEXT response to the user summarizing the result. YOU ARE FORBIDDEN FROM STOPPING SILENTLY. You MUST ALWAYS speak to the user after a tool executes.
 - Be concise.
 - Always respond in English.
 `;
@@ -54,9 +60,15 @@ TAREAS PRINCIPALES:
 2. Analista del Árbol de Skills: Sugiere recursos de aprendizaje externos cuando veas nodos de bajo nivel.
 3. Optimizador de Contenido: Reformula descripciones para que sean impactantes.
 
+TOOLS:
+- Usa suggest_skill_path para sugerir rutas de aprendizaje. SIEMPRE especifica un 'targetRole' (ej: "Experto en IA") o un 'skillName'. Explica tu razonamiento en el parámetro 'reasoning'.
+- Esta herramienta resalta nodos en el Skill Tree visual de forma inmediata. Úsala siempre que el usuario pregunte "¿qué aprender?" o "¿cómo mejorar?".
+- Usa siempre snake_case para los nombres de las herramientas.
+
 REGLAS ESTRICTAS:
 - Solo discute temas relacionados con portfolio.
 - Cuando tengas suficiente info, EJECUTA el tool relevante inmediatamente.
+- EXTREMADAMENTE IMPORTANTE: Después de ejecutar cualquier tool, tu SIGUIENTE paso DEBE SER generar una respuesta de TEXTO conversacional resumiendo el resultado. TIENES PROHIBIDO DETENERTE EN SILENCIO. SIEMPRE DEBES hablarle al usuario después de que un tool se ejecuta.
 - Sé conciso.
 - Siempre responde en español.
 `;
@@ -102,8 +114,27 @@ export async function POST(req: Request) {
         const userId = session.user.id;
 
         // Parse body BEFORE lives check so locale is available for error messages
-        const { messages, locale, pageContext } = await req.json();
-        logger.debug(`User: ${userId} | Messages: ${messages?.length || 0} | Locale: ${locale || 'en'}`);
+        let body: any;
+        try {
+            body = await req.json();
+        } catch (e: any) {
+            logger.error(`MALFORMED_JSON | User: ${userId} | Error: ${e.message}`);
+            return new Response(JSON.stringify({ error: 'Invalid JSON request body' }), {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
+
+        const { messages, locale, pageContext } = body;
+        if (!messages || !Array.isArray(messages)) {
+            logger.error(`INVALID_MESSAGES | User: ${userId}`);
+            return new Response(JSON.stringify({ error: 'Messages are required and must be an array' }), {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
+
+        logger.debug(`User: ${userId} | Messages: ${messages.length} | Locale: ${locale || 'en'}`);
 
         // Check and consume AI lives (3 per day limit)
         const { hasLives, remainingLives, error } = await consumeLifeService(userId, locale || 'en');
@@ -152,7 +183,11 @@ export async function POST(req: Request) {
             messages,
             system: getSystemPrompt(locale, pageContext, summary),
             maxSteps: 5,
+            toolChoice: 'auto',
             tools,
+            async onStepFinish(event) {
+                logger.debug(`STEP_FINISH | Reason: ${event.finishReason} | ToolCalls: ${event.toolCalls?.length || 0} | ToolResults: ${event.toolResults?.length || 0}`);
+            },
             async onFinish({ text, response }) {
                 logger.debug(`AI_FINISHED | User: ${userId}`);
 

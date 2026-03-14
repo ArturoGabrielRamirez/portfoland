@@ -20,6 +20,7 @@ import { BioSkillSuggestions } from '@/features/portfolio/components/BioSkillSug
 import { updateProfile } from '@/features/portfolio/actions/updateProfile';
 import { updatePortfolioSettingsAction } from '@/features/portfolio-settings/actions/portfolioSettingsActions';
 import { PortfolioViewSelector } from '@/features/portfolio-settings/components/PortfolioViewSelector';
+import { AnalyticsPanel } from '@/features/analytics/components/AnalyticsPanel';
 import { CustomThemeBuilder, type CustomThemePayload } from '@/features/portfolio-settings/components/CustomThemeBuilder';
 import { THEME_PRESETS } from '@/features/portfolio-settings/constants/themes';
 import { CVImportButton } from '@/features/cv/components/CVImportButton';
@@ -62,6 +63,7 @@ interface DashboardPortfolioViewProps {
   };
   oauthImage?: string | null;
   portfolioSettings?: PortfolioSettingsModel | null;
+  analytics?: import('@/features/analytics/types/analytics').PortfolioAnalytics;
 }
 
 const DEFAULT_SECTION_ORDER = ['about', 'experience', 'skills', 'projects'];
@@ -70,7 +72,7 @@ const DEFAULT_SECTION_ORDER = ['about', 'experience', 'skills', 'projects'];
 // Main Component
 // =============================================================================
 
-export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: DashboardPortfolioViewProps) {
+export function DashboardPortfolioView({ user, oauthImage, portfolioSettings, analytics }: DashboardPortfolioViewProps) {
   const params = useParams();
   const locale = params.locale as string;
   const t = useTranslations('dashboard.portfolio');
@@ -593,6 +595,11 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
                 currentViewMode={(portfolioSettings?.viewMode ?? 'sections') as PortfolioViewMode}
                 portfolioMode={user.portfolioMode}
               />
+
+              {/* Portfolio Analytics */}
+              {analytics && (
+                <AnalyticsPanel analytics={analytics} portfolioMode={user.portfolioMode} />
+              )}
 
             {/* Floating Action Button for Saving */}
             <div className="fixed bottom-10 right-10 z-50">

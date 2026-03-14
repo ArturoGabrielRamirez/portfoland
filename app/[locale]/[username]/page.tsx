@@ -17,6 +17,7 @@ import { redirect, notFound } from 'next/navigation';
 import { getPortfolioByUsername } from '@/features/portfolio/data';
 import { PortfolioLayout } from '@/features/portfolio/components/PortfolioLayout';
 import { generatePortfolioMeta } from '@/features/portfolio/utils/generatePortfolioMeta';
+import { PortfolioViewTracker } from '@/features/analytics/components/PortfolioViewTracker';
 
 interface UsernamePageProps {
   params: Promise<{ locale: string; username: string }>;
@@ -136,9 +137,12 @@ export default async function UsernamePage({ params }: UsernamePageProps) {
   }
 
   return (
-    <PortfolioLayout
-      data={portfolioData}
-      mode={portfolioData.user.portfolioMode}
-    />
+    <>
+      <PortfolioViewTracker username={username} />
+      <PortfolioLayout
+        data={portfolioData}
+        mode={portfolioData.user.portfolioMode}
+      />
+    </>
   );
 }

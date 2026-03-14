@@ -20,6 +20,7 @@ import { BioSkillSuggestions } from '@/features/portfolio/components/BioSkillSug
 import { updateProfile } from '@/features/portfolio/actions/updateProfile';
 import { updatePortfolioSettingsAction } from '@/features/portfolio-settings/actions/portfolioSettingsActions';
 import { PortfolioViewSelector } from '@/features/portfolio-settings/components/PortfolioViewSelector';
+import { LayoutVariantSelector } from '@/features/portfolio-settings/components/LayoutVariantSelector';
 import { AnalyticsPanel } from '@/features/analytics/components/AnalyticsPanel';
 import { CustomThemeBuilder, type CustomThemePayload } from '@/features/portfolio-settings/components/CustomThemeBuilder';
 import { THEME_PRESETS } from '@/features/portfolio-settings/constants/themes';
@@ -588,6 +589,13 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings, an
                     />
                   )}
                 </div>
+              )}
+
+              {/* CLASSIC MODE TEMPLATE SELECTOR — only for Classic Mode users */}
+              {user.portfolioMode === 'classic' && (
+                <LayoutVariantSelector
+                  currentVariant={portfolioSettings?.layoutVariant ?? 'bento'}
+                />
               )}
 
               {/* View Mode Selector */}

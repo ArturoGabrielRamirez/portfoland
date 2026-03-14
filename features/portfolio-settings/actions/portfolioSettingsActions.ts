@@ -105,3 +105,35 @@ export async function updatePortfolioViewModeAction(viewMode: string) {
     };
   });
 }
+
+/**
+ * Update portfolio layout variant for the authenticated user.
+ * Only meaningful for Classic Mode users — controls which Classic template is used.
+ *
+ * @param layoutVariant - One of: 'bento', 'stacked', 'sidebar', 'photographer', 'designer', 'writer'
+ * @returns ActionResponse with updated settings
+ */
+export async function updateLayoutVariantAction(layoutVariant: string) {
+  return actionWrapper<PortfolioSettingsModel>(async () => {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user?.id) {
+      throw new Error('Please log in to continue');
+    }
+
+    const data = await updatePortfolioSettingsSchema.validate({ layoutVariant });
+
+    const settings = await updatePortfolioSettingsService(session.user.id, {
+      layoutVariant: data.layoutVariant,
+    });
+
+    revalidatePath('/dashboard/portfolio');
+
+    return {
+      payload: settings,
+      message: PORTFOLIO_SETTINGS_MESSAGES.UPDATE_SUCCESS,
+    };
+  });
+}

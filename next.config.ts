@@ -22,7 +22,8 @@ const withNextIntl = createNextIntlPlugin()
 // =============================================================================
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Ensure native Node.js modules used in API routes are not bundled
+  serverExternalPackages: ['pdf-parse', 'mammoth'],
   images: {
     remotePatterns: [
       // Google OAuth images

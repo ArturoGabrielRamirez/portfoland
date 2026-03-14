@@ -24,7 +24,6 @@ import { LayoutVariantSelector } from '@/features/portfolio-settings/components/
 import { AnalyticsPanel } from '@/features/analytics/components/AnalyticsPanel';
 import { CustomThemeBuilder, type CustomThemePayload } from '@/features/portfolio-settings/components/CustomThemeBuilder';
 import { THEME_PRESETS } from '@/features/portfolio-settings/constants/themes';
-import { CVImportButton } from '@/features/cv/components/CVImportButton';
 import ReactMarkdown from 'react-markdown';
 import type { PortfolioMode, PortfolioViewMode } from '@/features/portfolio/types/portfolio';
 import type { PortfolioSettingsModel } from '@/features/portfolio-settings/types/portfolioSettings';
@@ -224,7 +223,6 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings, an
               {t('viewPublic')}
             </a>
           )}
-          <CVImportButton portfolioMode={user.portfolioMode} />
         </div>
       </div>
 

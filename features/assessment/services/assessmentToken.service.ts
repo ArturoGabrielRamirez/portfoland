@@ -2,15 +2,19 @@
  * Assessment Token Service
  *
  * Business logic for managing the daily assessment token allowance.
- * Uses the same two-step atomic $runCommandRaw findAndModify pattern as
- * the ai-quota service to prevent race conditions when multiple tabs or
- * requests attempt to consume a token simultaneously.
+ * Uses Prisma's standard API (not raw commands) to avoid JSON encoding issues
+ * with MongoDB dot-notation on Prisma Json fields.
+ *
+ * Flow for consumeAssessmentToken:
+ *   1. Read current meta
+ *   2. If lastResetDate !== today → reset to DEFAULT_ASSESSMENT_TOKENS
+ *   3. If remaining <= 0 → return hasTokens: false
+ *   4. Decrement and persist
  */
 
 import { prisma } from '@/lib/prisma';
 import { DEFAULT_ASSESSMENT_TOKENS } from '@/features/assessment/constants/tokens';
 import { ASSESSMENT_MESSAGES } from '@/features/assessment/constants/messages';
-import type { AssessmentTokenInfo } from '@/features/assessment/types/assessment';
 import { parseUserMeta } from '@/lib/user-meta';
 
 // =============================================================================
@@ -23,93 +27,54 @@ interface ConsumeTokenResult {
   error?: string;
 }
 
+interface AssessmentTokensMeta {
+  remaining: number;
+  lastResetDate: string;
+}
+
+interface ExtendedMeta {
+  isPro?: boolean;
+  assessmentTokens?: AssessmentTokensMeta;
+  [key: string]: unknown;
+}
+
 // =============================================================================
 // Service Functions
 // =============================================================================
 
 /**
- * Atomically consume one assessment token for a user.
+ * Consume one assessment token for a user.
  *
  * Pro users bypass token consumption entirely — returns infinite remaining.
- *
- * Two-step MongoDB findAndModify sequence mirrors features/ai-quota/services/quota.service.ts:
- *   Step 1: If lastResetDate !== today, reset remaining to DEFAULT_ASSESSMENT_TOKENS.
- *   Step 2: If remaining > 0, decrement by 1 and return the updated document.
- *           If no document is matched (remaining was 0), return no-tokens error.
  *
  * @param userId - The user ID
  * @returns Result indicating whether tokens were available and how many remain
  */
 export async function consumeAssessmentToken(userId: string): Promise<ConsumeTokenResult> {
-  // --- Pro bypass ---
-  // Pro users are not subject to token limits; skip both findAndModify calls.
+  const today = new Date().toISOString().split('T')[0];
+
   const userRecord = await prisma.user.findUnique({
     where: { id: userId },
     select: { meta: true },
   });
 
-  const rawMeta = parseUserMeta(userRecord?.meta);
+  const rawMeta = parseUserMeta(userRecord?.meta) as ExtendedMeta | null;
 
+  // Pro users are not subject to token limits
   if (rawMeta?.isPro === true) {
     return { hasTokens: true, remaining: Infinity };
   }
 
-  const today = new Date().toISOString().split('T')[0];
+  const meta = (rawMeta ?? {}) as ExtendedMeta;
+  const tokens = meta.assessmentTokens;
 
-  // Step 0: Initialize meta.assessmentTokens if the field has never been written.
-  // Without this, Step 2's $gt: 0 query won't match (non-existent field) and
-  // consumeAssessmentToken would return hasTokens: false for brand-new users.
-  await prisma.$runCommandRaw({
-    findAndModify: 'users',
-    query: {
-      _id: userId,
-      'meta.assessmentTokens': { $exists: false },
-    },
-    update: {
-      $set: {
-        'meta.assessmentTokens': {
-          remaining: DEFAULT_ASSESSMENT_TOKENS,
-          lastResetDate: today,
-        },
-      },
-    },
-    new: false,
-  });
+  // Determine current remaining, resetting if date changed
+  let remaining = tokens?.remaining ?? DEFAULT_ASSESSMENT_TOKENS;
+  if (!tokens || tokens.lastResetDate !== today) {
+    remaining = DEFAULT_ASSESSMENT_TOKENS;
+  }
 
-  // Step 1: Atomic daily reset — only fires if lastResetDate !== today
-  await prisma.$runCommandRaw({
-    findAndModify: 'users',
-    query: {
-      _id: userId,
-      'meta.assessmentTokens.lastResetDate': { $ne: today },
-    },
-    update: {
-      $set: {
-        'meta.assessmentTokens.remaining': DEFAULT_ASSESSMENT_TOKENS,
-        'meta.assessmentTokens.lastResetDate': today,
-      },
-    },
-    new: false,
-  });
-
-  // Step 2: Atomic decrement — only fires if remaining > 0
-  const decrementResult = await prisma.$runCommandRaw({
-    findAndModify: 'users',
-    query: {
-      _id: userId,
-      'meta.assessmentTokens.remaining': { $gt: 0 },
-    },
-    update: {
-      $inc: { 'meta.assessmentTokens.remaining': -1 },
-    },
-    new: true,
-  });
-
-  const updatedDoc = (
-    decrementResult as { value?: { meta?: { assessmentTokens?: AssessmentTokenInfo } } }
-  ).value;
-
-  if (!updatedDoc) {
+  if (remaining <= 0) {
     return {
       hasTokens: false,
       remaining: 0,
@@ -117,8 +82,22 @@ export async function consumeAssessmentToken(userId: string): Promise<ConsumeTok
     };
   }
 
-  const remaining = updatedDoc.meta?.assessmentTokens?.remaining ?? 0;
-  return { hasTokens: true, remaining };
+  const newRemaining = remaining - 1;
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: {
+      meta: {
+        ...meta,
+        assessmentTokens: {
+          remaining: newRemaining,
+          lastResetDate: today,
+        },
+      },
+    },
+  });
+
+  return { hasTokens: true, remaining: newRemaining };
 }
 
 /**
@@ -141,15 +120,15 @@ export async function hasAssessmentTokens(userId: string): Promise<boolean> {
     return true;
   }
 
-  const meta = parseUserMeta(user.meta);
+  const meta = parseUserMeta(user.meta) as ExtendedMeta;
 
   // Pro users always have access
-  if (meta.isPro === true) {
+  if (meta?.isPro === true) {
     return true;
   }
 
   const today = new Date().toISOString().split('T')[0];
-  const tokenInfo = meta.assessmentTokens;
+  const tokenInfo = meta?.assessmentTokens;
 
   // If no token record exists yet, or if the date differs (reset due), treat as full
   if (!tokenInfo || tokenInfo.lastResetDate !== today) {
@@ -175,19 +154,30 @@ export async function refundAssessmentToken(userId: string): Promise<void> {
     select: { meta: true },
   });
 
-  const rawMeta = parseUserMeta(userRecord?.meta);
+  const rawMeta = parseUserMeta(userRecord?.meta) as ExtendedMeta | null;
   if (rawMeta?.isPro === true) return;
 
-  // Increment remaining by 1, but only if currently below the daily cap
-  await prisma.$runCommandRaw({
-    findAndModify: 'users',
-    query: {
-      _id: userId,
-      'meta.assessmentTokens.remaining': { $lt: DEFAULT_ASSESSMENT_TOKENS },
+  const meta = (rawMeta ?? {}) as ExtendedMeta;
+  const tokens = meta.assessmentTokens;
+  const today = new Date().toISOString().split('T')[0];
+
+  // If no token record, nothing to refund (user still has full daily allowance)
+  if (!tokens) return;
+
+  // Cap at DEFAULT_ASSESSMENT_TOKENS
+  const current = tokens.remaining ?? 0;
+  if (current >= DEFAULT_ASSESSMENT_TOKENS) return;
+
+  await prisma.user.update({
+    where: { id: userId },
+    data: {
+      meta: {
+        ...meta,
+        assessmentTokens: {
+          remaining: current + 1,
+          lastResetDate: tokens.lastResetDate ?? today,
+        },
+      },
     },
-    update: {
-      $inc: { 'meta.assessmentTokens.remaining': 1 },
-    },
-    new: false,
   });
 }

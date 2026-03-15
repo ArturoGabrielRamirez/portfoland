@@ -88,8 +88,8 @@ export async function POST(request: Request) {
 
 INSTRUCTIONS:
 - Extract up to 30 skills with a level 1–5 (where 1 = beginner, 5 = expert based on years/context and prominence in the CV); infer category from skill type (e.g., Frontend, Backend, DevOps, Database, Mobile, Design, Other)
-- Extract up to 20 experience entries; use type WORK for jobs, EDUCATION for degrees/courses, CERTIFICATION for certifications; format dates as ISO strings (YYYY-MM-DD); use "2000-01-01" as a fallback if only a year is given
-- Extract up to 10 projects; list technologies as individual strings (e.g. ["React", "Node.js"])
+- Extract up to 20 experience entries; use type WORK for jobs, EDUCATION for degrees/courses, CERTIFICATION for certifications; format dates as ISO strings (YYYY-MM-DD); use "2000-01-01" as a fallback if only a year is given; keep description under 1000 characters
+- Extract up to 10 projects; list technologies as individual strings (e.g. ["React", "Node.js"]); keep description under 400 characters
 - Extract a summary only if the CV has an explicit objective or summary section — use the exact text if short, or a concise paraphrase
 - If a field is not clearly present in the CV, return an empty array or omit optional fields
 

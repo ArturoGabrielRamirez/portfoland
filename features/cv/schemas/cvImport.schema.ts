@@ -33,7 +33,7 @@ export const CVImportSchema = z.object({
         company: z.string(),
         startDate: z.string().describe('ISO date string YYYY-MM-DD'),
         endDate: z.string().optional().nullable(),
-        description: z.string().max(500),
+        description: z.string().max(1500),
       })
     )
     .max(20),
@@ -41,7 +41,7 @@ export const CVImportSchema = z.object({
     .array(
       z.object({
         title: z.string(),
-        description: z.string().max(300),
+        description: z.string().max(600),
         technologies: z.array(z.string()).max(10),
       })
     )
@@ -70,12 +70,12 @@ const experienceItemSchema = yup.object({
   company: yup.string().required(),
   startDate: yup.string().required(),
   endDate: yup.string().nullable().optional(),
-  description: yup.string().max(500).required(),
+  description: yup.string().max(1500).required(),
 });
 
 const projectItemSchema = yup.object({
   title: yup.string().required(),
-  description: yup.string().max(300).required(),
+  description: yup.string().max(600).required(),
   technologies: yup.array(yup.string().required()).required(),
 });
 

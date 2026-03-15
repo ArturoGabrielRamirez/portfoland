@@ -2,8 +2,8 @@
  * CV Import API Route
  *
  * POST /api/cv/import — accepts a PDF or DOCX file, extracts plain text,
- * and calls Gemini AI to return structured career data (skills, experiences, projects).
- * No DB writes occur here — this route only extracts and returns a preview.
+ * calls Gemini AI to return structured career data, and saves as a CVDocument
+ * so the user can analyze or edit it later alongside AI-generated CVs.
  */
 
 import { NextResponse } from 'next/server';
@@ -13,6 +13,9 @@ import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { auth } from '@/lib/auth';
 import { logger } from '@/lib/logger';
 import { CVImportSchema } from '@/features/cv/schemas/cvImport.schema';
+import { createCVDocument } from '@/features/cv/data/createCV.data';
+import type { CVContent } from '@/features/cv/types/cv';
+import type { CVImportSchemaOutput } from '@/features/cv/schemas/cvImport.schema';
 
 export const runtime = 'nodejs';
 
@@ -25,6 +28,67 @@ const ALLOWED_MIME_TYPES = [
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const MAX_TEXT_LENGTH = 15000;
 
+// =============================================================================
+// Preview → CVContent mapper
+// =============================================================================
+
+/**
+ * Maps the flat AI-extracted preview to the structured CVContent format
+ * expected by the CV Generator (analysis tools, PDF export, etc.).
+ */
+function mapPreviewToCVContent(preview: CVImportSchemaOutput, filename: string): CVContent {
+  // Group flat skills list into categories for CVSkillSection
+  const categoryMap = new Map<string, Array<{ name: string; level: number; validated: boolean }>>();
+  for (const skill of preview.skills) {
+    const cat = skill.category || 'Other';
+    if (!categoryMap.has(cat)) categoryMap.set(cat, []);
+    categoryMap.get(cat)!.push({ name: skill.name, level: skill.level, validated: false });
+  }
+  const skillCategories = Array.from(categoryMap.entries()).map(([name, skills]) => ({
+    name,
+    skills,
+  }));
+
+  const toExpEntry = (e: CVImportSchemaOutput['experiences'][number]) => ({
+    title: e.title,
+    company: e.company,
+    startDate: e.startDate,
+    endDate: e.endDate ?? null,
+    description: e.description || '',
+    type: e.type,
+  });
+
+  return {
+    professionalSummary: preview.summary || '',
+    skills: { categories: skillCategories },
+    workExperience: preview.experiences.filter((e) => e.type === 'WORK').map(toExpEntry),
+    education: preview.experiences.filter((e) => e.type === 'EDUCATION').map(toExpEntry),
+    certifications: preview.experiences.filter((e) => e.type === 'CERTIFICATION').map(toExpEntry),
+    projects: preview.projects.map((p) => ({
+      title: p.title,
+      description: p.description,
+      technologies: p.technologies,
+      links: [],
+      status: 'completed',
+    })),
+    metadata: {
+      generatedAt: new Date().toISOString(),
+      targetJob: undefined,
+      locale: 'es',
+      portfolioMode: 'classic',
+    },
+  };
+}
+
+/** Strip extension from filename for use as CV title */
+function titleFromFilename(filename: string): string {
+  return filename.replace(/\.[^/.]+$/, '') || 'Imported CV';
+}
+
+// =============================================================================
+// Route handler
+// =============================================================================
+
 export async function POST(request: Request) {
   try {
     // Auth guard
@@ -32,6 +96,7 @@ export async function POST(request: Request) {
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+    const userId = session.user.id;
 
     // Parse multipart form data
     const formData = await request.formData();
@@ -64,7 +129,6 @@ export async function POST(request: Request) {
     let text: string;
 
     if (file.type === 'application/pdf') {
-      // pdf-parse v2 uses a class-based API
       const { PDFParse } = await import('pdf-parse');
       const parser = new PDFParse({ data: buffer });
       const result = await parser.getText();
@@ -103,7 +167,23 @@ ${truncatedText}`;
       prompt,
     });
 
-    return NextResponse.json(preview);
+    // Save as CVDocument so it appears in the CV library for analysis/editing
+    let savedCvId: string | null = null;
+    try {
+      const cvContent = mapPreviewToCVContent(preview, file.name);
+      const cvDoc = await createCVDocument({
+        userId,
+        title: titleFromFilename(file.name),
+        content: cvContent,
+      });
+      savedCvId = cvDoc.id;
+      logger.debug(`CV_IMPORT_SAVED | cvId: ${savedCvId} | userId: ${userId}`);
+    } catch (saveErr) {
+      // Saving is non-critical — the user still gets the extraction preview
+      logger.error('CV_IMPORT_SAVE_FAILED', saveErr);
+    }
+
+    return NextResponse.json({ ...preview, savedCvId });
   } catch (error) {
     logger.error('CV_IMPORT_FAILED', error);
     return NextResponse.json({ error: 'Failed to parse CV' }, { status: 500 });

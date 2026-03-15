@@ -85,13 +85,21 @@ export function CVImportPanel({ portfolioMode }: CVImportPanelProps) {
         return;
       }
 
-      const data: CVImportPreview = await res.json();
+      const { savedCvId, ...data } = await res.json() as CVImportPreview & { savedCvId?: string };
       setPreview(data);
 
       // Check all items by default
       setSelectedSkills(new Set(data.skills.map((_, i) => i)));
       setSelectedExperiences(new Set(data.experiences.map((_, i) => i)));
       setSelectedProjects(new Set(data.projects.map((_, i) => i)));
+
+      if (savedCvId) {
+        toast.success(mc.isTech ? 'CV SAVED TO LIBRARY' : 'CV saved to your library', {
+          description: mc.isTech
+            ? 'Visible in /dashboard/cv para análisis'
+            : 'Available in /dashboard/cv for analysis',
+        });
+      }
 
       setViewState('preview');
     } catch {

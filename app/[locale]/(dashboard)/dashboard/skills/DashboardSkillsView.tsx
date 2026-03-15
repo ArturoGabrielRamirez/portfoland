@@ -10,12 +10,11 @@
 
 import { useCallback, useTransition, useState } from 'react';
 import Link from 'next/link';
-import { Plus, ExternalLink, Sparkles, Trophy, Zap, Grid3X3 } from 'lucide-react';
+import { Plus, ExternalLink } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
-import { HexBadge } from '@/features/tech';
 import { useCRTTriggers } from '@/features/tech/context/crt-triggers';
 import {
   SkillTreeView,
@@ -35,12 +34,6 @@ import type { AssessmentTokenInfo, SkillAssessmentSummary } from '@/features/ass
 interface DashboardSkillsViewProps {
   skills: UserSkillWithDetails[];
   categories: SkillCategory[];
-  stats: {
-    totalSkills: number;
-    totalXP: number;
-    masterSkills: number;
-    categoriesUsed: number;
-  };
   user: {
     id: string;
     name: string;
@@ -70,7 +63,6 @@ interface DashboardSkillsViewProps {
 export function DashboardSkillsView({
   skills,
   categories,
-  stats,
   user,
   githubSyncedAt,
   githubStats,
@@ -83,7 +75,6 @@ export function DashboardSkillsView({
   const locale = params.locale as string;
   const t = useTranslations('dashboard.skills');
   const tLegend = useTranslations('dashboard.skills.legend');
-  const tStats = useTranslations('dashboard.skills.stats');
   const [isPending, startTransition] = useTransition();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -143,71 +134,22 @@ export function DashboardSkillsView({
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="px-6 py-4 grid grid-cols-2 lg:grid-cols-4 gap-3 border-b border-[hsl(174,100%,50%,0.1)]">
-        <div className="border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-3 flex items-center gap-3">
-          <HexBadge color="cyan" size="sm" filled>
-            <Sparkles className="w-4 h-4" />
-          </HexBadge>
-          <div>
-            <div className="text-xl font-mono font-bold text-[hsl(174,100%,50%)]">{stats.totalSkills}</div>
-            <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">{tStats('totalSkills')}</div>
-          </div>
-        </div>
-        <div className="border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-3 flex items-center gap-3">
-          <HexBadge color="yellow" size="sm" filled>
-            <Zap className="w-4 h-4" />
-          </HexBadge>
-          <div>
-            <div className="text-xl font-mono font-bold text-[hsl(60,100%,50%)]">{stats.totalXP.toLocaleString()}</div>
-            <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">{tStats('totalXP')}</div>
-          </div>
-        </div>
-        <div className="border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-3 flex items-center gap-3">
-          <HexBadge color="magenta" size="sm" filled>
-            <Trophy className="w-4 h-4" />
-          </HexBadge>
-          <div>
-            <div className="text-xl font-mono font-bold text-[hsl(330,100%,65%)]">{stats.masterSkills}</div>
-            <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">{tStats('mastered')}</div>
-          </div>
-        </div>
-        <div className="border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-3 flex items-center gap-3">
-          <HexBadge color="green" size="sm" filled>
-            <Grid3X3 className="w-4 h-4" />
-          </HexBadge>
-          <div>
-            <div className="text-xl font-mono font-bold text-[hsl(150,100%,45%)]">{stats.categoriesUsed}</div>
-            <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">{tStats('categories')}</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Legend Row */}
-      <div className="px-6 py-2 flex items-center gap-4 border-b border-[hsl(174,100%,50%,0.1)]">
-        <button onClick={handleAddSkill} className="flex items-center gap-1 text-[10px] font-mono text-[hsl(174,100%,50%)] hover:underline">
-          <Plus className="w-3 h-3" /> {t('addSkill')}
-        </button>
-        <div className="flex items-center gap-3 ml-auto">
-          {/* Category color dots */}
-          <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
-            <span className="w-2 h-2 rounded-full bg-[hsl(330,100%,65%)]" /> {tLegend('core')}
-          </span>
-          <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
-            <span className="w-2 h-2 rounded-full bg-[hsl(150,100%,45%)]" /> {tLegend('backend')}
-          </span>
-          <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
-            <span className="w-2 h-2 rounded-full bg-[hsl(174,100%,50%)]" /> {tLegend('frontend')}
-          </span>
-          <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
-            <span className="w-2 h-2 rounded-full bg-[hsl(60,100%,50%)]" /> {tLegend('tools')}
-          </span>
-          <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
-            <span className="w-2 h-2 rounded-full bg-[hsl(280,100%,70%)]" /> {tLegend('softSkills')}
-          </span>
-        </div>
-        <span className="text-[9px] font-mono text-muted-foreground">
-          {skills.length} skills &middot; {stats.totalXP.toLocaleString()} XP
+      {/* Legend Row — category color reference for the skill tree */}
+      <div className="px-6 py-2 flex items-center gap-3 border-b border-[hsl(174,100%,50%,0.1)]">
+        <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
+          <span className="w-2 h-2 rounded-full bg-[hsl(330,100%,65%)]" /> {tLegend('core')}
+        </span>
+        <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
+          <span className="w-2 h-2 rounded-full bg-[hsl(150,100%,45%)]" /> {tLegend('backend')}
+        </span>
+        <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
+          <span className="w-2 h-2 rounded-full bg-[hsl(174,100%,50%)]" /> {tLegend('frontend')}
+        </span>
+        <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
+          <span className="w-2 h-2 rounded-full bg-[hsl(60,100%,50%)]" /> {tLegend('tools')}
+        </span>
+        <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
+          <span className="w-2 h-2 rounded-full bg-[hsl(280,100%,70%)]" /> {tLegend('softSkills')}
         </span>
       </div>
 

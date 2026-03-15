@@ -70,12 +70,6 @@ export default async function DashboardSkillsPage({ params }: { params: Promise<
     ? await getAssessmentHistoryData(session.user.id, supportedSlugs)
     : {};
 
-  // Calculate stats
-  const totalSkills = skills.length;
-  const totalXP = skills.reduce((sum, skill) => sum + skill.totalXP, 0);
-  const masterSkills = skills.filter((s) => s.level === 5).length;
-  const categoriesUsed = new Set(skills.map((s) => s.skill.categoryId)).size;
-
   const displayName = getDisplayName(pageData.user.name, pageData.user.email);
   const initials = getInitials(pageData.user.name, pageData.user.email);
 
@@ -118,12 +112,6 @@ export default async function DashboardSkillsPage({ params }: { params: Promise<
         <DashboardSkillsView
           skills={skills}
           categories={categories}
-          stats={{
-            totalSkills,
-            totalXP,
-            masterSkills,
-            categoriesUsed,
-          }}
           user={{
             id: pageData.user.id,
             name: pageData.user.name,

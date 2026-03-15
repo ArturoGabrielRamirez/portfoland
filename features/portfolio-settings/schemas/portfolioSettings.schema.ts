@@ -11,9 +11,18 @@ import * as yup from 'yup';
 // =============================================================================
 
 /**
- * Valid layout variant values
+ * Valid layout variant values.
+ * Classic Mode template variants (photographer, designer, writer) are included
+ * alongside the legacy bento/stacked/sidebar values.
  */
-const VALID_LAYOUT_VARIANTS = ['bento', 'stacked', 'sidebar'] as const;
+const VALID_LAYOUT_VARIANTS = [
+  'bento',
+  'stacked',
+  'sidebar',
+  'photographer',
+  'designer',
+  'writer',
+] as const;
 
 /**
  * Valid hero style values

@@ -655,8 +655,6 @@ export { CRTMonitor } from './components/crt-monitor'
 export { CyberpunkNav } from './components/cyberpunk-nav'
 export { WelcomeCard } from './components/welcome-card'
 export { DashboardNav } from './components/dashboard-nav'
-export { ParticleField } from './components/particle-field'
-export { AIAssistant } from './components/ai-assistant'
 export { AIAssistantWidget } from './components/ai-assistant-widget'
 // Dashboard Redesign V2
 export { CRTWithAI } from './components/crt-with-ai'

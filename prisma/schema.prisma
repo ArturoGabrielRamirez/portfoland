@@ -58,6 +58,7 @@ model User {
   skillAssessments  SkillAssessment[]
   cvDocuments       CVDocument[]
   userQuests        UserQuest[]
+  portfolioViews    PortfolioView[]
 
   @@map("users")
 }
@@ -531,4 +532,22 @@ model UserQuest {
   @@index([userId, status])
   @@index([userId, questId])
   @@map("user_quests")
+}
+
+// =============================================================================
+// Analytics Models
+// =============================================================================
+
+model PortfolioView {
+  id           String   @id @default(cuid()) @map("_id")
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // SHA-256 hash of visitor IP + User-Agent — no raw personal data stored
+  visitorHash  String
+  // Cleaned referrer domain (e.g. "google.com") or null for direct traffic
+  referrer     String?
+  viewedAt     DateTime @default(now())
+
+  @@index([userId, viewedAt])
+  @@map("portfolio_views")
 }

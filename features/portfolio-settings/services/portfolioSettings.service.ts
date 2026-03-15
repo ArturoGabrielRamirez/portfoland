@@ -14,7 +14,14 @@ import { THEME_PRESETS } from '../constants/themes';
 // Allowed Values
 // =============================================================================
 
-const VALID_LAYOUT_VARIANTS = ['bento', 'stacked', 'sidebar'] as const;
+const VALID_LAYOUT_VARIANTS = [
+  'bento',
+  'stacked',
+  'sidebar',
+  'photographer',
+  'designer',
+  'writer',
+] as const;
 const VALID_HERO_STYLES = ['standard', 'minimal', 'cover'] as const;
 const VALID_VIEW_MODES = ['sections', 'one_page', 'minimal', 'terminal'] as const;
 

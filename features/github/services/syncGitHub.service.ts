@@ -4,9 +4,10 @@
  * Orchestrates the full GitHub sync flow:
  *   1. Read the user's GitHub OAuth token
  *   2. Fetch repos, language bytes, and contributions via the GitHub API
- *   3. Compute per-language percentages and derive validated skill slugs (≥ 60%)
+ *   3. Compute per-language percentages and derive validated skill slugs (≥ 10%)
  *   4. Update `githubValidated` on matching UserSkill records
  *   5. Persist summary stats to `User.githubStats` and `User.githubSyncedAt`
+ *   6. (Non-blocking) Probe top repos for package.json to enrich skill detection
  *
  * Business logic lives entirely here — no HTTP calls, no UI concerns.
  */
@@ -15,6 +16,7 @@ import { prisma } from '@/lib/prisma'
 import { getGitHubToken } from '../data/getGitHubToken.data'
 import { fetchGitHubSyncData } from '../api/github.api'
 import { GITHUB_LANGUAGE_MAP, GITHUB_SKILL_DISPLAY_NAMES } from '../constants/github-mappings'
+import { fetchPackageJsonSkillsService } from './fetchPackageJsonSkills.service'
 import type { GitHubSyncResult, GitHubSuggestedSkill } from '../types/sync'
 
 // =============================================================================
@@ -163,7 +165,15 @@ export async function syncGitHubService(userId: string): Promise<GitHubSyncResul
   })
 
   // -------------------------------------------------------------------------
-  // Step 6: Return sync summary
+  // Step 6: Enrich skill tree via package.json detection — non-blocking
+  // Failure here must NEVER propagate; the main sync has already succeeded.
+  // -------------------------------------------------------------------------
+  fetchPackageJsonSkillsService(userId, token, syncData.repos).catch((err) => {
+    console.warn('[GitHub Sync] package.json skill detection failed (non-critical):', err)
+  })
+
+  // -------------------------------------------------------------------------
+  // Step 7: Return sync summary
   // -------------------------------------------------------------------------
   return {
     validatedSlugs,

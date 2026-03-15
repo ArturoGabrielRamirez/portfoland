@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react"
 import { Send } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
+import { processDataStream } from "@ai-sdk/ui-utils"
 import { useAIContext } from '@/features/ai/context/AIContext'
 import type { PageContext } from "../types/page-context"
 
@@ -569,7 +570,10 @@ export function CRTWithAI({
                     setChatMessages(parsed.chatMessages)
                 }
                 if (parsed.apiMessages && Array.isArray(parsed.apiMessages)) {
-                    apiMessagesRef.current = parsed.apiMessages
+                    // Only keep user/assistant messages — tool/system roles confuse Gemini
+                    apiMessagesRef.current = parsed.apiMessages.filter(
+                        (m: APIChatMessage) => m.role === "user" || m.role === "assistant"
+                    )
                 }
                 return // localStorage has history, skip DB fetch
             }
@@ -586,7 +590,8 @@ export function CRTWithAI({
                     .map(m => ({ role: m.role === "user" ? "user" : "ai", content: m.content }))
                 if (uiMsgs.length > 0) {
                     setChatMessages(uiMsgs)
-                    apiMessagesRef.current = dbMsgs
+                    // Only keep user/assistant messages — tool/system roles confuse Gemini
+                    apiMessagesRef.current = dbMsgs.filter(m => m.role === "user" || m.role === "assistant")
                 }
             })
             .catch(() => { })
@@ -765,23 +770,18 @@ export function CRTWithAI({
 
             setAIState("thinking")
 
-            const reader = response.body.getReader()
-            const decoder = new TextDecoder()
-            let buffer = ""
-
-            const handleToolAvailable = (toolName: string, input: any) => {
+            const handleToolCall = (toolName: string, args: any) => {
                 let statusMsg = locale === 'es'
                     ? `> EJECUTANDO ENLACE: ${toolName.toUpperCase()}... [OK]`
                     : `> EXECUTING DATA LINK: ${toolName.toUpperCase()}... [OK]`
 
-                const aiExplanation = input?.reasoning || input?.reason;
+                const aiExplanation = args?.reasoning || args?.reason
                 if (aiExplanation) statusMsg += `\n\n> INFO: ${aiExplanation}`
 
                 setChatMessages(prev => {
                     const updated = [...prev]
                     const lastIdx = updated.length - 1
                     if (lastIdx >= 0 && updated[lastIdx].content === statusMsg) return prev
-
                     if (!streamedText) {
                         if (lastIdx >= 0 && updated[lastIdx].role === "ai" && (!updated[lastIdx].content || updated[lastIdx].content?.startsWith(">"))) {
                             updated[lastIdx] = { ...updated[lastIdx], content: statusMsg }
@@ -794,117 +794,76 @@ export function CRTWithAI({
                 })
 
                 const isSkillSuggestion = ["suggest_skill_path", "suggest_learning_path", "suggestLearningPath"].includes(toolName)
-                if (isSkillSuggestion && input) {
-                    const skills = input?.skillsToLearn || input?.skillsToHighlight
+                if (isSkillSuggestion && args) {
+                    const skills = args?.skillsToLearn || args?.skillsToHighlight
                     if (Array.isArray(skills)) setHighlightedSkills(skills)
                 }
             }
 
-            while (true) {
-                const { done, value } = await reader.read()
-                if (done) break
-
-                buffer += decoder.decode(value, { stream: true })
-                const lines = buffer.split("\n")
-                buffer = lines.pop() ?? ""
-
-                for (const line of lines) {
-                    const trimmed = line.trim()
-                    if (!trimmed || !trimmed.startsWith("data:")) continue
-
-                    const payload = trimmed.slice(5).trim()
-                    if (payload === "[DONE]") continue
-
-                    try {
-                        const colonIdx = payload.indexOf(':')
-                        if (colonIdx === -1) continue
-
-                        const type = payload.slice(0, colonIdx)
-                        const content = payload.slice(colonIdx + 1)
-
-                        if (process.env.NODE_ENV === "development") {
-                            console.log(`[CRT-AI] Stream Type: ${type}, Content:`, content.slice(0, 80))
-                        }
-
-                        if (type === "0") {
-                            const text = JSON.parse(content)
-                            if (typeof text === "string") {
-                                streamedText += text
-                                setChatMessages(prev => {
-                                    const updated = [...prev]
-                                    const lastIdx = updated.length - 1
-                                    if (lastIdx >= 0 && updated[lastIdx].role === "ai") {
-                                        const prevContent = updated[lastIdx].content || ""
-                                        if (prevContent.startsWith(">") && !prevContent.includes("\n\n")) {
-                                            updated[lastIdx] = { ...updated[lastIdx], content: prevContent + "\n\n" + text }
-                                        } else {
-                                            updated[lastIdx] = { ...updated[lastIdx], content: prevContent + text }
-                                        }
-                                    } else {
-                                        updated.push({ role: "ai", content: text })
-                                    }
-                                    return updated
-                                })
+            await processDataStream({
+                stream: response.body,
+                onTextPart(text) {
+                    streamedText += text
+                    setChatMessages(prev => {
+                        const updated = [...prev]
+                        const lastIdx = updated.length - 1
+                        if (lastIdx >= 0 && updated[lastIdx].role === "ai") {
+                            const prevContent = updated[lastIdx].content || ""
+                            if (prevContent.startsWith(">") && !prevContent.includes("\n\n")) {
+                                updated[lastIdx] = { ...updated[lastIdx], content: prevContent + "\n\n" + text }
+                            } else {
+                                updated[lastIdx] = { ...updated[lastIdx], content: prevContent + text }
                             }
-                        } else if (type === "9") {
-                            const toolCalls = JSON.parse(content)
-                            const calls = Array.isArray(toolCalls) ? toolCalls : [toolCalls]
-                            for (const call of calls) {
-                                if (call.toolName) handleToolAvailable(call.toolName, call.args)
-                            }
-                        } else if (type === "b") {
-                            const call = JSON.parse(content)
-                            if (call.toolName) handleToolAvailable(call.toolName, undefined)
-                        } else if (type === "a") {
-                            try {
-                                const toolResults = JSON.parse(content)
-                                const results = Array.isArray(toolResults) ? toolResults : [toolResults]
-                                for (const tr of results) {
-                                    const r = tr.result || tr
-                                    if (r && typeof r === 'object') {
-                                        // Highlight skills from tool result (more reliable than from args)
-                                        if (r.skillsToLearn && Array.isArray(r.skillsToLearn) && r.skillsToLearn.length > 0) {
-                                            setHighlightedSkills(r.skillsToLearn)
-                                        }
-
-                                        let resMsg = ""
-                                        if (r.skillsToLearn && Array.isArray(r.skillsToLearn) && r.skillsToLearn.length > 0) {
-                                            resMsg += `\n\n> TARGET NODES: ${r.skillsToLearn.join(', ')}`
-                                        }
-                                        if (r.nextLevelFocus) {
-                                            resMsg += `\n> FOCUS: ${r.nextLevelFocus}`
-                                        }
-                                        if (r.resources && Array.isArray(r.resources) && r.resources.length > 0) {
-                                            resMsg += `\n> DATA LINKS: ${r.resources.map((res: any) => res.title).join(' | ')}`
-                                        }
-                                        if (r.message) {
-                                            resMsg += `\n> SYSTEM: ${r.message}`
-                                        }
-                                        if (resMsg) {
-                                            toolResultText += resMsg // accumulate for fallback
-                                            setChatMessages(prev => {
-                                                const updated = [...prev]
-                                                const lastIdx = updated.length - 1
-                                                if (lastIdx >= 0 && updated[lastIdx].role === "ai") {
-                                                    updated[lastIdx] = { ...updated[lastIdx], content: (updated[lastIdx].content || "") + resMsg }
-                                                } else {
-                                                    updated.push({ role: "ai", content: resMsg.trim() })
-                                                }
-                                                return updated
-                                            })
-                                        }
-                                    }
-                                }
-                            } catch (e) { }
-                        } else if (type === "3" || type === "e") {
-                            const chunk = JSON.parse(content)
-                            const errorText = typeof chunk === "string" ? chunk : chunk?.message || "Unknown error"
-                            setChatMessages(prev => [...prev, { role: "system", content: `ERR: ${errorText}` }])
-                            setAIState("life_loss")
+                        } else {
+                            updated.push({ role: "ai", content: text })
                         }
-                    } catch (e) { }
-                }
-            }
+                        return updated
+                    })
+                },
+                onToolCallPart(toolCall) {
+                    handleToolCall(toolCall.toolName, toolCall.args)
+                },
+                onToolCallStreamingStartPart(part) {
+                    handleToolCall(part.toolName, undefined)
+                },
+                onToolResultPart(toolResult) {
+                    const r = toolResult.result as any
+                    if (!r || typeof r !== 'object') return
+
+                    // Highlight skills from tool result (more reliable than from call args)
+                    if (r.skillsToLearn && Array.isArray(r.skillsToLearn) && r.skillsToLearn.length > 0) {
+                        setHighlightedSkills(r.skillsToLearn)
+                    }
+
+                    let resMsg = ""
+                    if (r.skillsToLearn && Array.isArray(r.skillsToLearn) && r.skillsToLearn.length > 0) {
+                        resMsg += `\n\n> TARGET NODES: ${r.skillsToLearn.join(', ')}`
+                    }
+                    if (r.nextLevelFocus) resMsg += `\n> FOCUS: ${r.nextLevelFocus}`
+                    if (r.resources && Array.isArray(r.resources) && r.resources.length > 0) {
+                        resMsg += `\n> DATA LINKS: ${r.resources.map((res: any) => res.title).join(' | ')}`
+                    }
+                    if (r.message) resMsg += `\n> SYSTEM: ${r.message}`
+
+                    if (resMsg) {
+                        toolResultText += resMsg
+                        setChatMessages(prev => {
+                            const updated = [...prev]
+                            const lastIdx = updated.length - 1
+                            if (lastIdx >= 0 && updated[lastIdx].role === "ai") {
+                                updated[lastIdx] = { ...updated[lastIdx], content: (updated[lastIdx].content || "") + resMsg }
+                            } else {
+                                updated.push({ role: "ai", content: resMsg.trim() })
+                            }
+                            return updated
+                        })
+                    }
+                },
+                onErrorPart(error) {
+                    setChatMessages(prev => [...prev, { role: "system", content: `ERR: ${error}` }])
+                    setAIState("life_loss")
+                },
+            })
 
             // Use streamed text; fall back to tool result summary so apiMessagesRef
             // is always updated and AI has context for the next turn

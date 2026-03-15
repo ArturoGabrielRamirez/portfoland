@@ -16,9 +16,12 @@ import { PortfolioModeToggle } from '@/features/portfolio/components/PortfolioMo
 import { ProfileImageUpload } from '@/features/portfolio/components/ProfileImageUpload';
 import { HUDPanel } from '@/features/dashboard/components/HUDPanel';
 import { ImproveBioButton } from '@/features/ai/components/ImproveBioButton';
+import { BioSkillSuggestions } from '@/features/portfolio/components/BioSkillSuggestions';
 import { updateProfile } from '@/features/portfolio/actions/updateProfile';
 import { updatePortfolioSettingsAction } from '@/features/portfolio-settings/actions/portfolioSettingsActions';
 import { PortfolioViewSelector } from '@/features/portfolio-settings/components/PortfolioViewSelector';
+import { LayoutVariantSelector } from '@/features/portfolio-settings/components/LayoutVariantSelector';
+import { AnalyticsPanel } from '@/features/analytics/components/AnalyticsPanel';
 import { CustomThemeBuilder, type CustomThemePayload } from '@/features/portfolio-settings/components/CustomThemeBuilder';
 import { THEME_PRESETS } from '@/features/portfolio-settings/constants/themes';
 import ReactMarkdown from 'react-markdown';
@@ -60,6 +63,7 @@ interface DashboardPortfolioViewProps {
   };
   oauthImage?: string | null;
   portfolioSettings?: PortfolioSettingsModel | null;
+  analytics?: import('@/features/analytics/types/analytics').PortfolioAnalytics;
 }
 
 const DEFAULT_SECTION_ORDER = ['about', 'experience', 'skills', 'projects'];
@@ -68,7 +72,7 @@ const DEFAULT_SECTION_ORDER = ['about', 'experience', 'skills', 'projects'];
 // Main Component
 // =============================================================================
 
-export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: DashboardPortfolioViewProps) {
+export function DashboardPortfolioView({ user, oauthImage, portfolioSettings, analytics }: DashboardPortfolioViewProps) {
   const params = useParams();
   const locale = params.locale as string;
   const t = useTranslations('dashboard.portfolio');
@@ -154,7 +158,7 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
   // Handle theme selection
   const handleThemeSelect = (presetId: string, customThemePayload?: CustomThemePayload) => {
     startTransition(async () => {
-      const result = await updatePortfolioSettingsAction({ 
+      const result = await updatePortfolioSettingsAction({
         theme: presetId,
         ...(customThemePayload ? { customTheme: customThemePayload as any } : {})
       });
@@ -277,6 +281,9 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
                             className="w-full px-4 py-3 bg-[#0D1421] border border-[hsl(174,100%,50%,0.25)] rounded font-mono text-sm text-gray-100 placeholder:text-gray-600 focus:border-[#00D4FF] focus:ring-1 focus:ring-[#00D4FF]/30 focus:outline-none resize-none transition-all"
                             placeholder={t('sections.bioPlaceholder')}
                           />
+
+                          {/* AI Skill Suggestions — fired after 1.5s debounce on bio change */}
+                          <BioSkillSuggestions bio={bio} />
 
                           {/* Markdown Preview & Hint */}
                           {bio && (
@@ -516,8 +523,8 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
                       onClick={() => setThemeTab('presets')}
                       className={cn(
                         "px-4 py-1.5 text-xs font-mono rounded-sm transition-all",
-                        themeTab === 'presets' 
-                          ? "bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/30" 
+                        themeTab === 'presets'
+                          ? "bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/30"
                           : "text-gray-500 hover:text-gray-300 border border-transparent"
                       )}
                     >
@@ -528,8 +535,8 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
                       onClick={() => setThemeTab('custom')}
                       className={cn(
                         "px-4 py-1.5 text-xs font-mono rounded-sm transition-all",
-                        themeTab === 'custom' 
-                          ? "bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/30" 
+                        themeTab === 'custom'
+                          ? "bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/30"
                           : "text-gray-500 hover:text-gray-300 border border-transparent"
                       )}
                     >
@@ -573,7 +580,7 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
                       </div>
                     </HUDPanel>
                   ) : (
-                    <CustomThemeBuilder 
+                    <CustomThemeBuilder
                       initialTheme={portfolioSettings?.customTheme as CustomThemePayload | null}
                       disabled={isPending}
                       onChange={(newTheme) => handleThemeSelect('custom', newTheme)}
@@ -582,11 +589,23 @@ export function DashboardPortfolioView({ user, oauthImage, portfolioSettings }: 
                 </div>
               )}
 
+              {/* CLASSIC MODE TEMPLATE SELECTOR — only for Classic Mode users */}
+              {user.portfolioMode === 'classic' && (
+                <LayoutVariantSelector
+                  currentVariant={portfolioSettings?.layoutVariant ?? 'bento'}
+                />
+              )}
+
               {/* View Mode Selector */}
               <PortfolioViewSelector
                 currentViewMode={(portfolioSettings?.viewMode ?? 'sections') as PortfolioViewMode}
                 portfolioMode={user.portfolioMode}
               />
+
+              {/* Portfolio Analytics */}
+              {analytics && (
+                <AnalyticsPanel analytics={analytics} portfolioMode={user.portfolioMode} />
+              )}
 
             {/* Floating Action Button for Saving */}
             <div className="fixed bottom-10 right-10 z-50">

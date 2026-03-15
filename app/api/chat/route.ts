@@ -194,36 +194,22 @@ export async function POST(req: Request) {
                 const finalMessages = response?.messages || [];
                 logger.debug(`FINAL_MESSAGES_LENGTH: ${finalMessages?.length || 0}`);
 
-                // Save the last 2 messages (user + assistant) to DB
+                // Save only assistant text messages to DB (skip tool result messages)
                 try {
-                    const lastTwoMessages = finalMessages.slice(-2);
+                    // response.messages contains only assistant/tool messages — filter to assistant with plain text
+                    const cleanMessages = finalMessages.filter(m =>
+                        m.role === 'assistant' && typeof m.content === 'string' && (m.content as string).trim()
+                    );
+                    const lastTwoMessages = cleanMessages.slice(-2);
                     logger.debug(`LAST_TWO_MESSAGES (count: ${lastTwoMessages.length})`);
 
                     if (lastTwoMessages.length > 0) {
-                        const messagesToSave = lastTwoMessages.map(m => {
-                            // Handle content: could be string, array, or object
-                            let content = '';
-                            if (typeof m.content === 'string') {
-                                content = m.content;
-                            } else if (Array.isArray(m.content)) {
-                                content = m.content
-                                    .map(c => {
-                                        if (typeof c === 'string') return c;
-                                        if (c.type === 'text') return c.text;
-                                        return JSON.stringify(c);
-                                    })
-                                    .join(' ');
-                            } else if (m.content && typeof m.content === 'object') {
-                                content = JSON.stringify(m.content);
-                            }
-
-                            return {
-                                conversationId: conversation.id,
-                                role: m.role,
-                                content: content || '[empty]',
-                                metadata: null
-                            };
-                        });
+                        const messagesToSave = lastTwoMessages.map(m => ({
+                            conversationId: conversation.id,
+                            role: m.role,
+                            content: m.content as string,
+                            metadata: null
+                        }));
 
                         logger.debug(`MESSAGES_TO_SAVE (count: ${messagesToSave.length})`);
 

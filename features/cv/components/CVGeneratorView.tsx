@@ -9,7 +9,7 @@
 
 import { useState, useTransition, useCallback } from 'react';
 import { toast } from 'sonner';
-import { FileText, Download, Loader2, Sparkles, Plus } from 'lucide-react';
+import { FileText, Download, Loader2, Sparkles, Plus, Upload, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { modeClasses } from '@/features/dashboard/utils/modeClasses';
 import type { PortfolioMode } from '@/features/portfolio/types/portfolio';
@@ -18,6 +18,7 @@ import { generateCVAction } from '../actions/generateCV.action';
 import { CVPreview } from './CVPreview';
 import { CVAnalysisPanel } from './CVAnalysisPanel';
 import { CVListSidebar } from './CVListSidebar';
+import { CVImportPanel } from './CVImportPanel';
 import { JobDescriptionInput } from './JobDescriptionInput';
 
 // =============================================================================
@@ -55,6 +56,9 @@ export function CVGeneratorView({
   const [currentCV, setCurrentCV] = useState<CVContent | null>(null);
   const [currentCVId, setCurrentCVId] = useState<string | null>(null);
   const [savedCVs, setSavedCVs] = useState<CVDocumentModel[]>(initialSavedCVs);
+
+  // CV Import panel toggle
+  const [showImport, setShowImport] = useState(false);
 
   // Transition for async actions
   const [isGenerating, startGenerateTransition] = useTransition();
@@ -263,6 +267,41 @@ export function CVGeneratorView({
                     ? 'Your portfolio data will be compiled into a professional CV. Add a target job to tailor it.'
                     : 'Generate your first CV from your portfolio data. Optionally add a target job to tailor it.'}
                 </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Import CV section — collapsible, shown when not previewing */}
+        {!isPreviewing && (
+          <div className={cn(mc.card)}>
+            <button
+              type="button"
+              onClick={() => setShowImport((v) => !v)}
+              className="w-full flex items-center justify-between p-5"
+            >
+              <div className="flex items-center gap-2">
+                <Upload className={cn('h-4 w-4', mc.isTech ? 'text-[#00D4FF]' : 'text-blue-500')} />
+                <span className={cn(mc.subHeading)}>
+                  {mc.isTech ? '> IMPORT_FROM_CV' : 'Import from existing CV'}
+                </span>
+              </div>
+              <ChevronDown
+                className={cn(
+                  'h-4 w-4 transition-transform',
+                  mc.isTech ? 'text-gray-400' : 'text-gray-500',
+                  showImport && 'rotate-180',
+                )}
+              />
+            </button>
+            {showImport && (
+              <div className="px-5 pb-5">
+                <p className={cn('text-xs mb-4', mc.label)}>
+                  {mc.isTech
+                    ? 'UPLOAD A PDF OR DOCX — AI WILL EXTRACT SKILLS, EXPERIENCES, AND PROJECTS INTO YOUR PORTFOLIO'
+                    : 'Upload your PDF or DOCX CV and the AI will extract skills, experiences, and projects into your portfolio.'}
+                </p>
+                <CVImportPanel portfolioMode={portfolioMode} />
               </div>
             )}
           </div>

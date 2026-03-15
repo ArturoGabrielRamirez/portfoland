@@ -192,9 +192,10 @@ export async function fetchPackageJsonSkillsService(
     }
 
     // Resolve the category ID; fall back to 'core' if slug isn't found
-    let category = await getCategoryBySlugData(categorySlug, null)
+    // Pass userId so user-specific categories (isDefault:false) are found
+    let category = await getCategoryBySlugData(categorySlug, userId)
     if (!category) {
-      category = await getCategoryBySlugData('core', null)
+      category = await getCategoryBySlugData('core', userId)
     }
 
     // If still no category found (edge case on fresh DBs), skip the skill

@@ -17,7 +17,7 @@ export interface UserAIConfig {
 /**
  * Default number of AI lives per day
  */
-export const DEFAULT_LIVES = 3;
+export const DEFAULT_LIVES = 10;
 
 /**
  * Result of consuming a life

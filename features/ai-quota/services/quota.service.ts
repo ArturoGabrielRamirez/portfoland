@@ -7,13 +7,22 @@
 import { prisma } from '@/lib/prisma';
 import { DEFAULT_LIVES, type ConsumeLifeResult } from '../types/quota';
 
+interface AIMeta {
+  remainingLives?: number;
+  lastResetDate?: string;
+}
+
 /**
- * Consume a life for a user
+ * Consume a life for a user.
  *
- * Atomically checks and consumes an AI life.
- * Uses two sequential MongoDB findAndModify operations:
- * 1. Atomic daily reset: if lastResetDate != today, reset lives to DEFAULT_LIVES
- * 2. Atomic decrement: if remainingLives > 0, decrement by 1 and return updated doc
+ * Uses Prisma's standard API (not raw commands) to avoid JSON encoding issues
+ * with MongoDB dot-notation on Prisma Json fields.
+ *
+ * Flow:
+ *   1. Read current meta
+ *   2. If lastResetDate != today → reset to DEFAULT_LIVES
+ *   3. If remainingLives <= 0 → return hasLives: false
+ *   4. Decrement and persist
  *
  * @param userId - The user ID
  * @param locale - Locale for error messages ('en' | 'es')
@@ -25,38 +34,25 @@ export async function consumeLifeService(
 ): Promise<ConsumeLifeResult> {
   const today = new Date().toISOString().split('T')[0];
 
-  // Step 1: Atomic daily reset — only fires if lastResetDate != today
-  await prisma.$runCommandRaw({
-    findAndModify: 'users',
-    query: {
-      _id: userId,
-      'meta.lastResetDate': { $ne: today },
-    },
-    update: {
-      $set: {
-        'meta.remainingLives': DEFAULT_LIVES,
-        'meta.lastResetDate': today,
-      },
-    },
-    new: false,
+  // Read the current user meta
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { meta: true },
   });
 
-  // Step 2: Atomic decrement — only fires if remainingLives > 0
-  const decrementResult = await prisma.$runCommandRaw({
-    findAndModify: 'users',
-    query: {
-      _id: userId,
-      'meta.remainingLives': { $gt: 0 },
-    },
-    update: {
-      $inc: { 'meta.remainingLives': -1 },
-    },
-    new: true,
-  });
+  if (!user) {
+    return { hasLives: false, remainingLives: 0, error: 'User not found' };
+  }
 
-  const updatedDoc = (decrementResult as { value?: { meta?: { remainingLives?: number } } }).value;
+  const meta = (user.meta ?? {}) as AIMeta;
 
-  if (!updatedDoc) {
+  // Reset daily lives if we haven't reset today yet
+  let remainingLives = meta.remainingLives ?? DEFAULT_LIVES;
+  if (meta.lastResetDate !== today) {
+    remainingLives = DEFAULT_LIVES;
+  }
+
+  if (remainingLives <= 0) {
     const error =
       locale === 'es'
         ? 'Lo siento, te has quedado sin "Vidas" por hoy. Vuelve mañana para continuar tu misión.'
@@ -64,8 +60,21 @@ export async function consumeLifeService(
     return { hasLives: false, remainingLives: 0, error };
   }
 
-  const remainingLives = updatedDoc.meta?.remainingLives ?? 0;
-  return { hasLives: true, remainingLives };
+  const newRemaining = remainingLives - 1;
+
+  // Persist updated meta
+  await prisma.user.update({
+    where: { id: userId },
+    data: {
+      meta: {
+        ...meta,
+        remainingLives: newRemaining,
+        lastResetDate: today,
+      },
+    },
+  });
+
+  return { hasLives: true, remainingLives: newRemaining };
 }
 
 /**
@@ -75,6 +84,8 @@ export async function consumeLifeService(
  * @returns Whether user has lives remaining
  */
 export async function hasRemainingLives(userId: string): Promise<boolean> {
+  const today = new Date().toISOString().split('T')[0];
+
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: { meta: true },
@@ -84,6 +95,12 @@ export async function hasRemainingLives(userId: string): Promise<boolean> {
     return true;
   }
 
-  const meta = user.meta as { remainingLives?: number };
-  return (meta.remainingLives ?? 0) > 0;
+  const meta = user.meta as AIMeta;
+
+  // If not reset today, user effectively has full lives
+  if (meta.lastResetDate !== today) {
+    return true;
+  }
+
+  return (meta.remainingLives ?? DEFAULT_LIVES) > 0;
 }

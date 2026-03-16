@@ -79,7 +79,7 @@ function TabBar({
   const tabs: { id: TabId; label: string }[] = [
     { id: 'profile', label: isTech ? '[PROFILE]' : 'Profile' },
     { id: 'content', label: isTech ? '[CONTENT]' : 'Content' },
-    ...(isClassic ? [{ id: 'theme' as TabId, label: isTech ? '[THEME]' : 'Theme' }] : []),
+    { id: 'theme' as TabId, label: isTech ? '[THEME]' : 'Theme' },
     { id: 'analytics', label: isTech ? '[ANALYTICS]' : 'Analytics' },
   ];
 
@@ -437,8 +437,8 @@ export function DashboardPortfolioView({
             </div>
           )}
 
-          {/* ── THEME TAB (Classic only) ── */}
-          {activeTab === 'theme' && isClassic && (
+          {/* ── THEME TAB ── */}
+          {activeTab === 'theme' && (
             <div className="space-y-6">
               {/* Mode Toggle */}
               <HUDPanel title={t('preferences.title')} icon={<Layers className="w-4 h-4" />}>
@@ -451,58 +451,61 @@ export function DashboardPortfolioView({
                 </div>
               </HUDPanel>
 
-              {/* Theme Presets + Custom Builder */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 p-1 bg-[#0D1421] border border-[hsl(174,100%,50%,0.15)] rounded-sm w-fit">
-                  {(['presets', 'custom'] as const).map((tab) => (
-                    <button key={tab} type="button" onClick={() => setThemeTab(tab)}
-                      className={cn('px-4 py-1.5 text-xs font-mono rounded-sm transition-all',
-                        themeTab === tab ? 'bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/30' : 'text-gray-500 hover:text-gray-300 border border-transparent'
-                      )}>
-                      {tab === 'presets' ? 'Presets' : 'Custom Builder'}
-                    </button>
-                  ))}
-                </div>
-
-                {themeTab === 'presets' ? (
-                  <HUDPanel title="Classic Mode Theme" icon={<Layers className="w-4 h-4" />}>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                      {Object.values(THEME_PRESETS).map((preset) => (
-                        <button key={preset.id} type="button" onClick={() => handleThemeSelect(preset.id)}
-                          className={cn('flex flex-col gap-2 p-3 border rounded-sm text-left transition-all',
-                            currentTheme === preset.id
-                              ? 'border-[hsl(174,100%,50%,0.5)] bg-[hsl(174,100%,50%,0.08)]'
-                              : 'border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] hover:border-[hsl(174,100%,50%,0.3)]'
-                          )}>
-                          <div className="flex items-center gap-1.5">
-                            <span className="w-3 h-3 rounded-full border border-white/10" style={{ backgroundColor: preset.backgroundColor }} />
-                            <span className="w-3 h-3 rounded-full" style={{ backgroundColor: preset.accentColor }} />
-                            {currentTheme === preset.id && (
-                              <span className="text-[hsl(150,100%,45%)] bg-[hsl(150,100%,45%,0.1)] text-[10px] font-mono px-1.5 py-0.5 rounded-sm uppercase ml-auto">Active</span>
-                            )}
-                          </div>
-                          <span className="text-xs font-mono text-gray-200">{preset.name}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </HUDPanel>
-                ) : (
-                  <CustomThemeBuilder
-                    initialTheme={portfolioSettings?.customTheme as CustomThemePayload | null}
-                    disabled={isPending}
-                    onChange={(newTheme) => handleThemeSelect('custom', newTheme)}
-                  />
-                )}
-              </div>
-
-              {/* Layout Variant */}
-              <LayoutVariantSelector currentVariant={portfolioSettings?.layoutVariant ?? 'bento'} />
-
-              {/* View Mode */}
+              {/* View Mode — available for both Tech and Classic */}
               <PortfolioViewSelector
                 currentViewMode={(portfolioSettings?.viewMode ?? 'sections') as PortfolioViewMode}
                 portfolioMode={user.portfolioMode}
               />
+
+              {/* Classic-only: Theme Presets + Custom Builder + Layout Variant */}
+              {isClassic && (
+                <>
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 p-1 bg-[#0D1421] border border-[hsl(174,100%,50%,0.15)] rounded-sm w-fit">
+                      {(['presets', 'custom'] as const).map((tab) => (
+                        <button key={tab} type="button" onClick={() => setThemeTab(tab)}
+                          className={cn('px-4 py-1.5 text-xs font-mono rounded-sm transition-all',
+                            themeTab === tab ? 'bg-[#00D4FF]/10 text-[#00D4FF] border border-[#00D4FF]/30' : 'text-gray-500 hover:text-gray-300 border border-transparent'
+                          )}>
+                          {tab === 'presets' ? 'Presets' : 'Custom Builder'}
+                        </button>
+                      ))}
+                    </div>
+
+                    {themeTab === 'presets' ? (
+                      <HUDPanel title="Classic Mode Theme" icon={<Layers className="w-4 h-4" />}>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                          {Object.values(THEME_PRESETS).map((preset) => (
+                            <button key={preset.id} type="button" onClick={() => handleThemeSelect(preset.id)}
+                              className={cn('flex flex-col gap-2 p-3 border rounded-sm text-left transition-all',
+                                currentTheme === preset.id
+                                  ? 'border-[hsl(174,100%,50%,0.5)] bg-[hsl(174,100%,50%,0.08)]'
+                                  : 'border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] hover:border-[hsl(174,100%,50%,0.3)]'
+                              )}>
+                              <div className="flex items-center gap-1.5">
+                                <span className="w-3 h-3 rounded-full border border-white/10" style={{ backgroundColor: preset.backgroundColor }} />
+                                <span className="w-3 h-3 rounded-full" style={{ backgroundColor: preset.accentColor }} />
+                                {currentTheme === preset.id && (
+                                  <span className="text-[hsl(150,100%,45%)] bg-[hsl(150,100%,45%,0.1)] text-[10px] font-mono px-1.5 py-0.5 rounded-sm uppercase ml-auto">Active</span>
+                                )}
+                              </div>
+                              <span className="text-xs font-mono text-gray-200">{preset.name}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </HUDPanel>
+                    ) : (
+                      <CustomThemeBuilder
+                        initialTheme={portfolioSettings?.customTheme as CustomThemePayload | null}
+                        disabled={isPending}
+                        onChange={(newTheme) => handleThemeSelect('custom', newTheme)}
+                      />
+                    )}
+                  </div>
+
+                  <LayoutVariantSelector currentVariant={portfolioSettings?.layoutVariant ?? 'bento'} />
+                </>
+              )}
             </div>
           )}
 

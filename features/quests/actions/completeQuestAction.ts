@@ -17,6 +17,7 @@ import { revalidateTag } from 'next/cache'
 import { auth } from '@/lib/auth'
 import { actionWrapper } from '@/features/core'
 import { completeQuestService } from '../services/completeQuest.service'
+import { createNotification } from '@/features/notifications/services/notification.service'
 
 // =============================================================================
 // Action
@@ -44,6 +45,14 @@ export async function completeQuestAction(
     // Invalidate the stats cache so XP total updates on next dashboard load
     if (result) {
       revalidateTag(`user-stats-${userId}`)
+      // Fire-and-forget notification (non-blocking)
+      createNotification({
+        userId,
+        type: 'QUEST_COMPLETED',
+        title: 'Quest completed!',
+        message: `+${result.xpAwarded} XP earned for completing a quest.`,
+        metadata: { questId, xpAwarded: result.xpAwarded },
+      }).catch(() => {})
     }
 
     return {

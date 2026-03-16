@@ -13,6 +13,7 @@ import { auth } from '@/lib/auth';
 import { actionWrapper } from '@/features/core';
 import { generateCVSchema } from '../schemas/cv.schema';
 import { generateCVService } from '../services/generateCV.service';
+import { createNotification } from '@/features/notifications/services/notification.service';
 import type { CVContent } from '../types/cv';
 
 interface GenerateCVPayload {
@@ -48,6 +49,15 @@ export async function generateCVAction(
     );
 
     revalidatePath('/dashboard/cv');
+
+    // Fire-and-forget notification (non-blocking)
+    createNotification({
+      userId: session.user.id,
+      type: 'CV_GENERATED',
+      title: 'CV ready!',
+      message: `"${result.title}" has been generated and saved.`,
+      metadata: { cvId: result.cvId, title: result.title },
+    }).catch(() => {});
 
     return {
       payload: {

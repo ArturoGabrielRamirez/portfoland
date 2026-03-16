@@ -8,6 +8,7 @@
 import { createHash } from 'crypto';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { notifyPortfolioViews } from '@/features/notifications/services/notification.service';
 
 export const runtime = 'nodejs';
 
@@ -58,6 +59,9 @@ export async function POST(request: Request) {
         await prisma.portfolioView.create({
             data: { userId: user.id, visitorHash, referrer },
         });
+
+        // Fire-and-forget notification (non-blocking)
+        notifyPortfolioViews(user.id, 1).catch(() => {});
 
         return NextResponse.json({ ok: true });
     } catch (error) {

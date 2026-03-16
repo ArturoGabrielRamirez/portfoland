@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import { PortfolioModeToggle } from '@/features/portfolio/components/PortfolioModeToggle'
 import { LanguageSwitcher } from '@/features/i18n'
 import { UserMenu } from '@/features/dashboard/components/UserMenu'
+import { NotificationBell } from '@/features/notifications/components/NotificationBell'
 import type { PortfolioMode } from '@/features/portfolio/types/portfolio'
 
 interface DashboardNavProps {
@@ -85,6 +86,7 @@ export function DashboardNav({ locale, user }: DashboardNavProps) {
             <span className="w-1.5 h-1.5 bg-[hsl(150,100%,45%)] rounded-full animate-pulse" />
             {t('online')}
           </span>
+          <NotificationBell portfolioMode={user.portfolioMode} />
           <UserMenu user={user} locale={locale} />
         </div>
       </div>

@@ -5,12 +5,11 @@ import { useEffect, useState } from "react"
 
 interface HexStatGridProps {
     stats: {
-        xp: { current: number; max: number }
-        level: number
-        experiences: number
-        achievements: { current: number; total: number }
+        portfolioViews: number
+        rank: number
+        cvCount: number
+        activeQuestsCount: number
     }
-    streakDays: number
     className?: string
 }
 
@@ -110,28 +109,21 @@ function HexStat({ value, label, color, size, left, top, delay = 0, zIndex = 1 }
 // =============================================================================
 // Hex Diamond Cluster — hexes OVERLAP to form one unified diamond shape
 //
-//         ╔══════════╗           ← XP (112px) top-center
-//     ╔══════╗   ╔══════╗       ← EXP (left) + ACH (right) overlap XP flanks
-//         ╔══════╗               ← LVL (bottom) fits between EXP and ACH
+//         ╔══════════╗           ← VIEWS (112px) top-center
+//     ╔══════╗   ╔══════╗       ← RANK (left) + CVS (right) overlap VIEWS flanks
+//         ╔══════╗               ← QUESTS (bottom) fits between RANK and CVS
 //
 // Container: 248 × 212px
-// Overlaps:  XP↔EXP = 28px horiz | XP↔ACH = 28px horiz
-//            EXP↔LVL = 26px vert | ACH↔LVL = 26px vert
 // =============================================================================
 
 const CLUSTER_W = 248
 const CLUSTER_H = 212
 
 const MOBILE_STATS = (C: Record<string, string>, stats: HexStatGridProps["stats"]) => [
-    { value: stats.xp.current.toLocaleString(), label: "XP TOTAL", color: C.cyan,    delay: 0   },
-    { value: stats.level.toString(),             label: "NIVEL",    color: C.yellow,  delay: 80  },
-    { value: stats.experiences.toString(),       label: "EXP.",     color: C.green,   delay: 160 },
-    {
-        value: `${stats.achievements.current}/${stats.achievements.total}`,
-        label: "LOGROS",
-        color: C.magenta,
-        delay: 240,
-    },
+    { value: stats.portfolioViews.toLocaleString(), label: "VIEWS",  color: C.cyan,    delay: 0   },
+    { value: stats.rank > 0 ? `#${stats.rank}` : "—", label: "RANK",   color: C.yellow,  delay: 80  },
+    { value: stats.cvCount.toString(),              label: "CVS",    color: C.magenta, delay: 160 },
+    { value: stats.activeQuestsCount > 0 ? stats.activeQuestsCount.toString() : "—", label: "QUESTS", color: C.green, delay: 240 },
 ]
 
 export function HexStatGrid({ stats, className }: HexStatGridProps) {
@@ -143,22 +135,19 @@ export function HexStatGrid({ stats, className }: HexStatGridProps) {
     }
 
     // ── Sizes ──────────────────────────────────────────────────────────────
-    const BIG = 112   // XP hex
-    const SM  = 92    // EXP, ACH, LVL
+    const BIG = 112   // VIEWS hex (top)
+    const SM  = 92    // RANK, CVS, QUESTS
 
     // ── Positions ──────────────────────────────────────────────────────────
-    // Centers:  XP=(124,56)  EXP=(46,100)  ACH=(202,100)  LVL=(124,154)
-    // Overlap:  XP/EXP & XP/ACH share ~28px horizontally
-    //           EXP/LVL & ACH/LVL share ~26px vertically
-    const XP_L  = 68   // left: 68  → center x = 68  + 56 = 124
-    const EXP_L = 0    // left:  0  → center x = 0   + 46 = 46
-    const ACH_L = 156  // left: 156 → center x = 156 + 46 = 202
-    const LVL_L = 78   // left: 78  → center x = 78  + 46 = 124
+    const XP_L  = 68
+    const EXP_L = 0
+    const ACH_L = 156
+    const LVL_L = 78
 
-    const XP_T  = 0    // top: 0  → center y = 0   + 56 = 56
-    const EXP_T = 54   // top: 54 → center y = 54  + 46 = 100
-    const ACH_T = 54   // top: 54 → center y = 54  + 46 = 100
-    const LVL_T = 108  // top: 108 → center y = 108 + 46 = 154
+    const XP_T  = 0
+    const EXP_T = 54
+    const ACH_T = 54
+    const LVL_T = 108
 
     return (
         <div className={cn("flex items-center justify-center w-full", className)}>
@@ -167,40 +156,40 @@ export function HexStatGrid({ stats, className }: HexStatGridProps) {
             <div className="hidden md:block">
                 <div className="relative" style={{ width: CLUSTER_W, height: CLUSTER_H }}>
 
-                    {/* LVL — bottom, behind EXP/ACH */}
+                    {/* QUESTS — bottom, behind RANK/CVS */}
                     <HexStat
-                        value={stats.level.toString()}
-                        label="NIVEL"
-                        color={C.yellow}
+                        value={stats.activeQuestsCount > 0 ? stats.activeQuestsCount.toString() : "—"}
+                        label="QUESTS"
+                        color={C.green}
                         size={SM}
                         left={LVL_L} top={LVL_T}
                         delay={140} zIndex={1}
                     />
 
-                    {/* EXP — left flank, in front of XP */}
+                    {/* RANK — left flank, in front of VIEWS */}
                     <HexStat
-                        value={stats.experiences.toString()}
-                        label="EXP."
-                        color={C.green}
+                        value={stats.rank > 0 ? `#${stats.rank}` : "—"}
+                        label="RANK"
+                        color={C.yellow}
                         size={SM}
                         left={EXP_L} top={EXP_T}
                         delay={80} zIndex={3}
                     />
 
-                    {/* ACH — right flank, in front of XP */}
+                    {/* CVS — right flank, in front of VIEWS */}
                     <HexStat
-                        value={`${stats.achievements.current}/${stats.achievements.total}`}
-                        label="LOGROS"
+                        value={stats.cvCount.toString()}
+                        label="CVS"
                         color={C.magenta}
                         size={SM}
                         left={ACH_L} top={ACH_T}
                         delay={80} zIndex={3}
                     />
 
-                    {/* XP — top center, behind flanks so all borders show through */}
+                    {/* VIEWS — top center, behind flanks */}
                     <HexStat
-                        value={stats.xp.current.toLocaleString()}
-                        label="XP TOTAL"
+                        value={stats.portfolioViews.toLocaleString()}
+                        label="VIEWS"
                         color={C.cyan}
                         size={BIG}
                         left={XP_L} top={XP_T}

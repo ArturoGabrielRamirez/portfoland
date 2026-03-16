@@ -13,6 +13,7 @@ import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { HexBadge } from '@/features/tech';
 import { useParams } from 'next/navigation';
+import { modeClasses } from '@/features/dashboard/utils/modeClasses';
 import type {
   TimelineData,
   Experience,
@@ -54,6 +55,7 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
   const locale = params.locale as string;
   const t = useTranslations('dashboard.timeline');
   const tCommon = useTranslations('common');
+  const mc = modeClasses(user.portfolioMode);
 
   const [selectedExperience, setSelectedExperience] = useState<Experience | null>(null);
   const [activeFilter, setActiveFilter] = useState<FilterOption>('ALL');
@@ -184,10 +186,10 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
   return (
     <>
       {/* Page Header */}
-      <div className="px-6 py-6 flex items-center justify-between border-b border-[hsl(174,100%,50%,0.1)]">
+      <div className={cn('px-6 py-6 flex items-center justify-between', mc.headerBorder)}>
         <div>
-          <h1 className="text-2xl font-mono font-bold text-foreground">{t('title')}</h1>
-          <p className="text-xs font-mono text-muted-foreground mt-1">{t('subtitle')}</p>
+          <h1 className={mc.heading}>{t('title')}</h1>
+          <p className={cn('text-xs mt-1', mc.isTech ? 'font-mono text-muted-foreground' : 'text-gray-500')}>{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
           {user.username && (
@@ -195,49 +197,54 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
               href={`/timeline/${user.username}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors"
+              className={cn('flex items-center gap-1.5 text-xs transition-colors', mc.isTech ? 'font-mono text-muted-foreground hover:text-foreground' : 'text-gray-500 hover:text-gray-900')}
             >
               <ExternalLink className="w-3.5 h-3.5" />
               {t('viewPublic')}
             </a>
           )}
-          <button
-            onClick={handleOpenCreate}
-            className="flex items-center gap-1.5 bg-[hsl(174,100%,50%)] text-[hsl(200,25%,8%)] px-3 py-1.5 text-xs font-mono font-bold hover:shadow-[0_0_12px_hsl(174_100%_50%_/_0.4)] transition-shadow"
-          >
+          <button onClick={handleOpenCreate} className={mc.primaryButton}>
             <Plus className="w-3.5 h-3.5" />
             {t('addExperience')}
           </button>
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="px-6 py-4 grid grid-cols-2 lg:grid-cols-4 gap-3 border-b border-[hsl(174,100%,50%,0.1)]">
-        {[
-          { value: data.stats.totalXP.toLocaleString(), label: t('stats.totalXP'), color: "cyan" as const, icon: <Zap className="w-4 h-4" /> },
-          { value: data.stats.milestones.toString(), label: t('stats.milestones'), color: "magenta" as const, icon: <Flag className="w-4 h-4" /> },
-          { value: data.stats.totalExperiences.toString(), label: t('stats.experiences'), color: "yellow" as const, icon: <Star className="w-4 h-4" /> },
-          { value: data.stats.achievements?.toString() || "0", label: t('stats.achievements'), color: "green" as const, icon: <Trophy className="w-4 h-4" /> },
-        ].map((stat) => (
-          <div key={stat.label} className="border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-3 flex items-center gap-3">
-            <HexBadge color={stat.color} size="sm" filled>
-              {stat.icon}
-            </HexBadge>
-            <div>
-              <div className={cn(
-                "text-xl font-mono font-bold",
-                stat.color === "cyan" && "text-[hsl(174,100%,50%)]",
-                stat.color === "magenta" && "text-[hsl(330,100%,65%)]",
-                stat.color === "yellow" && "text-[hsl(60,100%,50%)]",
-                stat.color === "green" && "text-[hsl(150,100%,45%)]"
-              )}>
-                {stat.value}
+      {/* Stats — Tech Mode: hex badges; Classic Mode: simple text summary */}
+      {mc.isTech ? (
+        <div className="px-6 py-4 grid grid-cols-2 lg:grid-cols-4 gap-3 border-b border-[hsl(174,100%,50%,0.1)]">
+          {[
+            { value: data.stats.totalXP.toLocaleString(), label: t('stats.totalXP'), color: "cyan" as const, icon: <Zap className="w-4 h-4" /> },
+            { value: data.stats.milestones.toString(), label: t('stats.milestones'), color: "magenta" as const, icon: <Flag className="w-4 h-4" /> },
+            { value: data.stats.totalExperiences.toString(), label: t('stats.experiences'), color: "yellow" as const, icon: <Star className="w-4 h-4" /> },
+            { value: data.stats.achievements?.toString() || "0", label: t('stats.achievements'), color: "green" as const, icon: <Trophy className="w-4 h-4" /> },
+          ].map((stat) => (
+            <div key={stat.label} className="border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-3 flex items-center gap-3">
+              <HexBadge color={stat.color} size="sm" filled>
+                {stat.icon}
+              </HexBadge>
+              <div>
+                <div className={cn(
+                  "text-xl font-mono font-bold",
+                  stat.color === "cyan" && "text-[hsl(174,100%,50%)]",
+                  stat.color === "magenta" && "text-[hsl(330,100%,65%)]",
+                  stat.color === "yellow" && "text-[hsl(60,100%,50%)]",
+                  stat.color === "green" && "text-[hsl(150,100%,45%)]"
+                )}>
+                  {stat.value}
+                </div>
+                <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">{stat.label}</div>
               </div>
-              <div className="text-[9px] font-mono uppercase tracking-[0.15em] text-muted-foreground">{stat.label}</div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="px-6 py-3 flex items-center gap-6 border-b border-gray-200 text-sm text-gray-600">
+          <span><strong className="text-gray-900">{data.stats.totalExperiences}</strong> experiences</span>
+          <span><strong className="text-gray-900">{data.stats.totalXP.toLocaleString()}</strong> XP earned</span>
+          <span><strong className="text-gray-900">{data.stats.milestones}</strong> milestones</span>
+        </div>
+      )}
 
       {/* Filter */}
       <div className="px-6 py-4 border-b border-[hsl(174,100%,50%,0.1)]">
@@ -264,6 +271,18 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
               isEditable={true}
               focusedExperienceId={selectedExperience?.id}
             />
+
+            {/* Empty state overlay on desktop map */}
+            {filteredExperiences.length === 0 && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/30 backdrop-blur-sm z-10">
+                <MapPin className={cn('w-12 h-12 mb-4', mc.isTech ? 'text-[hsl(174,100%,50%,0.4)]' : 'text-gray-400')} />
+                <p className={cn('mb-4 text-sm', mc.isTech ? 'font-mono text-muted-foreground' : 'text-gray-600')}>{t('empty.title')}</p>
+                <button onClick={handleOpenCreate} className={mc.primaryButton}>
+                  <Plus className="w-4 h-4" />
+                  {t('empty.addFirst')}
+                </button>
+              </div>
+            )}
 
             {/* Experience card with edit/delete */}
             {selectedExperience && (
@@ -294,12 +313,9 @@ export function DashboardTimelineView({ data, user }: DashboardTimelineViewProps
           <div className="max-w-lg mx-auto px-4 py-6">
             {filteredExperiences.length === 0 ? (
               <div className="text-center py-12">
-                <MapPin className="w-12 h-12 text-[hsl(174,100%,50%,0.3)] mx-auto mb-4" />
-                <p className="text-muted-foreground font-mono mb-4">{t('empty.title')}</p>
-                <button
-                  onClick={handleOpenCreate}
-                  className="bg-[hsl(174,100%,50%)] text-[hsl(200,25%,8%)] px-4 py-2 text-sm font-mono font-bold hover:shadow-[0_0_12px_hsl(174_100%_50%_/_0.4)] transition-shadow inline-flex items-center gap-2"
-                >
+                <MapPin className={cn('w-12 h-12 mx-auto mb-4', mc.isTech ? 'text-[hsl(174,100%,50%,0.3)]' : 'text-gray-300')} />
+                <p className={cn('mb-4 text-sm', mc.isTech ? 'text-muted-foreground font-mono' : 'text-gray-500')}>{t('empty.title')}</p>
+                <button onClick={handleOpenCreate} className={cn(mc.primaryButton, 'mx-auto')}>
                   <Plus className="w-4 h-4" />
                   {t('empty.addFirst')}
                 </button>

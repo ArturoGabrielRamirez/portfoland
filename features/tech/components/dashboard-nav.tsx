@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { LayoutDashboard, Clock, GitBranch, FolderOpen, User, Briefcase, MessageSquare, Images, FileText } from 'lucide-react'
+import { LayoutDashboard, Clock, GitBranch, FolderOpen, FileText } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { PortfolioModeToggle } from '@/features/portfolio/components/PortfolioModeToggle'
 import { LanguageSwitcher } from '@/features/i18n'
@@ -31,12 +31,6 @@ export function DashboardNav({ locale, user }: DashboardNavProps) {
     { href: '/dashboard/skills', label: t('skills'), icon: GitBranch, exact: false },
     { href: '/dashboard/projects', label: t('projects'), icon: FolderOpen, exact: false },
     { href: '/dashboard/cv', label: t('cv'), icon: FileText, exact: false },
-  ]
-
-  const classicNavItems = [
-    { href: '/dashboard/services', label: 'Services', icon: Briefcase },
-    { href: '/dashboard/testimonials', label: 'Testimonials', icon: MessageSquare },
-    { href: '/dashboard/gallery', label: 'Gallery', icon: Images },
   ]
 
   const cleanPathname = pathname.replace(/^\/[a-z]{2}(-[A-Z]{2})?(\/|$)/, '/')
@@ -80,26 +74,6 @@ export function DashboardNav({ locale, user }: DashboardNavProps) {
               )
             })}
 
-            {/* Classic Mode links — only shown when portfolioMode is 'classic' */}
-            {user.portfolioMode === 'classic' && classicNavItems.map((item) => {
-              const isActive = cleanPathname === item.href || cleanPathname.startsWith(item.href + '/')
-              const Icon = item.icon
-              return (
-                <Link
-                  key={item.href}
-                  href={`/${locale}${item.href}`}
-                  className={cn(
-                    'flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono transition-all',
-                    isActive
-                      ? 'text-[hsl(174,100%,50%)] bg-[hsl(174,100%,50%,0.1)]'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-[hsl(174,100%,50%,0.05)]'
-                  )}
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                  {item.label}
-                </Link>
-              )
-            })}
           </nav>
         </div>
 
@@ -148,8 +122,8 @@ export function DashboardNav({ locale, user }: DashboardNavProps) {
             </svg>
           </Link>
 
-          {/* Nav items as hex buttons — all core items always visible, classic items appended for classic mode */}
-          {([...navItems.slice(1), ...(user.portfolioMode === 'classic' ? classicNavItems : [])]).map((item) => {
+          {/* Nav items as hex buttons */}
+          {navItems.slice(1).map((item) => {
             const isActive = 'exact' in item && item.exact
               ? cleanPathname === item.href
               : cleanPathname === item.href || cleanPathname.startsWith(item.href + '/')

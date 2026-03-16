@@ -315,6 +315,7 @@ export interface SkillTreeViewProps {
   className?: string;
   githubConnected?: boolean;
   locale?: string;
+  portfolioMode?: 'tech' | 'classic';
 }
 
 // =============================================================================

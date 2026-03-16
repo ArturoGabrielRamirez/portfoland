@@ -297,44 +297,93 @@
   },
   "landing": {
     "hero": {
-      "badge": "Construye tu portfolio a tu manera",
+      "badge": "Constructor de portfolios con IA",
       "titlePrefix": "Tu portfolio,",
-      "titleHighlight": "tu identidad",
-      "subtitle": "Dos modos distintos. Una plataforma. Muéstrale al mundo quién eres — ya sea un desarrollador con un skill tree o un fotógrafo con una galería.",
+      "titleHighlight": "creado con IA",
+      "subtitle": "Importa tu CV, conecta GitHub y ten un portfolio profesional en minutos — con una IA que conoce tu carrera.",
+      "ctaPrimary": "Comenzar gratis",
+      "ctaSecondary": "Ver cómo funciona",
       "ctaSignUp": "Comenzar gratis",
       "ctaSignIn": "Iniciar sesión"
     },
+    "aiSection": {
+      "tag": "Asistente IA",
+      "headline": "Pide, no rellenes formularios",
+      "subheadline": "Tu asistente de IA lee tu portfolio y actúa sobre él — agrega experiencias, genera CVs, valida habilidades.",
+      "chat": {
+        "title": "Chat IA en tu dashboard",
+        "description": "\"Agrega mi trabajo en Accenture como backend dev\" — la IA lo hace directamente. Sin formularios."
+      },
+      "cv": {
+        "title": "CVs personalizados en segundos",
+        "description": "Sube una descripción de trabajo y obtiene un CV en PDF optimizado. Un CV diferente para cada aplicación."
+      },
+      "assessment": {
+        "title": "Evaluación y validación de habilidades",
+        "description": "La IA te evalúa en tus habilidades, otorga XP y agrega una insignia de validación a tu perfil."
+      }
+    },
+    "importSection": {
+      "tag": "Importación inteligente",
+      "headline": "De cero a portfolio en minutos",
+      "subheadline": "Conecta lo que ya tienes — repos de GitHub, CV en PDF — y deja que la IA complete el resto.",
+      "github": {
+        "title": "Sincronización con GitHub",
+        "description": "Conecta tus repos. Habilidades detectadas automáticamente desde package.json, validadas por commits reales."
+      },
+      "cvImport": {
+        "title": "Importación de CV",
+        "description": "Sube tu CV existente en PDF o DOCX. Experiencias, habilidades y proyectos extraídos instantáneamente."
+      }
+    },
     "features": {
-      "title": "Todo lo que necesitas",
-      "headline": "Construido para como realmente trabajas",
+      "title": "Características",
+      "headline": "Todo lo que necesita tu portfolio",
       "subheadline": "Portfoland se adapta a tu profesión, no al revés.",
       "portfolio": {
         "title": "Portfolio de Doble Modo",
-        "description": "Cambia entre Modo Tech y Modo Clásico. Cada uno tiene su propia identidad visual y secciones adaptadas a tu área."
+        "description": "Cambia entre Modo Tech y Modo Clásico. Cada uno tiene su propia identidad visual adaptada a tu área."
       },
       "timeline": {
         "title": "Timeline Interactivo",
-        "description": "Documenta tu trayectoria profesional con un timeline rico. Agrega experiencias, proyectos e hitos — con IA para ayudarte a escribirlos."
+        "description": "Documenta tu trayectoria profesional. Agrega experiencias, proyectos e hitos con vista de mapa."
       },
       "aiAssistant": {
         "title": "Contenido Potenciado por IA",
-        "description": "Mejora tu bio, descripciones de proyectos y habilidades con IA. Genera una narrativa para tu portfolio público en segundos."
+        "description": "Mejora tu bio, descripciones de proyectos y habilidades con IA. Genera CVs para posiciones específicas."
+      }
+    },
+    "visibilitySection": {
+      "tag": "Visibilidad",
+      "headline": "Tu portfolio se encuentra",
+      "subheadline": "Herramientas integradas para maximizar tu alcance — sin trabajo manual.",
+      "seo": {
+        "title": "SEO automático",
+        "description": "Meta tags Open Graph, datos estructurados y descripciones ricas generadas para cada página de portfolio."
+      },
+      "analytics": {
+        "title": "Análisis con privacidad",
+        "description": "Ve quién visita tu portfolio, qué secciones leen y desde dónde vienen — sin cookies."
+      },
+      "subdomain": {
+        "title": "Tu propia URL",
+        "description": "Tu portfolio vive en usuario.portfoland.com. Listo para compartir con reclutadores y clientes."
       }
     },
     "howItWorks": {
       "title": "Cómo funciona",
-      "headline": "Listo en minutos",
+      "headline": "Listo en 3 pasos",
       "step1": {
-        "title": "Elige tu modo",
-        "description": "Elige Modo Tech para un portfolio estilo desarrollador o Modo Clásico para una presentación limpia y profesional."
+        "title": "Importa tus datos existentes",
+        "description": "Sube tu CV o conecta GitHub. Tu experiencia, habilidades y proyectos se extraen automáticamente."
       },
       "step2": {
-        "title": "Cuenta tu historia",
-        "description": "Agrega tu experiencia, habilidades y proyectos. Usa IA para escribir descripciones convincentes."
+        "title": "Personaliza con IA",
+        "description": "Elige Modo Tech o Clásico. Usa IA para refinar descripciones, generar CVs personalizados y validar habilidades."
       },
       "step3": {
         "title": "Comparte tu portfolio",
-        "description": "Tu portfolio está disponible en tu URL personal. Compártelo con reclutadores, clientes o quien necesite conocer tu historia."
+        "description": "Tu portfolio está disponible en usuario.portfoland.com. Compártelo con reclutadores, clientes o quien necesite conocer tu historia."
       }
     },
     "modes": {
@@ -344,26 +393,26 @@
       "classic": {
         "title": "Modo Clásico",
         "subtitle": "Limpio y profesional",
-        "feature1": "Diseño minimalista en blanco",
-        "feature2": "Galería, servicios y testimonios",
-        "feature3": "Perfecto para profesionales presenciales",
-        "feature4": "Tipografía limpia, sin distracciones",
+        "feature1": "Diseño minimalista — galería, servicios y testimonios",
+        "feature2": "3 plantillas: fotógrafo, diseñador, escritor",
+        "feature3": "Contacto, redes sociales y listo para reservas",
+        "feature4": "Perfecto para profesionales de servicio presencial",
         "cta": "Comenzar con Modo Clásico"
       },
       "tech": {
         "title": "Modo Tech",
         "subtitle": "Estilo terminal y orientado a datos",
-        "feature1": "Skill tree hexagonal con sincronización GitHub",
-        "feature2": "Evaluaciones de habilidades con IA",
-        "feature3": "Timeline interactivo con sistema de XP",
-        "feature4": "Diseñado para desarrolladores y perfiles tech",
+        "feature1": "Skill tree hexagonal con validación GitHub",
+        "feature2": "Chat IA, evaluaciones de skills y sistema de XP",
+        "feature3": "Generador de CVs — PDFs personalizados por puesto",
+        "feature4": "Timeline interactivo con mapa mundial",
         "cta": "Comenzar con Modo Tech"
       }
     },
     "cta": {
       "title": "¿Listo para construir tu portfolio?",
-      "subtitle": "Únete a Portfoland y crea un portfolio que realmente te represente.",
-      "button": "Crear tu portfolio"
+      "subtitle": "Comienza gratis. Importa tu CV o conecta GitHub y ten un portfolio en minutos.",
+      "button": "Comenzar gratis"
     }
   },
   "cv": {

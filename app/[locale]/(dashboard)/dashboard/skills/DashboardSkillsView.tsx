@@ -15,6 +15,7 @@ import { useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
+import { modeClasses } from '@/features/dashboard/utils/modeClasses';
 import { useCRTTriggers } from '@/features/tech/context/crt-triggers';
 import {
   SkillTreeView,
@@ -77,6 +78,7 @@ export function DashboardSkillsView({
   const tLegend = useTranslations('dashboard.skills.legend');
   const [isPending, startTransition] = useTransition();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const mc = modeClasses(user.portfolioMode);
 
   // CRT trigger callbacks from DashboardPageLayout context
   const { triggerXPGain, triggerLifeLoss, triggerSearching } = useCRTTriggers();
@@ -107,10 +109,10 @@ export function DashboardSkillsView({
   return (
     <>
       {/* Page Header */}
-      <div className="px-6 py-6 flex items-center justify-between border-b border-[hsl(174,100%,50%,0.1)]">
+      <div className={cn('px-6 py-6 flex items-center justify-between', mc.headerBorder)}>
         <div>
-          <h1 className="text-2xl font-mono font-bold text-foreground">{t('title')}</h1>
-          <p className="text-xs font-mono text-muted-foreground mt-1">{t('subtitle')}</p>
+          <h1 className={mc.heading}>{t('title')}</h1>
+          <p className={cn('text-xs mt-1', mc.isTech ? 'font-mono text-muted-foreground' : 'text-gray-500')}>{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
           {user.username && (
@@ -118,43 +120,36 @@ export function DashboardSkillsView({
               href={`/${user.username}/skills`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors"
+              className={cn('flex items-center gap-1.5 text-xs transition-colors', mc.isTech ? 'font-mono text-muted-foreground hover:text-foreground' : 'text-gray-500 hover:text-gray-900')}
             >
               <ExternalLink className="w-3.5 h-3.5" />
               {t('viewPublic')}
             </a>
           )}
-          <button
-            onClick={handleAddSkill}
-            className="flex items-center gap-1.5 bg-[hsl(174,100%,50%)] text-[hsl(200,25%,8%)] px-3 py-1.5 text-xs font-mono font-bold hover:shadow-[0_0_12px_hsl(174_100%_50%_/_0.4)] transition-shadow"
-          >
+          <button onClick={handleAddSkill} className={mc.primaryButton}>
             <Plus className="w-3.5 h-3.5" />
             {t('addSkill')}
           </button>
         </div>
       </div>
 
-      {/* Legend Row — category color reference for the skill tree */}
-      <div className="px-6 py-2 flex items-center gap-3 border-b border-[hsl(174,100%,50%,0.1)]">
-        <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
-          <span className="w-2 h-2 rounded-full bg-[hsl(330,100%,65%)]" /> {tLegend('core')}
-        </span>
-        <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
-          <span className="w-2 h-2 rounded-full bg-[hsl(150,100%,45%)]" /> {tLegend('backend')}
-        </span>
-        <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
-          <span className="w-2 h-2 rounded-full bg-[hsl(174,100%,50%)]" /> {tLegend('frontend')}
-        </span>
-        <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
-          <span className="w-2 h-2 rounded-full bg-[hsl(60,100%,50%)]" /> {tLegend('tools')}
-        </span>
-        <span className="flex items-center gap-1 text-[9px] font-mono text-muted-foreground">
-          <span className="w-2 h-2 rounded-full bg-[hsl(280,100%,70%)]" /> {tLegend('softSkills')}
-        </span>
+      {/* Legend Row — category color reference */}
+      <div className={cn('px-6 py-2 flex items-center gap-3', mc.headerBorder)}>
+        {[
+          { color: 'bg-[hsl(330,100%,65%)]', label: tLegend('core') },
+          { color: 'bg-[hsl(150,100%,45%)]', label: tLegend('backend') },
+          { color: 'bg-[hsl(174,100%,50%)]', label: tLegend('frontend') },
+          { color: 'bg-[hsl(60,100%,50%)]',  label: tLegend('tools') },
+          { color: 'bg-[hsl(280,100%,70%)]', label: tLegend('softSkills') },
+        ].map(({ color, label }) => (
+          <span key={label} className={cn('flex items-center gap-1', mc.isTech ? 'text-[9px] font-mono text-muted-foreground' : 'text-[10px] text-gray-500')}>
+            <span className={cn('w-2 h-2 rounded-full', color)} /> {label}
+          </span>
+        ))}
       </div>
 
       {/* GITHUB_VALIDATOR — GitHub Expansion Module / Sync Status Panel (TG9) */}
-      <div className="px-6 py-3 border-b border-[hsl(174,100%,50%,0.1)]">
+      <div className={cn('px-6 py-3', mc.headerBorder)}>
         <GitHubSyncPanel
           userId={user.id}
           isGitHubConnected={isGitHubConnected}
@@ -167,7 +162,7 @@ export function DashboardSkillsView({
       </div>
 
       {/* ASSESSMENT_MODULE — AI Skill Assessment Widget (TG10) */}
-      <div className="px-6 py-3 border-b border-[hsl(174,100%,50%,0.1)]">
+      <div className={cn('px-6 py-3', mc.headerBorder)}>
         <AssessmentWidget
           userSkills={supportedUserSkills}
           assessmentTokens={assessmentTokens}
@@ -187,6 +182,7 @@ export function DashboardSkillsView({
             className="w-full h-full"
             githubConnected={isGitHubConnected}
             locale={locale}
+            portfolioMode={user.portfolioMode}
           />
         </div>
       </section>

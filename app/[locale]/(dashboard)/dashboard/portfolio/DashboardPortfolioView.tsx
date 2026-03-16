@@ -21,6 +21,7 @@ import { ServicesSection } from './components/ServicesSection';
 import { GallerySection } from './components/GallerySection';
 import { TestimonialsSection } from './components/TestimonialsSection';
 import { GenerateCareerStory } from '@/features/portfolio/components/GenerateCareerStory';
+import { ShareKit } from '@/features/portfolio/components/ShareKit';
 import ReactMarkdown from 'react-markdown';
 import type { PortfolioMode, PortfolioViewMode } from '@/features/portfolio/types/portfolio';
 import type { PortfolioSettingsModel } from '@/features/portfolio-settings/types/portfolioSettings';
@@ -36,7 +37,7 @@ import {
 // Types
 // =============================================================================
 
-type TabId = 'profile' | 'content' | 'theme' | 'analytics';
+type TabId = 'profile' | 'content' | 'theme' | 'analytics' | 'share';
 
 interface DashboardPortfolioViewProps {
   user: {
@@ -82,6 +83,7 @@ function TabBar({
     { id: 'content', label: isTech ? '[CONTENT]' : 'Content' },
     { id: 'theme' as TabId, label: isTech ? '[THEME]' : 'Theme' },
     { id: 'analytics', label: isTech ? '[ANALYTICS]' : 'Analytics' },
+    { id: 'share', label: isTech ? '[SHARE]' : 'Share' },
   ];
 
   return (
@@ -530,10 +532,21 @@ export function DashboardPortfolioView({
             </div>
           )}
 
+          {/* ── SHARE TAB ── */}
+          {activeTab === 'share' && (
+            <ShareKit
+              username={user.username}
+              name={user.name}
+              bio={user.bio}
+              image={user.image}
+              portfolioMode={user.portfolioMode}
+            />
+          )}
+
         </div>
 
-        {/* Floating Save Button — hidden on analytics tab */}
-        {activeTab !== 'analytics' && (
+        {/* Floating Save Button — hidden on analytics + share tabs */}
+        {activeTab !== 'analytics' && activeTab !== 'share' && (
           <div className="fixed bottom-10 right-10 z-50">
             <button type="submit" disabled={isPending}
               className={cn(

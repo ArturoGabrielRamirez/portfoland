@@ -173,7 +173,7 @@ export function DashboardSkillsView({
 
       {/* Main Content - Skill Tree View */}
       <section className="px-4 py-6">
-        <div style={{ height: 'calc(100vh - 300px)', minHeight: '500px' }}>
+        <div style={{ height: 'calc(100vh - 300px)', minHeight: 'clamp(220px, calc(100vh - 300px), 500px)' }}>
           <SkillTreeView
             userSkills={skills}
             categories={categories}

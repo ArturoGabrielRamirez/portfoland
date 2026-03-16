@@ -911,7 +911,7 @@ export const CRTWithAI = forwardRef<CRTWithAIHandle, CRTWithAIProps>(function CR
         <div
             ref={containerRef}
             onClick={wakeAI}
-            className={cn("relative border bg-[hsl(200,30%,6%)] overflow-hidden flex flex-col transition-all duration-700 h-[320px] min-h-[320px] cursor-pointer", className)}
+            className={cn("relative border bg-[hsl(200,30%,6%)] overflow-hidden flex flex-col transition-all duration-700 h-[220px] min-h-[220px] md:h-[320px] md:min-h-[320px] cursor-pointer", className)}
             style={{ borderColor }}
         >
             <style jsx global>{`
@@ -1058,7 +1058,7 @@ export const CRTWithAI = forwardRef<CRTWithAIHandle, CRTWithAIProps>(function CR
                     </div>
                 </div>
 
-                <div ref={eyeRef} className="w-[120px] flex flex-col items-center justify-center border-l bg-[hsl(200,30%,4%)]" style={{ borderColor }}>
+                <div ref={eyeRef} className="hidden md:flex md:w-[120px] flex-col items-center justify-center border-l bg-[hsl(200,30%,4%)]" style={{ borderColor }}>
                     <AIEye state={aiState} mouseOffset={mouseOffset} isBlinking={isBlinking} />
                     <span
                         className="text-[8px] font-mono mt-2 opacity-50 uppercase tracking-[0.2em]"

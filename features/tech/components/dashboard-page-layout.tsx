@@ -139,7 +139,7 @@ export function DashboardPageLayout({
             pageContext={pageContext}
           />
         )}
-        <div className="flex-1 min-h-0">
+        <div className="flex-1 min-h-0 pb-20 md:pb-0">
           {children}
         </div>
       </div>

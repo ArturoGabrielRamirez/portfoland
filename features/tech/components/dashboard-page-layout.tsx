@@ -1,8 +1,10 @@
 "use client"
 
-import { useState, useMemo, type ReactNode } from "react"
+import { useState, useMemo, useRef, useCallback, type ReactNode } from "react"
 import { CRTTriggerContext, type CRTTriggers } from "../context/crt-triggers"
 import { DashboardRow1 } from "./dashboard-row1"
+import type { DashboardRow1Handle } from "./dashboard-row1"
+import { CRTContextHint } from "./crt-context-hint"
 import type { PageContext } from "../types/page-context"
 import type { PortfolioMode } from "@/features/portfolio/types/portfolio"
 
@@ -88,6 +90,11 @@ export function DashboardPageLayout({
   const [xpGainTrigger, setXpGainTrigger] = useState(0)
   const [lifeLossTrigger, setLifeLossTrigger] = useState(0)
   const [searchingTrigger, setSearchingTrigger] = useState(0)
+  const row1Ref = useRef<DashboardRow1Handle>(null)
+
+  const handlePromptInsert = useCallback((text: string) => {
+    row1Ref.current?.insertPrompt(text)
+  }, [])
 
   const triggers: CRTTriggers = useMemo(() => ({
     triggerXPGain: () => setXpGainTrigger(n => n + 1),
@@ -101,23 +108,31 @@ export function DashboardPageLayout({
     <CRTTriggerContext.Provider value={triggers}>
       <div className="flex-1 min-h-0 overflow-y-auto flex flex-col gap-2 p-2">
         {isTech ? (
-          <DashboardRow1
-            userName={userName}
-            userInitial={userInitial}
-            userImage={userImage}
-            level={level}
-            currentXP={currentXP}
-            maxXP={maxXP}
-            streakDays={streakDays}
-            activeSkillsCount={activeSkillsCount}
-            translations={translations}
-            bootStats={bootStats}
-            pageContext={pageContext}
-            locale={locale}
-            onXPGain={triggers.triggerXPGain}
-            onLifeLoss={triggers.triggerLifeLoss}
-            onSearching={triggers.triggerSearching}
-          />
+          <>
+            <DashboardRow1
+              ref={row1Ref}
+              userName={userName}
+              userInitial={userInitial}
+              userImage={userImage}
+              level={level}
+              currentXP={currentXP}
+              maxXP={maxXP}
+              streakDays={streakDays}
+              activeSkillsCount={activeSkillsCount}
+              translations={translations}
+              bootStats={bootStats}
+              pageContext={pageContext}
+              locale={locale}
+              onXPGain={triggers.triggerXPGain}
+              onLifeLoss={triggers.triggerLifeLoss}
+              onSearching={triggers.triggerSearching}
+            />
+            <CRTContextHint
+              pageContext={pageContext}
+              portfolioMode={portfolioMode}
+              onPromptClick={handlePromptInsert}
+            />
+          </>
         ) : (
           <ClassicDashboardHeader
             userName={userName}

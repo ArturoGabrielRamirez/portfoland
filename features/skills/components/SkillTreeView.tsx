@@ -4,11 +4,13 @@
  * SkillTreeView Component
  *
  * Responsive container component that switches between:
- * - Desktop (>=768px): GalaxyCanvas
- * - Mobile (<768px): MobileSkillList
+ * - Tech Mode desktop: CRTSkillCanvas (hexagonal)
+ * - Tech Mode mobile: MobileSkillList
+ * - Classic Mode (all sizes): MobileSkillList (list view)
  */
 
 import { memo, useState, useCallback, useEffect, useTransition } from 'react';
+import { GitBranch, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import type { SkillTreeViewProps, UserSkillWithDetails } from '../types/skill';
@@ -17,6 +19,7 @@ import { MobileSkillList } from './MobileSkillList';
 import { SkillDetailCard } from './SkillDetailCard';
 import { ManualSkillModal } from './ManualSkillModal';
 import { AddSkillFAB } from './AddSkillFAB';
+import { DeleteConfirmModal } from '@/features/ui/components/DeleteConfirmModal';
 import { deleteSkill } from '../actions/deleteSkill';
 
 /**
@@ -26,33 +29,19 @@ function useMediaQuery(query: string): boolean {
   const [matches, setMatches] = useState(false);
 
   useEffect(() => {
-    // Check if window is available (client-side)
     if (typeof window === 'undefined') return;
-
     const mediaQuery = window.matchMedia(query);
-
-    // Set initial value
     setMatches(mediaQuery.matches);
-
-    // Create event listener
-    const handler = (event: MediaQueryListEvent) => {
-      setMatches(event.matches);
-    };
-
-    // Add listener
+    const handler = (event: MediaQueryListEvent) => setMatches(event.matches);
     mediaQuery.addEventListener('change', handler);
-
-    // Cleanup
-    return () => {
-      mediaQuery.removeEventListener('change', handler);
-    };
+    return () => mediaQuery.removeEventListener('change', handler);
   }, [query]);
 
   return matches;
 }
 
 /**
- * SkillTreeView renders the appropriate view based on screen size
+ * SkillTreeView renders the appropriate view based on screen size and portfolioMode
  */
 function SkillTreeViewComponent({
   userSkills,
@@ -62,8 +51,11 @@ function SkillTreeViewComponent({
   className,
   githubConnected = false,
   locale = 'en',
+  portfolioMode = 'tech',
 }: SkillTreeViewProps) {
   const isDesktop = useMediaQuery('(min-width: 768px)');
+  const isClassic = portfolioMode === 'classic';
+
   const [selectedSkill, setSelectedSkill] = useState<UserSkillWithDetails | null>(null);
   const [selectedSkillPosition, setSelectedSkillPosition] = useState<{ x: number; y: number; color?: string } | null>(null);
   const [isDetailCardOpen, setIsDetailCardOpen] = useState(false);
@@ -71,16 +63,15 @@ function SkillTreeViewComponent({
   const [isEditMode, setIsEditMode] = useState(false);
   const [skillToEdit, setSkillToEdit] = useState<UserSkillWithDetails | null>(null);
   const [prefilledCategoryId, setPrefilledCategoryId] = useState<string | undefined>();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleting, startDeleteTransition] = useTransition();
 
-  // Handle skill click
   const handleSkillClick = useCallback((skill: UserSkillWithDetails, position?: { x: number; y: number; color?: string }) => {
     setSelectedSkill(skill);
     setSelectedSkillPosition(position || null);
     setIsDetailCardOpen(true);
   }, []);
 
-  // Handle add skill
   const handleAddSkill = useCallback((categoryId?: string) => {
     setPrefilledCategoryId(categoryId);
     if (onAddSkill) {
@@ -90,14 +81,11 @@ function SkillTreeViewComponent({
     }
   }, [onAddSkill]);
 
-  // Handle close detail card
   const handleCloseDetailCard = useCallback(() => {
     setIsDetailCardOpen(false);
-    // Delay clearing selected skill to allow animation
     setTimeout(() => setSelectedSkill(null), 300);
   }, []);
 
-  // Handle close add modal
   const handleCloseAddModal = useCallback(() => {
     setIsAddModalOpen(false);
     setIsEditMode(false);
@@ -105,13 +93,10 @@ function SkillTreeViewComponent({
     setPrefilledCategoryId(undefined);
   }, []);
 
-  // Handle add modal success
   const handleAddSuccess = useCallback(() => {
     handleCloseAddModal();
-    // Refresh would typically happen via revalidation
   }, [handleCloseAddModal]);
 
-  // Handle edit skill
   const handleEditSkill = useCallback(() => {
     if (selectedSkill) {
       setSkillToEdit(selectedSkill);
@@ -121,11 +106,9 @@ function SkillTreeViewComponent({
     }
   }, [selectedSkill]);
 
-  // Handle delete skill
   const handleDeleteSkill = useCallback(() => {
     if (!selectedSkill) return;
 
-    // Check if skill has experience sources
     const hasExperienceSources = selectedSkill.sources?.some(
       (source) => source.sourceType === 'EXPERIENCE'
     );
@@ -135,16 +118,13 @@ function SkillTreeViewComponent({
       return;
     }
 
-    // Confirm deletion
-    const confirmDelete = window.confirm(
-      `Are you sure you want to delete "${selectedSkill.skill?.name}"? This action cannot be undone.`
-    );
+    setIsDeleteModalOpen(true);
+  }, [selectedSkill]);
 
-    if (!confirmDelete) return;
-
+  const handleDeleteConfirm = useCallback(() => {
+    if (!selectedSkill) return;
     startDeleteTransition(async () => {
       const result = await deleteSkill({ id: selectedSkill.id });
-
       if (result.hasError) {
         toast.error(result.message || 'Failed to delete skill');
       } else {
@@ -152,17 +132,21 @@ function SkillTreeViewComponent({
         setIsDetailCardOpen(false);
         setSelectedSkill(null);
       }
+      setIsDeleteModalOpen(false);
     });
   }, [selectedSkill]);
+
+  // Classic Mode or Mobile: always show list view
+  const showListView = isClassic || !isDesktop;
 
   return (
     <div
       data-testid="skill-tree-view"
       className={cn('relative w-full h-full', className)}
     >
-      {/* Desktop: CRT Skill Canvas */}
-      {isDesktop ? (
-        <div className="w-full h-full">
+      {!showListView ? (
+        /* Tech Mode Desktop: CRT hexagonal canvas */
+        <div className="relative w-full h-full">
           <CRTSkillCanvas
             userSkills={userSkills}
             categories={categories}
@@ -170,20 +154,61 @@ function SkillTreeViewComponent({
             onAddSkill={handleAddSkill}
             className="w-full h-full"
           />
+
+          {/* Empty state overlay — Tech Mode only, when no skills */}
+          {userSkills.length === 0 && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
+              <GitBranch className="w-12 h-12 text-[hsl(174,100%,50%,0.3)] mb-4" />
+              <p className="font-mono text-muted-foreground text-sm mb-3">No skills yet</p>
+              {isEditable && (
+                <button
+                  onClick={() => handleAddSkill()}
+                  className="flex items-center gap-1.5 bg-[hsl(174,100%,50%)] text-[hsl(200,25%,8%)] px-3 py-1.5 text-xs font-mono font-bold hover:shadow-[0_0_12px_hsl(174_100%_50%_/_0.4)] transition-shadow"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  Add your first skill
+                </button>
+              )}
+            </div>
+          )}
         </div>
       ) : (
-        /* Mobile: Skill List */
-        <div className="w-full h-full overflow-y-auto p-4 pb-20">
-          <MobileSkillList
-            userSkills={userSkills}
-            categories={categories}
-            onSkillClick={handleSkillClick}
-          />
+        /* Classic Mode or Mobile: list view */
+        <div className={cn(
+          'w-full h-full overflow-y-auto',
+          isClassic ? 'p-0' : 'p-4 pb-20'
+        )}>
+          {userSkills.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16">
+              <GitBranch className={cn('w-12 h-12 mb-4', isClassic ? 'text-gray-300' : 'text-[hsl(174,100%,50%,0.3)]')} />
+              <p className={cn('text-sm mb-3', isClassic ? 'text-gray-500' : 'font-mono text-muted-foreground')}>No skills yet</p>
+              {isEditable && (
+                <button
+                  onClick={() => handleAddSkill()}
+                  className={cn(
+                    'flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium',
+                    isClassic
+                      ? 'bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors'
+                      : 'bg-[hsl(174,100%,50%)] text-[hsl(200,25%,8%)] font-mono text-xs font-bold hover:shadow-[0_0_12px_hsl(174_100%_50%_/_0.4)] transition-shadow'
+                  )}
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  Add your first skill
+                </button>
+              )}
+            </div>
+          ) : (
+            <MobileSkillList
+              userSkills={userSkills}
+              categories={categories}
+              onSkillClick={handleSkillClick}
+            />
+          )}
         </div>
       )}
 
-      {/* Indicator Line (from selected node to detail card) */}
-      {selectedSkill && isDetailCardOpen && selectedSkillPosition && isDesktop && (() => {
+      {/* Indicator Line (from selected node to detail card — Tech desktop only) */}
+      {selectedSkill && isDetailCardOpen && selectedSkillPosition && !showListView && (() => {
         const lineColor = selectedSkillPosition.color || 'hsl(174,100%,50%)';
         return (
           <svg className="fixed inset-0 pointer-events-none z-40" style={{ width: '100vw', height: '100vh' }}>
@@ -196,7 +221,6 @@ function SkillTreeViewComponent({
                 </feMerge>
               </filter>
             </defs>
-            {/* Curved path from node to card (top-right) */}
             <path
               d={`M ${selectedSkillPosition.x} ${selectedSkillPosition.y} Q ${selectedSkillPosition.x + 100} ${selectedSkillPosition.y - 50} ${typeof window !== 'undefined' ? window.innerWidth - 200 : 800} ${80}`}
               stroke={lineColor}
@@ -206,59 +230,20 @@ function SkillTreeViewComponent({
               opacity="0.7"
               filter="url(#indicator-glow)"
             >
-              <animate
-                attributeName="stroke-dashoffset"
-                from="0"
-                to="12"
-                dur="1s"
-                repeatCount="indefinite"
-              />
+              <animate attributeName="stroke-dashoffset" from="0" to="12" dur="1s" repeatCount="indefinite" />
             </path>
-            {/* Pulse at node position */}
-            <circle
-              cx={selectedSkillPosition.x}
-              cy={selectedSkillPosition.y}
-              r="8"
-              fill="none"
-              stroke={lineColor}
-              strokeWidth="2"
-              opacity="0.8"
-            >
-              <animate
-                attributeName="r"
-                from="8"
-                to="16"
-                dur="1.5s"
-                repeatCount="indefinite"
-              />
-              <animate
-                attributeName="opacity"
-                from="0.8"
-                to="0"
-                dur="1.5s"
-                repeatCount="indefinite"
-              />
+            <circle cx={selectedSkillPosition.x} cy={selectedSkillPosition.y} r="8" fill="none" stroke={lineColor} strokeWidth="2" opacity="0.8">
+              <animate attributeName="r" from="8" to="16" dur="1.5s" repeatCount="indefinite" />
+              <animate attributeName="opacity" from="0.8" to="0" dur="1.5s" repeatCount="indefinite" />
             </circle>
-            {/* Arrow head at card position */}
-            <circle
-              cx={typeof window !== 'undefined' ? window.innerWidth - 200 : 800}
-              cy={80}
-              r="4"
-              fill={lineColor}
-              opacity="0.8"
-            >
-              <animate
-                attributeName="opacity"
-                values="0.5;1;0.5"
-                dur="2s"
-                repeatCount="indefinite"
-              />
+            <circle cx={typeof window !== 'undefined' ? window.innerWidth - 200 : 800} cy={80} r="4" fill={lineColor} opacity="0.8">
+              <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" />
             </circle>
           </svg>
         );
       })()}
 
-      {/* Skill Detail Card (shown when skill is selected) */}
+      {/* Skill Detail Card */}
       {selectedSkill && (
         <SkillDetailCard
           userSkill={selectedSkill}
@@ -272,8 +257,8 @@ function SkillTreeViewComponent({
         />
       )}
 
-      {/* Add Skill FAB (mobile only) */}
-      {!isDesktop && (
+      {/* Add Skill FAB (mobile only, Tech Mode) */}
+      {!isDesktop && !isClassic && (
         <AddSkillFAB onClick={() => handleAddSkill()} />
       )}
 
@@ -284,6 +269,17 @@ function SkillTreeViewComponent({
         onSuccess={handleAddSuccess}
         categories={categories}
         skillToEdit={isEditMode ? skillToEdit : undefined}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDeleteConfirm}
+        title={`Delete "${selectedSkill?.skill?.name}"?`}
+        description="This action cannot be undone. The skill and all its assessment history will be permanently removed."
+        isLoading={isDeleting}
+        portfolioMode={portfolioMode}
       />
     </div>
   );

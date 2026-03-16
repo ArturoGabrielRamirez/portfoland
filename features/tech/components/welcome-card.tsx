@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import type { WelcomeCardProps } from "../types/dashboard"
-import { Briefcase, Clock, GitBranch, Target, User } from "lucide-react"
+import { Briefcase, Clock, GitBranch, Target, User, FileText } from "lucide-react"
 
 // Icon mapping
 const iconMap: Record<string, any> = {
@@ -13,6 +13,7 @@ const iconMap: Record<string, any> = {
   GitBranch,
   Target,
   User,
+  FileText,
 }
 
 // =============================================================================
@@ -146,10 +147,10 @@ function SystemStatusPanel({ activeSkillsCount, streakDays }: { activeSkillsCoun
 }
 
 const defaultQuickActions = [
-  { icon: "Briefcase", label: "Add Experience", color: "hsl(174,100%,50%)" },
-  { icon: "Clock", label: "Timeline", color: "hsl(60,100%,50%)" },
-  { icon: "GitBranch", label: "Level Up", color: "hsl(330,100%,65%)" },
-  { icon: "Target", label: "New Goal", color: "hsl(150,100%,45%)" },
+  { icon: "Briefcase", label: "Experience", color: "hsl(174,100%,50%)", href: "/dashboard/timeline" },
+  { icon: "Clock",     label: "Timeline",   color: "hsl(60,100%,50%)",  href: "/dashboard/timeline" },
+  { icon: "GitBranch", label: "Skills",     color: "hsl(330,100%,65%)", href: "/dashboard/skills"   },
+  { icon: "FileText",  label: "CV",         color: "hsl(150,100%,45%)", href: "/dashboard/cv"       },
 ]
 
 // Mini AI Eye for avatar swap
@@ -302,11 +303,13 @@ export function WelcomeCard({
         <SystemStatusPanel activeSkillsCount={activeSkillsCount ?? 0} streakDays={streakDays} />
 
         {/* Right: Quick Actions as honeycomb */}
-        {quickActions && quickActions.length > 0 && (
+        {(() => {
+          const actionsToRender = (quickActions && quickActions.length > 0) ? quickActions : defaultQuickActions
+          return (
         <div className="lg:w-[280px] border-t lg:border-t-0 lg:border-l border-[hsl(174,100%,50%,0.1)] p-4 flex flex-col items-center justify-center">
           <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground mb-4">{translations?.quickActionsTitle || "Quick Actions"}</p>
           <div className="grid grid-cols-2 gap-y-0 gap-x-2">
-            {quickActions.map((action, i) => {
+            {actionsToRender.map((action, i) => {
               const Icon = iconMap[action.icon] || Target
               const isOddRow = Math.floor(i / 2) % 2 === 1
               const sharedClass = "group relative flex flex-col items-center justify-center transition-all duration-300 hover:scale-105"
@@ -357,14 +360,15 @@ export function WelcomeCard({
                   {inner}
                 </Link>
               ) : (
-                <button key={action.label} type="button" onClick={action.onClick} className={sharedClass} style={sharedStyle}>
+                <button key={action.label} type="button" onClick={'onClick' in action ? action.onClick : undefined} className={sharedClass} style={sharedStyle}>
                   {inner}
                 </button>
               )
             })}
           </div>
         </div>
-        )}
+          )
+        })()}
       </div>
     </div>
   )

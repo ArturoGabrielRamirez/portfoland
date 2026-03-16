@@ -18,6 +18,9 @@ import { DashboardPageLayout } from '@/features/tech';
 import { getDisplayName, getInitials } from '@/features/dashboard/utils/userHelpers';
 import { DashboardPortfolioView } from './DashboardPortfolioView';
 import { getPortfolioAnalyticsData } from '@/features/analytics/data/getPortfolioAnalytics.data';
+import { getServicesByUserIdData } from '@/features/services/data/getServicesByUserId.data';
+import { getGalleryItemsByUserIdData } from '@/features/gallery/data/getGalleryItemsByUserId.data';
+import { getTestimonialsByUserIdData } from '@/features/testimonials/data/getTestimonialsByUserId.data';
 
 export default async function DashboardPortfolioPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -33,7 +36,7 @@ export default async function DashboardPortfolioPage({ params }: { params: Promi
 
   await checkOnboarding(session.user.id);
 
-  const [pageData, oauthImage, portfolioSettings, analytics] = await Promise.all([
+  const [pageData, oauthImage, portfolioSettings, analytics, services, galleryItems, testimonials] = await Promise.all([
     getDashboardPageData(session.user.id),
     prisma.user.findUnique({
       where: { id: session.user.id },
@@ -41,6 +44,9 @@ export default async function DashboardPortfolioPage({ params }: { params: Promi
     }).then(u => u?.oauthImage ?? null),
     getPortfolioSettingsData(session.user.id),
     getPortfolioAnalyticsData(session.user.id),
+    getServicesByUserIdData(session.user.id),
+    getGalleryItemsByUserIdData(session.user.id),
+    getTestimonialsByUserIdData(session.user.id),
   ]);
 
   const displayName = getDisplayName(pageData.user.name, pageData.user.email);
@@ -96,6 +102,9 @@ export default async function DashboardPortfolioPage({ params }: { params: Promi
         oauthImage={oauthImage}
         portfolioSettings={portfolioSettings}
         analytics={analytics}
+        services={services}
+        galleryItems={galleryItems}
+        testimonials={testimonials}
       />
     </DashboardPageLayout>
   );

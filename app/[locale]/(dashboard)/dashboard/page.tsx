@@ -29,6 +29,7 @@ import { getDashboardPageData } from '@/features/dashboard/data/getDashboardPage
 import { getTopRunners } from '@/features/dashboard/data/getTopRunners.data'
 import { getDisplayName, getInitials } from '@/features/dashboard/utils/userHelpers'
 import { getQuestsAction } from '@/features/quests/actions/getQuestsAction'
+import { prisma } from '@/lib/prisma'
 
 // =============================================================================
 // Page
@@ -47,11 +48,13 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
 
   await checkOnboarding(user.id)
 
-  // Fetch page data, top runners, and quests in parallel for optimal performance
-  const [pageData, runners, questsResponse] = await Promise.all([
+  // Fetch page data, top runners, quests, and new metrics in parallel
+  const [pageData, runners, questsResponse, portfolioViews, cvCount] = await Promise.all([
     getDashboardPageData(user.id),
     getTopRunners(user.id),
     getQuestsAction(locale),
+    prisma.portfolioView.count({ where: { userId: user.id } }),
+    prisma.cVDocument.count({ where: { userId: user.id } }),
   ])
 
   const stats = pageData.stats
@@ -59,7 +62,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
   const initials = getInitials(pageData.user.name, pageData.user.email)
 
   // Map TopRunner[] to the Runner[] shape expected by TopRunnersPanel
-  const rankedRunners = runners.map((runner, i) => ({
+  const rankedRunners = runners.map((runner: { id: string; name: string; username: string | null; image: string | null; totalXP: number; isCurrentUser: boolean }, i: number) => ({
     id: runner.id,
     rank: i + 1,
     name: runner.name,
@@ -68,6 +71,10 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
     xp: runner.totalXP,
     isCurrentUser: runner.isCurrentUser,
   }))
+
+  // Derive leaderboard rank from top-5 data; show 1 if current user is top (or not in list → show ">5")
+  const currentUserRanked = rankedRunners.find(r => r.isCurrentUser)
+  const leaderboardRank = currentUserRanked?.rank ?? null
 
   return (
     <DashboardPageLayout
@@ -124,16 +131,15 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
 
           <HexStatGrid
             stats={{
-              xp: { current: stats.totalXP, max: stats.nextLevelXP },
-              level: stats.level,
-              experiences: stats.experiencesCount,
-              achievements: stats.achievements,
+              portfolioViews,
+              rank: leaderboardRank ?? 0,
+              cvCount,
+              activeQuestsCount: questsResponse.hasError ? 0 : (questsResponse.payload?.length ?? 0),
             }}
-            streakDays={stats.currentStreak}
           />
 
           {/* Quick Actions hex row */}
-          <QuickActionsBar />
+          <QuickActionsBar username={pageData.user.username} />
 
           {/* Activity heatmap with real streak data */}
           <ActivityHeatmap

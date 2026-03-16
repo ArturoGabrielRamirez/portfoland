@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState, useCallback } from "react"
+import { useEffect, useRef, useState, useCallback, forwardRef, useImperativeHandle } from "react"
 import { Send } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
@@ -46,6 +46,10 @@ interface CRTWithAIProps {
     bootStats?: BootStats
     pageContext?: PageContext
     locale?: string
+}
+
+export interface CRTWithAIHandle {
+    insertPrompt: (text: string) => void
 }
 
 interface ConsoleLine {
@@ -455,7 +459,7 @@ export function AIEye({
     )
 }
 
-export function CRTWithAI({
+export const CRTWithAI = forwardRef<CRTWithAIHandle, CRTWithAIProps>(function CRTWithAI({
     userName,
     className,
     idleTimeout = IDLE_TIMEOUT_MS,
@@ -466,7 +470,7 @@ export function CRTWithAI({
     bootStats,
     pageContext,
     locale,
-}: CRTWithAIProps) {
+}: CRTWithAIProps, ref) {
     const { setHighlightedSkills } = useAIContext()
     const bootLines = makeBootLines(bootStats)
     const [aiState, setAIState] = useState<AIState>("sleeping")
@@ -495,6 +499,17 @@ export function CRTWithAI({
     const postSyncRef = useRef(false)
     const postSyncTimer = useRef<NodeJS.Timeout | null>(null)
     const startScanningRef = useRef<() => void>(() => { })
+
+    useImperativeHandle(ref, () => ({
+        insertPrompt(text: string) {
+            if (aiState === "sleeping" || aiState === "drowsy") {
+                setAIState("waking")
+                setTimeout(() => setAIState("awake"), 800)
+            }
+            setMessage(text)
+            inputRef.current?.focus()
+        },
+    }), [aiState])
 
     useEffect(() => {
         onAIStateChange?.(aiState)
@@ -1070,4 +1085,4 @@ export function CRTWithAI({
             </div>
         </div>
     )
-}
+})

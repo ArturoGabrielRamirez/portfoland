@@ -1,20 +1,15 @@
 'use client';
 
-/**
- * DashboardProjectsView Component - Cyberpunk V2
- *
- * Client component for the dashboard projects page with cyberpunk hexagonal design.
- */
-
 import { useState, useCallback, useTransition } from 'react';
-import { Plus, Pencil, Trash2, FolderOpen, Star } from 'lucide-react';
+import { Plus, Pencil, Trash2, FolderOpen, Star, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { toast } from 'sonner';
 import { useTranslations } from 'next-intl';
-import { useParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { ProjectForm } from '@/features/projects/components/ProjectForm';
+import { ProjectModal } from '@/features/projects/components/ProjectModal';
+import { DeleteConfirmModal } from '@/features/ui/components/DeleteConfirmModal';
 import { deleteProject } from '@/features/projects/actions/deleteProject';
+import { modeClasses } from '@/features/dashboard/utils/modeClasses';
 import type { Project } from '@/features/projects/types/project';
 import type { PortfolioMode } from '@/features/portfolio/types/portfolio';
 
@@ -31,48 +26,54 @@ interface DashboardProjectsViewProps {
 }
 
 export function DashboardProjectsView({ projects, user }: DashboardProjectsViewProps) {
-  const params = useParams();
-  const locale = params.locale as string;
   const t = useTranslations('dashboard.projects');
   const tStatus = useTranslations('dashboard.projects.status');
+  const mc = modeClasses(user.portfolioMode);
 
-  const [showForm, setShowForm] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | undefined>();
+  const [deleteTarget, setDeleteTarget] = useState<Project | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const handleCreate = useCallback(() => {
     setEditingProject(undefined);
-    setShowForm(true);
+    setIsModalOpen(true);
   }, []);
 
   const handleEdit = useCallback((project: Project) => {
     setEditingProject(project);
-    setShowForm(true);
+    setIsModalOpen(true);
   }, []);
 
-  const handleCancel = useCallback(() => {
-    setShowForm(false);
+  const handleModalClose = useCallback(() => {
+    setIsModalOpen(false);
     setEditingProject(undefined);
   }, []);
 
-  const handleDelete = useCallback((project: Project) => {
-    if (!confirm(t('deleteConfirm', { title: project.title }))) return;
-
+  const handleDeleteConfirm = useCallback(() => {
+    if (!deleteTarget) return;
     startTransition(async () => {
-      const result = await deleteProject({ id: project.id });
+      const result = await deleteProject({ id: deleteTarget.id });
       if (result.hasError) {
         toast.error(result.message);
       } else {
         toast.success(result.message);
       }
+      setDeleteTarget(null);
     });
-  }, [t]);
+  }, [deleteTarget]);
 
-  const statusColors: Record<string, string> = {
-    IN_PROGRESS: 'text-[hsl(174,100%,50%)] bg-[hsl(174,100%,50%,0.1)]',
-    COMPLETED: 'text-[hsl(150,100%,45%)] bg-[hsl(150,100%,45%,0.1)]',
-    ARCHIVED: 'text-[#64748B] bg-[#64748B]/10',
-  };
+  const statusColors: Record<string, string> = mc.isTech
+    ? {
+        IN_PROGRESS: 'text-[hsl(174,100%,50%)] bg-[hsl(174,100%,50%,0.1)]',
+        COMPLETED: 'text-[hsl(150,100%,45%)] bg-[hsl(150,100%,45%,0.1)]',
+        ARCHIVED: 'text-[#64748B] bg-[#64748B]/10',
+      }
+    : {
+        IN_PROGRESS: 'text-blue-600 bg-blue-50',
+        COMPLETED: 'text-green-700 bg-green-50',
+        ARCHIVED: 'text-gray-500 bg-gray-100',
+      };
 
   const getStatusLabel = (status: string): string => {
     const statusKey = status.toLowerCase();
@@ -85,43 +86,24 @@ export function DashboardProjectsView({ projects, user }: DashboardProjectsViewP
   return (
     <>
       {/* Page Header */}
-      <div className="px-6 py-6 flex items-center justify-between border-b border-[hsl(174,100%,50%,0.1)]">
+      <div className={cn('px-6 py-6 flex items-center justify-between', mc.headerBorder)}>
         <div>
-          <h1 className="text-2xl font-mono font-bold text-foreground">{t('title')}</h1>
-          <p className="text-xs font-mono text-muted-foreground mt-1">{t('subtitle')}</p>
+          <h1 className={mc.heading}>{t('title')}</h1>
+          <p className={cn('text-xs mt-1', mc.isTech ? 'font-mono text-muted-foreground' : 'text-gray-500')}>{t('subtitle')}</p>
         </div>
-        <button
-          onClick={handleCreate}
-          className="flex items-center gap-1.5 bg-[hsl(60,100%,50%)] text-[hsl(200,25%,8%)] px-3 py-1.5 text-xs font-mono font-bold hover:shadow-[0_0_12px_hsl(60_100%_50%_/_0.4)] transition-shadow"
-        >
+        <button onClick={handleCreate} className={mc.primaryButton}>
           <Plus className="w-3.5 h-3.5" />
           {t('addProject')}
         </button>
       </div>
 
       <main className="max-w-5xl mx-auto px-4 py-8">
-        {/* Form Section */}
-        {showForm && (
-          <div className="mb-8 rounded-sm border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-6">
-            <h2 className="text-lg font-mono font-bold text-foreground mb-4">
-              {editingProject ? t('form.editProject') : t('form.newProject')}
-            </h2>
-            <ProjectForm
-              project={editingProject}
-              onCancel={handleCancel}
-            />
-          </div>
-        )}
-
         {/* Projects List */}
-        {projects.length === 0 && !showForm ? (
+        {projects.length === 0 ? (
           <div className="text-center py-16">
-            <FolderOpen className="w-16 h-16 text-[hsl(174,100%,50%,0.3)] mx-auto mb-4" />
-            <p className="text-muted-foreground font-mono mb-4">{t('empty.title')}</p>
-            <button
-              onClick={handleCreate}
-              className="flex items-center gap-2 bg-[hsl(60,100%,50%)] text-[hsl(200,25%,8%)] px-4 py-2 text-sm font-mono font-bold hover:shadow-[0_0_12px_hsl(60_100%_50%_/_0.4)] transition-shadow inline-flex mx-auto"
-            >
+            <FolderOpen className={cn('w-16 h-16 mx-auto mb-4', mc.isTech ? 'text-[hsl(174,100%,50%,0.3)]' : 'text-gray-300')} />
+            <p className={cn('mb-4', mc.isTech ? 'text-muted-foreground font-mono' : 'text-gray-500')}>{t('empty.title')}</p>
+            <button onClick={handleCreate} className={cn(mc.primaryButton, 'mx-auto')}>
               <Plus className="w-4 h-4" />
               {t('empty.addFirst')}
             </button>
@@ -132,42 +114,46 @@ export function DashboardProjectsView({ projects, user }: DashboardProjectsViewP
               <div
                 key={project.id}
                 className={cn(
-                  'flex items-start gap-4 rounded-sm border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-4 transition-colors hover:border-[hsl(174,100%,50%,0.3)]',
-                  project.featured && 'border-l-4 border-l-[hsl(60,100%,50%)]'
+                  mc.isTech
+                    ? 'flex items-start gap-4 rounded-sm border border-[hsl(174,100%,50%,0.15)] bg-[hsl(200,30%,8%)] p-4 transition-colors hover:border-[hsl(174,100%,50%,0.3)]'
+                    : 'flex items-start gap-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm hover:shadow-md transition-shadow',
+                  mc.isTech && project.featured && 'border-l-4 border-l-[hsl(174,100%,50%)]',
+                  !mc.isTech && project.featured && 'border-l-4 border-l-blue-500'
                 )}
               >
                 {/* Thumbnail */}
                 {project.imageUrl ? (
-                  <div className="relative h-20 w-28 shrink-0 overflow-hidden rounded-sm clip-hexagon">
-                    <Image
-                      src={project.imageUrl}
-                      alt={project.title}
-                      fill
-                      className="object-cover"
-                      sizes="112px"
-                    />
+                  <div className={cn(
+                    'relative h-20 w-28 shrink-0 overflow-hidden',
+                    mc.isTech ? 'rounded-sm clip-hexagon' : 'rounded-lg'
+                  )}>
+                    <Image src={project.imageUrl} alt={project.title} fill className="object-cover" sizes="112px" />
                   </div>
                 ) : (
-                  <div className="flex h-20 w-28 shrink-0 items-center justify-center rounded-sm clip-hexagon bg-[hsl(200,20%,13%)]">
-                    <FolderOpen className="w-8 h-8 text-[hsl(174,100%,50%,0.3)]" />
+                  <div className={cn(
+                    'flex h-20 w-28 shrink-0 items-center justify-center',
+                    mc.isTech ? 'rounded-sm clip-hexagon bg-[hsl(200,20%,13%)]' : 'rounded-lg bg-gray-100'
+                  )}>
+                    <FolderOpen className={cn('w-8 h-8', mc.isTech ? 'text-[hsl(174,100%,50%,0.3)]' : 'text-gray-300')} />
                   </div>
                 )}
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-foreground font-mono font-medium truncate">{project.title}</h3>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className={cn('font-medium truncate', mc.isTech ? 'text-foreground font-mono' : 'text-gray-900')}>{project.title}</h3>
                     {project.featured && (
-                      <Star className="w-4 h-4 text-[hsl(60,100%,50%)] shrink-0" fill="currentColor" />
+                      <Star className={cn('w-4 h-4 shrink-0', mc.isTech ? 'text-[hsl(174,100%,50%)]' : 'text-blue-500')} fill="currentColor" />
                     )}
                     <span className={cn(
-                      'text-[10px] font-mono px-2 py-0.5 rounded-sm shrink-0 uppercase tracking-wider',
+                      'text-[10px] px-2 py-0.5 shrink-0 uppercase tracking-wider',
+                      mc.isTech ? 'rounded-sm font-mono' : 'rounded-full font-medium',
                       statusColors[project.status] || statusColors.IN_PROGRESS
                     )}>
                       {getStatusLabel(project.status)}
                     </span>
                   </div>
-                  <p className="text-xs font-mono text-muted-foreground line-clamp-1 mt-1">
+                  <p className={cn('text-xs line-clamp-1 mt-1', mc.isTech ? 'font-mono text-muted-foreground' : 'text-gray-500')}>
                     {project.shortDescription || project.description}
                   </p>
                   {project.technologies.length > 0 && (
@@ -175,13 +161,18 @@ export function DashboardProjectsView({ projects, user }: DashboardProjectsViewP
                       {project.technologies.slice(0, 5).map((tech) => (
                         <span
                           key={tech}
-                          className="text-[10px] font-mono px-2 py-0.5 rounded-sm bg-[hsl(174,100%,50%,0.1)] text-[hsl(174,100%,50%)] border border-[hsl(174,100%,50%,0.2)]"
+                          className={cn(
+                            'text-[10px] px-2 py-0.5',
+                            mc.isTech
+                              ? 'font-mono rounded-sm bg-[hsl(174,100%,50%,0.1)] text-[hsl(174,100%,50%)] border border-[hsl(174,100%,50%,0.2)]'
+                              : 'rounded-full bg-gray-100 text-gray-600 border border-gray-200'
+                          )}
                         >
                           {tech}
                         </span>
                       ))}
                       {project.technologies.length > 5 && (
-                        <span className="text-[10px] font-mono text-muted-foreground">
+                        <span className={cn('text-[10px]', mc.isTech ? 'font-mono text-muted-foreground' : 'text-gray-400')}>
                           +{project.technologies.length - 5}
                         </span>
                       )}
@@ -191,18 +182,19 @@ export function DashboardProjectsView({ projects, user }: DashboardProjectsViewP
 
                 {/* Actions */}
                 <div className="flex items-center gap-1 shrink-0">
-                  <button
-                    onClick={() => handleEdit(project)}
-                    className="p-2 text-muted-foreground hover:text-[hsl(174,100%,50%)] hover:bg-[hsl(174,100%,50%,0.1)] transition-colors rounded-sm"
-                  >
+                  <button onClick={() => handleEdit(project)} className={mc.editButton} title="Edit">
                     <Pencil className="w-4 h-4" />
                   </button>
                   <button
-                    onClick={() => handleDelete(project)}
+                    onClick={() => setDeleteTarget(project)}
                     disabled={isPending}
-                    className="p-2 text-muted-foreground hover:text-[hsl(0,100%,60%)] hover:bg-[hsl(0,100%,60%,0.1)] transition-colors rounded-sm disabled:opacity-50"
+                    className={cn(mc.dangerButton, 'disabled:opacity-50')}
+                    title="Delete"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    {isPending && deleteTarget?.id === project.id
+                      ? <Loader2 className="w-4 h-4 animate-spin" />
+                      : <Trash2 className="w-4 h-4" />
+                    }
                   </button>
                 </div>
               </div>
@@ -210,6 +202,25 @@ export function DashboardProjectsView({ projects, user }: DashboardProjectsViewP
           </div>
         )}
       </main>
+
+      {/* Project Form Modal */}
+      <ProjectModal
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+        project={editingProject}
+        portfolioMode={user.portfolioMode}
+      />
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmModal
+        isOpen={!!deleteTarget}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={handleDeleteConfirm}
+        title={`Delete "${deleteTarget?.title}"?`}
+        description="This action cannot be undone. The project and all its data will be permanently removed."
+        isLoading={isPending}
+        portfolioMode={user.portfolioMode}
+      />
     </>
   );
 }

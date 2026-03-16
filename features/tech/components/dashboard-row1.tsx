@@ -1,15 +1,19 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useRef, forwardRef, useImperativeHandle } from "react"
 import { WelcomeCard } from "./welcome-card"
 import { CRTWithAI } from "./crt-with-ai"
-import type { AIState } from "./crt-with-ai"
+import type { AIState, CRTWithAIHandle } from "./crt-with-ai"
 import type { DashboardRow1Props } from "../types/dashboard"
+
+export interface DashboardRow1Handle {
+  insertPrompt: (text: string) => void
+}
 
 // AI states that trigger the avatar swap
 const AI_ACTIVE_STATES: AIState[] = ["listening", "thinking", "ready", "success"]
 
-export function DashboardRow1({
+export const DashboardRow1 = forwardRef<DashboardRow1Handle, DashboardRow1Props>(function DashboardRow1({
   userName,
   userInitial,
   userImage,
@@ -25,8 +29,15 @@ export function DashboardRow1({
   bootStats,
   pageContext,
   locale,
-}: DashboardRow1Props) {
+}: DashboardRow1Props, ref) {
+  const crtRef = useRef<CRTWithAIHandle>(null)
   const [aiActive, setAiActive] = useState(false)
+
+  useImperativeHandle(ref, () => ({
+    insertPrompt(text: string) {
+      crtRef.current?.insertPrompt(text)
+    },
+  }))
 
   // TG1-A: Counter-based triggers for the AIEye transient states.
   // Incrementing each counter fires the corresponding eye animation once.
@@ -73,6 +84,7 @@ export function DashboardRow1({
         translations={translations}
       />
       <CRTWithAI
+        ref={crtRef}
         userName={userName}
         className="min-h-[180px] md:min-h-0"
         onAIStateChange={handleAIStateChange}
@@ -85,4 +97,4 @@ export function DashboardRow1({
       />
     </div>
   )
-}
+})

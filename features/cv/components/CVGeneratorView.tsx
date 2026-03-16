@@ -20,6 +20,7 @@ import { CVAnalysisPanel } from './CVAnalysisPanel';
 import { CVListSidebar } from './CVListSidebar';
 import { CVImportPanel } from './CVImportPanel';
 import { JobDescriptionInput } from './JobDescriptionInput';
+import { InterviewSimulator } from './InterviewSimulator';
 
 // =============================================================================
 // Types
@@ -348,6 +349,17 @@ export function CVGeneratorView({
           <CVAnalysisPanel
             cvId={currentCVId}
             jobDescription={jobDescription}
+            isTech={mc.isTech}
+            cardClassName={mc.card}
+            subHeadingClassName={mc.subHeading}
+            labelClassName={mc.label}
+          />
+        )}
+
+        {/* Interview Prep — shown when a CV is loaded */}
+        {currentCV && (
+          <InterviewSimulator
+            targetJob={targetJob || undefined}
             isTech={mc.isTech}
             cardClassName={mc.card}
             subHeadingClassName={mc.subHeading}

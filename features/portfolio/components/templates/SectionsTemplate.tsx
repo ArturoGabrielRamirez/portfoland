@@ -18,6 +18,9 @@ import type { PortfolioSectionProps, PortfolioMode } from '../../types/portfolio
 import type { PortfolioSectionKey } from '../../constants/sections';
 import type { PortfolioData } from '../../types/portfolio';
 import { THEME_PRESETS } from '@/features/portfolio-settings/constants/themes';
+import { VisitorRoleBar, type VisitorRole } from '../VisitorRoleBar';
+import { RecruiterView } from '../RecruiterView';
+import { RoleBanner } from '../RoleBanner';
 
 // Classic mode components
 import { ClassicHero } from '../classic/ClassicHero';
@@ -104,6 +107,7 @@ interface SectionsTemplateProps {
 export function SectionsTemplate({ data, mode }: SectionsTemplateProps) {
   const [activeSection, setActiveSection] = useState<PortfolioSectionKey>(DEFAULT_SECTION);
   const [isBooting, setIsBooting] = useState(mode !== 'classic');
+  const [visitorRole, setVisitorRole] = useState<VisitorRole>(null);
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
   useEffect(() => {
@@ -132,7 +136,7 @@ export function SectionsTemplate({ data, mode }: SectionsTemplateProps) {
   return (
     <div
       className={cn(
-        'md:flex md:h-full md:overflow-hidden',
+        'flex flex-col md:h-full',
         'min-h-screen pb-16 md:pb-0',
         isClassic ? 'bg-[var(--portfolio-bg)] text-[var(--portfolio-text)]' : 'bg-[#0A0E1A] text-white overflow-hidden'
       )}
@@ -178,102 +182,118 @@ export function SectionsTemplate({ data, mode }: SectionsTemplateProps) {
         )}
       </AnimatePresence>
 
-      {/* Sidebar / Bottom Navigation */}
-      <PanelNavigation
-        activeSection={activeSection}
-        onSectionChange={handleSectionChange}
-        mode={mode}
-        sectionOrder={data.user.sectionOrder}
-        sectionVisibility={data.user.sectionVisibility}
-      />
+      {/* Visitor Role Selector */}
+      <VisitorRoleBar role={visitorRole} onRoleChange={setVisitorRole} mode={mode} />
 
-      {/* Desktop: Panel-based content */}
-      <main
-        className={cn('hidden md:block', 'flex-1', 'md:overflow-y-auto')}
-        data-testid="desktop-content"
-      >
-        <AnimatePresence mode="wait">
-          {(() => {
-            const visibility = (data.user.sectionVisibility || {}) as Record<string, boolean>;
-            const isVisible = (key: string) => {
-              if (key === 'hero') return true;
-              const v = visibility[key];
-              if (key === 'timeline') return v !== false && visibility['experience'] !== false;
-              if (key === 'experience') return v !== false && visibility['timeline'] !== false;
-              return v !== false;
-            };
+      {/* Recruiter Mode: ATS-friendly full-page view */}
+      {visitorRole === 'recruiter' ? (
+        <RecruiterView data={data} mode={mode} />
+      ) : (
+        <>
+          {/* Role Banner (non-recruiter contextual message) */}
+          <RoleBanner role={visitorRole} mode={mode} />
 
-            if (!isVisible(activeSection)) return null;
+          {/* Main portfolio content */}
+          <div className="flex-1 md:flex md:overflow-hidden md:min-h-0">
+            {/* Sidebar / Bottom Navigation */}
+            <PanelNavigation
+              activeSection={activeSection}
+              onSectionChange={handleSectionChange}
+              mode={mode}
+              sectionOrder={data.user.sectionOrder}
+              sectionVisibility={data.user.sectionVisibility}
+            />
 
-            const SectionComponent = sections[activeSection];
-            if (!SectionComponent) return null;
+            {/* Desktop: Panel-based content */}
+            <main
+              className={cn('hidden md:block', 'flex-1', 'md:overflow-y-auto')}
+              data-testid="desktop-content"
+            >
+              <AnimatePresence mode="wait">
+                {(() => {
+                  const visibility = (data.user.sectionVisibility || {}) as Record<string, boolean>;
+                  const isVisible = (key: string) => {
+                    if (key === 'hero') return true;
+                    const v = visibility[key];
+                    if (key === 'timeline') return v !== false && visibility['experience'] !== false;
+                    if (key === 'experience') return v !== false && visibility['timeline'] !== false;
+                    return v !== false;
+                  };
 
-            return (
-              <motion.div
-                key={activeSection}
-                variants={panelVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                transition={panelTransition}
-                id={`panel-${activeSection}`}
-                role="tabpanel"
-                aria-labelledby={`tab-${activeSection}`}
-                className="h-full p-4 md:p-6"
-              >
-                <SectionComponent data={data} />
-              </motion.div>
-            );
-          })()}
-        </AnimatePresence>
-      </main>
+                  if (!isVisible(activeSection)) return null;
 
-      {/* Mobile: All sections stacked vertically */}
-      <div className="md:hidden" data-testid="mobile-content">
-        {(() => {
-          const orderMap: Record<string, string> = { 'experience': 'timeline' };
-          const userOrder = data.user.sectionOrder || [];
-          const visibility = (data.user.sectionVisibility || {}) as Record<string, boolean>;
+                  const SectionComponent = sections[activeSection];
+                  if (!SectionComponent) return null;
 
-          const isVisible = (key: string) => {
-            if (key === 'hero') return true;
-            const v = visibility[key];
-            if (key === 'timeline') return v !== false && visibility['experience'] !== false;
-            if (key === 'experience') return v !== false && visibility['timeline'] !== false;
-            return v !== false;
-          };
+                  return (
+                    <motion.div
+                      key={activeSection}
+                      variants={panelVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      transition={panelTransition}
+                      id={`panel-${activeSection}`}
+                      role="tabpanel"
+                      aria-labelledby={`tab-${activeSection}`}
+                      className="h-full p-4 md:p-6"
+                    >
+                      <SectionComponent data={data} />
+                    </motion.div>
+                  );
+                })()}
+              </AnimatePresence>
+            </main>
 
-          let fullOrder = ['hero', ...userOrder, 'contact', 'ai'];
-          fullOrder = Array.from(new Set(fullOrder));
-          if (userOrder.length === 0) {
-            fullOrder = PORTFOLIO_SECTIONS.map(s => s.key);
-          }
+            {/* Mobile: All sections stacked vertically */}
+            <div className="md:hidden" data-testid="mobile-content">
+              {(() => {
+                const orderMap: Record<string, string> = { 'experience': 'timeline' };
+                const userOrder = data.user.sectionOrder || [];
+                const visibility = (data.user.sectionVisibility || {}) as Record<string, boolean>;
 
-          return fullOrder
-            .filter(key => isVisible(key))
-            .map((userKey, index) => {
-              const internalKey = (orderMap[userKey] || userKey) as PortfolioSectionKey;
-              const SectionComponent = sections[internalKey];
-              if (!SectionComponent) return null;
+                const isVisible = (key: string) => {
+                  if (key === 'hero') return true;
+                  const v = visibility[key];
+                  if (key === 'timeline') return v !== false && visibility['experience'] !== false;
+                  if (key === 'experience') return v !== false && visibility['timeline'] !== false;
+                  return v !== false;
+                };
 
-              return (
-                <motion.div
-                  key={internalKey}
-                  ref={(el) => { sectionRefs.current[internalKey] = el; }}
-                  id={`section-${internalKey}`}
-                  variants={sectionEntranceVariants}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ ...sectionEntranceTransition, delay: index * 0.05 }}
-                  className="scroll-mt-4 p-4"
-                >
-                  <SectionComponent data={data} />
-                </motion.div>
-              );
-            });
-        })()}
-      </div>
+                let fullOrder = ['hero', ...userOrder, 'contact', 'ai'];
+                fullOrder = Array.from(new Set(fullOrder));
+                if (userOrder.length === 0) {
+                  fullOrder = PORTFOLIO_SECTIONS.map(s => s.key);
+                }
+
+                return fullOrder
+                  .filter(key => isVisible(key))
+                  .map((userKey, index) => {
+                    const internalKey = (orderMap[userKey] || userKey) as PortfolioSectionKey;
+                    const SectionComponent = sections[internalKey];
+                    if (!SectionComponent) return null;
+
+                    return (
+                      <motion.div
+                        key={internalKey}
+                        ref={(el) => { sectionRefs.current[internalKey] = el; }}
+                        id={`section-${internalKey}`}
+                        variants={sectionEntranceVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.1 }}
+                        transition={{ ...sectionEntranceTransition, delay: index * 0.05 }}
+                        className="scroll-mt-4 p-4"
+                      >
+                        <SectionComponent data={data} />
+                      </motion.div>
+                    );
+                  });
+              })()}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

@@ -20,6 +20,7 @@ import { THEME_PRESETS } from '@/features/portfolio-settings/constants/themes';
 import { ServicesSection } from './components/ServicesSection';
 import { GallerySection } from './components/GallerySection';
 import { TestimonialsSection } from './components/TestimonialsSection';
+import { GenerateCareerStory } from '@/features/portfolio/components/GenerateCareerStory';
 import ReactMarkdown from 'react-markdown';
 import type { PortfolioMode, PortfolioViewMode } from '@/features/portfolio/types/portfolio';
 import type { PortfolioSettingsModel } from '@/features/portfolio-settings/types/portfolioSettings';
@@ -289,6 +290,16 @@ export function DashboardPortfolioView({
                     <ProfileImageUpload value={image} onChange={setImage} oauthImage={oauthImage} />
                   </div>
                 </div>
+              </HUDPanel>
+
+              {/* Career Story */}
+              <HUDPanel title={isTech ? '[CAREER_STORY]' : 'Career Story'} icon={<Sparkles className="w-4 h-4" />}>
+                <GenerateCareerStory
+                  username={user.username}
+                  portfolioMode={user.portfolioMode}
+                  locale={locale}
+                  onUseBio={(text) => setBio(text)}
+                />
               </HUDPanel>
 
               {/* Social Links */}
